@@ -7,7 +7,6 @@ import { scanBusinessCard } from "@/lib/ocr.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
-import { CameraCapture } from "@/components/CameraCapture";
 
 export const Route = createFileRoute("/_authenticated/scan")({
   head: () => ({
@@ -29,8 +28,8 @@ function ScanPage() {
   const { t } = useI18n();
   const nav = useNavigate();
   const scan = useServerFn(scanBusinessCard);
-  const fileRef = useRef<HTMLInputElement>(null);
-  const [camOpen, setCamOpen] = useState(false);
+  const cameraRef = useRef<HTMLInputElement>(null);
+  const uploadRef = useRef<HTMLInputElement>(null);
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -103,14 +102,14 @@ function ScanPage() {
             </div>
             <div className="mt-3 space-y-2 lg:mt-0 lg:space-y-3">
               <button
-                onClick={() => setCamOpen(true)}
+                onClick={() => cameraRef.current?.click()}
                 className="flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-semibold text-accent-foreground shadow-glow lg:py-4"
                 style={{ background: "var(--gradient-gold)" }}
               >
                 <Camera className="h-4 w-4 lg:h-5 lg:w-5" /> {t.takePhoto}
               </button>
               <button
-                onClick={() => fileRef.current?.click()}
+                onClick={() => uploadRef.current?.click()}
                 className="glass flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-sm font-medium lg:py-3.5"
               >
                 <Upload className="h-4 w-4" /> {t.uploadImage}
@@ -171,8 +170,8 @@ function ScanPage() {
         )}
 
 
-        <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
-        <CameraCapture open={camOpen} onClose={() => setCamOpen(false)} onCapture={(f) => { void handleFile(f); }} />
+        <input ref={cameraRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
+        <input ref={uploadRef} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
       </div>
     </MobileShell>
   );
