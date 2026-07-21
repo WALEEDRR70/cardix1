@@ -107,6 +107,13 @@ const dict = {
     expand: "Expand",
     download: "Download",
     location: "Location",
+    addNote: "Add note",
+    editNote: "Edit note",
+    notePlaceholder: "Where you met, context, follow-up…",
+    noteOptional: "Add a note (optional)",
+    viewDetails: "View details",
+    saveNote: "Save note",
+    back: "Back",
   },
 
 
