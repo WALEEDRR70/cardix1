@@ -322,8 +322,8 @@ function PublicCard() {
         <div className="flex items-center gap-2">
           <button
             onClick={nativeShare}
-            className="grid h-11 w-11 place-items-center rounded-full text-accent-foreground shadow-glow transition hover:scale-105"
-            style={{ background: "var(--gradient-gold)" }}
+            className="grid h-11 w-11 place-items-center rounded-full text-accent-foreground transition hover:scale-105"
+            style={{ background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, boxShadow: `0 10px 30px -8px ${accent}aa` }}
             aria-label={t.share}
           >
             <Share2 className="h-4 w-4" />
@@ -339,13 +339,13 @@ function PublicCard() {
 
         {isAuthed ? (
           <Link to="/dashboard" className="flex items-center gap-2" aria-label="Cardix">
-            <img src={logoAsset.url} alt="" className="h-7 w-7 object-contain" />
-            <span className="text-[13px] font-semibold tracking-[0.32em] text-foreground">CARDIX</span>
+            <img src={logoAsset.url} alt="" className="h-7 w-7 object-contain" style={{ filter: `drop-shadow(0 0 10px ${accent}88)` }} />
+            <span className="text-[13px] font-semibold tracking-[0.32em]" style={{ color: accent }}>CARDIX</span>
           </Link>
         ) : (
           <a href="/" className="flex items-center gap-2" aria-label="Cardix">
-            <img src={logoAsset.url} alt="" className="h-7 w-7 object-contain" />
-            <span className="text-[13px] font-semibold tracking-[0.32em] text-foreground">CARDIX</span>
+            <img src={logoAsset.url} alt="" className="h-7 w-7 object-contain" style={{ filter: `drop-shadow(0 0 10px ${accent}88)` }} />
+            <span className="text-[13px] font-semibold tracking-[0.32em]" style={{ color: accent }}>CARDIX</span>
           </a>
         )}
 
@@ -540,8 +540,8 @@ function PublicCard() {
         >
           <button
             onClick={vcard}
-            className="pointer-events-auto flex flex-1 items-center justify-center gap-2 rounded-full py-4 text-[15px] font-semibold text-accent-foreground shadow-glow transition hover:scale-[1.01]"
-            style={{ background: "var(--gradient-gold)" }}
+            className="pointer-events-auto flex flex-1 items-center justify-center gap-2 rounded-full py-4 text-[15px] font-semibold text-accent-foreground transition hover:scale-[1.01]"
+            style={{ background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, boxShadow: `0 14px 40px -10px ${accent}aa` }}
           >
             <UserPlus className="h-4 w-4" /> {t.saveContact}
           </button>
@@ -606,7 +606,7 @@ function PublicCard() {
 
 
 
-      {isAuthed && <MobileBottomNav />}
+      {isAuthed && <MobileBottomNav accent={accent} />}
     </div>
   );
 }
