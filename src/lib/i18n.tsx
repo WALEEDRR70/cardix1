@@ -65,6 +65,12 @@ const dict = {
     avatar: "Photo",
     uploadPhoto: "Upload photo",
     uploading: "Uploading…",
+    writeNfc: "Write to NFC",
+    nfcTap: "Tap an NFC tag to your phone…",
+    nfcWritten: "Written to tag",
+    nfcUnsupported: "NFC not supported on this device",
+    downloadQr: "Download QR",
+
 
     features: [
       { t: "Instant sharing", d: "QR, NFC, link, WhatsApp, AirDrop." },
@@ -134,6 +140,12 @@ const dict = {
     avatar: "الصورة",
     uploadPhoto: "رفع صورة",
     uploading: "جارٍ الرفع…",
+    writeNfc: "كتابة على NFC",
+    nfcTap: "قرّب بطاقة NFC من الجهاز…",
+    nfcWritten: "تمت الكتابة على البطاقة",
+    nfcUnsupported: "NFC غير مدعوم على هذا الجهاز",
+    downloadQr: "تحميل رمز QR",
+
 
     features: [
       { t: "مشاركة فورية", d: "رمز QR، NFC، رابط، واتساب، AirDrop." },
