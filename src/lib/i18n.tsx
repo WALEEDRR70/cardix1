@@ -110,7 +110,7 @@ const dict = {
     featureShareDesc: "QR, NFC, or link. Nothing to install for the receiver.",
     featureScan: "AI paper scanner",
     featureScanDesc: "Snap a paper card. We save the contact in seconds.",
-    featureTemplates: "Six luxury templates",
+    featureTemplates: "19 luxury templates",
     featureTemplatesDesc: "From Noir gold to Aurora glass — every card feels intentional.",
     welcomeBack: "Welcome back.",
     startCraft: "Start crafting your card in seconds.",
