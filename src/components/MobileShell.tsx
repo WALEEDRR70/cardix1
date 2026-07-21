@@ -92,7 +92,7 @@ function DesktopSidebar() {
 }
 
 /* -------------------- Mobile bottom nav + FAB -------------------- */
-export function MobileBottomNav() {
+export function MobileBottomNav({ accent }: { accent?: string } = {}) {
   const { t } = useI18n();
   const path = useRouterState({ select: (s) => s.location.pathname });
 
@@ -103,12 +103,16 @@ export function MobileBottomNav() {
     { to: "/settings", icon: Layers, label: t.settingsShort },
   ] as const;
 
+  const fabStyle = accent
+    ? { background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, boxShadow: `0 12px 40px -8px ${accent}aa` }
+    : { background: "var(--gradient-gold)" };
+
   return (
     <div className="lg:hidden">
       <Link
         to="/scan"
         className="fixed bottom-[calc(env(safe-area-inset-bottom)+3.25rem)] left-1/2 z-30 -translate-x-1/2 grid h-14 w-14 place-items-center rounded-full text-accent-foreground shadow-luxe ring-4 ring-background transition active:scale-95"
-        style={{ background: "var(--gradient-gold)" }}
+        style={fabStyle}
         aria-label={t.scanCard}
       >
         <ScanLine className="h-6 w-6" strokeWidth={2.5} />
