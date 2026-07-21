@@ -177,6 +177,7 @@ function PublicCard() {
       window.location.href = `/auth?next=/c/${slug}`;
       return;
     }
+    const note = window.prompt(t.noteOptional, "") ?? "";
     setSavingCard(true);
     const { error } = await supabase.from("saved_cards").insert({
       user_id: userRes.user.id,
@@ -192,6 +193,10 @@ function PublicCard() {
       address: card!.address,
       website: card!.website,
       avatar_url: card!.avatar_url,
+      accent_color: card!.accent_color,
+      template: card!.template ?? "luxury",
+      socials: card!.socials ?? {},
+      notes: note,
     });
     setSavingCard(false);
     if (error) {
