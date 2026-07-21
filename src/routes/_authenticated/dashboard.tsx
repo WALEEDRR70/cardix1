@@ -5,10 +5,12 @@ import { useI18n } from "@/lib/i18n";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { CardPreview } from "@/components/CardPreview";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Eye, Sparkles, Trash2, Pencil } from "lucide-react";
+import { Eye, Sparkles, Trash2, Pencil, QrCode, X, Copy, Share2 } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
+import { QRCodeSVG } from "qrcode.react";
+import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
