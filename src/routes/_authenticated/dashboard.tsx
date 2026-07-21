@@ -5,7 +5,7 @@ import { useI18n } from "@/lib/i18n";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { CardPreview } from "@/components/CardPreview";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Eye, Sparkles, Trash2, Pencil, QrCode, X, Copy, Share2, ChevronLeft, ChevronRight, BookmarkPlus, Layers, Rows3 } from "lucide-react";
+import { Eye, Sparkles, Trash2, Pencil, QrCode, X, Copy, Share2, ChevronLeft, ChevronRight, BookmarkPlus, Layers, Rows3, MoreHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
@@ -220,17 +220,11 @@ function MyCards({ cards, onQr, onEdit, onDelete, onOpen, t }: CardActions & { t
               <button onClick={() => onOpen(c.slug)} className="block w-full" aria-label={c.name}>
                 <CardPreview card={c as any} size="lg" />
               </button>
-              <div className="absolute right-3 top-3 flex flex-col gap-2">
-                <button onClick={() => onEdit(c.id)} className="glass grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground" aria-label="Edit">
-                  <Pencil className="h-4 w-4" />
-                </button>
-                <button onClick={() => onQr(c.slug)} className="glass grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground" aria-label="QR">
-                  <QrCode className="h-4 w-4" />
-                </button>
-                <button onClick={() => onDelete(c.id)} className="glass grid h-9 w-9 place-items-center rounded-full text-foreground/70 hover:text-destructive" aria-label="Delete">
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </div>
+              <CardActionsMenu
+                onEdit={() => onEdit(c.id)}
+                onQr={() => onQr(c.slug)}
+                onDelete={() => onDelete(c.id)}
+              />
             </div>
           ))}
         </div>
@@ -354,17 +348,11 @@ function CardStack({
                   <CardPreview card={c as any} size="lg" />
                 </button>
                 {isTop && (
-                  <div className="absolute right-3 top-3 flex flex-col gap-2">
-                    <button onClick={(e) => { e.stopPropagation(); onEdit(c.id); }} className="glass grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground" aria-label="Edit">
-                      <Pencil className="h-4 w-4" />
-                    </button>
-                    <button onClick={(e) => { e.stopPropagation(); onQr(c.slug); }} className="glass grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground" aria-label="QR">
-                      <QrCode className="h-4 w-4" />
-                    </button>
-                    <button onClick={(e) => { e.stopPropagation(); onDelete(c.id); }} className="glass grid h-9 w-9 place-items-center rounded-full text-foreground/70 hover:text-destructive" aria-label="Delete">
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
+                  <CardActionsMenu
+                    onEdit={() => onEdit(c.id)}
+                    onQr={() => onQr(c.slug)}
+                    onDelete={() => onDelete(c.id)}
+                  />
                 )}
               </div>
             </div>
@@ -488,6 +476,48 @@ function StatTile({ label, value, icon }: { label: string; value: number | strin
         {icon} {label}
       </div>
       <p className="mt-0.5 text-xl font-semibold tracking-tight lg:text-2xl">{value}</p>
+    </div>
+  );
+}
+
+function CardActionsMenu({ onEdit, onQr, onDelete }: { onEdit: () => void; onQr: () => void; onDelete: () => void }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="absolute end-3 top-3 z-20" onClick={(e) => e.stopPropagation()}>
+      <button
+        type="button"
+        onClick={(e) => { e.stopPropagation(); setOpen((v) => !v); }}
+        className="glass-strong grid h-8 w-8 place-items-center rounded-full text-foreground/80 backdrop-blur transition hover:text-foreground"
+        aria-label="Actions"
+        aria-expanded={open}
+      >
+        <MoreHorizontal className="h-4 w-4" />
+      </button>
+      {open && (
+        <div className="glass-strong absolute end-0 mt-2 flex min-w-[140px] flex-col gap-0.5 rounded-2xl p-1.5 shadow-luxe backdrop-blur-xl">
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); setOpen(false); onEdit(); }}
+            className="flex items-center gap-2 rounded-xl px-3 py-2 text-[12px] text-foreground/90 transition hover:bg-white/10"
+          >
+            <Pencil className="h-3.5 w-3.5" /> <span>Edit</span>
+          </button>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); setOpen(false); onQr(); }}
+            className="flex items-center gap-2 rounded-xl px-3 py-2 text-[12px] text-foreground/90 transition hover:bg-white/10"
+          >
+            <QrCode className="h-3.5 w-3.5" /> <span>QR</span>
+          </button>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); setOpen(false); onDelete(); }}
+            className="flex items-center gap-2 rounded-xl px-3 py-2 text-[12px] text-destructive transition hover:bg-destructive/15"
+          >
+            <Trash2 className="h-3.5 w-3.5" /> <span>Delete</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 }
