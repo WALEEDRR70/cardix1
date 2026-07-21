@@ -56,9 +56,9 @@ function Settings() {
 
         {/* Language */}
         <Section title={t.language}>
-          <div className="grid grid-cols-2 gap-2 p-2">
-            <ThemeChip active={lang === "en"} onClick={() => setLang("en")} icon={<Languages className="h-4 w-4" />} label="English" />
-            <ThemeChip active={lang === "ar"} onClick={() => setLang("ar")} icon={<Languages className="h-4 w-4" />} label="العربية" />
+          <div className="flex items-center justify-between px-4 py-3.5">
+            <p className="text-sm text-muted-foreground">{t.language}</p>
+            <LocaleSwitcher />
           </div>
         </Section>
 
