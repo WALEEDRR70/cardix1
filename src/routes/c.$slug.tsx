@@ -720,7 +720,7 @@ function ActionTile({
   );
 }
 
-function QrAction({
+function IconOnlyAction({
   icon: Icon,
   label,
   onClick,
@@ -732,13 +732,15 @@ function QrAction({
   return (
     <button
       onClick={onClick}
-      className="glass card-lift flex items-center justify-center gap-1.5 rounded-full py-2.5 text-[11px] font-medium text-foreground/85 transition hover:text-foreground"
+      aria-label={label}
+      title={label}
+      className="glass card-lift grid h-10 w-10 place-items-center rounded-full text-foreground/85 transition hover:text-foreground"
     >
-      <Icon className="h-3.5 w-3.5" />
-      {label}
+      <Icon className="h-4 w-4" />
     </button>
   );
 }
+
 
 function getReadableText(hex: string): string {
   const h = hex.replace("#", "");
