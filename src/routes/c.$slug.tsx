@@ -863,6 +863,38 @@ function PublicCard() {
               ))}
             </ol>
 
+            {/* Auto-open confirmation */}
+            <div
+              className="mt-4 rounded-2xl p-[1px]"
+              style={{ background: `linear-gradient(135deg, ${accent}, transparent 70%)` }}
+            >
+              <div className="rounded-[calc(1rem-1px)] bg-white/[0.04] p-3">
+                <div className="flex items-start gap-3">
+                  <span
+                    className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-accent-foreground shadow-glow"
+                    style={{ background: "var(--gradient-gold)" }}
+                  >
+                    <Globe className="h-4 w-4" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[13px] font-semibold text-foreground">{t.nfcAutoOpenTitle}</p>
+                    <p className="mt-0.5 text-[12px] leading-relaxed text-foreground/65">
+                      {t.nfcAutoOpenDesc}
+                    </p>
+                    <div className="mt-2 rounded-lg border border-white/10 bg-black/30 px-2.5 py-1.5">
+                      <p className="text-[10px] uppercase tracking-[0.24em] text-foreground/45">
+                        {t.nfcLinkLabel}
+                      </p>
+                      <p dir="ltr" className="mt-0.5 truncate text-[11px] font-mono text-foreground/80">
+                        {publicUrl}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
             <div className="mt-auto pt-6">
               {/* Countdown pill */}
               <div className="mb-3 flex items-center justify-center gap-2 text-[12px] text-foreground/70">
