@@ -114,6 +114,11 @@ const dict = {
     viewDetails: "View details",
     saveNote: "Save note",
     back: "Back",
+    cancel: "Cancel",
+    confirm: "Confirm",
+    deleteConfirmTitle: "Delete this card?",
+    deleteConfirmDesc: "This will permanently remove the card from your vault. This action can't be undone.",
+    deleted: "Deleted",
   },
 
 
