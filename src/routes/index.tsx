@@ -9,6 +9,7 @@ import {
   ArrowRight, QrCode, ScanLine, Sparkles, Radio, BarChart3,
   Smartphone, Star, Check, ChevronDown, Zap, Layers, Globe2,
 } from "lucide-react";
+import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
