@@ -299,6 +299,60 @@ function ScanPage() {
         <input ref={uploadRef} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
       </div>
       <QrScanner open={qrOpen} onClose={() => setQrOpen(false)} onDetect={handleQrDetect} />
+
+      {scanned && (
+        <div className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-black/70 p-4 backdrop-blur-md">
+          <div className="glass-strong relative w-full max-w-md rounded-3xl border border-border/40 p-5">
+            <button
+              onClick={() => setScanned(null)}
+              className="absolute end-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-secondary/60 text-muted-foreground hover:text-foreground"
+              aria-label="Close"
+            >
+              <X className="h-4 w-4" />
+            </button>
+            <div className="flex justify-center pt-2">
+              <CardPreview card={scanned as CardData} size="md" />
+            </div>
+            <div className="mt-4 text-center">
+              <p className="text-base font-semibold tracking-tight">{scanned.name}</p>
+              {(scanned.title || scanned.company) && (
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  {[scanned.title, scanned.company].filter(Boolean).join(" · ")}
+                </p>
+              )}
+            </div>
+            {note.trim() && (
+              <div className="mt-3 rounded-2xl border border-border/50 bg-secondary/40 p-3 text-xs text-muted-foreground">
+                <p className="mb-1 font-medium text-foreground/80">{t.addNote}</p>
+                <p className="whitespace-pre-wrap break-words">{note}</p>
+              </div>
+            )}
+            <div className="mt-5 grid grid-cols-2 gap-2">
+              <button
+                onClick={() => setNoteOpen(true)}
+                className="glass flex items-center justify-center gap-2 rounded-2xl py-3 text-sm font-medium"
+              >
+                <StickyNote className="h-4 w-4" /> {t.addNote}
+              </button>
+              <button
+                onClick={saveScanned}
+                disabled={saving}
+                className="flex items-center justify-center gap-2 rounded-2xl py-3 text-sm font-semibold text-accent-foreground shadow-glow disabled:opacity-60"
+                style={{ background: "var(--gradient-gold)" }}
+              >
+                {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />} {t.saveToVault}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <NoteDialog
+        open={noteOpen}
+        initial={note}
+        onOpenChange={setNoteOpen}
+        onSave={(v) => { setNote(v); setNoteOpen(false); }}
+      />
     </MobileShell>
   );
 }
