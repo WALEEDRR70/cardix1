@@ -745,6 +745,9 @@ function getReadableText(hex: string): string {
   };
   const L = 0.2126 * toLin(r) + 0.7152 * toLin(g) + 0.0722 * toLin(b);
   return L > 0.5 ? "#0a0a0a" : "#ffffff";
+}
+
+
 
 
 function Particles({ accent }: { accent: string }) {
