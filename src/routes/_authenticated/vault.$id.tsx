@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
 
 export const Route = createFileRoute("/_authenticated/vault/$id")({
   head: () => ({
