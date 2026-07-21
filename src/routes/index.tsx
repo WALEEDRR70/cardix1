@@ -13,7 +13,7 @@ import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { supabase } from "@/integrations/supabase/client";
 
 function useIsAuthed() {
-  const [authed, setAuthed] = useState<boolean>(false);
+  const [authed, setAuthed] = useState<boolean | null>(null);
   useEffect(() => {
     let mounted = true;
     supabase.auth.getSession().then(({ data }) => { if (mounted) setAuthed(!!data.session); });
@@ -216,7 +216,9 @@ function Nav({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"
             <ThemeToggle compact />
             <LangToggle compact />
           </div>
-          <Link to={authed ? "/dashboard" : "/auth"} className="hidden md:inline-flex text-sm text-muted-foreground hover:text-foreground px-3 py-2">{t.signIn}</Link>
+          {authed === false ? (
+            <Link to="/auth" className="hidden md:inline-flex text-sm text-muted-foreground hover:text-foreground px-3 py-2">{t.signIn}</Link>
+          ) : null}
           <Link
             to={authed ? "/dashboard" : "/auth"}
             className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold text-accent-foreground shadow-glow transition active:scale-[0.98]"
