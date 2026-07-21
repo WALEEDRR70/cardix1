@@ -37,6 +37,7 @@ function EditCard() {
     email: card.email ?? "", website: card.website ?? "", address: card.address ?? "",
     avatar_url: card.avatar_url ?? "",
     accent_color: card.accent_color, template: card.template || "luxury", is_published: card.is_published,
+    socials: (card.socials as Record<string, string>) ?? {},
   };
 
   async function onSubmit(d: CardFormData): Promise<void> {
