@@ -482,6 +482,7 @@ function StatTile({ label, value, icon }: { label: string; value: number | strin
 }
 
 function CardActionsMenu({ onEdit, onQr, onDelete }: { onEdit: () => void; onQr: () => void; onDelete: () => void }) {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   return (
     <div className="absolute end-3 top-3 z-20" onClick={(e) => e.stopPropagation()}>
