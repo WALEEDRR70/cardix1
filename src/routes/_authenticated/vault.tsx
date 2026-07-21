@@ -68,7 +68,7 @@ function Vault() {
                 key={c.id}
                 to="/vault/$id"
                 params={{ id: c.id }}
-                className="glass card-lift group block rounded-2xl p-3 lg:p-4"
+                className="glass card-lift group block overflow-hidden rounded-2xl p-3 lg:p-4"
               >
                 <div className="flex items-start gap-3">
                   <div
