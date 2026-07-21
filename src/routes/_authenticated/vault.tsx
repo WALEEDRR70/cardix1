@@ -23,6 +23,7 @@ export const Route = createFileRoute("/_authenticated/vault")({
 function Vault() {
   const { t } = useI18n();
   const qc = useQueryClient();
+  const navigate = useNavigate();
 
   const { data: cards } = useQuery({
     queryKey: ["saved_cards"],
