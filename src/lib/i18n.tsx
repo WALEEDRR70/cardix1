@@ -82,6 +82,7 @@ const dict = {
     shareCard: "Share your card",
     copyLink: "Copy link",
     linkCopied: "Link copied",
+    designs: "Designs",
     templates: {
       luxury: "Luxury",
       aurora: "Aurora",
