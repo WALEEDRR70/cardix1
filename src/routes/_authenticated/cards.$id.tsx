@@ -12,7 +12,20 @@ import { useState } from "react";
 export const Route = createFileRoute("/_authenticated/cards/$id")({
   head: () => ({ meta: [{ title: "Edit card — Cardix" }] }),
   component: EditCard,
+  errorComponent: () => <NotFoundView />,
+  notFoundComponent: () => <NotFoundView />,
 });
+
+function NotFoundView() {
+  return (
+    <div className="grid min-h-[100dvh] place-items-center px-6 text-center">
+      <div>
+        <p className="text-sm text-muted-foreground">Card not found.</p>
+        <Link to="/dashboard" className="mt-3 inline-block text-xs font-semibold text-primary">← Dashboard</Link>
+      </div>
+    </div>
+  );
+}
 
 function EditCard() {
   const { t } = useI18n();
