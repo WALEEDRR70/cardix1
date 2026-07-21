@@ -21,9 +21,9 @@ function NewCard() {
     website: "", address: "", accent_color: "#D4AF37", is_published: true,
   };
 
-  async function onSubmit(d: CardFormData) {
+  async function onSubmit(d: CardFormData): Promise<void> {
     const { data, error } = await supabase.from("cards").insert({ ...d, user_id: user.id }).select().single();
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Card created");
     nav({ to: "/cards/$id", params: { id: data.id } });
   }

@@ -35,9 +35,9 @@ function EditCard() {
     accent_color: card.accent_color, is_published: card.is_published,
   };
 
-  async function onSubmit(d: CardFormData) {
+  async function onSubmit(d: CardFormData): Promise<void> {
     const { error } = await supabase.from("cards").update(d).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     qc.invalidateQueries({ queryKey: ["card", id] });
     qc.invalidateQueries({ queryKey: ["cards"] });
     toast.success("Saved");
