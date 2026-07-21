@@ -77,16 +77,6 @@ function PublicCard() {
   const [saved, setSaved] = useState(false);
   const [savingCard, setSavingCard] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
-  const [nfcState, setNfcState] = useState<"idle" | "writing">("idle");
-  const [nfcResult, setNfcResult] = useState<null | "sent" | "failed" | "stopped">(null);
-  const [nfcRemaining, setNfcRemaining] = useState(0);
-  const [nfcSentCount, setNfcSentCount] = useState(0);
-  const [nfcError, setNfcError] = useState<string | null>(null);
-  const [nfcGuideOpen, setNfcGuideOpen] = useState(false);
-  const [nfcSupported, setNfcSupported] = useState<boolean | null>(null);
-  useEffect(() => {
-    setNfcSupported(typeof window !== "undefined" && "NDEFReader" in window);
-  }, []);
   const [isOwner, setIsOwner] = useState(false);
   const [isAuthed, setIsAuthed] = useState(false);
   const cardWrapRef = useRef<HTMLDivElement | null>(null);
