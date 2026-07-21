@@ -51,14 +51,20 @@ function Dashboard() {
           {/* Featured card */}
           <div className="order-1">
             {primary ? (
-              <Link to="/cards/$id" params={{ id: primary.id }} className="block">
-                <div className="relative">
-                  <div className="absolute -inset-8 rounded-[2.5rem] opacity-40 blur-2xl" style={{ background: "var(--gradient-mesh)" }} />
-                  <div className="relative flex justify-center lg:justify-start">
-                    <CardPreview card={primary} size="lg" />
-                  </div>
-                </div>
-              </Link>
+              <div className="relative">
+                <div className="absolute -inset-8 rounded-[2.5rem] opacity-40 blur-2xl" style={{ background: "var(--gradient-mesh)" }} />
+                <Link to="/c/$slug" params={{ slug: primary.slug }} className="relative flex justify-center lg:justify-start">
+                  <CardPreview card={primary} size="lg" />
+                </Link>
+                <Link
+                  to="/cards/$id"
+                  params={{ id: primary.id }}
+                  className="glass absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground"
+                  aria-label={t.edit ?? "Edit"}
+                >
+                  <Pencil className="h-4 w-4" />
+                </Link>
+              </div>
             ) : (
               <EmptyHome t={t} />
             )}
