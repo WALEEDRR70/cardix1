@@ -112,11 +112,6 @@ function Dashboard() {
                         className="group block"
                       >
                         <CardPreview card={s as any} size="xs" />
-                        {s.notes && (
-                          <p className="mt-1.5 line-clamp-1 px-1 text-[10.5px] italic text-muted-foreground/80">
-                            {s.notes}
-                          </p>
-                        )}
                       </Link>
                     );
                   })}
