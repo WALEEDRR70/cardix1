@@ -32,9 +32,27 @@ export function CardForm({
   onSubmit: (data: CardFormData) => Promise<void>;
   submitLabel: string;
 }) {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [data, setData] = useState<CardFormData>(initial);
   const [saving, setSaving] = useState(false);
+  const [genBusy, setGenBusy] = useState(false);
+  const genBio = useServerFn(generateBio);
+
+  async function aiBio() {
+    if (!data.name.trim()) {
+      toast.error(t.name);
+      return;
+    }
+    setGenBusy(true);
+    try {
+      const out = await genBio({ data: { name: data.name, title: data.title, company: data.company, lang } });
+      if (out.bio) setData((d) => ({ ...d, bio: out.bio }));
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : "AI error");
+    } finally {
+      setGenBusy(false);
+    }
+  }
 
   const set = <K extends keyof CardFormData>(k: K, v: CardFormData[K]) => setData((d) => ({ ...d, [k]: v }));
 
