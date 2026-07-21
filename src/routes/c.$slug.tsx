@@ -532,6 +532,7 @@ function PublicCard() {
                 </div>
               </div>
             </section>
+            )}
           </section>
         </div>
 
