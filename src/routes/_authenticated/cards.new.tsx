@@ -18,8 +18,9 @@ function NewCard() {
   const initial: CardFormData = {
     name: "", slug: "card-" + Math.random().toString(36).slice(2, 7),
     title: "", company: "", bio: "", phone: "", whatsapp: "", email: user.email ?? "",
-    website: "", address: "", accent_color: "#D4AF37", is_published: true,
+    website: "", address: "", avatar_url: "", accent_color: "#D4AF37", is_published: true,
   };
+
 
   async function onSubmit(d: CardFormData): Promise<void> {
     const { data, error } = await supabase.from("cards").insert({ ...d, user_id: user.id }).select().single();

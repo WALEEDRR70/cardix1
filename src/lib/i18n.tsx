@@ -62,6 +62,10 @@ const dict = {
     noAnalytics: "No activity yet. Share your card to see analytics.",
     generateBio: "Generate with AI",
     generating: "Generating…",
+    avatar: "Photo",
+    uploadPhoto: "Upload photo",
+    uploading: "Uploading…",
+
     features: [
       { t: "Instant sharing", d: "QR, NFC, link, WhatsApp, AirDrop." },
       { t: "Made to be beautiful", d: "Curated luxury templates and typography." },
@@ -127,6 +131,10 @@ const dict = {
     noAnalytics: "لا يوجد نشاط بعد. شارك بطاقتك لرؤية التحليلات.",
     generateBio: "توليد بالذكاء الاصطناعي",
     generating: "جارٍ التوليد…",
+    avatar: "الصورة",
+    uploadPhoto: "رفع صورة",
+    uploading: "جارٍ الرفع…",
+
     features: [
       { t: "مشاركة فورية", d: "رمز QR، NFC، رابط، واتساب، AirDrop." },
       { t: "جمال استثنائي", d: "قوالب فاخرة وطباعة راقية." },
