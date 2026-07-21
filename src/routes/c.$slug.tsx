@@ -390,7 +390,7 @@ function PublicCard() {
       </header>
 
       {/* Main */}
-      <main className="relative z-10 mx-auto w-full max-w-[1200px] px-5 pb-40 pt-3 lg:pb-24">
+      <main className={"relative z-10 mx-auto w-full max-w-[1200px] px-5 pt-3 lg:pb-24 " + (isAuthed ? "pb-[260px]" : "pb-40")}>
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-start lg:gap-16 lg:pt-4">
           {/* HERO CARD */}
           <section className="flex flex-col items-center lg:sticky lg:top-6 lg:items-end">
