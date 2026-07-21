@@ -80,7 +80,7 @@ function Vault() {
   async function confirmDelete() {
     if (!deleteId) return;
     setBusy(true);
-    const { error } = await supabase.from("saved_cards").delete().eq("id", deleteId);
+    const { error } = await supabase.from("saved_cards").delete().eq("id", deleteId).eq("user_id", user.id);
     setBusy(false);
     if (error) return toast.error(error.message);
     qc.invalidateQueries({ queryKey: ["saved_cards"] });
