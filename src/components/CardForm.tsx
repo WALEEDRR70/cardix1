@@ -137,7 +137,7 @@ export function CardForm({
       {/* Accent color */}
       <section>
         <label className="mb-2 block px-1 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{t.accent}</label>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {ACCENTS.map((c) => (
             <button
               key={c}
@@ -148,6 +148,31 @@ export function CardForm({
               style={{ backgroundColor: c }}
             />
           ))}
+          <label
+            className="relative grid h-8 w-8 cursor-pointer place-items-center overflow-hidden rounded-full border border-dashed border-border text-[10px] text-muted-foreground hover:border-accent hover:text-foreground"
+            title="Custom color"
+          >
+            <span aria-hidden>+</span>
+            <input
+              type="color"
+              value={data.accent_color || "#7c34ff"}
+              onChange={(e) => set("accent_color", e.target.value)}
+              className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+            />
+          </label>
+          <div className="ml-1 flex items-center gap-1.5 rounded-full border border-input bg-card px-2 py-1">
+            <span className="h-4 w-4 rounded-full border border-border" style={{ background: data.accent_color }} />
+            <input
+              value={data.accent_color}
+              onChange={(e) => {
+                const v = e.target.value;
+                if (/^#[0-9a-fA-F]{0,6}$/.test(v)) set("accent_color", v);
+              }}
+              maxLength={7}
+              spellCheck={false}
+              className="w-[72px] bg-transparent text-[11px] font-mono uppercase outline-none"
+            />
+          </div>
         </div>
       </section>
 
