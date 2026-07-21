@@ -230,6 +230,7 @@ const dict = {
     shareCard: "شارك بطاقتك",
     copyLink: "نسخ الرابط",
     linkCopied: "تم نسخ الرابط",
+    designs: "التصاميم",
     templates: {
       luxury: "فاخر",
       aurora: "شفق",
