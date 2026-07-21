@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { CardForm, type CardFormData } from "@/components/CardForm";
 import { useI18n } from "@/lib/i18n";
-import { ArrowLeft, ExternalLink, Share2 } from "lucide-react";
+import { ArrowLeft, ExternalLink, Share2, BarChart3 } from "lucide-react";
 import { toast } from "sonner";
 import { QRCodeSVG } from "qrcode.react";
 
