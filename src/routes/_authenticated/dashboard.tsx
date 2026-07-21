@@ -5,10 +5,12 @@ import { useI18n } from "@/lib/i18n";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { CardPreview } from "@/components/CardPreview";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Eye, Sparkles, Trash2, Pencil } from "lucide-react";
+import { Eye, Sparkles, Trash2, Pencil, QrCode, X, Copy, Share2 } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
+import { QRCodeSVG } from "qrcode.react";
+import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -27,6 +29,7 @@ function Dashboard() {
   const { user } = Route.useRouteContext();
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [qrSlug, setQrSlug] = useState<string | null>(null);
 
   const { data: cards } = useQuery({
     queryKey: ["cards", user.id],
@@ -73,6 +76,13 @@ function Dashboard() {
                 >
                   <Pencil className="h-4 w-4" />
                 </Link>
+                <button
+                  onClick={() => setQrSlug(primary.slug)}
+                  className="glass absolute right-3 top-14 grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground"
+                  aria-label="QR"
+                >
+                  <QrCode className="h-4 w-4" />
+                </button>
               </div>
             ) : (
               <EmptyHome t={t} />
@@ -118,6 +128,13 @@ function Dashboard() {
                       <Eye className="h-3 w-3" /> {c.view_count ?? 0}
                     </p>
                   </Link>
+                  <button
+                    onClick={() => setQrSlug(c.slug)}
+                    className="grid h-8 w-8 place-items-center rounded-full text-muted-foreground hover:bg-accent/10 hover:text-foreground"
+                    aria-label="QR"
+                  >
+                    <QrCode className="h-3.5 w-3.5" />
+                  </button>
                   <Link
                     to="/cards/$id"
                     params={{ id: c.id }}
@@ -146,7 +163,62 @@ function Dashboard() {
         onOpenChange={(v) => { if (!v) setDeleteId(null); }}
         onConfirm={() => { void confirmDelete(); }}
       />
+      <QrDialog slug={qrSlug} onClose={() => setQrSlug(null)} />
     </MobileShell>
+  );
+}
+
+function QrDialog({ slug, onClose }: { slug: string | null; onClose: () => void }) {
+  if (!slug) return null;
+  const url = `${typeof window !== "undefined" ? window.location.origin : ""}/c/${slug}`;
+  async function share() {
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try { await navigator.share({ title: "Cardix", url }); } catch { /* cancelled */ }
+    } else {
+      await navigator.clipboard.writeText(url);
+      toast.success("Copied");
+    }
+  }
+  async function copy() {
+    await navigator.clipboard.writeText(url);
+    toast.success("Copied");
+  }
+  return (
+    <div className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4 backdrop-blur-md" onClick={onClose}>
+      <div className="glass-strong relative w-full max-w-sm rounded-3xl border border-border/40 p-6" onClick={(e) => e.stopPropagation()}>
+        <button
+          onClick={onClose}
+          className="absolute end-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-secondary/60 text-muted-foreground hover:text-foreground"
+          aria-label="Close"
+        >
+          <X className="h-4 w-4" />
+        </button>
+        <div className="mx-auto grid w-fit rounded-2xl bg-white p-4">
+          <QRCodeSVG
+            value={url}
+            size={220}
+            fgColor="#0a0a0a"
+            bgColor="#ffffff"
+            level="H"
+            marginSize={0}
+            imageSettings={{ src: logoAsset.url, height: 40, width: 40, excavate: true }}
+          />
+        </div>
+        <p dir="ltr" className="mt-4 truncate text-center text-[12px] text-muted-foreground">{url}</p>
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          <button onClick={copy} className="glass flex items-center justify-center gap-2 rounded-2xl py-3 text-sm font-medium">
+            <Copy className="h-4 w-4" /> Copy
+          </button>
+          <button
+            onClick={share}
+            className="flex items-center justify-center gap-2 rounded-2xl py-3 text-sm font-semibold text-accent-foreground shadow-glow"
+            style={{ background: "var(--gradient-gold)" }}
+          >
+            <Share2 className="h-4 w-4" /> Share
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 

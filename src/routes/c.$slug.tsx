@@ -77,6 +77,7 @@ function PublicCard() {
   const [savingCard, setSavingCard] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
   const [nfcState, setNfcState] = useState<"idle" | "writing">("idle");
+  const [isOwner, setIsOwner] = useState(false);
   const cardWrapRef = useRef<HTMLDivElement | null>(null);
   const qrSvgRef = useRef<SVGSVGElement | null>(null);
 
@@ -98,6 +99,9 @@ function PublicCard() {
   useEffect(() => {
     if (!card) return;
     supabase.from("card_events").insert({ card_id: card.id, event_type: "view" });
+    supabase.auth.getUser().then(({ data }) => {
+      setIsOwner(!!data.user && data.user.id === (card as CardRow & { user_id: string }).user_id);
+    });
   }, [card]);
 
   // 3D tilt on desktop
@@ -463,7 +467,8 @@ function PublicCard() {
               </section>
             )}
 
-            {/* QR panel */}
+            {/* QR panel — visible only to the card owner */}
+            {isOwner && (
             <section className="w-full max-w-md animate-fade-in">
               <div
                 className="relative overflow-hidden rounded-[28px] p-[1.5px]"
@@ -527,6 +532,7 @@ function PublicCard() {
                 </div>
               </div>
             </section>
+            )}
           </section>
         </div>
 
