@@ -556,7 +556,7 @@ function PublicCard() {
                       </p>
                       <button
                         onClick={writeNfc}
-                        disabled={nfcState === "writing"}
+                        aria-pressed={nfcState === "writing"}
                         className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-[12px] font-semibold text-accent-foreground shadow-glow transition hover:scale-[1.02] disabled:opacity-70"
                         style={{ background: "var(--gradient-gold)" }}
                       >
