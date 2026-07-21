@@ -207,7 +207,15 @@ const dict = {
     featureTemplatesDesc: "من أسود ذهبي إلى شفق زجاجي — كل بطاقة تبدو مقصودة.",
     welcomeBack: "أهلًا بعودتك.",
     startCraft: "ابدأ تصميم بطاقتك في ثوانٍ.",
+    followMe: "تابعني على",
+    instantShare: "مشاركة فورية",
+    scanQrDesc: "امسح رمز QR لمشاهدة بطاقتي وحفظها مباشرة.",
+    shareViaNfc: "مشاركة عبر NFC",
+    expand: "تكبير",
+    download: "تحميل",
+    location: "الموقع",
   },
+
 };
 
 type Dict = typeof dict.en;
