@@ -77,7 +77,7 @@ function Dashboard() {
             <div className="grid grid-cols-3 gap-2">
               <StatTile label={t.myCards} value={cards!.length} />
               <StatTile label={t.totalViews} value={totalViews} />
-              <StatTile label={t.templates.luxury} value={new Set(cards!.map((c) => c.template)).size} icon={<Sparkles className="h-3.5 w-3.5" />} />
+              <StatTile label={t.designs} value={new Set(cards!.map((c) => c.template)).size} icon={<Sparkles className="h-3.5 w-3.5" />} />
             </div>
 
             {/* My cards — stack or list */}
