@@ -17,6 +17,8 @@ import { Route as SitemapChar123langChar125DotxmlRouteImport } from './routes/si
 import { Route as CSlugRouteImport } from './routes/c.$slug'
 import { Route as LangAuthRouteImport } from './routes/$lang/auth'
 import { Route as LangAuthenticatedRouteRouteImport } from './routes/$lang/_authenticated/route'
+import { Route as LangLIndexRouteImport } from './routes/$lang/l/index'
+import { Route as LangLSlugRouteImport } from './routes/$lang/l/$slug'
 import { Route as LangAuthenticatedVaultRouteImport } from './routes/$lang/_authenticated/vault'
 import { Route as LangAuthenticatedSettingsRouteImport } from './routes/$lang/_authenticated/settings'
 import { Route as LangAuthenticatedScanRouteImport } from './routes/$lang/_authenticated/scan'
@@ -64,6 +66,16 @@ const LangAuthRoute = LangAuthRouteImport.update({
 } as any)
 const LangAuthenticatedRouteRoute = LangAuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => LangRouteRoute,
+} as any)
+const LangLIndexRoute = LangLIndexRouteImport.update({
+  id: '/l/',
+  path: '/l/',
+  getParentRoute: () => LangRouteRoute,
+} as any)
+const LangLSlugRoute = LangLSlugRouteImport.update({
+  id: '/l/$slug',
+  path: '/l/$slug',
   getParentRoute: () => LangRouteRoute,
 } as any)
 const LangAuthenticatedVaultRoute = LangAuthenticatedVaultRouteImport.update({
@@ -125,6 +137,8 @@ export interface FileRoutesByFullPath {
   '/$lang/scan': typeof LangAuthenticatedScanRoute
   '/$lang/settings': typeof LangAuthenticatedSettingsRoute
   '/$lang/vault': typeof LangAuthenticatedVaultRouteWithChildren
+  '/$lang/l/$slug': typeof LangLSlugRoute
+  '/$lang/l/': typeof LangLIndexRoute
   '/$lang/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/cards/new': typeof LangAuthenticatedCardsNewRoute
   '/$lang/vault/$id': typeof LangAuthenticatedVaultIdRoute
@@ -141,6 +155,8 @@ export interface FileRoutesByTo {
   '/$lang/scan': typeof LangAuthenticatedScanRoute
   '/$lang/settings': typeof LangAuthenticatedSettingsRoute
   '/$lang/vault': typeof LangAuthenticatedVaultRouteWithChildren
+  '/$lang/l/$slug': typeof LangLSlugRoute
+  '/$lang/l': typeof LangLIndexRoute
   '/$lang/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/cards/new': typeof LangAuthenticatedCardsNewRoute
   '/$lang/vault/$id': typeof LangAuthenticatedVaultIdRoute
@@ -160,6 +176,8 @@ export interface FileRoutesById {
   '/$lang/_authenticated/scan': typeof LangAuthenticatedScanRoute
   '/$lang/_authenticated/settings': typeof LangAuthenticatedSettingsRoute
   '/$lang/_authenticated/vault': typeof LangAuthenticatedVaultRouteWithChildren
+  '/$lang/l/$slug': typeof LangLSlugRoute
+  '/$lang/l/': typeof LangLIndexRoute
   '/$lang/_authenticated/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/_authenticated/cards/new': typeof LangAuthenticatedCardsNewRoute
   '/$lang/_authenticated/vault/$id': typeof LangAuthenticatedVaultIdRoute
@@ -179,6 +197,8 @@ export interface FileRouteTypes {
     | '/$lang/scan'
     | '/$lang/settings'
     | '/$lang/vault'
+    | '/$lang/l/$slug'
+    | '/$lang/l/'
     | '/$lang/cards/$id'
     | '/$lang/cards/new'
     | '/$lang/vault/$id'
@@ -195,6 +215,8 @@ export interface FileRouteTypes {
     | '/$lang/scan'
     | '/$lang/settings'
     | '/$lang/vault'
+    | '/$lang/l/$slug'
+    | '/$lang/l'
     | '/$lang/cards/$id'
     | '/$lang/cards/new'
     | '/$lang/vault/$id'
@@ -213,6 +235,8 @@ export interface FileRouteTypes {
     | '/$lang/_authenticated/scan'
     | '/$lang/_authenticated/settings'
     | '/$lang/_authenticated/vault'
+    | '/$lang/l/$slug'
+    | '/$lang/l/'
     | '/$lang/_authenticated/cards/$id'
     | '/$lang/_authenticated/cards/new'
     | '/$lang/_authenticated/vault/$id'
@@ -283,6 +307,20 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/$lang'
       preLoaderRoute: typeof LangAuthenticatedRouteRouteImport
+      parentRoute: typeof LangRouteRoute
+    }
+    '/$lang/l/': {
+      id: '/$lang/l/'
+      path: '/l'
+      fullPath: '/$lang/l/'
+      preLoaderRoute: typeof LangLIndexRouteImport
+      parentRoute: typeof LangRouteRoute
+    }
+    '/$lang/l/$slug': {
+      id: '/$lang/l/$slug'
+      path: '/l/$slug'
+      fullPath: '/$lang/l/$slug'
+      preLoaderRoute: typeof LangLSlugRouteImport
       parentRoute: typeof LangRouteRoute
     }
     '/$lang/_authenticated/vault': {
@@ -401,12 +439,16 @@ interface LangRouteRouteChildren {
   LangAuthenticatedRouteRoute: typeof LangAuthenticatedRouteRouteWithChildren
   LangAuthRoute: typeof LangAuthRoute
   LangIndexRoute: typeof LangIndexRoute
+  LangLSlugRoute: typeof LangLSlugRoute
+  LangLIndexRoute: typeof LangLIndexRoute
 }
 
 const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangAuthenticatedRouteRoute: LangAuthenticatedRouteRouteWithChildren,
   LangAuthRoute: LangAuthRoute,
   LangIndexRoute: LangIndexRoute,
+  LangLSlugRoute: LangLSlugRoute,
+  LangLIndexRoute: LangLIndexRoute,
 }
 
 const LangRouteRouteWithChildren = LangRouteRoute._addFileChildren(
