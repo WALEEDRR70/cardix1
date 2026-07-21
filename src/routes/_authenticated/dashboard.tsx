@@ -348,17 +348,11 @@ function CardStack({
                   <CardPreview card={c as any} size="lg" />
                 </button>
                 {isTop && (
-                  <div className="absolute right-3 top-3 flex flex-col gap-2">
-                    <button onClick={(e) => { e.stopPropagation(); onEdit(c.id); }} className="glass grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground" aria-label="Edit">
-                      <Pencil className="h-4 w-4" />
-                    </button>
-                    <button onClick={(e) => { e.stopPropagation(); onQr(c.slug); }} className="glass grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground" aria-label="QR">
-                      <QrCode className="h-4 w-4" />
-                    </button>
-                    <button onClick={(e) => { e.stopPropagation(); onDelete(c.id); }} className="glass grid h-9 w-9 place-items-center rounded-full text-foreground/70 hover:text-destructive" aria-label="Delete">
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
+                  <CardActionsMenu
+                    onEdit={() => onEdit(c.id)}
+                    onQr={() => onQr(c.slug)}
+                    onDelete={() => onDelete(c.id)}
+                  />
                 )}
               </div>
             </div>
