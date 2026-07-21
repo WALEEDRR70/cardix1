@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { useI18n } from "@/lib/i18n";
 import { CardPreview } from "@/components/CardPreview";
+import { useServerFn } from "@tanstack/react-start";
+import { generateBio } from "@/lib/bio.functions";
+import { Sparkles } from "lucide-react";
+import { toast } from "sonner";
 
 export interface CardFormData {
   name: string;
