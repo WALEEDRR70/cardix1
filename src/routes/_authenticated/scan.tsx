@@ -183,11 +183,18 @@ function ScanPage() {
             </div>
             <div className="mt-3 space-y-2 lg:mt-0 lg:space-y-3">
               <button
-                onClick={() => cameraRef.current?.click()}
-                className="flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-semibold text-accent-foreground shadow-glow lg:py-4"
+                onClick={() => setQrOpen(true)}
+                disabled={qrBusy}
+                className="flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-semibold text-accent-foreground shadow-glow disabled:opacity-60 lg:py-4"
                 style={{ background: "var(--gradient-gold)" }}
               >
-                <Camera className="h-4 w-4 lg:h-5 lg:w-5" /> {t.takePhoto}
+                {qrBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : <QrCode className="h-4 w-4 lg:h-5 lg:w-5" />} {t.scanQrCardix}
+              </button>
+              <button
+                onClick={() => cameraRef.current?.click()}
+                className="glass flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-sm font-medium lg:py-3.5"
+              >
+                <Camera className="h-4 w-4" /> {t.scanPaper}
               </button>
               <button
                 onClick={() => uploadRef.current?.click()}
@@ -199,6 +206,7 @@ function ScanPage() {
                 {t.scanCardDesc}
               </p>
             </div>
+
           </div>
 
         ) : (
@@ -254,6 +262,8 @@ function ScanPage() {
         <input ref={cameraRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
         <input ref={uploadRef} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
       </div>
+      <QrScanner open={qrOpen} onClose={() => setQrOpen(false)} onDetect={handleQrDetect} />
     </MobileShell>
   );
 }
+
