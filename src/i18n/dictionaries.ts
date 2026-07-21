@@ -131,6 +131,14 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     yourName: "اسمك", livePreview: "معاينة مباشرة", nfcReady: "NFC جاهز", cardNotFound: "البطاقة غير موجودة.",
     loading: "جارٍ التحميل…", tryAgain: "حاول مرة أخرى", somethingWrong: "حدث خطأ ما",
     positionCard: "ضع البطاقة داخل الإطار.", customColor: "لون مخصص",
+    goHome: "الرئيسية", pageNotFound: "هذه الصفحة غير موجودة.", tryAgainDesc: "حاول مرة أخرى أو عُد إلى الصفحة الرئيسية.", retry: "إعادة المحاولة",
+    copied: "تم النسخ", actions: "الإجراءات", more: "المزيد", edit: "تعديل",
+    saved: "تم الحفظ", cardCreated: "تم إنشاء البطاقة", checkEmail: "تحقق من بريدك الإلكتروني للتأكيد.", stackView: "عرض مكدس",
+    listView: "عرض قائمة", previous: "السابق", next: "التالي", unknown: "غير معروف",
+    toggleTheme: "تبديل المظهر", dark: "داكن", light: "فاتح", mostPopular: "الأكثر شيوعاً",
+    liveCard: "بطاقة نشطة", tapToOpen: "اضغط للفتح", cameraPermissionDenied: "تم رفض صلاحية الكاميرا. يرجى تفعيلها من إعدادات المتصفح.", eyebrowTemplates: "القوالب",
+    eyebrowHowItWorks: "آلية العمل", eyebrowFeatures: "الميزات", eyebrowTestimonials: "آراء العملاء", eyebrowPricing: "الأسعار",
+    cardNumber: (n, total) => `البطاقة ${n} من ${total}`,
   },
 
   fr: {
@@ -190,6 +198,14 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     yourName: "Votre nom", livePreview: "Aperçu en direct", nfcReady: "NFC prêt", cardNotFound: "Carte introuvable.",
     loading: "Chargement…", tryAgain: "Réessayer", somethingWrong: "Une erreur est survenue",
     positionCard: "Placez la carte dans le cadre.", customColor: "Couleur personnalisée",
+    goHome: "Accueil", pageNotFound: "Cette page est introuvable.", tryAgainDesc: "Réessayez ou retournez à l’accueil.", retry: "Réessayer",
+    copied: "Copié", actions: "Actions", more: "Plus", edit: "Modifier",
+    saved: "Enregistré", cardCreated: "Carte créée", checkEmail: "Consultez vos e-mails pour confirmer.", stackView: "Vue en pile",
+    listView: "Vue en liste", previous: "Précédent", next: "Suivant", unknown: "Inconnu",
+    toggleTheme: "Changer de thème", dark: "Sombre", light: "Clair", mostPopular: "Le plus populaire",
+    liveCard: "Carte active", tapToOpen: "Appuyer pour ouvrir", cameraPermissionDenied: "Accès à la caméra refusé. Activez-le dans les paramètres de votre navigateur.", eyebrowTemplates: "Modèles",
+    eyebrowHowItWorks: "Comment ça marche", eyebrowFeatures: "Fonctionnalités", eyebrowTestimonials: "Témoignages", eyebrowPricing: "Tarifs",
+    cardNumber: (n, total) => `Carte ${n} sur ${total}`,
   },
 
   de: {
@@ -249,6 +265,14 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     yourName: "Dein Name", livePreview: "Live-Vorschau", nfcReady: "NFC bereit", cardNotFound: "Karte nicht gefunden.",
     loading: "Wird geladen…", tryAgain: "Erneut versuchen", somethingWrong: "Etwas ist schiefgelaufen",
     positionCard: "Karte im Rahmen positionieren.", customColor: "Eigene Farbe",
+    goHome: "Startseite", pageNotFound: "Diese Seite existiert nicht.", tryAgainDesc: "Versuchen Sie es erneut oder kehren Sie zur Startseite zurück.", retry: "Erneut versuchen",
+    copied: "Kopiert", actions: "Aktionen", more: "Mehr", edit: "Bearbeiten",
+    saved: "Gespeichert", cardCreated: "Karte erstellt", checkEmail: "Überprüfen Sie Ihre E-Mails zur Bestätigung.", stackView: "Stapelansicht",
+    listView: "Listenansicht", previous: "Zurück", next: "Weiter", unknown: "Unbekannt",
+    toggleTheme: "Design wechseln", dark: "Dunkel", light: "Hell", mostPopular: "Am beliebtesten",
+    liveCard: "Aktive Karte", tapToOpen: "Zum Öffnen tippen", cameraPermissionDenied: "Kamerazugriff verweigert. Bitte in den Browsereinstellungen aktivieren.", eyebrowTemplates: "Vorlagen",
+    eyebrowHowItWorks: "So funktioniert's", eyebrowFeatures: "Funktionen", eyebrowTestimonials: "Kundenstimmen", eyebrowPricing: "Preise",
+    cardNumber: (n, total) => `Karte ${n} von ${total}`,
   },
 
   es: {
@@ -308,6 +332,14 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     yourName: "Tu nombre", livePreview: "Vista en vivo", nfcReady: "NFC listo", cardNotFound: "Tarjeta no encontrada.",
     loading: "Cargando…", tryAgain: "Reintentar", somethingWrong: "Algo salió mal",
     positionCard: "Coloca la tarjeta dentro del marco.", customColor: "Color personalizado",
+    goHome: "Inicio", pageNotFound: "Esta página no existe.", tryAgainDesc: "Vuelve a intentarlo o regresa al inicio.", retry: "Reintentar",
+    copied: "Copiado", actions: "Acciones", more: "Más", edit: "Editar",
+    saved: "Guardado", cardCreated: "Tarjeta creada", checkEmail: "Revisa tu correo para confirmar.", stackView: "Vista apilada",
+    listView: "Vista en lista", previous: "Anterior", next: "Siguiente", unknown: "Desconocido",
+    toggleTheme: "Cambiar tema", dark: "Oscuro", light: "Claro", mostPopular: "Más popular",
+    liveCard: "Tarjeta activa", tapToOpen: "Tocar para abrir", cameraPermissionDenied: "Permiso de cámara denegado. Actívalo en la configuración de tu navegador.", eyebrowTemplates: "Plantillas",
+    eyebrowHowItWorks: "Cómo funciona", eyebrowFeatures: "Funciones", eyebrowTestimonials: "Testimonios", eyebrowPricing: "Precios",
+    cardNumber: (n, total) => `Tarjeta ${n} de ${total}`,
   },
 
   it: {
@@ -367,6 +399,14 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     yourName: "Il tuo nome", livePreview: "Anteprima live", nfcReady: "NFC pronto", cardNotFound: "Carta non trovata.",
     loading: "Caricamento…", tryAgain: "Riprova", somethingWrong: "Qualcosa è andato storto",
     positionCard: "Posiziona la carta nel riquadro.", customColor: "Colore personalizzato",
+    goHome: "Home", pageNotFound: "Questa pagina non esiste.", tryAgainDesc: "Riprova o torna alla home.", retry: "Riprova",
+    copied: "Copiato", actions: "Azioni", more: "Altro", edit: "Modifica",
+    saved: "Salvato", cardCreated: "Biglietto creato", checkEmail: "Controlla l'email per confermare.", stackView: "Vista a pila",
+    listView: "Vista a elenco", previous: "Precedente", next: "Successivo", unknown: "Sconosciuto",
+    toggleTheme: "Cambia tema", dark: "Scuro", light: "Chiaro", mostPopular: "Più popolare",
+    liveCard: "Biglietto attivo", tapToOpen: "Tocca per aprire", cameraPermissionDenied: "Permesso fotocamera negato. Abilitalo nelle impostazioni del browser.", eyebrowTemplates: "Modelli",
+    eyebrowHowItWorks: "Come funziona", eyebrowFeatures: "Funzionalità", eyebrowTestimonials: "Recensioni", eyebrowPricing: "Prezzi",
+    cardNumber: (n, total) => `Biglietto ${n} di ${total}`,
   },
 
   pt: {
@@ -426,6 +466,14 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     yourName: "Seu nome", livePreview: "Prévia ao vivo", nfcReady: "NFC pronto", cardNotFound: "Cartão não encontrado.",
     loading: "Carregando…", tryAgain: "Tentar novamente", somethingWrong: "Algo deu errado",
     positionCard: "Posicione o cartão dentro do quadro.", customColor: "Cor personalizada",
+    goHome: "Início", pageNotFound: "Esta página não existe.", tryAgainDesc: "Tente novamente ou volte para o início.", retry: "Tentar novamente",
+    copied: "Copiado", actions: "Ações", more: "Mais", edit: "Editar",
+    saved: "Salvo", cardCreated: "Cartão criado", checkEmail: "Verifique seu e-mail para confirmar.", stackView: "Visualização em pilha",
+    listView: "Visualização em lista", previous: "Anterior", next: "Próximo", unknown: "Desconhecido",
+    toggleTheme: "Alternar tema", dark: "Escuro", light: "Claro", mostPopular: "Mais popular",
+    liveCard: "Cartão ativo", tapToOpen: "Toque para abrir", cameraPermissionDenied: "Permissão de câmera negada. Ative-a nas configurações do navegador.", eyebrowTemplates: "Modelos",
+    eyebrowHowItWorks: "Como funciona", eyebrowFeatures: "Recursos", eyebrowTestimonials: "Depoimentos", eyebrowPricing: "Preços",
+    cardNumber: (n, total) => `Cartão ${n} de ${total}`,
   },
 
   ru: {
@@ -485,6 +533,14 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     yourName: "Ваше имя", livePreview: "Живой просмотр", nfcReady: "NFC готов", cardNotFound: "Карта не найдена.",
     loading: "Загрузка…", tryAgain: "Повторить", somethingWrong: "Что-то пошло не так",
     positionCard: "Разместите карту в рамке.", customColor: "Свой цвет",
+    goHome: "На главную", pageNotFound: "Эта страница не существует.", tryAgainDesc: "Попробуйте еще раз или вернитесь на главную.", retry: "Повторить",
+    copied: "Скопировано", actions: "Действия", more: "Еще", edit: "Редактировать",
+    saved: "Сохранено", cardCreated: "Визитка создана", checkEmail: "Проверьте почту для подтверждения.", stackView: "Стопкой",
+    listView: "Списком", previous: "Назад", next: "Вперед", unknown: "Неизвестно",
+    toggleTheme: "Сменить тему", dark: "Темная", light: "Светлая", mostPopular: "Популярное",
+    liveCard: "Активная визитка", tapToOpen: "Нажмите, чтобы открыть", cameraPermissionDenied: "Доступ к камере запрещен. Разрешите его в настройках браузера.", eyebrowTemplates: "Шаблоны",
+    eyebrowHowItWorks: "Как это работает", eyebrowFeatures: "Возможности", eyebrowTestimonials: "Отзывы", eyebrowPricing: "Цены",
+    cardNumber: (n, total) => `Визитка ${n} из ${total}`,
   },
 
   tr: {
@@ -544,6 +600,14 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     yourName: "Adınız", livePreview: "Canlı önizleme", nfcReady: "NFC hazır", cardNotFound: "Kart bulunamadı.",
     loading: "Yükleniyor…", tryAgain: "Tekrar dene", somethingWrong: "Bir şeyler ters gitti",
     positionCard: "Kartı çerçeveye yerleştirin.", customColor: "Özel renk",
+    goHome: "Ana Sayfa", pageNotFound: "Bu sayfa bulunamadı.", tryAgainDesc: "Tekrar deneyin veya ana sayfaya dönün.", retry: "Tekrar dene",
+    copied: "Kopyalandı", actions: "İşlemler", more: "Daha fazla", edit: "Düzenle",
+    saved: "Kaydedildi", cardCreated: "Kart oluşturuldu", checkEmail: "Onaylamak için e-postanızı kontrol edin.", stackView: "Yığın görünümü",
+    listView: "Liste görünümü", previous: "Önceki", next: "Sonraki", unknown: "Bilinmeyen",
+    toggleTheme: "Temayı değiştir", dark: "Koyu", light: "Açık", mostPopular: "En popüler",
+    liveCard: "Aktif kart", tapToOpen: "Açmak için dokun", cameraPermissionDenied: "Kamera izni reddedildi. Tarayıcı ayarlarınızdan etkinleştirin.", eyebrowTemplates: "Şablonlar",
+    eyebrowHowItWorks: "Nasıl çalışır", eyebrowFeatures: "Özellikler", eyebrowTestimonials: "Görüşler", eyebrowPricing: "Fiyatlandırma",
+    cardNumber: (n, total) => `Kart ${n} / ${total}`,
   },
 
   nl: {
@@ -603,6 +667,14 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     yourName: "Jouw naam", livePreview: "Live voorbeeld", nfcReady: "NFC klaar", cardNotFound: "Kaart niet gevonden.",
     loading: "Laden…", tryAgain: "Opnieuw proberen", somethingWrong: "Er ging iets mis",
     positionCard: "Plaats de kaart binnen het kader.", customColor: "Aangepaste kleur",
+    goHome: "Home", pageNotFound: "Deze pagina bestaat niet.", tryAgainDesc: "Probeer het opnieuw of ga terug naar home.", retry: "Opnieuw proberen",
+    copied: "Gekopieerd", actions: "Acties", more: "Meer", edit: "Bewerken",
+    saved: "Opgeslagen", cardCreated: "Kaart aangemaakt", checkEmail: "Controleer je e-mail ter bevestiging.", stackView: "Stapelweergave",
+    listView: "Lijstweergave", previous: "Vorige", next: "Volgende", unknown: "Onbekend",
+    toggleTheme: "Thema wisselen", dark: "Donker", light: "Licht", mostPopular: "Populairste",
+    liveCard: "Live kaart", tapToOpen: "Tik om te openen", cameraPermissionDenied: "Geen toegang tot camera. Schakel dit in via de browserinstellingen.", eyebrowTemplates: "Templates",
+    eyebrowHowItWorks: "Hoe het werkt", eyebrowFeatures: "Functies", eyebrowTestimonials: "Testimonials", eyebrowPricing: "Prijzen",
+    cardNumber: (n, total) => `Kaart ${n} van ${total}`,
   },
 
   pl: {
@@ -662,6 +734,14 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     yourName: "Twoje imię", livePreview: "Podgląd na żywo", nfcReady: "NFC gotowe", cardNotFound: "Karta nie została znaleziona.",
     loading: "Ładowanie…", tryAgain: "Spróbuj ponownie", somethingWrong: "Coś poszło nie tak",
     positionCard: "Umieść kartę w ramce.", customColor: "Własny kolor",
+    goHome: "Strona główna", pageNotFound: "Ta strona nie istnieje.", tryAgainDesc: "Spróbuj ponownie lub wróć na stronę główną.", retry: "Ponów",
+    copied: "Skopiowano", actions: "Akcje", more: "Więcej", edit: "Edytuj",
+    saved: "Zapisano", cardCreated: "Wizytówka utworzona", checkEmail: "Sprawdź skrzynkę e-mail, aby potwierdzić.", stackView: "Widok stosu",
+    listView: "Widok listy", previous: "Wstecz", next: "Dalej", unknown: "Nieznane",
+    toggleTheme: "Zmień motyw", dark: "Ciemny", light: "Jasny", mostPopular: "Najpopularniejsze",
+    liveCard: "Aktywna wizytówka", tapToOpen: "Dotknij, aby otworzyć", cameraPermissionDenied: "Odmowa dostępu do kamery. Włącz go w ustawieniach przeglądarki.", eyebrowTemplates: "Szablony",
+    eyebrowHowItWorks: "Jak to działa", eyebrowFeatures: "Funkcje", eyebrowTestimonials: "Opinie", eyebrowPricing: "Cennik",
+    cardNumber: (n, total) => `Wizytówka ${n} z ${total}`,
   },
 
   zh: {
@@ -721,6 +801,14 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     yourName: "你的姓名", livePreview: "实时预览", nfcReady: "NFC 就绪", cardNotFound: "未找到该名片。",
     loading: "加载中…", tryAgain: "重试", somethingWrong: "出错了",
     positionCard: "将名片放入框内。", customColor: "自定义颜色",
+    goHome: "返回首页", pageNotFound: "该页面不存在。", tryAgainDesc: "请重试或返回首页。", retry: "重试",
+    copied: "已复制", actions: "操作", more: "更多", edit: "编辑",
+    saved: "已保存", cardCreated: "名片已创建", checkEmail: "请查收邮件以确认。", stackView: "堆叠视图",
+    listView: "列表视图", previous: "上一页", next: "下一页", unknown: "未知",
+    toggleTheme: "切换主题", dark: "深色", light: "浅色", mostPopular: "最受欢迎",
+    liveCard: "已发布名片", tapToOpen: "点击打开", cameraPermissionDenied: "相机权限被拒。请在浏览器设置中启用。", eyebrowTemplates: "模板",
+    eyebrowHowItWorks: "工作原理", eyebrowFeatures: "功能", eyebrowTestimonials: "用户评价", eyebrowPricing: "价格",
+    cardNumber: (n, total) => `第 ${n} 张，共 ${total} 张`,
   },
 
   "zh-TW": {
@@ -780,6 +868,14 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     yourName: "你的姓名", livePreview: "即時預覽", nfcReady: "NFC 就緒", cardNotFound: "找不到名片。",
     loading: "載入中…", tryAgain: "重試", somethingWrong: "發生錯誤",
     positionCard: "將名片放入框內。", customColor: "自訂顏色",
+    goHome: "返回首頁", pageNotFound: "該頁面不存在。", tryAgainDesc: "請重試或返回首頁。", retry: "重試",
+    copied: "已複製", actions: "操作", more: "更多", edit: "編輯",
+    saved: "已儲存", cardCreated: "名片已建立", checkEmail: "請查收電子郵件以確認。", stackView: "堆疊檢視",
+    listView: "列表檢視", previous: "上一頁", next: "下一頁", unknown: "未知",
+    toggleTheme: "切換主題", dark: "深色", light: "淺色", mostPopular: "最受歡迎",
+    liveCard: "已發布名片", tapToOpen: "點擊打開", cameraPermissionDenied: "相機權限遭拒。請在瀏覽器設定中啟用。", eyebrowTemplates: "範本",
+    eyebrowHowItWorks: "運作方式", eyebrowFeatures: "功能", eyebrowTestimonials: "用戶評價", eyebrowPricing: "價格",
+    cardNumber: (n, total) => `第 ${n} 張，共 ${total} 張`,
   },
 
   ja: {
@@ -839,6 +935,14 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     yourName: "あなたの名前", livePreview: "ライブプレビュー", nfcReady: "NFC 準備完了", cardNotFound: "カードが見つかりません。",
     loading: "読み込み中…", tryAgain: "再試行", somethingWrong: "問題が発生しました",
     positionCard: "カードを枠内に配置してください。", customColor: "カスタムカラー",
+    goHome: "ホームへ", pageNotFound: "このページは存在しません。", tryAgainDesc: "もう一度試すか、ホームに戻ってください。", retry: "再試行",
+    copied: "コピーしました", actions: "アクション", more: "さらに表示", edit: "編集",
+    saved: "保存しました", cardCreated: "カードを作成しました", checkEmail: "確認メールをご確認ください。", stackView: "スタック表示",
+    listView: "リスト表示", previous: "前へ", next: "次へ", unknown: "不明",
+    toggleTheme: "テーマの切り替え", dark: "ダーク", light: "ライト", mostPopular: "一番人気",
+    liveCard: "公開中のカード", tapToOpen: "タップして開く", cameraPermissionDenied: "カメラのアクセスが拒否されました。ブラウザの設定で許可してください。", eyebrowTemplates: "テンプレート",
+    eyebrowHowItWorks: "仕組み", eyebrowFeatures: "機能", eyebrowTestimonials: "お客様の声", eyebrowPricing: "料金プラン",
+    cardNumber: (n, total) => `${total}枚中${n}枚目のカード`,
   },
 
   ko: {
@@ -898,6 +1002,14 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     yourName: "이름", livePreview: "실시간 미리보기", nfcReady: "NFC 준비됨", cardNotFound: "카드를 찾을 수 없습니다.",
     loading: "로딩 중…", tryAgain: "다시 시도", somethingWrong: "문제가 발생했습니다",
     positionCard: "카드를 프레임 안에 놓으세요.", customColor: "사용자 색상",
+    goHome: "홈으로", pageNotFound: "존재하지 않는 페이지입니다.", tryAgainDesc: "다시 시도하거나 홈으로 돌아가세요.", retry: "다시 시도",
+    copied: "복사됨", actions: "작업", more: "더보기", edit: "편집",
+    saved: "저장됨", cardCreated: "명함 생성됨", checkEmail: "이메일을 확인하여 인증해 주세요.", stackView: "스택 보기",
+    listView: "목록 보기", previous: "이전", next: "다음", unknown: "알 수 없음",
+    toggleTheme: "테마 전환", dark: "다크", light: "라이트", mostPopular: "가장 인기 있는",
+    liveCard: "게시된 명함", tapToOpen: "탭하여 열기", cameraPermissionDenied: "카메라 접근이 거부되었습니다. 브라우저 설정에서 허용해 주세요.", eyebrowTemplates: "템플릿",
+    eyebrowHowItWorks: "이용 방법", eyebrowFeatures: "기능", eyebrowTestimonials: "이용 후기", eyebrowPricing: "요금제",
+    cardNumber: (n, total) => `명함 ${n}/${total}`,
   },
 
   hi: {
@@ -957,6 +1069,14 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     yourName: "आपका नाम", livePreview: "लाइव पूर्वावलोकन", nfcReady: "NFC तैयार", cardNotFound: "कार्ड नहीं मिला।",
     loading: "लोड हो रहा है…", tryAgain: "पुनः प्रयास", somethingWrong: "कुछ गड़बड़ हो गई",
     positionCard: "कार्ड को फ़्रेम में रखें।", customColor: "कस्टम रंग",
+    goHome: "होम पर जाएँ", pageNotFound: "यह पेज मौजूद नहीं है।", tryAgainDesc: "फिर से प्रयास करें या होम पर वापस जाएँ।", retry: "पुनः प्रयास करें",
+    copied: "कॉपी किया गया", actions: "कार्रवाइयां", more: "और अधिक", edit: "संपादित करें",
+    saved: "सहेजा गया", cardCreated: "कार्ड बन गया", checkEmail: "पुष्टि के लिए अपना ईमेल जांचें।", stackView: "स्टैक व्यू",
+    listView: "लिस्ट व्यू", previous: "पिछला", next: "अगला", unknown: "अज्ञात",
+    toggleTheme: "थीम बदलें", dark: "डार्क", light: "लाइट", mostPopular: "सबसे लोकप्रिय",
+    liveCard: "लाइव कार्ड", tapToOpen: "खोलने के लिए टैप करें", cameraPermissionDenied: "कैमरा अनुमति अस्वीकार कर दी गई। इसे अपनी ब्राउज़र सेटिंग में चालू करें।", eyebrowTemplates: "टेम्पलेट्स",
+    eyebrowHowItWorks: "यह कैसे काम करता है", eyebrowFeatures: "विशेषताएं", eyebrowTestimonials: "प्रशस्ति पत्र", eyebrowPricing: "मूल्य निर्धारण",
+    cardNumber: (n, total) => `${total} में से कार्ड ${n}`,
   },
 
   id: {
@@ -1016,6 +1136,14 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     yourName: "Nama Anda", livePreview: "Pratinjau langsung", nfcReady: "NFC siap", cardNotFound: "Kartu tidak ditemukan.",
     loading: "Memuat…", tryAgain: "Coba lagi", somethingWrong: "Terjadi kesalahan",
     positionCard: "Letakkan kartu dalam bingkai.", customColor: "Warna kustom",
+    goHome: "Beranda", pageNotFound: "Halaman ini tidak ditemukan.", tryAgainDesc: "Coba lagi atau kembali ke beranda.", retry: "Coba lagi",
+    copied: "Disalin", actions: "Tindakan", more: "Lainnya", edit: "Edit",
+    saved: "Tersimpan", cardCreated: "Kartu dibuat", checkEmail: "Periksa email Anda untuk konfirmasi.", stackView: "Tampilan tumpuk",
+    listView: "Tampilan daftar", previous: "Sebelumnya", next: "Berikutnya", unknown: "Tidak diketahui",
+    toggleTheme: "Beralih tema", dark: "Gelap", light: "Terang", mostPopular: "Paling populer",
+    liveCard: "Kartu aktif", tapToOpen: "Ketuk untuk membuka", cameraPermissionDenied: "Izin kamera ditolak. Aktifkan di pengaturan browser Anda.", eyebrowTemplates: "Templat",
+    eyebrowHowItWorks: "Cara kerjanya", eyebrowFeatures: "Fitur", eyebrowTestimonials: "Testimoni", eyebrowPricing: "Harga",
+    cardNumber: (n, total) => `Kartu ${n} dari ${total}`,
   },
 
   ms: {
@@ -1075,6 +1203,14 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     yourName: "Nama anda", livePreview: "Pratonton langsung", nfcReady: "NFC sedia", cardNotFound: "Kad tidak ditemui.",
     loading: "Memuatkan…", tryAgain: "Cuba lagi", somethingWrong: "Sesuatu tidak kena",
     positionCard: "Letakkan kad dalam bingkai.", customColor: "Warna tersuai",
+    goHome: "Laman Utama", pageNotFound: "Halaman ini tidak wujud.", tryAgainDesc: "Cuba lagi atau kembali ke laman utama.", retry: "Cuba semula",
+    copied: "Disalin", actions: "Tindakan", more: "Lagi", edit: "Edit",
+    saved: "Disimpan", cardCreated: "Kad dicipta", checkEmail: "Semak e-mel anda untuk pengesahan.", stackView: "Paparan tindanan",
+    listView: "Paparan senarai", previous: "Sebelumnya", next: "Seterusnya", unknown: "Tidak diketahui",
+    toggleTheme: "Tukar tema", dark: "Gelap", light: "Cerah", mostPopular: "Paling popular",
+    liveCard: "Kad aktif", tapToOpen: "Ketik untuk buka", cameraPermissionDenied: "Kebenaran kamera ditolak. Dayakannya dalam tetapan pelayar anda.", eyebrowTemplates: "Templat",
+    eyebrowHowItWorks: "Cara ia berfungsi", eyebrowFeatures: "Ciri-ciri", eyebrowTestimonials: "Testimoni", eyebrowPricing: "Harga",
+    cardNumber: (n, total) => `Kad ${n} daripada ${total}`,
   },
 
   th: {
@@ -1134,6 +1270,14 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     yourName: "ชื่อของคุณ", livePreview: "ตัวอย่างสด", nfcReady: "NFC พร้อม", cardNotFound: "ไม่พบการ์ด",
     loading: "กำลังโหลด…", tryAgain: "ลองอีกครั้ง", somethingWrong: "เกิดข้อผิดพลาด",
     positionCard: "วางการ์ดในกรอบ", customColor: "สีที่กำหนดเอง",
+    goHome: "หน้าแรก", pageNotFound: "ไม่มีหน้านี้", tryAgainDesc: "ลองอีกครั้งหรือกลับไปที่หน้าแรก", retry: "ลองใหม่",
+    copied: "คัดลอกแล้ว", actions: "การดำเนินการ", more: "เพิ่มเติม", edit: "แก้ไข",
+    saved: "บันทึกแล้ว", cardCreated: "สร้างนามบัตรแล้ว", checkEmail: "ตรวจสอบอีเมลของคุณเพื่อยืนยัน", stackView: "มุมมองแบบซ้อน",
+    listView: "มุมมองแบบรายการ", previous: "ก่อนหน้า", next: "ถัดไป", unknown: "ไม่ทราบ",
+    toggleTheme: "สลับธีม", dark: "มืด", light: "สว่าง", mostPopular: "ยอดนิยมที่สุด",
+    liveCard: "นามบัตรที่ใช้งานอยู่", tapToOpen: "แตะเพื่อเปิด", cameraPermissionDenied: "ถูกปฏิเสธการเข้าถึงกล้อง โปรดเปิดใช้งานในการตั้งค่าเบราว์เซอร์ของคุณ", eyebrowTemplates: "แม่แบบ",
+    eyebrowHowItWorks: "วิธีการทำงาน", eyebrowFeatures: "คุณสมบัติ", eyebrowTestimonials: "คำวิจารณ์จากลูกค้า", eyebrowPricing: "ราคา",
+    cardNumber: (n, total) => `นามบัตร ${n} จาก ${total}`,
   },
 
   vi: {
@@ -1193,5 +1337,13 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     yourName: "Tên của bạn", livePreview: "Xem trước trực tiếp", nfcReady: "NFC sẵn sàng", cardNotFound: "Không tìm thấy thẻ.",
     loading: "Đang tải…", tryAgain: "Thử lại", somethingWrong: "Đã xảy ra lỗi",
     positionCard: "Đặt thẻ trong khung.", customColor: "Màu tùy chỉnh",
+    goHome: "Trang chủ", pageNotFound: "Trang này không tồn tại.", tryAgainDesc: "Thử lại hoặc quay về trang chủ.", retry: "Thử lại",
+    copied: "Đã sao chép", actions: "Hành động", more: "Thêm", edit: "Chỉnh sửa",
+    saved: "Đã lưu", cardCreated: "Đã tạo danh thiếp", checkEmail: "Kiểm tra email của bạn để xác nhận.", stackView: "Chế độ xem xếp chồng",
+    listView: "Chế độ xem danh sách", previous: "Trước", next: "Tiếp", unknown: "Không rõ",
+    toggleTheme: "Đổi giao diện", dark: "Tối", light: "Sáng", mostPopular: "Phổ biến nhất",
+    liveCard: "Danh thiếp đang hoạt động", tapToOpen: "Chạm để mở", cameraPermissionDenied: "Quyền truy cập máy ảnh bị từ chối. Hãy bật trong cài đặt trình duyệt của bạn.", eyebrowTemplates: "Mẫu",
+    eyebrowHowItWorks: "Cách thức hoạt động", eyebrowFeatures: "Tính năng", eyebrowTestimonials: "Nhận xét", eyebrowPricing: "Bảng giá",
+    cardNumber: (n, total) => `Danh thiếp ${n}/${total}`,
   },
 };
