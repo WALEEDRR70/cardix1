@@ -103,7 +103,7 @@ function ScanPage() {
             </div>
             <div className="mt-3 space-y-2 lg:mt-0 lg:space-y-3">
               <button
-                onClick={() => camRef.current?.click()}
+                onClick={() => setCamOpen(true)}
                 className="flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-semibold text-accent-foreground shadow-glow lg:py-4"
                 style={{ background: "var(--gradient-gold)" }}
               >
