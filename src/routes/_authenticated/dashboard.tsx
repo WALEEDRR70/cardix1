@@ -26,7 +26,7 @@ function Dashboard() {
   const { data: cards } = useQuery({
     queryKey: ["cards", user.id],
     queryFn: async () => {
-      const { data, error } = await supabase.from("cards").select("*").order("created_at", { ascending: false });
+      const { data, error } = await supabase.from("cards").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
