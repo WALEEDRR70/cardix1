@@ -29,6 +29,7 @@ function Dashboard() {
   const { user } = Route.useRouteContext();
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [qrSlug, setQrSlug] = useState<string | null>(null);
 
   const { data: cards } = useQuery({
     queryKey: ["cards", user.id],
