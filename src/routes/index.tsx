@@ -10,6 +10,19 @@ import {
   Smartphone, Star, Check, ChevronDown, Zap, Layers, Globe2,
 } from "lucide-react";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
+import { supabase } from "@/integrations/supabase/client";
+
+function useIsAuthed() {
+  const [authed, setAuthed] = useState<boolean>(false);
+  useEffect(() => {
+    let mounted = true;
+    supabase.auth.getSession().then(({ data }) => { if (mounted) setAuthed(!!data.session); });
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setAuthed(!!s));
+    return () => { mounted = false; sub.subscription.unsubscribe(); };
+  }, []);
+  return authed;
+}
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
