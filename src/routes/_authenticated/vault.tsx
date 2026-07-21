@@ -127,7 +127,7 @@ function Vault() {
                       </button>
                       <button
                         type="button"
-                        onClick={(e) => del(e, c.id)}
+                        onClick={(e) => askDelete(e, c.id)}
                         className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-muted-foreground opacity-0 transition hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
                         aria-label={t.delete}
                       >
