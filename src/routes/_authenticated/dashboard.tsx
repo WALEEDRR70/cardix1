@@ -101,7 +101,7 @@ function Dashboard() {
                 )}
               </div>
               {saved && saved.length > 0 ? (
-                <div className="grid gap-2 lg:grid-cols-2 xl:grid-cols-3">
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {saved.map((s: any) => {
                     const slug = s.cards?.slug as string | undefined;
                     const dest = slug ? { to: "/c/$slug" as const, params: { slug } } : { to: "/vault/$id" as const, params: { id: s.id } };
@@ -109,24 +109,14 @@ function Dashboard() {
                       <Link
                         key={s.id}
                         {...dest}
-                        className="glass card-lift group flex items-center gap-3 rounded-2xl p-2.5"
+                        className="group block"
                       >
-                        <div className="grid h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-secondary/40">
-                          {s.avatar_url ? (
-                            <img src={s.avatar_url} alt="" className="h-full w-full object-cover" />
-                          ) : (
-                            <div className="grid h-full w-full place-items-center text-[15px] font-semibold text-foreground/70">
-                              {(s.name ?? "?").slice(0, 1)}
-                            </div>
-                          )}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-[13px] font-semibold">{s.name}</p>
-                          <p className="truncate text-[11px] text-muted-foreground">{s.title || s.company || ""}</p>
-                          {s.notes && (
-                            <p className="mt-0.5 line-clamp-1 text-[10.5px] text-muted-foreground/80">{s.notes}</p>
-                          )}
-                        </div>
+                        <CardPreview card={s as any} size="xs" />
+                        {s.notes && (
+                          <p className="mt-1.5 line-clamp-1 px-1 text-[10.5px] italic text-muted-foreground/80">
+                            {s.notes}
+                          </p>
+                        )}
                       </Link>
                     );
                   })}

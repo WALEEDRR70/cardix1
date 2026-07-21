@@ -3,11 +3,12 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
-import { Trash2, Phone, Mail, Globe, StickyNote } from "lucide-react";
+import { Trash2, StickyNote } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { NoteDialog } from "@/components/NoteDialog";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
+import { CardPreview } from "@/components/CardPreview";
 
 export const Route = createFileRoute("/_authenticated/vault")({
   head: () => ({
@@ -111,73 +112,53 @@ function Vault() {
             <p className="text-sm text-muted-foreground lg:text-base">{t.emptyVault}</p>
           </div>
         ) : (
-          <div className="grid gap-2 lg:gap-3 lg:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {cards.map((c) => (
-              <div
-                key={c.id}
-                role="link"
-                tabIndex={0}
-                onClick={() => {
-                  if (c.source_card?.slug) navigate({ to: "/c/$slug", params: { slug: c.source_card.slug } });
-                  else navigate({ to: "/vault/$id", params: { id: c.id } });
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
+              <div key={c.id} className="group relative">
+                <div
+                  role="link"
+                  tabIndex={0}
+                  onClick={() => {
                     if (c.source_card?.slug) navigate({ to: "/c/$slug", params: { slug: c.source_card.slug } });
                     else navigate({ to: "/vault/$id", params: { id: c.id } });
-                  }
-                }}
-                className="glass card-lift group block cursor-pointer overflow-hidden rounded-2xl p-3 lg:p-4"
-              >
-                <div className="flex items-start gap-3">
-                  <div
-                    className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-secondary bg-cover bg-center text-sm font-semibold ring-1 ring-border/60 lg:h-24 lg:w-24"
-                    style={{ backgroundImage: c.avatar_url ? `url(${c.avatar_url})` : undefined }}
-                  >
-                    {!c.avatar_url && (
-                      <div className="grid h-full w-full place-items-center">
-                        {c.name.slice(0, 2).toUpperCase()}
-                      </div>
-                    )}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-start gap-2">
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate text-[14px] font-semibold lg:text-[15px]">{c.name}</p>
-                        {c.title && <p className="truncate text-[12px] text-muted-foreground">{c.title}</p>}
-                        {c.company && <p className="truncate text-[11px] text-muted-foreground/80">{c.company}</p>}
-                      </div>
-                      <button
-                        type="button"
-                        onClick={(e) => askEditNote(e, c.id, c.notes)}
-                        className="flex min-h-[48px] w-[38%] min-w-0 shrink-0 items-start gap-1 overflow-hidden rounded-lg bg-secondary/60 px-2 py-1.5 text-start text-[10.5px] italic leading-tight text-muted-foreground transition hover:bg-secondary"
-                        aria-label={c.notes ? t.editNote : t.addNote}
-                      >
-                        <StickyNote className="mt-0.5 h-3 w-3 shrink-0 opacity-70" />
-                        <span dir="auto" className="line-clamp-2 min-w-0 flex-1 [overflow-wrap:anywhere] [word-break:break-word]">{c.notes || t.addNote}</span>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={(e) => askDelete(e, c.id)}
-                        className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-muted-foreground opacity-0 transition hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
-                        aria-label={t.delete}
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
-                    <div className="mt-2 flex flex-wrap gap-1.5">
-                      {c.phone && <QuickPill icon={<Phone className="h-3 w-3" />} label={t.call} />}
-                      {c.email && <QuickPill icon={<Mail className="h-3 w-3" />} label={t.email} />}
-                      {c.website && <QuickPill icon={<Globe className="h-3 w-3" />} label={t.website} />}
-                      {c.source === "scan" && (
-                        <span className="rounded-full bg-accent/15 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-accent">
-                          Scanned
-                        </span>
-                      )}
-                    </div>
-                  </div>
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      if (c.source_card?.slug) navigate({ to: "/c/$slug", params: { slug: c.source_card.slug } });
+                      else navigate({ to: "/vault/$id", params: { id: c.id } });
+                    }
+                  }}
+                  className="block cursor-pointer"
+                >
+                  <CardPreview card={c as any} size="xs" />
                 </div>
+
+                <div className="absolute end-2 top-2 flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={(e) => askEditNote(e, c.id, c.notes)}
+                    className="glass-strong grid h-7 w-7 place-items-center rounded-full text-foreground/80 backdrop-blur transition hover:text-foreground"
+                    aria-label={c.notes ? t.editNote : t.addNote}
+                    title={c.notes || t.addNote}
+                  >
+                    <StickyNote className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => askDelete(e, c.id)}
+                    className="glass-strong grid h-7 w-7 place-items-center rounded-full text-foreground/70 backdrop-blur opacity-0 transition hover:text-destructive group-hover:opacity-100"
+                    aria-label={t.delete}
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+
+                {c.notes && (
+                  <p dir="auto" className="mt-1.5 line-clamp-1 px-1 text-[10.5px] italic text-muted-foreground/80">
+                    {c.notes}
+                  </p>
+                )}
               </div>
             ))}
           </div>
@@ -200,10 +181,3 @@ function Vault() {
   );
 }
 
-function QuickPill({ icon, label }: { icon: React.ReactNode; label: string }) {
-  return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-secondary/80 px-2 py-0.5 text-[10px] font-medium">
-      {icon} {label}
-    </span>
-  );
-}
