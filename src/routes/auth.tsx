@@ -6,6 +6,7 @@ import { useI18n } from "@/lib/i18n";
 import { LangToggle } from "@/components/LangToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { toast } from "sonner";
+import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -69,7 +70,7 @@ function AuthPage() {
 
       <header className="safe-top relative z-10 flex items-center justify-between px-5 pb-2">
         <Link to="/" className="flex items-center gap-2">
-          <img src="/__l5e/assets-v1/81d568e3-5c85-4d6c-8c64-00c952a082a2/cardix-logo.svg" alt="" className="h-9 w-9 object-contain" />
+          <img src={logoAsset.url} alt="" className="h-9 w-9 object-contain" />
           <span className="text-base font-semibold tracking-tight">{t.brand}</span>
         </Link>
         <div className="flex items-center gap-2">
