@@ -606,7 +606,7 @@ function PublicCard() {
 
 
 
-      {isAuthed && <MobileBottomNav />}
+      {isAuthed && <MobileBottomNav accent={accent} />}
     </div>
   );
 }
