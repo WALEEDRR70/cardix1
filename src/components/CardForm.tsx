@@ -71,7 +71,27 @@ export function CardForm({
           <Field label={t.title} value={data.title} onChange={(v) => set("title", v)} />
           <Field label={t.company} value={data.company} onChange={(v) => set("company", v)} />
         </div>
-        <Field label={t.bio} value={data.bio} onChange={(v) => set("bio", v)} textarea />
+        <div>
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-medium text-muted-foreground">{t.bio}</label>
+            <button
+              type="button"
+              onClick={aiBio}
+              disabled={genBusy}
+              className="inline-flex items-center gap-1 rounded-full border border-border px-2.5 py-1 text-[11px] font-medium text-muted-foreground hover:bg-muted disabled:opacity-60"
+            >
+              <Sparkles className="h-3 w-3" /> {genBusy ? t.generating : t.generateBio}
+            </button>
+          </div>
+          <div className="mt-1 rounded-xl border border-input bg-card focus-within:ring-2 focus-within:ring-ring">
+            <textarea
+              value={data.bio}
+              onChange={(e) => set("bio", e.target.value)}
+              rows={3}
+              className="w-full resize-none rounded-xl bg-transparent px-4 py-3 text-sm outline-none"
+            />
+          </div>
+        </div>
         <div className="grid grid-cols-2 gap-3">
           <Field label={t.phone} value={data.phone} onChange={(v) => set("phone", v)} />
           <Field label={t.whatsapp} value={data.whatsapp} onChange={(v) => set("whatsapp", v)} />
