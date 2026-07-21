@@ -34,9 +34,12 @@ function Vault() {
   const { data: cards } = useQuery({
     queryKey: ["saved_cards"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("saved_cards").select("*").order("created_at", { ascending: false });
+      const { data, error } = await supabase
+        .from("saved_cards")
+        .select("*, source_card:cards!saved_cards_source_card_id_fkey(slug)")
+        .order("created_at", { ascending: false });
       if (error) throw error;
-      return data;
+      return data as Array<Record<string, unknown> & { id: string; source_card?: { slug: string } | null }>;
     },
   });
 
