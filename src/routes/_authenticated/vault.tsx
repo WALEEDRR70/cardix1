@@ -118,7 +118,7 @@ function Vault() {
                       </div>
                       <button
                         type="button"
-                        onClick={(e) => editNote(e, c.id, c.notes)}
+                        onClick={(e) => askEditNote(e, c.id, c.notes)}
                         className="flex min-h-[48px] w-[38%] min-w-0 shrink-0 items-start gap-1 overflow-hidden rounded-lg bg-secondary/60 px-2 py-1.5 text-start text-[10.5px] italic leading-tight text-muted-foreground transition hover:bg-secondary"
                         aria-label={c.notes ? t.editNote : t.addNote}
                       >
