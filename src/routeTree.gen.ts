@@ -13,6 +13,8 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CSlugRouteImport } from './routes/c.$slug'
+import { Route as AuthenticatedVaultRouteImport } from './routes/_authenticated/vault'
+import { Route as AuthenticatedScanRouteImport } from './routes/_authenticated/scan'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCardsNewRouteImport } from './routes/_authenticated/cards.new'
 import { Route as AuthenticatedCardsIdRouteImport } from './routes/_authenticated/cards.$id'
@@ -36,6 +38,16 @@ const CSlugRoute = CSlugRouteImport.update({
   path: '/c/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedVaultRoute = AuthenticatedVaultRouteImport.update({
+  id: '/vault',
+  path: '/vault',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedScanRoute = AuthenticatedScanRouteImport.update({
+  id: '/scan',
+  path: '/scan',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -56,6 +68,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/scan': typeof AuthenticatedScanRoute
+  '/vault': typeof AuthenticatedVaultRoute
   '/c/$slug': typeof CSlugRoute
   '/cards/$id': typeof AuthenticatedCardsIdRoute
   '/cards/new': typeof AuthenticatedCardsNewRoute
@@ -64,6 +78,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/scan': typeof AuthenticatedScanRoute
+  '/vault': typeof AuthenticatedVaultRoute
   '/c/$slug': typeof CSlugRoute
   '/cards/$id': typeof AuthenticatedCardsIdRoute
   '/cards/new': typeof AuthenticatedCardsNewRoute
@@ -74,6 +90,8 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/scan': typeof AuthenticatedScanRoute
+  '/_authenticated/vault': typeof AuthenticatedVaultRoute
   '/c/$slug': typeof CSlugRoute
   '/_authenticated/cards/$id': typeof AuthenticatedCardsIdRoute
   '/_authenticated/cards/new': typeof AuthenticatedCardsNewRoute
@@ -84,17 +102,29 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/scan'
+    | '/vault'
     | '/c/$slug'
     | '/cards/$id'
     | '/cards/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/dashboard' | '/c/$slug' | '/cards/$id' | '/cards/new'
+  to:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/scan'
+    | '/vault'
+    | '/c/$slug'
+    | '/cards/$id'
+    | '/cards/new'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/dashboard'
+    | '/_authenticated/scan'
+    | '/_authenticated/vault'
     | '/c/$slug'
     | '/_authenticated/cards/$id'
     | '/_authenticated/cards/new'
@@ -137,6 +167,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/vault': {
+      id: '/_authenticated/vault'
+      path: '/vault'
+      fullPath: '/vault'
+      preLoaderRoute: typeof AuthenticatedVaultRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/scan': {
+      id: '/_authenticated/scan'
+      path: '/scan'
+      fullPath: '/scan'
+      preLoaderRoute: typeof AuthenticatedScanRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -163,12 +207,16 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedScanRoute: typeof AuthenticatedScanRoute
+  AuthenticatedVaultRoute: typeof AuthenticatedVaultRoute
   AuthenticatedCardsIdRoute: typeof AuthenticatedCardsIdRoute
   AuthenticatedCardsNewRoute: typeof AuthenticatedCardsNewRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedScanRoute: AuthenticatedScanRoute,
+  AuthenticatedVaultRoute: AuthenticatedVaultRoute,
   AuthenticatedCardsIdRoute: AuthenticatedCardsIdRoute,
   AuthenticatedCardsNewRoute: AuthenticatedCardsNewRoute,
 }

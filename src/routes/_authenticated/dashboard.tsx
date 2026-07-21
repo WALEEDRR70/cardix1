@@ -54,7 +54,13 @@ function Dashboard() {
             <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-primary-foreground text-sm font-bold">C</span>
             <span className="font-semibold tracking-tight">{t.brand}</span>
           </Link>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <Link to="/vault" className="rounded-full border border-border px-3 py-1.5 text-xs hover:bg-muted">
+              {t.vault}
+            </Link>
+            <Link to="/scan" className="rounded-full border border-border px-3 py-1.5 text-xs hover:bg-muted">
+              {t.scanCard}
+            </Link>
             <LangToggle />
             <button onClick={signOut} className="flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs hover:bg-muted">
               <LogOut className="h-3.5 w-3.5" /> {t.signOut}
