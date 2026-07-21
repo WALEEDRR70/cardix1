@@ -19,7 +19,6 @@ import {
   X,
   BadgeCheck,
   MoreHorizontal,
-  Radio,
   UserPlus,
 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
@@ -78,22 +77,10 @@ function PublicCard() {
   const [saved, setSaved] = useState(false);
   const [savingCard, setSavingCard] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
-  const [nfcState, setNfcState] = useState<"idle" | "writing">("idle");
-  const [nfcResult, setNfcResult] = useState<null | "sent" | "failed" | "stopped">(null);
-  const [nfcRemaining, setNfcRemaining] = useState(0);
-  const [nfcSentCount, setNfcSentCount] = useState(0);
-  const [nfcError, setNfcError] = useState<string | null>(null);
-  const [nfcGuideOpen, setNfcGuideOpen] = useState(false);
-  const [nfcSupported, setNfcSupported] = useState<boolean | null>(null);
-  useEffect(() => {
-    setNfcSupported(typeof window !== "undefined" && "NDEFReader" in window);
-  }, []);
   const [isOwner, setIsOwner] = useState(false);
   const [isAuthed, setIsAuthed] = useState(false);
   const cardWrapRef = useRef<HTMLDivElement | null>(null);
   const qrSvgRef = useRef<SVGSVGElement | null>(null);
-  const nfcAbortRef = useRef<AbortController | null>(null);
-  const nfcTickRef = useRef<number | null>(null);
 
   const { data: card } = useQuery({
     queryKey: ["public-card", slug],
@@ -246,92 +233,6 @@ function PublicCard() {
     toast.success(t.linkCopied);
   }
 
-  const NFC_DURATION = 30;
-  async function writeNfc() {
-    if (nfcState === "writing") {
-      nfcAbortRef.current?.abort();
-      return;
-    }
-    const w = window as unknown as {
-      NDEFReader?: new () => {
-        write: (m: unknown, opts?: { signal?: AbortSignal; overwrite?: boolean }) => Promise<void>;
-      };
-    };
-    if (!w.NDEFReader) {
-      setNfcResult("failed");
-      setNfcError(t.nfcUnsupported);
-      toast.error(t.nfcUnsupported);
-      return;
-    }
-    const controller = new AbortController();
-    nfcAbortRef.current = controller;
-    const deadline = Date.now() + NFC_DURATION * 1000;
-    const timer = window.setTimeout(() => controller.abort(), NFC_DURATION * 1000);
-    if (nfcTickRef.current) window.clearInterval(nfcTickRef.current);
-    setNfcRemaining(NFC_DURATION);
-    nfcTickRef.current = window.setInterval(() => {
-      const left = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
-      setNfcRemaining(left);
-      if (left <= 0 && nfcTickRef.current) {
-        window.clearInterval(nfcTickRef.current);
-        nfcTickRef.current = null;
-      }
-    }, 250);
-    let sent = 0;
-    let hardError: string | null = null;
-    setNfcResult(null);
-    setNfcError(null);
-    setNfcSentCount(0);
-    try {
-      setNfcState("writing");
-      setNfcGuideOpen(true);
-      toast(t.nfcTap);
-      const reader = new w.NDEFReader();
-      while (!controller.signal.aborted) {
-        try {
-          await reader.write(
-            { records: [{ recordType: "url", data: publicUrl }] },
-            { signal: controller.signal, overwrite: true },
-          );
-          sent += 1;
-          setNfcSentCount(sent);
-          setNfcResult("sent");
-        } catch (err) {
-          if (controller.signal.aborted) break;
-          const name = (err as { name?: string }).name;
-          if (name === "NotAllowedError") {
-            hardError = (err as Error).message;
-            break;
-          }
-          if (name === "AbortError") break;
-          await new Promise((r) => setTimeout(r, 300));
-        }
-      }
-    } catch (e) {
-      const name = (e as { name?: string }).name;
-      if (name !== "AbortError") hardError = (e as Error).message;
-    } finally {
-      window.clearTimeout(timer);
-      if (nfcTickRef.current) {
-        window.clearInterval(nfcTickRef.current);
-        nfcTickRef.current = null;
-      }
-      nfcAbortRef.current = null;
-      setNfcRemaining(0);
-      setNfcState("idle");
-      setNfcGuideOpen(false);
-      if (hardError) {
-        setNfcError(hardError);
-        setNfcResult("failed");
-        toast.error(hardError);
-      } else if (sent === 0) {
-        setNfcResult("stopped");
-      } else {
-        setNfcResult("sent");
-        toast.success(t.nfcWritten);
-      }
-    }
-  }
 
   async function downloadQr() {
     const svg = qrSvgRef.current;

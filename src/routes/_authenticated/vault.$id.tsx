@@ -29,6 +29,7 @@ export const Route = createFileRoute("/_authenticated/vault/$id")({
 function VaultDetail() {
   const { id } = Route.useParams();
   const { t, lang } = useI18n();
+  const { user } = Route.useRouteContext();
   const qc = useQueryClient();
   const navigate = useNavigate();
   const [note, setNote] = useState("");
@@ -37,12 +38,13 @@ function VaultDetail() {
   const [deleting, setDeleting] = useState(false);
 
   const { data: card } = useQuery({
-    queryKey: ["saved_card", id],
+    queryKey: ["saved_card", id, user.id],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("saved_cards")
         .select("*, source_card:cards!saved_cards_source_card_id_fkey(slug,name,title,company,bio,phone,whatsapp,email,website,address,avatar_url,cover_url,accent_color,template,socials,is_published)")
         .eq("id", id)
+        .eq("user_id", user.id)
         .maybeSingle();
       if (error) throw error;
       if (!data) return data;
@@ -77,7 +79,7 @@ function VaultDetail() {
 
   async function saveNote() {
     setSavingNote(true);
-    const { error } = await supabase.from("saved_cards").update({ notes: note }).eq("id", id);
+    const { error } = await supabase.from("saved_cards").update({ notes: note }).eq("id", id).eq("user_id", user.id);
     setSavingNote(false);
     if (error) return toast.error(error.message);
     qc.invalidateQueries({ queryKey: ["saved_card", id] });
@@ -87,7 +89,7 @@ function VaultDetail() {
 
   async function confirmDelete() {
     setDeleting(true);
-    const { error } = await supabase.from("saved_cards").delete().eq("id", id);
+    const { error } = await supabase.from("saved_cards").delete().eq("id", id).eq("user_id", user.id);
     setDeleting(false);
     if (error) return toast.error(error.message);
     qc.invalidateQueries({ queryKey: ["saved_cards"] });

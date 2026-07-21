@@ -6,7 +6,7 @@ import { generateBio } from "@/lib/bio.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { Sparkles, Upload, X, Check, Plus } from "lucide-react";
 import { toast } from "sonner";
-import { SOCIALS, SOCIALS_BY_ID } from "@/lib/socials";
+import { SOCIALS } from "@/lib/socials";
 
 export interface CardFormData {
   name: string;
@@ -401,7 +401,4 @@ function SocialsEditor({
     </section>
   );
 }
-
-// Suppress unused import warning: SOCIALS_BY_ID is re-exported for consumers of the public card.
-void SOCIALS_BY_ID;
 

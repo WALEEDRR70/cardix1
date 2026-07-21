@@ -14,7 +14,17 @@ export const Route = createFileRoute("/_authenticated/cards/$id/analytics")({
     ],
   }),
   component: Analytics,
+  errorComponent: () => <NotFoundView />,
+  notFoundComponent: () => <NotFoundView />,
 });
+
+function NotFoundView() {
+  return (
+    <div className="grid min-h-[100dvh] place-items-center px-6 text-center">
+      <p className="text-sm text-muted-foreground">Card not found.</p>
+    </div>
+  );
+}
 
 function Analytics() {
   const { t } = useI18n();
@@ -26,6 +36,7 @@ function Analytics() {
     queryFn: async () => {
       const { data, error } = await supabase.from("cards").select("*").eq("id", id).eq("user_id", user.id).maybeSingle();
       if (error) throw error;
+      if (!data) throw new Error("Card not found");
       return data;
     },
   });

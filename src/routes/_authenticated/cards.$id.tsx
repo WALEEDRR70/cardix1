@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { CardForm, type CardFormData } from "@/components/CardForm";
 import { useI18n } from "@/lib/i18n";
 import { MobileShell, PageHeader, BottomSheet } from "@/components/MobileShell";
-import { BarChart3, Radio, Download, Share2, Copy, ExternalLink, QrCode } from "lucide-react";
+import { BarChart3, Download, Share2, Copy, ExternalLink, QrCode } from "lucide-react";
 import { toast } from "sonner";
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
@@ -12,7 +12,20 @@ import { useState } from "react";
 export const Route = createFileRoute("/_authenticated/cards/$id")({
   head: () => ({ meta: [{ title: "Edit card — Cardix" }] }),
   component: EditCard,
+  errorComponent: () => <NotFoundView />,
+  notFoundComponent: () => <NotFoundView />,
 });
+
+function NotFoundView() {
+  return (
+    <div className="grid min-h-[100dvh] place-items-center px-6 text-center">
+      <div>
+        <p className="text-sm text-muted-foreground">Card not found.</p>
+        <Link to="/dashboard" className="mt-3 inline-block text-xs font-semibold text-primary">← Dashboard</Link>
+      </div>
+    </div>
+  );
+}
 
 function EditCard() {
   const { t } = useI18n();
@@ -30,7 +43,8 @@ function EditCard() {
     },
   });
 
-  if (isLoading || !card) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">Loading…</div>;
+  if (isLoading) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">Loading…</div>;
+  if (!card) return <NotFoundView />;
 
   const initial: CardFormData = {
     name: card.name, slug: card.slug, title: card.title ?? "", company: card.company ?? "",
@@ -42,9 +56,9 @@ function EditCard() {
   };
 
   async function onSubmit(d: CardFormData): Promise<void> {
-    const { error } = await supabase.from("cards").update(d).eq("id", id);
+    const { error } = await supabase.from("cards").update(d).eq("id", id).eq("user_id", user.id);
     if (error) { toast.error(error.message); return; }
-    qc.invalidateQueries({ queryKey: ["card", id] });
+    qc.invalidateQueries({ queryKey: ["card", id, user.id] });
     qc.invalidateQueries({ queryKey: ["cards"] });
     toast.success("Saved");
   }
@@ -60,20 +74,6 @@ function EditCard() {
     toast.success(t.linkCopied);
   }
 
-  async function writeNfc() {
-    type NDEFRecord = { recordType: string; data?: string };
-    type NDEFReader = new () => { write: (msg: { records: NDEFRecord[] }) => Promise<void> };
-    const w = window as unknown as { NDEFReader?: NDEFReader };
-    if (!w.NDEFReader) { toast.error(t.nfcUnsupported); return; }
-    try {
-      const reader = new w.NDEFReader();
-      toast.info(t.nfcTap);
-      await reader.write({ records: [{ recordType: "url", data: publicUrl }] });
-      toast.success(t.nfcWritten);
-    } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "NFC error");
-    }
-  }
 
   function downloadQr() {
     const svg = document.querySelector<SVGSVGElement>("#card-qr svg");
@@ -130,10 +130,9 @@ function EditCard() {
         </div>
         <p className="mt-4 truncate rounded-xl bg-secondary px-4 py-2 text-center text-xs text-muted-foreground">{publicUrl}</p>
 
-        <div className="mt-4 grid grid-cols-4 gap-2">
+        <div className="mt-4 grid grid-cols-3 gap-2">
           <SheetAction icon={<Share2 className="h-5 w-5" />} label={t.share} onClick={nativeShare} />
           <SheetAction icon={<Copy className="h-5 w-5" />} label={t.copyLink} onClick={() => { navigator.clipboard.writeText(publicUrl); toast.success(t.linkCopied); }} />
-          <SheetAction icon={<Radio className="h-5 w-5" />} label="NFC" onClick={writeNfc} />
           <SheetAction icon={<Download className="h-5 w-5" />} label="QR" onClick={downloadQr} />
         </div>
         <a href={`/c/${card.slug}`} target="_blank" rel="noreferrer" className="mt-4 flex items-center justify-center gap-2 rounded-2xl border border-border py-3 text-sm">

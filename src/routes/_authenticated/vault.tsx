@@ -28,16 +28,18 @@ function Vault() {
   const { t } = useI18n();
   const qc = useQueryClient();
   const navigate = useNavigate();
+  const { user } = Route.useRouteContext();
   const [noteTarget, setNoteTarget] = useState<{ id: string; notes: string } | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
   const { data: cards } = useQuery({
-    queryKey: ["saved_cards"],
+    queryKey: ["saved_cards", user.id],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("saved_cards")
         .select("*, source_card:cards!saved_cards_source_card_id_fkey(slug,name,title,company,phone,whatsapp,email,website,address,avatar_url,is_published)")
+        .eq("user_id", user.id)
         .order("created_at", { ascending: false });
       if (error) throw error;
       type Row = {
@@ -78,7 +80,7 @@ function Vault() {
   async function confirmDelete() {
     if (!deleteId) return;
     setBusy(true);
-    const { error } = await supabase.from("saved_cards").delete().eq("id", deleteId);
+    const { error } = await supabase.from("saved_cards").delete().eq("id", deleteId).eq("user_id", user.id);
     setBusy(false);
     if (error) return toast.error(error.message);
     qc.invalidateQueries({ queryKey: ["saved_cards"] });
@@ -95,7 +97,7 @@ function Vault() {
   async function saveNote(value: string) {
     if (!noteTarget) return;
     setBusy(true);
-    const { error } = await supabase.from("saved_cards").update({ notes: value }).eq("id", noteTarget.id);
+    const { error } = await supabase.from("saved_cards").update({ notes: value }).eq("id", noteTarget.id).eq("user_id", user.id);
     setBusy(false);
     if (error) return toast.error(error.message);
     qc.invalidateQueries({ queryKey: ["saved_cards"] });
