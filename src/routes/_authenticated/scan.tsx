@@ -77,7 +77,7 @@ function ScanPage() {
         .from("saved_cards")
         .select("id")
         .eq("user_id", u.user.id)
-        .eq("card_id", card.id)
+        .eq("source_card_id", card.id)
         .maybeSingle();
       if (existing) {
         toast.info(t.alreadySaved);
@@ -86,7 +86,7 @@ function ScanPage() {
       }
       const { error: insErr } = await supabase.from("saved_cards").insert({
         user_id: u.user.id,
-        card_id: card.id,
+        source_card_id: card.id,
         source: "qr",
         name: card.name,
         title: card.title,
@@ -104,7 +104,8 @@ function ScanPage() {
         return;
       }
       // log analytics event (best-effort)
-      supabase.from("card_events").insert({ card_id: card.id, kind: "save" }).then(() => {});
+      supabase.from("card_events").insert({ card_id: card.id, event_type: "save" }).then(() => {});
+
       toast.success(t.savedToVault);
       nav({ to: "/vault" });
     } finally {
