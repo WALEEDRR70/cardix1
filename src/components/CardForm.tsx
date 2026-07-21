@@ -402,6 +402,3 @@ function SocialsEditor({
   );
 }
 
-// Suppress unused import warning: SOCIALS_BY_ID is re-exported for consumers of the public card.
-void SOCIALS_BY_ID;
-
