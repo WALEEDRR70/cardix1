@@ -28,7 +28,7 @@ export function CardPreview({ card, size = "md" }: { card: CardData; size?: "sm"
   const tpl = (card.template as TemplateId) || "luxury";
   const cls =
     size === "sm"
-      ? "aspect-[1.9/1] w-full max-w-[340px]"
+      ? "aspect-[1.65/1] w-full max-w-[320px]"
       : size === "lg"
         ? "aspect-[1.62/1] w-full max-w-[440px]"
         : size === "xl"
