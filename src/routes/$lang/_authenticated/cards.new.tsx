@@ -1,4 +1,5 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { useNavigate } from "@/lib/nav";
 import { supabase } from "@/integrations/supabase/client";
 import { CardForm, type CardFormData } from "@/components/CardForm";
 import { useI18n } from "@/lib/i18n";
