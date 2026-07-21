@@ -74,20 +74,6 @@ function EditCard() {
     toast.success(t.linkCopied);
   }
 
-  async function writeNfc() {
-    type NDEFRecord = { recordType: string; data?: string };
-    type NDEFReader = new () => { write: (msg: { records: NDEFRecord[] }) => Promise<void> };
-    const w = window as unknown as { NDEFReader?: NDEFReader };
-    if (!w.NDEFReader) { toast.error(t.nfcUnsupported); return; }
-    try {
-      const reader = new w.NDEFReader();
-      toast.info(t.nfcTap);
-      await reader.write({ records: [{ recordType: "url", data: publicUrl }] });
-      toast.success(t.nfcWritten);
-    } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "NFC error");
-    }
-  }
 
   function downloadQr() {
     const svg = document.querySelector<SVGSVGElement>("#card-qr svg");
