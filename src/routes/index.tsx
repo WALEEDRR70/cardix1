@@ -135,7 +135,7 @@ const demoCards = [
 
 function Landing() {
   const { t, lang } = useI18n();
-  const c = copy[lang];
+  const c = (copy as Record<string, typeof copy.en>)[lang] ?? copy.en;
   const authed = useIsAuthed();
 
   return (
