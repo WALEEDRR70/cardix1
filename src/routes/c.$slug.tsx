@@ -627,6 +627,8 @@ function PublicCard() {
           </div>
         </div>
       )}
+
+      {isAuthed && <MobileBottomNav />}
     </div>
   );
 }
