@@ -240,10 +240,11 @@ function PublicCard() {
   }
 
   const nfcAbortRef = useRef<AbortController | null>(null);
+  const nfcTickRef = useRef<number | null>(null);
+  const NFC_DURATION = 30;
   async function writeNfc() {
     if (nfcState === "writing") {
       nfcAbortRef.current?.abort();
-      setNfcState("idle");
       return;
     }
     const w = window as unknown as {
@@ -252,39 +253,76 @@ function PublicCard() {
       };
     };
     if (!w.NDEFReader) {
+      setNfcResult("failed");
+      setNfcError(t.nfcUnsupported);
       toast.error(t.nfcUnsupported);
       return;
     }
     const controller = new AbortController();
     nfcAbortRef.current = controller;
-    const timer = window.setTimeout(() => controller.abort(), 30000);
+    const deadline = Date.now() + NFC_DURATION * 1000;
+    const timer = window.setTimeout(() => controller.abort(), NFC_DURATION * 1000);
+    if (nfcTickRef.current) window.clearInterval(nfcTickRef.current);
+    setNfcRemaining(NFC_DURATION);
+    nfcTickRef.current = window.setInterval(() => {
+      const left = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+      setNfcRemaining(left);
+      if (left <= 0 && nfcTickRef.current) {
+        window.clearInterval(nfcTickRef.current);
+        nfcTickRef.current = null;
+      }
+    }, 250);
+    let sent = 0;
+    let hardError: string | null = null;
+    setNfcResult(null);
+    setNfcError(null);
+    setNfcSentCount(0);
     try {
       setNfcState("writing");
       toast(t.nfcTap);
       const reader = new w.NDEFReader();
-      // Broadcast the card URL — receiver's phone auto-opens it on tap.
       while (!controller.signal.aborted) {
         try {
           await reader.write(
             { records: [{ recordType: "url", data: publicUrl }] },
             { signal: controller.signal, overwrite: true },
           );
-          toast.success(t.nfcWritten);
+          sent += 1;
+          setNfcSentCount(sent);
+          setNfcResult("sent");
         } catch (err) {
           if (controller.signal.aborted) break;
           const name = (err as { name?: string }).name;
-          if (name === "AbortError" || name === "NotAllowedError") break;
-          // NoModificationAllowedError / NetworkError: tag pulled away — retry
+          if (name === "NotAllowedError") {
+            hardError = (err as Error).message;
+            break;
+          }
+          if (name === "AbortError") break;
           await new Promise((r) => setTimeout(r, 300));
         }
       }
     } catch (e) {
       const name = (e as { name?: string }).name;
-      if (name !== "AbortError") toast.error((e as Error).message);
+      if (name !== "AbortError") hardError = (e as Error).message;
     } finally {
       window.clearTimeout(timer);
+      if (nfcTickRef.current) {
+        window.clearInterval(nfcTickRef.current);
+        nfcTickRef.current = null;
+      }
       nfcAbortRef.current = null;
+      setNfcRemaining(0);
       setNfcState("idle");
+      if (hardError) {
+        setNfcError(hardError);
+        setNfcResult("failed");
+        toast.error(hardError);
+      } else if (sent === 0) {
+        setNfcResult("stopped");
+      } else {
+        setNfcResult("sent");
+        toast.success(t.nfcWritten);
+      }
     }
   }
 
