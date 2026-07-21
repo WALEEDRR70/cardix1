@@ -35,9 +35,8 @@ export const Route = createFileRoute("/$lang/")({
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}`;
     const seo = getLandingSeo(lang);
-    const isEn = lang === "en";
-    const scripts = isEn
-      ? [
+    const faqItems = getSeoFaqItems(lang);
+    const scripts = [
           {
             type: "application/ld+json",
             children: JSON.stringify({
@@ -68,7 +67,8 @@ export const Route = createFileRoute("/$lang/")({
             children: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "FAQPage",
-              mainEntity: seoFaqItems.map((f) => ({
+              inLanguage: lang,
+              mainEntity: faqItems.map((f) => ({
                 "@type": "Question",
                 name: f.q,
                 acceptedAnswer: { "@type": "Answer", text: f.a },
@@ -85,8 +85,7 @@ export const Route = createFileRoute("/$lang/")({
               ],
             }),
           },
-        ]
-      : undefined;
+        ];
     return {
       meta: [
         { title: seo.title },
