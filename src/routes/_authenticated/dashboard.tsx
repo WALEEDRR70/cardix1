@@ -220,17 +220,11 @@ function MyCards({ cards, onQr, onEdit, onDelete, onOpen, t }: CardActions & { t
               <button onClick={() => onOpen(c.slug)} className="block w-full" aria-label={c.name}>
                 <CardPreview card={c as any} size="lg" />
               </button>
-              <div className="absolute right-3 top-3 flex flex-col gap-2">
-                <button onClick={() => onEdit(c.id)} className="glass grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground" aria-label="Edit">
-                  <Pencil className="h-4 w-4" />
-                </button>
-                <button onClick={() => onQr(c.slug)} className="glass grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground" aria-label="QR">
-                  <QrCode className="h-4 w-4" />
-                </button>
-                <button onClick={() => onDelete(c.id)} className="glass grid h-9 w-9 place-items-center rounded-full text-foreground/70 hover:text-destructive" aria-label="Delete">
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </div>
+              <CardActionsMenu
+                onEdit={() => onEdit(c.id)}
+                onQr={() => onQr(c.slug)}
+                onDelete={() => onDelete(c.id)}
+              />
             </div>
           ))}
         </div>
