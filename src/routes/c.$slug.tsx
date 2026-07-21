@@ -99,6 +99,9 @@ function PublicCard() {
   useEffect(() => {
     if (!card) return;
     supabase.from("card_events").insert({ card_id: card.id, event_type: "view" });
+    supabase.auth.getUser().then(({ data }) => {
+      setIsOwner(!!data.user && data.user.id === (card as CardRow & { user_id: string }).user_id);
+    });
   }, [card]);
 
   // 3D tilt on desktop
