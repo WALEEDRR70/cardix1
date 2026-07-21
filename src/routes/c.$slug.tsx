@@ -83,6 +83,7 @@ function PublicCard() {
   const [nfcRemaining, setNfcRemaining] = useState(0);
   const [nfcSentCount, setNfcSentCount] = useState(0);
   const [nfcError, setNfcError] = useState<string | null>(null);
+  const [nfcGuideOpen, setNfcGuideOpen] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [isAuthed, setIsAuthed] = useState(false);
   const cardWrapRef = useRef<HTMLDivElement | null>(null);
