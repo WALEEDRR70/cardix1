@@ -106,14 +106,38 @@ function RootComponent() {
   const router = useRouter();
 
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
+    const applyPreferredLang = async (userId: string) => {
+      try {
+        const { data } = await supabase.from("profiles").select("preferred_lang").eq("id", userId).maybeSingle();
+        const pref = data?.preferred_lang;
+        if (!pref) return;
+        const { SUPPORTED_LOCALES } = await import("@/i18n/config");
+        if (!(SUPPORTED_LOCALES as readonly string[]).includes(pref)) return;
+        try { localStorage.setItem("cardix_lang", pref); } catch {}
+        const path = window.location.pathname;
+        const m = path.match(/^\/([a-zA-Z-]+)(\/|$)/);
+        const current = m?.[1];
+        if (current && (SUPPORTED_LOCALES as readonly string[]).includes(current) && current !== pref) {
+          const next = path.replace(/^\/[a-zA-Z-]+/, `/${pref}`);
+          window.history.replaceState(null, "", next + window.location.search + window.location.hash);
+          router.invalidate();
+        }
+      } catch {}
+    };
+    // On mount, if already signed in, honor stored preference.
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session?.user?.id) applyPreferredLang(data.session.user.id);
+    });
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN" || event === "SIGNED_OUT" || event === "USER_UPDATED") {
         router.invalidate();
         if (event !== "SIGNED_OUT") queryClient.invalidateQueries();
       }
+      if (event === "SIGNED_IN" && session?.user?.id) applyPreferredLang(session.user.id);
     });
     return () => sub.subscription.unsubscribe();
   }, [router, queryClient]);
+
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -2,6 +2,8 @@ import { useNavigate, useParams, useRouterState } from "@tanstack/react-router";
 import { SUPPORTED_LOCALES, LOCALE_META, DEFAULT_LOCALE, isSupportedLocale, type Locale } from "@/i18n/config";
 import { Globe, Check } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+
 
 /**
  * Compact language toggle (kept for back-compat).
@@ -99,6 +101,12 @@ export function useSwitchLocale() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   return (next: Locale) => {
     try { localStorage.setItem("cardix_lang", next); } catch {}
+    // Persist to profile (fire and forget) so it follows the user across devices.
+    supabase.auth.getUser().then(({ data }) => {
+      const uid = data.user?.id;
+      if (!uid) return;
+      supabase.from("profiles").update({ preferred_lang: next }).eq("id", uid).then(() => {});
+    });
     const currentLang = isSupportedLocale(params?.lang) ? params.lang : null;
     let target: string;
     if (currentLang) {
@@ -111,3 +119,4 @@ export function useSwitchLocale() {
     nav({ to: target, replace: false });
   };
 }
+

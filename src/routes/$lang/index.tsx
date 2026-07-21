@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@/lib/nav";
 import { useEffect, useRef, useState } from "react";
 import { useI18n } from "@/lib/i18n";
-import { LangToggle } from "@/components/LangToggle";
+import { LocaleSwitcher } from "@/components/LangToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { CardPreview } from "@/components/CardPreview";
 import { QRCodeSVG } from "qrcode.react";
@@ -154,7 +154,7 @@ function Nav({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingC
         <div className="flex items-center gap-2">
           <div className="hidden md:flex items-center gap-2">
             <ThemeToggle compact />
-            <LangToggle compact />
+            <LocaleSwitcher compact />
           </div>
           {authed === false ? (
             <Link to="/auth" className="hidden md:inline-flex text-sm text-muted-foreground hover:text-foreground px-3 py-2">{t.signIn}</Link>
@@ -617,7 +617,7 @@ function Footer({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy }
         </div>
         <div className="flex items-center gap-3">
           <ThemeToggle compact />
-          <LangToggle compact />
+          <LocaleSwitcher compact />
           <span className="text-[11px] text-muted-foreground">© {new Date().getFullYear()} {t.brand}</span>
         </div>
       </div>
