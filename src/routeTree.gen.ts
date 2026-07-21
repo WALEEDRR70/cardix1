@@ -10,10 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as SitemapLangDotxmlRouteImport } from './routes/sitemap-$lang[.]xml'
 import { Route as LangRouteRouteImport } from './routes/$lang/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LangIndexRouteImport } from './routes/$lang/index'
+import { Route as SitemapLangDotxmlRouteImport } from './routes/sitemap.$lang[.]xml'
 import { Route as CSlugRouteImport } from './routes/c.$slug'
 import { Route as LangAuthRouteImport } from './routes/$lang/auth'
 import { Route as LangAuthenticatedRouteRouteImport } from './routes/$lang/_authenticated/route'
@@ -31,11 +31,6 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SitemapLangDotxmlRoute = SitemapLangDotxmlRouteImport.update({
-  id: '/sitemap-$lang.xml',
-  path: '/sitemap-$lang.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LangRouteRoute = LangRouteRouteImport.update({
   id: '/$lang',
   path: '/$lang',
@@ -50,6 +45,11 @@ const LangIndexRoute = LangIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => LangRouteRoute,
+} as any)
+const SitemapLangDotxmlRoute = SitemapLangDotxmlRouteImport.update({
+  id: '/sitemap/$lang.xml',
+  path: '/sitemap/$lang.xml',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const CSlugRoute = CSlugRouteImport.update({
   id: '/c/$slug',
@@ -115,10 +115,10 @@ const LangAuthenticatedCardsIdAnalyticsRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$lang': typeof LangRouteRouteWithChildren
-  '/sitemap-$lang.xml': typeof SitemapLangDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang/auth': typeof LangAuthRoute
   '/c/$slug': typeof CSlugRoute
+  '/sitemap/$lang.xml': typeof SitemapLangDotxmlRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/dashboard': typeof LangAuthenticatedDashboardRoute
   '/$lang/scan': typeof LangAuthenticatedScanRoute
@@ -131,11 +131,11 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/sitemap-$lang.xml': typeof SitemapLangDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang': typeof LangIndexRoute
   '/$lang/auth': typeof LangAuthRoute
   '/c/$slug': typeof CSlugRoute
+  '/sitemap/$lang.xml': typeof SitemapLangDotxmlRoute
   '/$lang/dashboard': typeof LangAuthenticatedDashboardRoute
   '/$lang/scan': typeof LangAuthenticatedScanRoute
   '/$lang/settings': typeof LangAuthenticatedSettingsRoute
@@ -149,11 +149,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$lang': typeof LangRouteRouteWithChildren
-  '/sitemap-$lang.xml': typeof SitemapLangDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang/_authenticated': typeof LangAuthenticatedRouteRouteWithChildren
   '/$lang/auth': typeof LangAuthRoute
   '/c/$slug': typeof CSlugRoute
+  '/sitemap/$lang.xml': typeof SitemapLangDotxmlRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/_authenticated/dashboard': typeof LangAuthenticatedDashboardRoute
   '/$lang/_authenticated/scan': typeof LangAuthenticatedScanRoute
@@ -169,10 +169,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$lang'
-    | '/sitemap-$lang.xml'
     | '/sitemap.xml'
     | '/$lang/auth'
     | '/c/$slug'
+    | '/sitemap/$lang.xml'
     | '/$lang/'
     | '/$lang/dashboard'
     | '/$lang/scan'
@@ -185,11 +185,11 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/sitemap-$lang.xml'
     | '/sitemap.xml'
     | '/$lang'
     | '/$lang/auth'
     | '/c/$slug'
+    | '/sitemap/$lang.xml'
     | '/$lang/dashboard'
     | '/$lang/scan'
     | '/$lang/settings'
@@ -202,11 +202,11 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/$lang'
-    | '/sitemap-$lang.xml'
     | '/sitemap.xml'
     | '/$lang/_authenticated'
     | '/$lang/auth'
     | '/c/$slug'
+    | '/sitemap/$lang.xml'
     | '/$lang/'
     | '/$lang/_authenticated/dashboard'
     | '/$lang/_authenticated/scan'
@@ -221,9 +221,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LangRouteRoute: typeof LangRouteRouteWithChildren
-  SitemapLangDotxmlRoute: typeof SitemapLangDotxmlRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   CSlugRoute: typeof CSlugRoute
+  SitemapLangDotxmlRoute: typeof SitemapLangDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -233,13 +233,6 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap-$lang.xml': {
-      id: '/sitemap-$lang.xml'
-      path: '/sitemap-$lang.xml'
-      fullPath: '/sitemap-$lang.xml'
-      preLoaderRoute: typeof SitemapLangDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$lang': {
@@ -262,6 +255,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/$lang/'
       preLoaderRoute: typeof LangIndexRouteImport
       parentRoute: typeof LangRouteRoute
+    }
+    '/sitemap/$lang.xml': {
+      id: '/sitemap/$lang.xml'
+      path: '/sitemap/$lang.xml'
+      fullPath: '/sitemap/$lang.xml'
+      preLoaderRoute: typeof SitemapLangDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/c/$slug': {
       id: '/c/$slug'
@@ -415,9 +415,9 @@ const LangRouteRouteWithChildren = LangRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LangRouteRoute: LangRouteRouteWithChildren,
-  SitemapLangDotxmlRoute: SitemapLangDotxmlRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   CSlugRoute: CSlugRoute,
+  SitemapLangDotxmlRoute: SitemapLangDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
