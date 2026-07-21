@@ -140,6 +140,12 @@ function Dashboard() {
           </section>
         )}
       </div>
+      <ConfirmDeleteDialog
+        open={!!deleteId}
+        loading={deleting}
+        onOpenChange={(v) => { if (!v) setDeleteId(null); }}
+        onConfirm={() => { void confirmDelete(); }}
+      />
     </MobileShell>
   );
 }
