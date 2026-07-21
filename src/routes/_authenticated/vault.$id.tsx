@@ -33,6 +33,8 @@ function VaultDetail() {
   const navigate = useNavigate();
   const [note, setNote] = useState("");
   const [savingNote, setSavingNote] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const { data: card } = useQuery({
     queryKey: ["saved_card", id],
