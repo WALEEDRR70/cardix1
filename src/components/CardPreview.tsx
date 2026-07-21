@@ -15,7 +15,11 @@ export interface CardData {
   template?: string | null;
 }
 
-export const TEMPLATES = ["luxury", "aurora", "ivory", "noir", "neon", "platinum"] as const;
+export const TEMPLATES = [
+  "luxury", "aurora", "ivory", "noir", "neon", "platinum",
+  "midnight", "sunset", "ocean", "forest", "holographic", "executive",
+  "mono", "marble", "carbon", "sand", "rose", "emerald", "cosmic",
+] as const;
 export type TemplateId = (typeof TEMPLATES)[number];
 
 export function CardPreview({ card, size = "md" }: { card: CardData; size?: "sm" | "md" | "lg" | "xl" }) {
@@ -46,19 +50,26 @@ export function CardFull({ card }: { card: CardData }) {
 
 function TemplateSwitch({ tpl, card }: { tpl: TemplateId; card: CardData }) {
   switch (tpl) {
-    case "aurora":
-      return <AuroraTemplate card={card} />;
-    case "ivory":
-      return <IvoryTemplate card={card} />;
-    case "noir":
-      return <NoirTemplate card={card} />;
-    case "neon":
-      return <NeonTemplate card={card} />;
-    case "platinum":
-      return <PlatinumTemplate card={card} />;
+    case "aurora": return <AuroraTemplate card={card} />;
+    case "ivory": return <IvoryTemplate card={card} />;
+    case "noir": return <NoirTemplate card={card} />;
+    case "neon": return <NeonTemplate card={card} />;
+    case "platinum": return <PlatinumTemplate card={card} />;
+    case "midnight": return <MidnightTemplate card={card} />;
+    case "sunset": return <SunsetTemplate card={card} />;
+    case "ocean": return <OceanTemplate card={card} />;
+    case "forest": return <ForestTemplate card={card} />;
+    case "holographic": return <HolographicTemplate card={card} />;
+    case "executive": return <ExecutiveTemplate card={card} />;
+    case "mono": return <MonoTemplate card={card} />;
+    case "marble": return <MarbleTemplate card={card} />;
+    case "carbon": return <CarbonTemplate card={card} />;
+    case "sand": return <SandTemplate card={card} />;
+    case "rose": return <RoseTemplate card={card} />;
+    case "emerald": return <EmeraldTemplate card={card} />;
+    case "cosmic": return <CosmicTemplate card={card} />;
     case "luxury":
-    default:
-      return <LuxuryTemplate card={card} />;
+    default: return <LuxuryTemplate card={card} />;
   }
 }
 
