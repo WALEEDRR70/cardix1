@@ -36,16 +36,35 @@ function Vault() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("saved_cards")
-        .select("*, source_card:cards!saved_cards_source_card_id_fkey(slug)")
+        .select("*, source_card:cards!saved_cards_source_card_id_fkey(slug,name,title,company,phone,whatsapp,email,website,address,avatar_url,is_published)")
         .order("created_at", { ascending: false });
       if (error) throw error;
       type Row = {
         id: string; name: string; title: string | null; company: string | null;
         avatar_url: string | null; notes: string | null; phone: string | null;
         email: string | null; website: string | null; source: string;
-        source_card: { slug: string } | null;
+        source_card: {
+          slug: string; name: string; title: string | null; company: string | null;
+          phone: string | null; whatsapp: string | null; email: string | null;
+          website: string | null; address: string | null; avatar_url: string | null;
+          is_published: boolean;
+        } | null;
       };
-      return (data ?? []) as unknown as Row[];
+      // Overlay live source-card fields so owner edits appear automatically.
+      return ((data ?? []) as unknown as Row[]).map((c) => {
+        const s = c.source_card;
+        if (!s || !s.is_published) return c;
+        return {
+          ...c,
+          name: s.name ?? c.name,
+          title: s.title ?? c.title,
+          company: s.company ?? c.company,
+          avatar_url: s.avatar_url ?? c.avatar_url,
+          phone: s.phone ?? c.phone,
+          email: s.email ?? c.email,
+          website: s.website ?? c.website,
+        };
+      });
     },
   });
 
