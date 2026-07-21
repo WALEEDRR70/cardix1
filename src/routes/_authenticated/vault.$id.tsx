@@ -39,8 +39,22 @@ function VaultDetail() {
   const { data: card } = useQuery({
     queryKey: ["saved_card", id],
     queryFn: async () => {
-      const { data, error } = await supabase.from("saved_cards").select("*").eq("id", id).maybeSingle();
+      const { data, error } = await supabase
+        .from("saved_cards")
+        .select("*, source_card:cards!saved_cards_source_card_id_fkey(slug,name,title,company,bio,phone,whatsapp,email,website,address,avatar_url,cover_url,accent_color,template,socials,is_published)")
+        .eq("id", id)
+        .maybeSingle();
       if (error) throw error;
+      if (!data) return data;
+      const s = (data as { source_card?: Record<string, unknown> | null }).source_card;
+      if (s && s.is_published) {
+        // Overlay latest source-card values so owner edits sync automatically.
+        const overlay: Record<string, unknown> = {};
+        for (const k of ["name","title","company","bio","phone","whatsapp","email","website","address","avatar_url","accent_color","template","socials"]) {
+          if (s[k] !== null && s[k] !== undefined) overlay[k] = s[k];
+        }
+        return { ...data, ...overlay };
+      }
       return data;
     },
   });
