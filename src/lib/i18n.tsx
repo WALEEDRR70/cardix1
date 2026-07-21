@@ -107,8 +107,8 @@ const dict = {
     expand: "Expand",
     download: "Download",
     location: "Location",
-    website: "Website",
   },
+
 
   ar: {
     brand: "كارديكس",
