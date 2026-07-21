@@ -315,6 +315,7 @@ function PublicCard() {
       nfcAbortRef.current = null;
       setNfcRemaining(0);
       setNfcState("idle");
+      setNfcGuideOpen(false);
       if (hardError) {
         setNfcError(hardError);
         setNfcResult("failed");
