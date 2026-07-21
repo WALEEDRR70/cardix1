@@ -82,28 +82,28 @@ function Vault() {
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="flex items-start gap-1.5">
+                    <div className="flex items-start gap-2">
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-[14px] font-semibold lg:text-[15px]">{c.name}</p>
                         {c.title && <p className="truncate text-[12px] text-muted-foreground">{c.title}</p>}
                         {c.company && <p className="truncate text-[11px] text-muted-foreground/80">{c.company}</p>}
                       </div>
                       <button
+                        onClick={(e) => editNote(e, c.id, c.notes)}
+                        className="flex min-h-[48px] w-[40%] shrink-0 items-start gap-1 rounded-lg bg-secondary/60 px-2 py-1.5 text-start text-[10.5px] italic leading-tight text-muted-foreground transition hover:bg-secondary"
+                        aria-label={c.notes ? t.editNote : t.addNote}
+                      >
+                        <StickyNote className="mt-0.5 h-3 w-3 shrink-0 opacity-70" />
+                        <span className="line-clamp-2 flex-1">{c.notes || t.addNote}</span>
+                      </button>
+                      <button
                         onClick={(e) => del(e, c.id)}
-                        className="grid h-7 w-7 place-items-center rounded-full text-muted-foreground opacity-0 transition hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
+                        className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-muted-foreground opacity-0 transition hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
                         aria-label={t.delete}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
                     </div>
-                    <button
-                      onClick={(e) => editNote(e, c.id, c.notes)}
-                      className="mt-1.5 flex w-full items-center gap-1.5 rounded-lg bg-secondary/60 px-2 py-1 text-start text-[11px] italic text-muted-foreground transition hover:bg-secondary"
-                      aria-label={c.notes ? t.editNote : t.addNote}
-                    >
-                      <StickyNote className="h-3 w-3 shrink-0 opacity-70" />
-                      <span className="line-clamp-1 flex-1">{c.notes || t.addNote}</span>
-                    </button>
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {c.phone && <QuickPill icon={<Phone className="h-3 w-3" />} label={t.call} />}
                       {c.email && <QuickPill icon={<Mail className="h-3 w-3" />} label={t.email} />}
