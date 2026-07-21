@@ -190,6 +190,9 @@ function ScanPage() {
       website: data.website ?? null,
       address: data.address ?? null,
       bio: data.bio ?? null,
+      accent_color: "#7c34ff",
+      template: "luxury",
+      socials: {},
     });
     setSaving(false);
     if (error) return toast.error(error.message);
