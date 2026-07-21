@@ -257,6 +257,7 @@ function CardStack({
   activeIndex: number;
   setActiveIndex: (i: number) => void;
 }) {
+  const { t } = useI18n();
   const [drag, setDrag] = useState(0);
   const [animating, setAnimating] = useState<null | "left" | "right">(null);
   const startX = useRef<number | null>(null);
@@ -395,6 +396,7 @@ function CardStack({
 }
 
 function QrDialog({ slug, onClose }: { slug: string | null; onClose: () => void }) {
+  const { t } = useI18n();
   if (!slug) return null;
   const url = `${typeof window !== "undefined" ? window.location.origin : ""}/c/${slug}`;
   async function share() {
