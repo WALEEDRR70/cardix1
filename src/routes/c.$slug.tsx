@@ -322,8 +322,8 @@ function PublicCard() {
         <div className="flex items-center gap-2">
           <button
             onClick={nativeShare}
-            className="grid h-11 w-11 place-items-center rounded-full text-accent-foreground shadow-glow transition hover:scale-105"
-            style={{ background: "var(--gradient-gold)" }}
+            className="grid h-11 w-11 place-items-center rounded-full text-accent-foreground transition hover:scale-105"
+            style={{ background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, boxShadow: `0 10px 30px -8px ${accent}aa` }}
             aria-label={t.share}
           >
             <Share2 className="h-4 w-4" />
