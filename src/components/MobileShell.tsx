@@ -3,6 +3,8 @@ import { Home, Layers, Plus, ScanLine, BookmarkCheck } from "lucide-react";
 import type { ReactNode } from "react";
 import { useI18n } from "@/lib/i18n";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
+import { getReadableText } from "@/lib/contrast";
+
 
 export function MobileShell({
   children,
@@ -103,16 +105,18 @@ export function MobileBottomNav({ accent }: { accent?: string } = {}) {
     { to: "/settings", icon: Layers, label: t.settingsShort },
   ] as const;
 
+  const fabColor = accent ? getReadableText(accent) : undefined;
   const fabStyle = accent
-    ? { background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, boxShadow: `0 12px 40px -8px ${accent}aa` }
+    ? { background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, boxShadow: `0 12px 40px -8px ${accent}aa`, color: fabColor }
     : { background: "var(--gradient-gold)" };
 
   return (
     <div className="lg:hidden">
       <Link
         to="/scan"
-        className="fixed bottom-[calc(env(safe-area-inset-bottom)+3.25rem)] left-1/2 z-30 -translate-x-1/2 grid h-14 w-14 place-items-center rounded-full text-accent-foreground shadow-luxe ring-4 ring-background transition active:scale-95"
+        className={"fixed bottom-[calc(env(safe-area-inset-bottom)+3.25rem)] left-1/2 z-30 -translate-x-1/2 grid h-14 w-14 place-items-center rounded-full shadow-luxe ring-4 ring-background transition active:scale-95 " + (accent ? "" : "text-accent-foreground")}
         style={fabStyle}
+
         aria-label={t.scanCard}
       >
         <ScanLine className="h-6 w-6" strokeWidth={2.5} />

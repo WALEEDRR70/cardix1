@@ -142,6 +142,8 @@ function PublicCard() {
   }
 
   const accent = card.accent_color || "#7c34ff";
+  const accentText = getReadableText(accent);
+
   const socials = (card.socials as Record<string, string> | null) ?? {};
   const socialEntries = Object.entries(socials).filter(([id, v]) => v && SOCIALS_BY_ID[id]);
   const publicUrl = typeof window !== "undefined" ? window.location.href : `/c/${slug}`;
@@ -322,8 +324,9 @@ function PublicCard() {
         <div className="flex items-center gap-2">
           <button
             onClick={nativeShare}
-            className="grid h-11 w-11 place-items-center rounded-full text-accent-foreground transition hover:scale-105"
-            style={{ background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, boxShadow: `0 10px 30px -8px ${accent}aa` }}
+            className="grid h-11 w-11 place-items-center rounded-full transition hover:scale-105"
+            style={{ background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, boxShadow: `0 10px 30px -8px ${accent}aa`, color: accentText }}
+
             aria-label={t.share}
           >
             <Share2 className="h-4 w-4" />
@@ -571,8 +574,9 @@ function PublicCard() {
         >
           <button
             onClick={vcard}
-            className="pointer-events-auto flex flex-1 items-center justify-center gap-2 rounded-full py-4 text-[15px] font-semibold text-accent-foreground transition hover:scale-[1.01]"
-            style={{ background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, boxShadow: `0 14px 40px -10px ${accent}aa` }}
+            className="pointer-events-auto flex flex-1 items-center justify-center gap-2 rounded-full py-4 text-[15px] font-semibold transition hover:scale-[1.01]"
+            style={{ background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, boxShadow: `0 14px 40px -10px ${accent}aa`, color: accentText }}
+
           >
             <UserPlus className="h-4 w-4" /> {t.saveContact}
           </button>
@@ -730,6 +734,23 @@ function QrAction({
     </button>
   );
 }
+
+function getReadableText(hex: string): string {
+  const h = hex.replace("#", "");
+  const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+  const r = parseInt(full.slice(0, 2), 16);
+  const g = parseInt(full.slice(2, 4), 16);
+  const b = parseInt(full.slice(4, 6), 16);
+  const toLin = (v: number) => {
+    const s = v / 255;
+    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  };
+  const L = 0.2126 * toLin(r) + 0.7152 * toLin(g) + 0.0722 * toLin(b);
+  return L > 0.5 ? "#0a0a0a" : "#ffffff";
+}
+
+
+
 
 function Particles({ accent }: { accent: string }) {
   const items = Array.from({ length: 14 });
