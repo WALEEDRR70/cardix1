@@ -25,6 +25,8 @@ function Dashboard() {
   const { t } = useI18n();
   const qc = useQueryClient();
   const { user } = Route.useRouteContext();
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const { data: cards } = useQuery({
     queryKey: ["cards", user.id],
@@ -35,13 +37,17 @@ function Dashboard() {
     },
   });
 
-  async function del(id: string) {
-    if (!confirm("Delete this card?")) return;
-    const { error } = await supabase.from("cards").delete().eq("id", id);
+  async function confirmDelete() {
+    if (!deleteId) return;
+    setDeleting(true);
+    const { error } = await supabase.from("cards").delete().eq("id", deleteId);
+    setDeleting(false);
     if (error) return toast.error(error.message);
     qc.invalidateQueries({ queryKey: ["cards"] });
-    toast.success("Deleted");
+    toast.success(t.deleted);
+    setDeleteId(null);
   }
+
 
   const totalViews = cards?.reduce((a, c) => a + (c.view_count ?? 0), 0) ?? 0;
   const primary = cards?.[0];
