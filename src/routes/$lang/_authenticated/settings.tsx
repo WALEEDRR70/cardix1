@@ -50,8 +50,8 @@ function Settings() {
         {/* Theme */}
         <Section title={t.theme}>
           <div className="grid grid-cols-2 gap-2 p-2">
-            <ThemeChip active={theme === "dark"} onClick={() => setTheme("dark")} icon={<Moon className="h-4 w-4" />} label="Dark" />
-            <ThemeChip active={theme === "light"} onClick={() => setTheme("light")} icon={<Sun className="h-4 w-4" />} label="Light" />
+            <ThemeChip active={theme === "dark"} onClick={() => setTheme("dark")} icon={<Moon className="h-4 w-4" />} label={t.dark} />
+            <ThemeChip active={theme === "light"} onClick={() => setTheme("light")} icon={<Sun className="h-4 w-4" />} label={t.light} />
           </div>
         </Section>
 

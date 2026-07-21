@@ -184,14 +184,14 @@ function MyCards({ cards, onQr, onEdit, onDelete, onOpen, t }: CardActions & { t
           <div className="glass flex items-center rounded-full p-0.5">
             <button
               onClick={() => setMode("stack")}
-              aria-label="Stack view"
+              aria-label={t.stackView}
               className={"grid h-7 w-7 place-items-center rounded-full transition " + (mode === "stack" ? "bg-primary text-primary-foreground" : "text-muted-foreground")}
             >
               <Layers className="h-3.5 w-3.5" />
             </button>
             <button
               onClick={() => setMode("list")}
-              aria-label="List view"
+              aria-label={t.listView}
               className={"grid h-7 w-7 place-items-center rounded-full transition " + (mode === "list" ? "bg-primary text-primary-foreground" : "text-muted-foreground")}
             >
               <Rows3 className="h-3.5 w-3.5" />
@@ -257,6 +257,7 @@ function CardStack({
   activeIndex: number;
   setActiveIndex: (i: number) => void;
 }) {
+  const { t } = useI18n();
   const [drag, setDrag] = useState(0);
   const [animating, setAnimating] = useState<null | "left" | "right">(null);
   const startX = useRef<number | null>(null);
@@ -366,14 +367,14 @@ function CardStack({
           <button
             onClick={onPrev}
             className="glass absolute left-1 top-[45%] hidden -translate-y-1/2 grid h-9 w-9 place-items-center rounded-full text-foreground/80 md:grid"
-            aria-label="Previous"
+            aria-label={t.previous}
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
           <button
             onClick={onNext}
             className="glass absolute right-1 top-[45%] hidden -translate-y-1/2 grid h-9 w-9 place-items-center rounded-full text-foreground/80 md:grid"
-            aria-label="Next"
+            aria-label={t.next}
           >
             <ChevronRight className="h-4 w-4" />
           </button>
@@ -383,7 +384,7 @@ function CardStack({
               <button
                 key={i}
                 onClick={() => setActiveIndex(i)}
-                aria-label={`Card ${i + 1}`}
+                aria-label={t.cardNumber(i + 1, total)}
                 className={"h-1.5 rounded-full transition-all " + (i === activeIndex ? "w-6 bg-primary" : "w-1.5 bg-foreground/25")}
               />
             ))}
@@ -395,19 +396,20 @@ function CardStack({
 }
 
 function QrDialog({ slug, onClose }: { slug: string | null; onClose: () => void }) {
+  const { t } = useI18n();
   if (!slug) return null;
   const url = `${typeof window !== "undefined" ? window.location.origin : ""}/c/${slug}`;
   async function share() {
     if (typeof navigator !== "undefined" && navigator.share) {
-      try { await navigator.share({ title: "Cardix", url }); } catch { /* cancelled */ }
+      try { await navigator.share({ title: t.brand, url }); } catch { /* cancelled */ }
     } else {
       await navigator.clipboard.writeText(url);
-      toast.success("Copied");
+      toast.success(t.copied);
     }
   }
   async function copy() {
     await navigator.clipboard.writeText(url);
-    toast.success("Copied");
+    toast.success(t.copied);
   }
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4 backdrop-blur-md" onClick={onClose}>
@@ -415,7 +417,7 @@ function QrDialog({ slug, onClose }: { slug: string | null; onClose: () => void 
         <button
           onClick={onClose}
           className="absolute end-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-secondary/60 text-muted-foreground hover:text-foreground"
-          aria-label="Close"
+          aria-label={t.close}
         >
           <X className="h-4 w-4" />
         </button>
@@ -433,14 +435,14 @@ function QrDialog({ slug, onClose }: { slug: string | null; onClose: () => void 
         <p dir="ltr" className="mt-4 truncate text-center text-[12px] text-muted-foreground">{url}</p>
         <div className="mt-4 grid grid-cols-2 gap-2">
           <button onClick={copy} className="glass flex items-center justify-center gap-2 rounded-2xl py-3 text-sm font-medium">
-            <Copy className="h-4 w-4" /> Copy
+            <Copy className="h-4 w-4" /> {t.copyLink}
           </button>
           <button
             onClick={share}
             className="flex items-center justify-center gap-2 rounded-2xl py-3 text-sm font-semibold text-accent-foreground shadow-glow"
             style={{ background: "var(--gradient-gold)" }}
           >
-            <Share2 className="h-4 w-4" /> Share
+            <Share2 className="h-4 w-4" /> {t.share}
           </button>
         </div>
       </div>
@@ -490,7 +492,7 @@ function CardActionsMenu({ onEdit, onQr, onDelete }: { onEdit: () => void; onQr:
         type="button"
         onClick={(e) => { e.stopPropagation(); setOpen((v) => !v); }}
         className="glass-strong grid h-8 w-8 place-items-center rounded-full text-foreground/80 backdrop-blur transition hover:text-foreground"
-        aria-label="Actions"
+        aria-label={t.actions}
         aria-expanded={open}
       >
         <MoreHorizontal className="h-4 w-4" />
@@ -502,7 +504,7 @@ function CardActionsMenu({ onEdit, onQr, onDelete }: { onEdit: () => void; onQr:
             onClick={(e) => { e.stopPropagation(); setOpen(false); onEdit(); }}
             className="flex items-center gap-2 rounded-xl px-3 py-2 text-[12px] text-foreground/90 transition hover:bg-white/10"
           >
-            <Pencil className="h-3.5 w-3.5" /> <span>Edit</span>
+            <Pencil className="h-3.5 w-3.5" /> <span>{t.edit}</span>
           </button>
           <button
             type="button"

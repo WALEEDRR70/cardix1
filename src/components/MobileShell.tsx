@@ -167,6 +167,7 @@ export function PageHeader({
   right?: ReactNode;
   back?: string;
 }) {
+  const { t } = useI18n();
   return (
     <header className="safe-top px-4 pb-2.5 pt-3 lg:px-8 lg:pb-6 lg:pt-8">
       <div className="flex items-center justify-between gap-3">
@@ -175,7 +176,7 @@ export function PageHeader({
             <Link
               to={back}
               className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-border/60 bg-card/60 text-muted-foreground backdrop-blur hover:text-foreground lg:hidden"
-              aria-label="Back"
+              aria-label={t.back}
             >
               <span className="text-base leading-none rtl:hidden">‹</span>
               <span className="hidden text-base leading-none rtl:inline">›</span>

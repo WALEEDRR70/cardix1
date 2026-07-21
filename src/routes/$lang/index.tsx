@@ -294,7 +294,7 @@ function Hero({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: Landing
           >
             <div className="glass flex items-center gap-2 rounded-full px-3 py-1.5 shadow-soft">
               <Radio className="h-3.5 w-3.5 text-accent" />
-              <span className="text-[11px] font-medium">NFC ready</span>
+              <span className="text-[11px] font-medium">{t.nfcReady}</span>
             </div>
           </div>
         </div>
@@ -322,10 +322,11 @@ function TrustStrip({ c }: { c: LandingCopy }) {
 
 /* ---------------- Templates ---------------- */
 function Templates({ c }: { c: LandingCopy }) {
+  const { t } = useI18n();
   return (
     <section id="templates" className="relative py-24 lg:py-32">
       <div className="mx-auto w-full max-w-[1440px] px-5 lg:px-10">
-        <SectionHeader eyebrow="Templates" title={c.templatesTitle} desc={c.templatesDesc} />
+        <SectionHeader eyebrow={t.eyebrowTemplates} title={c.templatesTitle} desc={c.templatesDesc} />
 
         <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {demoCards.map((card, i) => (
@@ -347,6 +348,7 @@ function Templates({ c }: { c: LandingCopy }) {
 
 /* ---------------- How it works ---------------- */
 function HowItWorks({ c }: { c: LandingCopy }) {
+  const { t } = useI18n();
   const steps = [
     { n: "01", icon: Sparkles, title: c.step1, d: c.step1d },
     { n: "02", icon: QrCode, title: c.step2, d: c.step2d },
@@ -355,7 +357,7 @@ function HowItWorks({ c }: { c: LandingCopy }) {
   return (
     <section className="relative py-24 lg:py-32">
       <div className="mx-auto w-full max-w-[1440px] px-5 lg:px-10">
-        <SectionHeader eyebrow="How it works" title={c.howTitle} />
+        <SectionHeader eyebrow={t.eyebrowHowItWorks} title={c.howTitle} />
         <div className="mt-14 grid gap-4 lg:grid-cols-3">
           {steps.map((s) => (
             <div key={s.n} className="glass relative overflow-hidden rounded-3xl p-8">
@@ -377,10 +379,11 @@ function HowItWorks({ c }: { c: LandingCopy }) {
 
 /* ---------------- Features (bento) ---------------- */
 function Features({ c }: { c: LandingCopy }) {
+  const { t } = useI18n();
   return (
     <section id="features" className="relative py-24 lg:py-32">
       <div className="mx-auto w-full max-w-[1440px] px-5 lg:px-10">
-        <SectionHeader eyebrow="Features" title={c.featTitle} />
+        <SectionHeader eyebrow={t.eyebrowFeatures} title={c.featTitle} />
 
         <div className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-6 lg:auto-rows-[220px]">
           {/* Big — Share */}
@@ -445,10 +448,11 @@ function FeatureCard({
 
 /* ---------------- Testimonials ---------------- */
 function Testimonials({ c }: { c: LandingCopy }) {
+  const { t: dict } = useI18n();
   return (
     <section className="relative py-24 lg:py-32">
       <div className="mx-auto w-full max-w-[1440px] px-5 lg:px-10">
-        <SectionHeader eyebrow="Testimonials" title={c.testimonialsTitle} />
+        <SectionHeader eyebrow={dict.eyebrowTestimonials} title={c.testimonialsTitle} />
         <div className="mt-14 grid gap-5 lg:grid-cols-3">
           {c.testimonials.map((t) => (
             <figure key={t.name} className="glass flex h-full flex-col justify-between rounded-3xl p-7">
@@ -483,7 +487,7 @@ function Pricing({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: Land
   return (
     <section id="pricing" className="relative py-24 lg:py-32">
       <div className="mx-auto w-full max-w-[1280px] px-5 lg:px-10">
-        <SectionHeader eyebrow="Pricing" title={c.pricingTitle} desc={c.pricingDesc} />
+        <SectionHeader eyebrow={t.eyebrowPricing} title={c.pricingTitle} desc={c.pricingDesc} />
         <div className="mt-14 grid gap-5 lg:grid-cols-3">
           {plans.map((p) => (
             <div
@@ -497,7 +501,7 @@ function Pricing({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: Land
             >
               {p.primary && (
                 <span className="absolute -top-3 rtl:right-6 ltr:left-6 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-accent-foreground shadow-glow" style={{ background: "var(--gradient-gold)" }}>
-                  Most popular
+                  {t.mostPopular}
                 </span>
               )}
               <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{p.name}</p>

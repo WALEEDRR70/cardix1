@@ -25,7 +25,7 @@ export function CameraCapture({ open, onClose, onCapture }: Props) {
     (async () => {
       try {
         if (!navigator.mediaDevices?.getUserMedia) {
-          throw new Error("Camera API not available in this browser.");
+          throw new Error(t.cameraUnavailable);
         }
         const stream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: { ideal: facing } },

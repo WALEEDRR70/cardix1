@@ -45,14 +45,14 @@ function AuthPage() {
           options: { emailRedirectTo: window.location.origin + "/dashboard" },
         });
         if (error) throw error;
-        toast.success("Check your email to confirm.");
+        toast.success(t.checkEmail);
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         nav({ to: "/dashboard" });
       }
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Something went wrong");
+      toast.error(e instanceof Error ? e.message : t.somethingWrong);
     } finally {
       setLoading(false);
     }
