@@ -638,7 +638,7 @@ function PublicCard() {
                               className="flex items-center justify-center gap-1 rounded-full py-2 text-[11px] font-semibold text-accent-foreground shadow-glow"
                               style={{ background: "var(--gradient-gold)" }}
                             >
-                              <Share2 className="h-3 w-3" /> {t.share ?? "Share"}
+                              <Share2 className="h-3 w-3" /> {t.shareCard}
                             </button>
                           </div>
                         </div>
