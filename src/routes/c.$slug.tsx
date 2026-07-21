@@ -607,6 +607,72 @@ function PublicCard() {
                     </div>
                   </div>
 
+                  {(nfcState === "writing" || nfcResult) && (
+                    <div
+                      className="mt-4 rounded-2xl border border-white/10 bg-white/[0.04] p-3"
+                      role="status"
+                      aria-live="polite"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span
+                          className={`relative inline-flex h-2.5 w-2.5 shrink-0 rounded-full ${
+                            nfcState === "writing"
+                              ? "bg-emerald-400"
+                              : nfcResult === "sent"
+                              ? "bg-emerald-400"
+                              : nfcResult === "failed"
+                              ? "bg-red-400"
+                              : "bg-yellow-400"
+                          }`}
+                        >
+                          {nfcState === "writing" && (
+                            <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400/60" />
+                          )}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-[12px] font-semibold text-foreground">
+                            {nfcState === "writing"
+                              ? t.nfcBroadcasting
+                              : nfcResult === "sent"
+                              ? t.nfcResultSent
+                              : nfcResult === "failed"
+                              ? t.nfcResultFailed
+                              : t.nfcResultStopped}
+                          </p>
+                          <p className="mt-0.5 truncate text-[11px] text-foreground/60">
+                            {nfcState === "writing"
+                              ? `${nfcRemaining}${t.secondsAbbr} · ${t.nfcSentLabel}: ${nfcSentCount}`
+                              : nfcResult === "failed" && nfcError
+                              ? nfcError
+                              : `${t.nfcSentLabel}: ${nfcSentCount}`}
+                          </p>
+                        </div>
+                        {nfcState === "writing" && (
+                          <div className="relative h-9 w-9 shrink-0">
+                            <svg viewBox="0 0 36 36" className="h-9 w-9 -rotate-90">
+                              <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="3" />
+                              <circle
+                                cx="18"
+                                cy="18"
+                                r="15"
+                                fill="none"
+                                stroke={accent}
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                strokeDasharray={2 * Math.PI * 15}
+                                strokeDashoffset={2 * Math.PI * 15 * (1 - nfcRemaining / NFC_DURATION)}
+                                style={{ transition: "stroke-dashoffset 250ms linear" }}
+                              />
+                            </svg>
+                            <span className="absolute inset-0 grid place-items-center text-[10px] font-semibold text-foreground">
+                              {nfcRemaining}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
                   <div className="mt-4 grid grid-cols-3 gap-2">
                     <QrAction icon={Share2} label={t.share} onClick={nativeShare} />
                     <QrAction icon={Download} label={t.download} onClick={downloadQr} />
