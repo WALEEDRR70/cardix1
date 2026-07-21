@@ -147,6 +147,7 @@ export type Database = {
       }
       saved_cards: {
         Row: {
+          accent_color: string
           address: string | null
           avatar_url: string | null
           bio: string | null
@@ -157,9 +158,11 @@ export type Database = {
           name: string
           notes: string | null
           phone: string | null
+          socials: Json
           source: string
           source_card_id: string | null
           tags: string[]
+          template: string
           title: string | null
           updated_at: string
           user_id: string
@@ -167,6 +170,7 @@ export type Database = {
           whatsapp: string | null
         }
         Insert: {
+          accent_color?: string
           address?: string | null
           avatar_url?: string | null
           bio?: string | null
@@ -177,9 +181,11 @@ export type Database = {
           name: string
           notes?: string | null
           phone?: string | null
+          socials?: Json
           source?: string
           source_card_id?: string | null
           tags?: string[]
+          template?: string
           title?: string | null
           updated_at?: string
           user_id: string
@@ -187,6 +193,7 @@ export type Database = {
           whatsapp?: string | null
         }
         Update: {
+          accent_color?: string
           address?: string | null
           avatar_url?: string | null
           bio?: string | null
@@ -197,9 +204,11 @@ export type Database = {
           name?: string
           notes?: string | null
           phone?: string | null
+          socials?: Json
           source?: string
           source_card_id?: string | null
           tags?: string[]
+          template?: string
           title?: string | null
           updated_at?: string
           user_id?: string

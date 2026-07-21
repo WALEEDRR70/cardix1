@@ -75,6 +75,8 @@ function PublicCard() {
   const { t, lang } = useI18n();
   const [saved, setSaved] = useState(false);
   const [savingCard, setSavingCard] = useState(false);
+  const [noteOpen, setNoteOpen] = useState(false);
+  const [noteDraft, setNoteDraft] = useState("");
   const [qrOpen, setQrOpen] = useState(false);
   const [nfcState, setNfcState] = useState<"idle" | "writing">("idle");
   const cardWrapRef = useRef<HTMLDivElement | null>(null);
@@ -171,7 +173,17 @@ function PublicCard() {
     supabase.from("card_events").insert({ card_id: card!.id, event_type: "save" });
   }
 
-  async function saveToVault() {
+  async function openSaveDialog() {
+    const { data: userRes } = await supabase.auth.getUser();
+    if (!userRes.user) {
+      window.location.href = `/auth?next=/c/${slug}`;
+      return;
+    }
+    setNoteDraft("");
+    setNoteOpen(true);
+  }
+
+  async function confirmSaveToVault() {
     const { data: userRes } = await supabase.auth.getUser();
     if (!userRes.user) {
       window.location.href = `/auth?next=/c/${slug}`;
@@ -192,6 +204,10 @@ function PublicCard() {
       address: card!.address,
       website: card!.website,
       avatar_url: card!.avatar_url,
+      template: card!.template || "luxury",
+      accent_color: card!.accent_color,
+      socials: card!.socials || {},
+      notes: noteDraft.trim() || null,
     });
     setSavingCard(false);
     if (error) {
@@ -200,6 +216,7 @@ function PublicCard() {
     }
     await supabase.from("card_events").insert({ card_id: card!.id, event_type: "save" });
     setSaved(true);
+    setNoteOpen(false);
     toast.success(t.savedToVault);
   }
 
@@ -551,7 +568,7 @@ function PublicCard() {
             <UserPlus className="h-4 w-4" /> {t.saveContact}
           </button>
           <button
-            onClick={saveToVault}
+            onClick={openSaveDialog}
             disabled={saved || savingCard}
             aria-label={t.saveToVault}
             className="glass pointer-events-auto grid h-[52px] w-[52px] shrink-0 place-items-center rounded-full disabled:opacity-60"
@@ -560,6 +577,60 @@ function PublicCard() {
           </button>
         </div>
       </div>
+
+      {/* Save-to-vault note dialog */}
+      {noteOpen && (
+        <div
+          className="fixed inset-0 z-50 grid animate-fade-in place-items-end sm:place-items-center bg-black/70 backdrop-blur-md p-4"
+          onClick={() => !savingCard && setNoteOpen(false)}
+        >
+          <div
+            className="glass-strong relative w-full max-w-md rounded-3xl p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-3">
+              <div
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-cover bg-center text-sm font-semibold ring-1 ring-white/10"
+                style={{ backgroundImage: card?.avatar_url ? `url(${card.avatar_url})` : undefined, background: card?.avatar_url ? undefined : "var(--gradient-gold)" }}
+              >
+                {!card?.avatar_url && card?.name.slice(0, 2).toUpperCase()}
+              </div>
+              <div className="min-w-0">
+                <p className="truncate text-sm font-semibold">{card?.name}</p>
+                <p className="truncate text-[11px] text-muted-foreground">{t.saveToVault}</p>
+              </div>
+            </div>
+            <label className="mt-4 block text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+              {t.personalNote}
+            </label>
+            <textarea
+              value={noteDraft}
+              onChange={(e) => setNoteDraft(e.target.value)}
+              placeholder={t.personalNotePlaceholder}
+              rows={4}
+              autoFocus
+              className="mt-2 w-full resize-none rounded-2xl bg-secondary/60 p-3 text-sm outline-none ring-1 ring-white/5 focus:ring-accent/60"
+            />
+            <div className="mt-4 flex items-center gap-2">
+              <button
+                onClick={() => setNoteOpen(false)}
+                disabled={savingCard}
+                className="flex-1 rounded-full bg-secondary/60 py-3 text-sm font-medium hover:bg-secondary"
+              >
+                {t.cancel}
+              </button>
+              <button
+                onClick={confirmSaveToVault}
+                disabled={savingCard}
+                className="flex-1 rounded-full py-3 text-sm font-semibold text-accent-foreground shadow-glow disabled:opacity-60"
+                style={{ background: "var(--gradient-gold)" }}
+              >
+                {savingCard ? t.saving : t.saveToVault}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* QR modal */}
       {qrOpen && (
