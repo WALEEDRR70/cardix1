@@ -221,6 +221,13 @@ const dict = {
     expand: "تكبير",
     download: "تحميل",
     location: "الموقع",
+    addNote: "إضافة ملاحظة",
+    editNote: "تعديل الملاحظة",
+    notePlaceholder: "أين التقيتم، السياق، خطوات المتابعة…",
+    noteOptional: "أضف ملاحظة (اختياري)",
+    viewDetails: "عرض التفاصيل",
+    saveNote: "حفظ الملاحظة",
+    back: "رجوع",
   },
 
 };
