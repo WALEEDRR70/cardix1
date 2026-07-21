@@ -80,18 +80,15 @@ function Dashboard() {
               <StatTile label={t.templates.luxury} value={new Set(cards!.map((c) => c.template)).size} icon={<Sparkles className="h-3.5 w-3.5" />} />
             </div>
 
-            {/* Slider — my cards */}
+            {/* My cards — stack or list */}
             <section className="mt-6">
-              <div className="mb-3 flex items-center justify-between px-1">
-                <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{t.myCards}</h2>
-                <Link to="/cards/new" className="text-[11px] font-semibold text-primary">+ {t.createCard}</Link>
-              </div>
-              <CardSlider
+              <MyCards
                 cards={cards!}
                 onQr={(slug) => setQrSlug(slug)}
                 onEdit={(id) => navigate({ to: "/cards/$id", params: { id } })}
                 onDelete={(id) => setDeleteId(id)}
                 onOpen={(slug) => navigate({ to: "/c/$slug", params: { slug } })}
+                t={t}
               />
             </section>
 
