@@ -188,6 +188,7 @@ function BackgroundFx() {
 
 /* ---------------- Nav ---------------- */
 function Nav({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"] }) {
+  const authed = useIsAuthed();
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 8);
@@ -232,6 +233,7 @@ function Nav({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"
 
 /* ---------------- Hero ---------------- */
 function Hero({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"] }) {
+  const authed = useIsAuthed();
   const wrapRef = useRef<HTMLDivElement>(null);
   const [mx, setMx] = useState(0);
   const [my, setMy] = useState(0);
@@ -532,6 +534,7 @@ function Testimonials({ c }: { c: typeof copy["en"] }) {
 
 /* ---------------- Pricing ---------------- */
 function Pricing({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"] }) {
+  const authed = useIsAuthed();
   const plans = [
     { name: c.free, price: "0", feats: ["1 card", "QR sharing", "Basic analytics"], cta: c.getStartedFree, primary: false },
     { name: c.pro, price: "9", feats: ["Unlimited cards", "AI scanner", "NFC + custom slug", "30-day analytics"], cta: c.tryPro, primary: true },
@@ -624,6 +627,7 @@ function Faq({ c }: { c: typeof copy["en"] }) {
 
 /* ---------------- Final CTA ---------------- */
 function FinalCta({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"] }) {
+  const authed = useIsAuthed();
   return (
     <section className="relative py-24 lg:py-32">
       <div className="mx-auto w-full max-w-[1280px] px-5 lg:px-10">
