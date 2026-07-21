@@ -155,7 +155,7 @@ export function PageHeader({
   back?: string;
 }) {
   return (
-    <header className="safe-top px-5 pb-3 lg:safe-top-0 lg:px-8 lg:pb-6 lg:pt-8">
+    <header className="safe-top px-5 pb-3 lg:px-8 lg:pb-6 lg:pt-8">
       <div className="flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-2">
           {back && (
