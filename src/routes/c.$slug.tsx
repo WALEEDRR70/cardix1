@@ -235,21 +235,51 @@ function PublicCard() {
     toast.success(t.linkCopied);
   }
 
+  const nfcAbortRef = useRef<AbortController | null>(null);
   async function writeNfc() {
-    const w = window as unknown as { NDEFReader?: new () => { write: (m: unknown) => Promise<void> } };
+    if (nfcState === "writing") {
+      nfcAbortRef.current?.abort();
+      setNfcState("idle");
+      return;
+    }
+    const w = window as unknown as {
+      NDEFReader?: new () => {
+        write: (m: unknown, opts?: { signal?: AbortSignal; overwrite?: boolean }) => Promise<void>;
+      };
+    };
     if (!w.NDEFReader) {
       toast.error(t.nfcUnsupported);
       return;
     }
+    const controller = new AbortController();
+    nfcAbortRef.current = controller;
+    const timer = window.setTimeout(() => controller.abort(), 30000);
     try {
       setNfcState("writing");
       toast(t.nfcTap);
       const reader = new w.NDEFReader();
-      await reader.write({ records: [{ recordType: "url", data: publicUrl }] });
-      toast.success(t.nfcWritten);
+      // Broadcast the card URL — receiver's phone auto-opens it on tap.
+      while (!controller.signal.aborted) {
+        try {
+          await reader.write(
+            { records: [{ recordType: "url", data: publicUrl }] },
+            { signal: controller.signal, overwrite: true },
+          );
+          toast.success(t.nfcWritten);
+        } catch (err) {
+          if (controller.signal.aborted) break;
+          const name = (err as { name?: string }).name;
+          if (name === "AbortError" || name === "NotAllowedError") break;
+          // NoModificationAllowedError / NetworkError: tag pulled away — retry
+          await new Promise((r) => setTimeout(r, 300));
+        }
+      }
     } catch (e) {
-      toast.error((e as Error).message);
+      const name = (e as { name?: string }).name;
+      if (name !== "AbortError") toast.error((e as Error).message);
     } finally {
+      window.clearTimeout(timer);
+      nfcAbortRef.current = null;
       setNfcState("idle");
     }
   }
@@ -526,11 +556,11 @@ function PublicCard() {
                       </p>
                       <button
                         onClick={writeNfc}
-                        disabled={nfcState === "writing"}
+                        aria-pressed={nfcState === "writing"}
                         className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-[12px] font-semibold text-accent-foreground shadow-glow transition hover:scale-[1.02] disabled:opacity-70"
                         style={{ background: "var(--gradient-gold)" }}
                       >
-                        <Radio className="h-3.5 w-3.5" /> {t.shareViaNfc}
+                        <Radio className={`h-3.5 w-3.5 ${nfcState === "writing" ? "animate-pulse" : ""}`} /> {nfcState === "writing" ? t.stopNfc : t.shareViaNfc}
                       </button>
                     </div>
                   </div>
