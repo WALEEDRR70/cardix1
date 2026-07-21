@@ -143,9 +143,6 @@ function CardBody({ card, variant, accent, brand }: { card: CardData; variant: V
         {card.phone && (
           <InfoRow icon={<Phone className="h-3 w-3" />} text={card.phone} rowCls={rowCls} iconWrap={iconWrap} />
         )}
-        {card.whatsapp && (
-          <InfoRow icon={<MessageCircle className="h-3 w-3" />} text={card.whatsapp} rowCls={rowCls} iconWrap={iconWrap} />
-        )}
         {card.address && (
           <InfoRow icon={<MapPin className="h-3 w-3" />} text={card.address} rowCls={rowCls} iconWrap={iconWrap} />
         )}
