@@ -19,7 +19,6 @@ import {
   X,
   BadgeCheck,
   MoreHorizontal,
-  Radio,
   UserPlus,
 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
