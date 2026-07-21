@@ -43,13 +43,14 @@ function Vault() {
 
   return (
     <MobileShell topBar={<PageHeader title={t.vault} subtitle={cards ? `${cards.length}` : undefined} />}>
-      <div className="px-5">
+      <div className="px-5 lg:px-8">
         {!cards || cards.length === 0 ? (
-          <div className="glass mt-4 rounded-3xl p-10 text-center">
-            <p className="text-sm text-muted-foreground">{t.emptyVault}</p>
+          <div className="glass mt-4 rounded-3xl p-10 text-center lg:p-16">
+            <p className="text-sm text-muted-foreground lg:text-base">{t.emptyVault}</p>
           </div>
         ) : (
-          <div className="grid gap-3">
+          <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
+
             {cards.map((c) => (
               <div key={c.id} className="glass card-lift group rounded-2xl p-4">
                 <div className="flex items-start gap-3">
