@@ -1,10 +1,13 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { CardPreview } from "@/components/CardPreview";
-import { Download, QrCode as QrIcon } from "lucide-react";
+import { Download, QrCode as QrIcon, BookmarkPlus, Check } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { useQuery } from "@tanstack/react-query";
+import { useI18n } from "@/lib/i18n";
+import { toast } from "sonner";
+
 
 export const Route = createFileRoute("/c/$slug")({
   head: ({ params }) => ({
@@ -31,6 +34,10 @@ function NotFoundView() {
 
 function PublicCard() {
   const { slug } = Route.useParams();
+  const { t } = useI18n();
+  const [saved, setSaved] = useState(false);
+  const [savingCard, setSavingCard] = useState(false);
+
 
   const { data: card } = useQuery({
     queryKey: ["public-card", slug],
