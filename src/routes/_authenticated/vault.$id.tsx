@@ -79,7 +79,7 @@ function VaultDetail() {
 
   async function saveNote() {
     setSavingNote(true);
-    const { error } = await supabase.from("saved_cards").update({ notes: note }).eq("id", id);
+    const { error } = await supabase.from("saved_cards").update({ notes: note }).eq("id", id).eq("user_id", user.id);
     setSavingNote(false);
     if (error) return toast.error(error.message);
     qc.invalidateQueries({ queryKey: ["saved_card", id] });
