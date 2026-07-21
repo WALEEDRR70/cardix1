@@ -357,10 +357,17 @@ function PublicCard() {
           </button>
         </div>
 
-        <a href="/" className="flex items-center gap-2" aria-label="Cardix">
-          <img src={logoAsset.url} alt="" className="h-7 w-7 object-contain" />
-          <span className="text-[13px] font-semibold tracking-[0.32em] text-foreground">CARDIX</span>
-        </a>
+        {isAuthed ? (
+          <Link to="/dashboard" className="flex items-center gap-2" aria-label="Cardix">
+            <img src={logoAsset.url} alt="" className="h-7 w-7 object-contain" />
+            <span className="text-[13px] font-semibold tracking-[0.32em] text-foreground">CARDIX</span>
+          </Link>
+        ) : (
+          <a href="/" className="flex items-center gap-2" aria-label="Cardix">
+            <img src={logoAsset.url} alt="" className="h-7 w-7 object-contain" />
+            <span className="text-[13px] font-semibold tracking-[0.32em] text-foreground">CARDIX</span>
+          </a>
+        )}
 
         <button
           className="glass grid h-11 w-11 place-items-center rounded-full text-muted-foreground transition hover:text-foreground"
