@@ -28,7 +28,7 @@ function useIsAuthed() {
 import { SUPPORTED_LOCALES, SITE_ORIGIN, isSupportedLocale, DEFAULT_LOCALE, LOCALE_META } from "@/i18n/config";
 import { getLandingSeo } from "@/i18n/landing-seo";
 import { getLandingCopy, type LandingCopy } from "@/i18n/landing";
-import { SeoSections, seoFaqItems } from "@/components/landing/SeoSections";
+import { SeoSections, getSeoFaqItems } from "@/components/landing/SeoSections";
 
 export const Route = createFileRoute("/$lang/")({
   head: ({ params }) => {
