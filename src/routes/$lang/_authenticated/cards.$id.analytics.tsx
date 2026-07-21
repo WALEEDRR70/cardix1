@@ -6,7 +6,7 @@ import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { Eye, Download, MousePointerClick } from "lucide-react";
 import { useMemo } from "react";
 
-export const Route = createFileRoute("/_authenticated/cards/$id/analytics")({
+export const Route = createFileRoute("/$lang/_authenticated/cards/$id/analytics")({
   head: () => ({
     meta: [
       { title: "Card analytics — Cardix" },

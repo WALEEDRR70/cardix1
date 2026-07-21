@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 
-export const Route = createFileRoute("/_authenticated/cards/$id")({
+export const Route = createFileRoute("/$lang/_authenticated/cards/$id")({
   head: () => ({ meta: [{ title: "Edit card — Cardix" }] }),
   component: EditCard,
   errorComponent: () => <NotFoundView />,

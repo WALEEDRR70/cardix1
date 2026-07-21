@@ -7,7 +7,7 @@ import { LocaleSwitcher } from "@/components/LangToggle";
 import { LogOut, Moon, Sun, User, Sparkles, ChevronRight } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 
-export const Route = createFileRoute("/_authenticated/settings")({
+export const Route = createFileRoute("/$lang/_authenticated/settings")({
   head: () => ({
     meta: [
       { title: "Settings — Cardix" },

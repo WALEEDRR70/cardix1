@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
 
-export const Route = createFileRoute("/_authenticated/vault/$id")({
+export const Route = createFileRoute("/$lang/_authenticated/vault/$id")({
   head: () => ({
     meta: [
       { title: "Card details — Cardix Vault" },

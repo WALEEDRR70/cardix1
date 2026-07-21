@@ -10,7 +10,7 @@ import { NoteDialog } from "@/components/NoteDialog";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
 import { CardPreview } from "@/components/CardPreview";
 
-export const Route = createFileRoute("/_authenticated/vault")({
+export const Route = createFileRoute("/$lang/_authenticated/vault")({
   head: () => ({
     meta: [
       { title: "Vault — Cardix" },

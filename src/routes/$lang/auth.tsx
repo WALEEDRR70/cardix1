@@ -8,7 +8,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { toast } from "sonner";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 
-export const Route = createFileRoute("/auth")({
+export const Route = createFileRoute("/$lang/auth")({
   head: () => ({
     meta: [
       { title: "Sign in — Cardix" },

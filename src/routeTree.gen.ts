@@ -9,31 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as LangIndexRouteImport } from './routes/$lang/index'
 import { Route as CSlugRouteImport } from './routes/c.$slug'
-import { Route as AuthenticatedVaultRouteImport } from './routes/_authenticated/vault'
-import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
-import { Route as AuthenticatedScanRouteImport } from './routes/_authenticated/scan'
-import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
-import { Route as AuthenticatedVaultIdRouteImport } from './routes/_authenticated/vault.$id'
-import { Route as AuthenticatedCardsNewRouteImport } from './routes/_authenticated/cards.new'
-import { Route as AuthenticatedCardsIdRouteImport } from './routes/_authenticated/cards.$id'
-import { Route as AuthenticatedCardsIdAnalyticsRouteImport } from './routes/_authenticated/cards.$id.analytics'
+import { Route as LangAuthRouteImport } from './routes/$lang/auth'
+import { Route as LangAuthenticatedRouteRouteImport } from './routes/$lang/_authenticated/route'
+import { Route as LangAuthenticatedVaultRouteImport } from './routes/$lang/_authenticated/vault'
+import { Route as LangAuthenticatedSettingsRouteImport } from './routes/$lang/_authenticated/settings'
+import { Route as LangAuthenticatedScanRouteImport } from './routes/$lang/_authenticated/scan'
+import { Route as LangAuthenticatedDashboardRouteImport } from './routes/$lang/_authenticated/dashboard'
+import { Route as LangAuthenticatedVaultIdRouteImport } from './routes/$lang/_authenticated/vault.$id'
+import { Route as LangAuthenticatedCardsNewRouteImport } from './routes/$lang/_authenticated/cards.new'
+import { Route as LangAuthenticatedCardsIdRouteImport } from './routes/$lang/_authenticated/cards.$id'
+import { Route as LangAuthenticatedCardsIdAnalyticsRouteImport } from './routes/$lang/_authenticated/cards.$id.analytics'
 
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const LangIndexRoute = LangIndexRouteImport.update({
+  id: '/$lang/',
+  path: '/$lang/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CSlugRoute = CSlugRouteImport.update({
@@ -41,160 +32,163 @@ const CSlugRoute = CSlugRouteImport.update({
   path: '/c/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedVaultRoute = AuthenticatedVaultRouteImport.update({
+const LangAuthRoute = LangAuthRouteImport.update({
+  id: '/$lang/auth',
+  path: '/$lang/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LangAuthenticatedRouteRoute = LangAuthenticatedRouteRouteImport.update({
+  id: '/$lang/_authenticated',
+  path: '/$lang',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LangAuthenticatedVaultRoute = LangAuthenticatedVaultRouteImport.update({
   id: '/vault',
   path: '/vault',
-  getParentRoute: () => AuthenticatedRouteRoute,
+  getParentRoute: () => LangAuthenticatedRouteRoute,
 } as any)
-const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedScanRoute = AuthenticatedScanRouteImport.update({
+const LangAuthenticatedSettingsRoute =
+  LangAuthenticatedSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => LangAuthenticatedRouteRoute,
+  } as any)
+const LangAuthenticatedScanRoute = LangAuthenticatedScanRouteImport.update({
   id: '/scan',
   path: '/scan',
-  getParentRoute: () => AuthenticatedRouteRoute,
+  getParentRoute: () => LangAuthenticatedRouteRoute,
 } as any)
-const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedVaultIdRoute = AuthenticatedVaultIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AuthenticatedVaultRoute,
-} as any)
-const AuthenticatedCardsNewRoute = AuthenticatedCardsNewRouteImport.update({
-  id: '/cards/new',
-  path: '/cards/new',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedCardsIdRoute = AuthenticatedCardsIdRouteImport.update({
-  id: '/cards/$id',
-  path: '/cards/$id',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedCardsIdAnalyticsRoute =
-  AuthenticatedCardsIdAnalyticsRouteImport.update({
+const LangAuthenticatedDashboardRoute =
+  LangAuthenticatedDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => LangAuthenticatedRouteRoute,
+  } as any)
+const LangAuthenticatedVaultIdRoute =
+  LangAuthenticatedVaultIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => LangAuthenticatedVaultRoute,
+  } as any)
+const LangAuthenticatedCardsNewRoute =
+  LangAuthenticatedCardsNewRouteImport.update({
+    id: '/cards/new',
+    path: '/cards/new',
+    getParentRoute: () => LangAuthenticatedRouteRoute,
+  } as any)
+const LangAuthenticatedCardsIdRoute =
+  LangAuthenticatedCardsIdRouteImport.update({
+    id: '/cards/$id',
+    path: '/cards/$id',
+    getParentRoute: () => LangAuthenticatedRouteRoute,
+  } as any)
+const LangAuthenticatedCardsIdAnalyticsRoute =
+  LangAuthenticatedCardsIdAnalyticsRouteImport.update({
     id: '/analytics',
     path: '/analytics',
-    getParentRoute: () => AuthenticatedCardsIdRoute,
+    getParentRoute: () => LangAuthenticatedCardsIdRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
-  '/scan': typeof AuthenticatedScanRoute
-  '/settings': typeof AuthenticatedSettingsRoute
-  '/vault': typeof AuthenticatedVaultRouteWithChildren
+  '/$lang': typeof LangAuthenticatedRouteRouteWithChildren
+  '/$lang/auth': typeof LangAuthRoute
   '/c/$slug': typeof CSlugRoute
-  '/cards/$id': typeof AuthenticatedCardsIdRouteWithChildren
-  '/cards/new': typeof AuthenticatedCardsNewRoute
-  '/vault/$id': typeof AuthenticatedVaultIdRoute
-  '/cards/$id/analytics': typeof AuthenticatedCardsIdAnalyticsRoute
+  '/$lang/': typeof LangIndexRoute
+  '/$lang/dashboard': typeof LangAuthenticatedDashboardRoute
+  '/$lang/scan': typeof LangAuthenticatedScanRoute
+  '/$lang/settings': typeof LangAuthenticatedSettingsRoute
+  '/$lang/vault': typeof LangAuthenticatedVaultRouteWithChildren
+  '/$lang/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
+  '/$lang/cards/new': typeof LangAuthenticatedCardsNewRoute
+  '/$lang/vault/$id': typeof LangAuthenticatedVaultIdRoute
+  '/$lang/cards/$id/analytics': typeof LangAuthenticatedCardsIdAnalyticsRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
-  '/scan': typeof AuthenticatedScanRoute
-  '/settings': typeof AuthenticatedSettingsRoute
-  '/vault': typeof AuthenticatedVaultRouteWithChildren
+  '/$lang': typeof LangIndexRoute
+  '/$lang/auth': typeof LangAuthRoute
   '/c/$slug': typeof CSlugRoute
-  '/cards/$id': typeof AuthenticatedCardsIdRouteWithChildren
-  '/cards/new': typeof AuthenticatedCardsNewRoute
-  '/vault/$id': typeof AuthenticatedVaultIdRoute
-  '/cards/$id/analytics': typeof AuthenticatedCardsIdAnalyticsRoute
+  '/$lang/dashboard': typeof LangAuthenticatedDashboardRoute
+  '/$lang/scan': typeof LangAuthenticatedScanRoute
+  '/$lang/settings': typeof LangAuthenticatedSettingsRoute
+  '/$lang/vault': typeof LangAuthenticatedVaultRouteWithChildren
+  '/$lang/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
+  '/$lang/cards/new': typeof LangAuthenticatedCardsNewRoute
+  '/$lang/vault/$id': typeof LangAuthenticatedVaultIdRoute
+  '/$lang/cards/$id/analytics': typeof LangAuthenticatedCardsIdAnalyticsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
-  '/auth': typeof AuthRoute
-  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
-  '/_authenticated/scan': typeof AuthenticatedScanRoute
-  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
-  '/_authenticated/vault': typeof AuthenticatedVaultRouteWithChildren
+  '/$lang/_authenticated': typeof LangAuthenticatedRouteRouteWithChildren
+  '/$lang/auth': typeof LangAuthRoute
   '/c/$slug': typeof CSlugRoute
-  '/_authenticated/cards/$id': typeof AuthenticatedCardsIdRouteWithChildren
-  '/_authenticated/cards/new': typeof AuthenticatedCardsNewRoute
-  '/_authenticated/vault/$id': typeof AuthenticatedVaultIdRoute
-  '/_authenticated/cards/$id/analytics': typeof AuthenticatedCardsIdAnalyticsRoute
+  '/$lang/': typeof LangIndexRoute
+  '/$lang/_authenticated/dashboard': typeof LangAuthenticatedDashboardRoute
+  '/$lang/_authenticated/scan': typeof LangAuthenticatedScanRoute
+  '/$lang/_authenticated/settings': typeof LangAuthenticatedSettingsRoute
+  '/$lang/_authenticated/vault': typeof LangAuthenticatedVaultRouteWithChildren
+  '/$lang/_authenticated/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
+  '/$lang/_authenticated/cards/new': typeof LangAuthenticatedCardsNewRoute
+  '/$lang/_authenticated/vault/$id': typeof LangAuthenticatedVaultIdRoute
+  '/$lang/_authenticated/cards/$id/analytics': typeof LangAuthenticatedCardsIdAnalyticsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/auth'
-    | '/dashboard'
-    | '/scan'
-    | '/settings'
-    | '/vault'
+    | '/$lang'
+    | '/$lang/auth'
     | '/c/$slug'
-    | '/cards/$id'
-    | '/cards/new'
-    | '/vault/$id'
-    | '/cards/$id/analytics'
+    | '/$lang/'
+    | '/$lang/dashboard'
+    | '/$lang/scan'
+    | '/$lang/settings'
+    | '/$lang/vault'
+    | '/$lang/cards/$id'
+    | '/$lang/cards/new'
+    | '/$lang/vault/$id'
+    | '/$lang/cards/$id/analytics'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/auth'
-    | '/dashboard'
-    | '/scan'
-    | '/settings'
-    | '/vault'
+    | '/$lang'
+    | '/$lang/auth'
     | '/c/$slug'
-    | '/cards/$id'
-    | '/cards/new'
-    | '/vault/$id'
-    | '/cards/$id/analytics'
+    | '/$lang/dashboard'
+    | '/$lang/scan'
+    | '/$lang/settings'
+    | '/$lang/vault'
+    | '/$lang/cards/$id'
+    | '/$lang/cards/new'
+    | '/$lang/vault/$id'
+    | '/$lang/cards/$id/analytics'
   id:
     | '__root__'
-    | '/'
-    | '/_authenticated'
-    | '/auth'
-    | '/_authenticated/dashboard'
-    | '/_authenticated/scan'
-    | '/_authenticated/settings'
-    | '/_authenticated/vault'
+    | '/$lang/_authenticated'
+    | '/$lang/auth'
     | '/c/$slug'
-    | '/_authenticated/cards/$id'
-    | '/_authenticated/cards/new'
-    | '/_authenticated/vault/$id'
-    | '/_authenticated/cards/$id/analytics'
+    | '/$lang/'
+    | '/$lang/_authenticated/dashboard'
+    | '/$lang/_authenticated/scan'
+    | '/$lang/_authenticated/settings'
+    | '/$lang/_authenticated/vault'
+    | '/$lang/_authenticated/cards/$id'
+    | '/$lang/_authenticated/cards/new'
+    | '/$lang/_authenticated/vault/$id'
+    | '/$lang/_authenticated/cards/$id/analytics'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
-  AuthRoute: typeof AuthRoute
+  LangAuthenticatedRouteRoute: typeof LangAuthenticatedRouteRouteWithChildren
+  LangAuthRoute: typeof LangAuthRoute
   CSlugRoute: typeof CSlugRoute
+  LangIndexRoute: typeof LangIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/$lang/': {
+      id: '/$lang/'
+      path: '/$lang'
+      fullPath: '/$lang/'
+      preLoaderRoute: typeof LangIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/c/$slug': {
@@ -204,113 +198,137 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/vault': {
-      id: '/_authenticated/vault'
+    '/$lang/auth': {
+      id: '/$lang/auth'
+      path: '/$lang/auth'
+      fullPath: '/$lang/auth'
+      preLoaderRoute: typeof LangAuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$lang/_authenticated': {
+      id: '/$lang/_authenticated'
+      path: '/$lang'
+      fullPath: '/$lang'
+      preLoaderRoute: typeof LangAuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$lang/_authenticated/vault': {
+      id: '/$lang/_authenticated/vault'
       path: '/vault'
-      fullPath: '/vault'
-      preLoaderRoute: typeof AuthenticatedVaultRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      fullPath: '/$lang/vault'
+      preLoaderRoute: typeof LangAuthenticatedVaultRouteImport
+      parentRoute: typeof LangAuthenticatedRouteRoute
     }
-    '/_authenticated/settings': {
-      id: '/_authenticated/settings'
+    '/$lang/_authenticated/settings': {
+      id: '/$lang/_authenticated/settings'
       path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      fullPath: '/$lang/settings'
+      preLoaderRoute: typeof LangAuthenticatedSettingsRouteImport
+      parentRoute: typeof LangAuthenticatedRouteRoute
     }
-    '/_authenticated/scan': {
-      id: '/_authenticated/scan'
+    '/$lang/_authenticated/scan': {
+      id: '/$lang/_authenticated/scan'
       path: '/scan'
-      fullPath: '/scan'
-      preLoaderRoute: typeof AuthenticatedScanRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      fullPath: '/$lang/scan'
+      preLoaderRoute: typeof LangAuthenticatedScanRouteImport
+      parentRoute: typeof LangAuthenticatedRouteRoute
     }
-    '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
+    '/$lang/_authenticated/dashboard': {
+      id: '/$lang/_authenticated/dashboard'
       path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      fullPath: '/$lang/dashboard'
+      preLoaderRoute: typeof LangAuthenticatedDashboardRouteImport
+      parentRoute: typeof LangAuthenticatedRouteRoute
     }
-    '/_authenticated/vault/$id': {
-      id: '/_authenticated/vault/$id'
+    '/$lang/_authenticated/vault/$id': {
+      id: '/$lang/_authenticated/vault/$id'
       path: '/$id'
-      fullPath: '/vault/$id'
-      preLoaderRoute: typeof AuthenticatedVaultIdRouteImport
-      parentRoute: typeof AuthenticatedVaultRoute
+      fullPath: '/$lang/vault/$id'
+      preLoaderRoute: typeof LangAuthenticatedVaultIdRouteImport
+      parentRoute: typeof LangAuthenticatedVaultRoute
     }
-    '/_authenticated/cards/new': {
-      id: '/_authenticated/cards/new'
+    '/$lang/_authenticated/cards/new': {
+      id: '/$lang/_authenticated/cards/new'
       path: '/cards/new'
-      fullPath: '/cards/new'
-      preLoaderRoute: typeof AuthenticatedCardsNewRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      fullPath: '/$lang/cards/new'
+      preLoaderRoute: typeof LangAuthenticatedCardsNewRouteImport
+      parentRoute: typeof LangAuthenticatedRouteRoute
     }
-    '/_authenticated/cards/$id': {
-      id: '/_authenticated/cards/$id'
+    '/$lang/_authenticated/cards/$id': {
+      id: '/$lang/_authenticated/cards/$id'
       path: '/cards/$id'
-      fullPath: '/cards/$id'
-      preLoaderRoute: typeof AuthenticatedCardsIdRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      fullPath: '/$lang/cards/$id'
+      preLoaderRoute: typeof LangAuthenticatedCardsIdRouteImport
+      parentRoute: typeof LangAuthenticatedRouteRoute
     }
-    '/_authenticated/cards/$id/analytics': {
-      id: '/_authenticated/cards/$id/analytics'
+    '/$lang/_authenticated/cards/$id/analytics': {
+      id: '/$lang/_authenticated/cards/$id/analytics'
       path: '/analytics'
-      fullPath: '/cards/$id/analytics'
-      preLoaderRoute: typeof AuthenticatedCardsIdAnalyticsRouteImport
-      parentRoute: typeof AuthenticatedCardsIdRoute
+      fullPath: '/$lang/cards/$id/analytics'
+      preLoaderRoute: typeof LangAuthenticatedCardsIdAnalyticsRouteImport
+      parentRoute: typeof LangAuthenticatedCardsIdRoute
     }
   }
 }
 
-interface AuthenticatedVaultRouteChildren {
-  AuthenticatedVaultIdRoute: typeof AuthenticatedVaultIdRoute
+interface LangAuthenticatedVaultRouteChildren {
+  LangAuthenticatedVaultIdRoute: typeof LangAuthenticatedVaultIdRoute
 }
 
-const AuthenticatedVaultRouteChildren: AuthenticatedVaultRouteChildren = {
-  AuthenticatedVaultIdRoute: AuthenticatedVaultIdRoute,
+const LangAuthenticatedVaultRouteChildren: LangAuthenticatedVaultRouteChildren =
+  {
+    LangAuthenticatedVaultIdRoute: LangAuthenticatedVaultIdRoute,
+  }
+
+const LangAuthenticatedVaultRouteWithChildren =
+  LangAuthenticatedVaultRoute._addFileChildren(
+    LangAuthenticatedVaultRouteChildren,
+  )
+
+interface LangAuthenticatedCardsIdRouteChildren {
+  LangAuthenticatedCardsIdAnalyticsRoute: typeof LangAuthenticatedCardsIdAnalyticsRoute
 }
 
-const AuthenticatedVaultRouteWithChildren =
-  AuthenticatedVaultRoute._addFileChildren(AuthenticatedVaultRouteChildren)
+const LangAuthenticatedCardsIdRouteChildren: LangAuthenticatedCardsIdRouteChildren =
+  {
+    LangAuthenticatedCardsIdAnalyticsRoute:
+      LangAuthenticatedCardsIdAnalyticsRoute,
+  }
 
-interface AuthenticatedCardsIdRouteChildren {
-  AuthenticatedCardsIdAnalyticsRoute: typeof AuthenticatedCardsIdAnalyticsRoute
+const LangAuthenticatedCardsIdRouteWithChildren =
+  LangAuthenticatedCardsIdRoute._addFileChildren(
+    LangAuthenticatedCardsIdRouteChildren,
+  )
+
+interface LangAuthenticatedRouteRouteChildren {
+  LangAuthenticatedDashboardRoute: typeof LangAuthenticatedDashboardRoute
+  LangAuthenticatedScanRoute: typeof LangAuthenticatedScanRoute
+  LangAuthenticatedSettingsRoute: typeof LangAuthenticatedSettingsRoute
+  LangAuthenticatedVaultRoute: typeof LangAuthenticatedVaultRouteWithChildren
+  LangAuthenticatedCardsIdRoute: typeof LangAuthenticatedCardsIdRouteWithChildren
+  LangAuthenticatedCardsNewRoute: typeof LangAuthenticatedCardsNewRoute
 }
 
-const AuthenticatedCardsIdRouteChildren: AuthenticatedCardsIdRouteChildren = {
-  AuthenticatedCardsIdAnalyticsRoute: AuthenticatedCardsIdAnalyticsRoute,
-}
+const LangAuthenticatedRouteRouteChildren: LangAuthenticatedRouteRouteChildren =
+  {
+    LangAuthenticatedDashboardRoute: LangAuthenticatedDashboardRoute,
+    LangAuthenticatedScanRoute: LangAuthenticatedScanRoute,
+    LangAuthenticatedSettingsRoute: LangAuthenticatedSettingsRoute,
+    LangAuthenticatedVaultRoute: LangAuthenticatedVaultRouteWithChildren,
+    LangAuthenticatedCardsIdRoute: LangAuthenticatedCardsIdRouteWithChildren,
+    LangAuthenticatedCardsNewRoute: LangAuthenticatedCardsNewRoute,
+  }
 
-const AuthenticatedCardsIdRouteWithChildren =
-  AuthenticatedCardsIdRoute._addFileChildren(AuthenticatedCardsIdRouteChildren)
-
-interface AuthenticatedRouteRouteChildren {
-  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
-  AuthenticatedScanRoute: typeof AuthenticatedScanRoute
-  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
-  AuthenticatedVaultRoute: typeof AuthenticatedVaultRouteWithChildren
-  AuthenticatedCardsIdRoute: typeof AuthenticatedCardsIdRouteWithChildren
-  AuthenticatedCardsNewRoute: typeof AuthenticatedCardsNewRoute
-}
-
-const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
-  AuthenticatedScanRoute: AuthenticatedScanRoute,
-  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
-  AuthenticatedVaultRoute: AuthenticatedVaultRouteWithChildren,
-  AuthenticatedCardsIdRoute: AuthenticatedCardsIdRouteWithChildren,
-  AuthenticatedCardsNewRoute: AuthenticatedCardsNewRoute,
-}
-
-const AuthenticatedRouteRouteWithChildren =
-  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+const LangAuthenticatedRouteRouteWithChildren =
+  LangAuthenticatedRouteRoute._addFileChildren(
+    LangAuthenticatedRouteRouteChildren,
+  )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
-  AuthRoute: AuthRoute,
+  LangAuthenticatedRouteRoute: LangAuthenticatedRouteRouteWithChildren,
+  LangAuthRoute: LangAuthRoute,
   CSlugRoute: CSlugRoute,
+  LangIndexRoute: LangIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

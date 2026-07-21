@@ -13,7 +13,7 @@ import { QRCodeSVG } from "qrcode.react";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 
 
-export const Route = createFileRoute("/_authenticated/dashboard")({
+export const Route = createFileRoute("/$lang/_authenticated/dashboard")({
   head: () => ({
     meta: [
       { title: "Home — Cardix" },

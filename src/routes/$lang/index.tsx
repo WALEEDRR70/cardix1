@@ -24,7 +24,7 @@ function useIsAuthed() {
 }
 
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/$lang/")({
   head: () => ({
     meta: [
       { title: "Cardix — Premium digital business cards" },

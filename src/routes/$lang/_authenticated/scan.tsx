@@ -12,7 +12,7 @@ import { CardPreview, type CardData } from "@/components/CardPreview";
 import { NoteDialog } from "@/components/NoteDialog";
 
 
-export const Route = createFileRoute("/_authenticated/scan")({
+export const Route = createFileRoute("/$lang/_authenticated/scan")({
   head: () => ({
     meta: [
       { title: "Scan a card — Cardix" },
