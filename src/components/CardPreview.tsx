@@ -89,7 +89,7 @@ function Avatar({ card, ring, fallbackBg }: { card: CardData; ring: string; fall
 /* ---------- Templates ---------- */
 
 function LuxuryTemplate({ card }: { card: CardData }) {
-  const a = card.accent_color || "#D4AF37";
+  const a = card.accent_color || "#7c34ff";
   return (
     <div className="relative h-full w-full text-white" style={{ background: "linear-gradient(160deg,#161513,#050505)" }}>
       <div className="absolute inset-0 opacity-70" style={{ background: `radial-gradient(circle at 85% 0%, ${a}44, transparent 55%)` }} />

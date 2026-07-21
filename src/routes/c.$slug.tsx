@@ -131,7 +131,7 @@ function PublicCard() {
     );
   }
 
-  const accent = card.accent_color || "#D4AF37";
+  const accent = card.accent_color || "#7c34ff";
   const socials = (card.socials as Record<string, string> | null) ?? {};
   const socialEntries = Object.entries(socials).filter(([id, v]) => v && SOCIALS_BY_ID[id]);
   const publicUrl = typeof window !== "undefined" ? window.location.href : `/c/${slug}`;

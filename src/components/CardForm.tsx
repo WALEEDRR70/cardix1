@@ -26,7 +26,7 @@ export interface CardFormData {
   socials: Record<string, string>;
 }
 
-const ACCENTS = ["#D4AF37", "#F5F5F5", "#8B5CF6", "#22D3EE", "#F97316", "#EC4899", "#10B981", "#EF4444"];
+const ACCENTS = ["#7c34ff", "#F5F5F5", "#8B5CF6", "#22D3EE", "#F97316", "#EC4899", "#10B981", "#EF4444"];
 
 export function CardForm({
   initial,
