@@ -25,7 +25,7 @@ function NotFoundComponent() {
   );
 }
 function NotFoundInner() {
-  const { t } = useI18nSafe();
+  const { t } = useI18n();
   return (
     <div className="grid min-h-[100dvh] place-items-center bg-background px-4">
       <div className="max-w-md text-center">
@@ -53,7 +53,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 function ErrorInner({ router, reset }: { router: ReturnType<typeof useRouter>; reset: () => void }) {
-  const { t } = useI18nSafe();
+  const { t } = useI18n();
   return (
     <div className="grid min-h-[100dvh] place-items-center bg-background px-4">
       <div className="max-w-md text-center">
