@@ -5,7 +5,7 @@ import { useI18n } from "@/lib/i18n";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { CardPreview } from "@/components/CardPreview";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Eye, Sparkles, Trash2, Pencil, QrCode, X, Copy, Share2, ChevronLeft, ChevronRight, BookmarkPlus } from "lucide-react";
+import { Eye, Sparkles, Trash2, Pencil, QrCode, X, Copy, Share2, ChevronLeft, ChevronRight, BookmarkPlus, Layers, Rows3 } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
@@ -80,18 +80,15 @@ function Dashboard() {
               <StatTile label={t.templates.luxury} value={new Set(cards!.map((c) => c.template)).size} icon={<Sparkles className="h-3.5 w-3.5" />} />
             </div>
 
-            {/* Slider — my cards */}
+            {/* My cards — stack or list */}
             <section className="mt-6">
-              <div className="mb-3 flex items-center justify-between px-1">
-                <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{t.myCards}</h2>
-                <Link to="/cards/new" className="text-[11px] font-semibold text-primary">+ {t.createCard}</Link>
-              </div>
-              <CardSlider
+              <MyCards
                 cards={cards!}
                 onQr={(slug) => setQrSlug(slug)}
                 onEdit={(id) => navigate({ to: "/cards/$id", params: { id } })}
                 onDelete={(id) => setDeleteId(id)}
                 onOpen={(slug) => navigate({ to: "/c/$slug", params: { slug } })}
+                t={t}
               />
             </section>
 
@@ -162,109 +159,258 @@ function Dashboard() {
   );
 }
 
-function CardSlider({
-  cards,
-  onQr,
-  onEdit,
-  onDelete,
-  onOpen,
-}: {
-  cards: any[];
+type CardRow = {
+  id: string;
+  slug: string;
+  name: string;
+  [k: string]: unknown;
+};
+
+type CardActions = {
+  cards: CardRow[];
   onQr: (slug: string) => void;
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
   onOpen: (slug: string) => void;
-}) {
-  const scrollerRef = useRef<HTMLDivElement | null>(null);
-  const [active, setActive] = useState(0);
+};
 
+function MyCards({ cards, onQr, onEdit, onDelete, onOpen, t }: CardActions & { t: ReturnType<typeof useI18n>["t"] }) {
+  const [mode, setMode] = useState<"stack" | "list">("stack");
+  // rotation offset: current top card index into `cards`
+  const [offset, setOffset] = useState(0);
+  const n = cards.length;
+
+  // Reset offset if cards list changes size
   useEffect(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const onScroll = () => {
-      const w = el.clientWidth;
-      if (!w) return;
-      const idx = Math.round(el.scrollLeft / w);
-      setActive(Math.min(cards.length - 1, Math.max(0, idx)));
-    };
-    el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll);
-  }, [cards.length]);
+    setOffset((o) => (n === 0 ? 0 : o % n));
+  }, [n]);
 
-  function scrollTo(i: number) {
-    const el = scrollerRef.current;
-    if (!el) return;
-    el.scrollTo({ left: i * el.clientWidth, behavior: "smooth" });
+  const ordered = n > 0 ? Array.from({ length: n }, (_, i) => cards[(offset + i) % n]) : [];
+
+  function next() { setOffset((o) => (o + 1) % Math.max(1, n)); }
+  function prev() { setOffset((o) => (o - 1 + n) % Math.max(1, n)); }
+
+  return (
+    <div>
+      <div className="mb-3 flex items-center justify-between px-1">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{t.myCards}</h2>
+        <div className="flex items-center gap-2">
+          <div className="glass flex items-center rounded-full p-0.5">
+            <button
+              onClick={() => setMode("stack")}
+              aria-label="Stack view"
+              className={"grid h-7 w-7 place-items-center rounded-full transition " + (mode === "stack" ? "bg-primary text-primary-foreground" : "text-muted-foreground")}
+            >
+              <Layers className="h-3.5 w-3.5" />
+            </button>
+            <button
+              onClick={() => setMode("list")}
+              aria-label="List view"
+              className={"grid h-7 w-7 place-items-center rounded-full transition " + (mode === "list" ? "bg-primary text-primary-foreground" : "text-muted-foreground")}
+            >
+              <Rows3 className="h-3.5 w-3.5" />
+            </button>
+          </div>
+          <Link to="/cards/new" className="text-[11px] font-semibold text-primary">+ {t.createCard}</Link>
+        </div>
+      </div>
+
+      {mode === "stack" ? (
+        <CardStack
+          ordered={ordered}
+          onNext={next}
+          onPrev={prev}
+          onQr={onQr}
+          onEdit={onEdit}
+          onDelete={onDelete}
+          onOpen={onOpen}
+          total={n}
+          activeIndex={offset}
+          setActiveIndex={(i) => setOffset(i)}
+        />
+      ) : (
+        <div className="grid gap-4 lg:grid-cols-2">
+          {cards.map((c) => (
+            <div key={c.id} className="relative mx-auto w-full max-w-md">
+              <button onClick={() => onOpen(c.slug)} className="block w-full" aria-label={c.name}>
+                <CardPreview card={c as any} size="lg" />
+              </button>
+              <div className="absolute right-3 top-3 flex flex-col gap-2">
+                <button onClick={() => onEdit(c.id)} className="glass grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground" aria-label="Edit">
+                  <Pencil className="h-4 w-4" />
+                </button>
+                <button onClick={() => onQr(c.slug)} className="glass grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground" aria-label="QR">
+                  <QrCode className="h-4 w-4" />
+                </button>
+                <button onClick={() => onDelete(c.id)} className="glass grid h-9 w-9 place-items-center rounded-full text-foreground/70 hover:text-destructive" aria-label="Delete">
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CardStack({
+  ordered,
+  onNext,
+  onPrev,
+  onQr,
+  onEdit,
+  onDelete,
+  onOpen,
+  total,
+  activeIndex,
+  setActiveIndex,
+}: {
+  ordered: CardRow[];
+  onNext: () => void;
+  onPrev: () => void;
+  onQr: (slug: string) => void;
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+  onOpen: (slug: string) => void;
+  total: number;
+  activeIndex: number;
+  setActiveIndex: (i: number) => void;
+}) {
+  const [drag, setDrag] = useState(0);
+  const [animating, setAnimating] = useState<null | "left" | "right">(null);
+  const startX = useRef<number | null>(null);
+  const moved = useRef(false);
+  const THRESHOLD = 80;
+  // Show up to 3 behind card layers
+  const visible = ordered.slice(0, Math.min(4, ordered.length));
+
+  function onPointerDown(e: React.PointerEvent) {
+    if (animating) return;
+    startX.current = e.clientX;
+    moved.current = false;
+    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+  }
+  function onPointerMove(e: React.PointerEvent) {
+    if (startX.current == null) return;
+    const dx = e.clientX - startX.current;
+    if (Math.abs(dx) > 6) moved.current = true;
+    setDrag(dx);
+  }
+  function onPointerUp() {
+    if (startX.current == null) return;
+    const dx = drag;
+    startX.current = null;
+    if (Math.abs(dx) > THRESHOLD && total > 1) {
+      const dir = dx < 0 ? "left" : "right";
+      setAnimating(dir);
+      setTimeout(() => {
+        if (dir === "left") onNext(); else onPrev();
+        setDrag(0);
+        setAnimating(null);
+      }, 220);
+    } else {
+      setDrag(0);
+    }
   }
 
   return (
     <div className="relative">
       <div
-        ref={scrollerRef}
-        className="no-scrollbar flex snap-x snap-mandatory overflow-x-auto scroll-smooth"
+        className="relative mx-auto w-full max-w-md select-none"
+        style={{ height: "clamp(220px, 58vw, 300px)" }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
       >
-        {cards.map((c) => (
-          <div key={c.id} className="w-full shrink-0 snap-center px-1">
-            <div className="relative mx-auto flex max-w-md justify-center">
-              <button
-                onClick={() => onOpen(c.slug)}
-                className="block w-full"
-                aria-label={c.name}
-              >
-                <CardPreview card={c} size="lg" />
-              </button>
-              <button
-                onClick={() => onEdit(c.id)}
-                className="glass absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground"
-                aria-label="Edit"
-              >
-                <Pencil className="h-4 w-4" />
-              </button>
-              <button
-                onClick={() => onQr(c.slug)}
-                className="glass absolute right-3 top-14 grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground"
-                aria-label="QR"
-              >
-                <QrCode className="h-4 w-4" />
-              </button>
-              <button
-                onClick={() => onDelete(c.id)}
-                className="glass absolute right-3 top-[100px] grid h-9 w-9 place-items-center rounded-full text-foreground/70 hover:text-destructive"
-                aria-label="Delete"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
+        {visible.map((c, i) => {
+          const isTop = i === 0;
+          const behind = i;
+          // stack effect
+          const scale = 1 - behind * 0.05;
+          const translateY = behind * 12;
+          const opacity = behind === 0 ? 1 : 1 - behind * 0.15;
+          const zIndex = 50 - behind;
+
+          let transform = `translateY(${translateY}px) scale(${scale})`;
+          let transition = "transform 220ms cubic-bezier(.2,.8,.2,1), opacity 220ms";
+          if (isTop) {
+            if (animating) {
+              const off = animating === "left" ? -600 : 600;
+              transform = `translateX(${off}px) rotate(${animating === "left" ? -20 : 20}deg)`;
+            } else {
+              const rot = drag / 20;
+              transform = `translateX(${drag}px) rotate(${rot}deg)`;
+              transition = drag === 0 ? transition : "none";
+            }
+          }
+
+          return (
+            <div
+              key={c.id + "-" + i}
+              className="absolute inset-x-0 top-0 mx-auto"
+              style={{
+                zIndex,
+                transform,
+                transition,
+                opacity,
+                touchAction: "pan-y",
+              }}
+            >
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => { if (!moved.current && isTop) onOpen(c.slug); }}
+                  className="block w-full cursor-grab active:cursor-grabbing"
+                  aria-label={c.name}
+                  tabIndex={isTop ? 0 : -1}
+                >
+                  <CardPreview card={c as any} size="lg" />
+                </button>
+                {isTop && (
+                  <div className="absolute right-3 top-3 flex flex-col gap-2">
+                    <button onClick={(e) => { e.stopPropagation(); onEdit(c.id); }} className="glass grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground" aria-label="Edit">
+                      <Pencil className="h-4 w-4" />
+                    </button>
+                    <button onClick={(e) => { e.stopPropagation(); onQr(c.slug); }} className="glass grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground" aria-label="QR">
+                      <QrCode className="h-4 w-4" />
+                    </button>
+                    <button onClick={(e) => { e.stopPropagation(); onDelete(c.id); }} className="glass grid h-9 w-9 place-items-center rounded-full text-foreground/70 hover:text-destructive" aria-label="Delete">
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
-      {cards.length > 1 && (
+      {total > 1 && (
         <>
           <button
-            onClick={() => scrollTo(Math.max(0, active - 1))}
-            disabled={active === 0}
-            className="glass absolute left-1 top-1/2 hidden -translate-y-1/2 grid h-9 w-9 place-items-center rounded-full text-foreground/80 disabled:opacity-30 md:grid"
+            onClick={onPrev}
+            className="glass absolute left-1 top-[45%] hidden -translate-y-1/2 grid h-9 w-9 place-items-center rounded-full text-foreground/80 md:grid"
             aria-label="Previous"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
           <button
-            onClick={() => scrollTo(Math.min(cards.length - 1, active + 1))}
-            disabled={active === cards.length - 1}
-            className="glass absolute right-1 top-1/2 hidden -translate-y-1/2 grid h-9 w-9 place-items-center rounded-full text-foreground/80 disabled:opacity-30 md:grid"
+            onClick={onNext}
+            className="glass absolute right-1 top-[45%] hidden -translate-y-1/2 grid h-9 w-9 place-items-center rounded-full text-foreground/80 md:grid"
             aria-label="Next"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
 
           <div className="mt-4 flex items-center justify-center gap-1.5">
-            {cards.map((_, i) => (
+            {Array.from({ length: total }).map((_, i) => (
               <button
                 key={i}
-                onClick={() => scrollTo(i)}
+                onClick={() => setActiveIndex(i)}
                 aria-label={`Card ${i + 1}`}
-                className={"h-1.5 rounded-full transition-all " + (i === active ? "w-6 bg-primary" : "w-1.5 bg-foreground/25")}
+                className={"h-1.5 rounded-full transition-all " + (i === activeIndex ? "w-6 bg-primary" : "w-1.5 bg-foreground/25")}
               />
             ))}
           </div>
