@@ -111,7 +111,7 @@ const copy = {
 };
 
 const demoCards = [
-  { name: "Layla Al-Farsi", title: "Design Director", company: "Atelier Nord", accent_color: "#D4AF37", template: "luxury" },
+  { name: "Layla Al-Farsi", title: "Design Director", company: "Atelier Nord", accent_color: "#7c34ff", template: "luxury" },
   { name: "Kenji Ito", title: "Founder", company: "Kōgei", accent_color: "#22D3EE", template: "aurora" },
   { name: "Maya Chen", title: "Investor", company: "Northline", accent_color: "#9C7A3C", template: "ivory" },
   { name: "Noor Rahman", title: "Product Lead", company: "Meridian", accent_color: "#E5E7EB", template: "platinum" },

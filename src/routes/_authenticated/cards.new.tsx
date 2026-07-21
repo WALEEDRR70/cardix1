@@ -18,7 +18,7 @@ function NewCard() {
   const initial: CardFormData = {
     name: "", slug: "card-" + Math.random().toString(36).slice(2, 7),
     title: "", company: "", bio: "", phone: "", whatsapp: "", email: user.email ?? "",
-    website: "", address: "", avatar_url: "", accent_color: "#D4AF37", template: "luxury", is_published: true,
+    website: "", address: "", avatar_url: "", accent_color: "#7c34ff", template: "luxury", is_published: true,
     socials: {},
   };
 
