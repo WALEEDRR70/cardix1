@@ -19,11 +19,12 @@ export const Route = createFileRoute("/_authenticated/cards/$id/analytics")({
 function Analytics() {
   const { t } = useI18n();
   const { id } = Route.useParams();
+  const { user } = Route.useRouteContext();
 
   const { data: card } = useQuery({
-    queryKey: ["card", id],
+    queryKey: ["card", id, user.id],
     queryFn: async () => {
-      const { data, error } = await supabase.from("cards").select("*").eq("id", id).single();
+      const { data, error } = await supabase.from("cards").select("*").eq("id", id).eq("user_id", user.id).maybeSingle();
       if (error) throw error;
       return data;
     },

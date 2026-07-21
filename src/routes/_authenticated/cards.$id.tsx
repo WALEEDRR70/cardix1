@@ -17,13 +17,14 @@ export const Route = createFileRoute("/_authenticated/cards/$id")({
 function EditCard() {
   const { t } = useI18n();
   const { id } = Route.useParams();
+  const { user } = Route.useRouteContext();
   const qc = useQueryClient();
   const [shareOpen, setShareOpen] = useState(false);
 
   const { data: card, isLoading } = useQuery({
-    queryKey: ["card", id],
+    queryKey: ["card", id, user.id],
     queryFn: async () => {
-      const { data, error } = await supabase.from("cards").select("*").eq("id", id).single();
+      const { data, error } = await supabase.from("cards").select("*").eq("id", id).eq("user_id", user.id).maybeSingle();
       if (error) throw error;
       return data;
     },
