@@ -140,7 +140,7 @@ function Landing() {
       <Templates c={c} />
       <HowItWorks c={c} />
       <Features c={c} />
-      {lang === "en" ? <SeoSections authed={authed} /> : null}
+      <SeoSections authed={authed} />
       <Testimonials c={c} />
       <Pricing t={t} c={c} authed={authed} />
       <Faq c={c} />
