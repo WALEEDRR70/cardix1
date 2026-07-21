@@ -339,13 +339,13 @@ function PublicCard() {
 
         {isAuthed ? (
           <Link to="/dashboard" className="flex items-center gap-2" aria-label="Cardix">
-            <img src={logoAsset.url} alt="" className="h-7 w-7 object-contain" />
-            <span className="text-[13px] font-semibold tracking-[0.32em] text-foreground">CARDIX</span>
+            <img src={logoAsset.url} alt="" className="h-7 w-7 object-contain" style={{ filter: `drop-shadow(0 0 10px ${accent}88)` }} />
+            <span className="text-[13px] font-semibold tracking-[0.32em]" style={{ color: accent }}>CARDIX</span>
           </Link>
         ) : (
           <a href="/" className="flex items-center gap-2" aria-label="Cardix">
-            <img src={logoAsset.url} alt="" className="h-7 w-7 object-contain" />
-            <span className="text-[13px] font-semibold tracking-[0.32em] text-foreground">CARDIX</span>
+            <img src={logoAsset.url} alt="" className="h-7 w-7 object-contain" style={{ filter: `drop-shadow(0 0 10px ${accent}88)` }} />
+            <span className="text-[13px] font-semibold tracking-[0.32em]" style={{ color: accent }}>CARDIX</span>
           </a>
         )}
 
