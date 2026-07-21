@@ -60,7 +60,7 @@ function Dashboard() {
                   to="/cards/$id"
                   params={{ id: primary.id }}
                   className="glass absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground"
-                  aria-label={t.edit ?? "Edit"}
+                  aria-label="Edit"
                 >
                   <Pencil className="h-4 w-4" />
                 </Link>
