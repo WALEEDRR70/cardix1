@@ -28,16 +28,15 @@ function useIsAuthed() {
 import { SUPPORTED_LOCALES, SITE_ORIGIN, isSupportedLocale, DEFAULT_LOCALE, LOCALE_META } from "@/i18n/config";
 import { getLandingSeo } from "@/i18n/landing-seo";
 import { getLandingCopy, type LandingCopy } from "@/i18n/landing";
-import { SeoSections, seoFaqItems } from "@/components/landing/SeoSections";
+import { SeoSections, getSeoFaqItems } from "@/components/landing/SeoSections";
 
 export const Route = createFileRoute("/$lang/")({
   head: ({ params }) => {
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}`;
     const seo = getLandingSeo(lang);
-    const isEn = lang === "en";
-    const scripts = isEn
-      ? [
+    const faqItems = getSeoFaqItems(lang);
+    const scripts = [
           {
             type: "application/ld+json",
             children: JSON.stringify({
@@ -68,7 +67,8 @@ export const Route = createFileRoute("/$lang/")({
             children: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "FAQPage",
-              mainEntity: seoFaqItems.map((f) => ({
+              inLanguage: lang,
+              mainEntity: faqItems.map((f) => ({
                 "@type": "Question",
                 name: f.q,
                 acceptedAnswer: { "@type": "Answer", text: f.a },
@@ -85,8 +85,7 @@ export const Route = createFileRoute("/$lang/")({
               ],
             }),
           },
-        ]
-      : undefined;
+        ];
     return {
       meta: [
         { title: seo.title },
@@ -141,7 +140,7 @@ function Landing() {
       <Templates c={c} />
       <HowItWorks c={c} />
       <Features c={c} />
-      {lang === "en" ? <SeoSections authed={authed} /> : null}
+      <SeoSections authed={authed} />
       <Testimonials c={c} />
       <Pricing t={t} c={c} authed={authed} />
       <Faq c={c} />
