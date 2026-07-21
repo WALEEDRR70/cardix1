@@ -220,7 +220,7 @@ function Nav({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"
             <Link to="/auth" className="hidden md:inline-flex text-sm text-muted-foreground hover:text-foreground px-3 py-2">{t.signIn}</Link>
           ) : null}
           <Link
-            to={authed ? "/dashboard" : "/auth"}
+            to={authed === false ? "/auth" : "/dashboard"}
             className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold text-accent-foreground shadow-glow transition active:scale-[0.98]"
             style={{ background: "var(--gradient-gold)" }}
           >
@@ -269,7 +269,7 @@ function Hero({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Link to={authed ? "/dashboard" : "/auth"}
+            <Link to={authed === false ? "/auth" : "/dashboard"}
               className="group inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-glow transition active:scale-[0.98]"
               style={{ background: "var(--gradient-gold)" }}>
               {t.getStarted}
@@ -574,7 +574,7 @@ function Pricing({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy[
                 ))}
               </ul>
               <Link
-                to={authed ? "/dashboard" : "/auth"}
+                to={authed === false ? "/auth" : "/dashboard"}
                 className={
                   "mt-8 inline-flex items-center justify-center rounded-full py-3 text-sm font-semibold transition active:scale-[0.98] " +
                   (p.primary
@@ -644,7 +644,7 @@ function FinalCta({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy
               </h2>
               <p className="mt-4 max-w-lg text-base text-muted-foreground lg:text-lg">{c.ctaDesc}</p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link to={authed ? "/dashboard" : "/auth"} className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-glow"
+                <Link to={authed === false ? "/auth" : "/dashboard"} className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-glow"
                   style={{ background: "var(--gradient-gold)" }}>
                   {t.getStarted}
                   <ArrowRight className="h-4 w-4 rtl:rotate-180" />
