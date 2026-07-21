@@ -98,11 +98,15 @@ function Vault() {
                 key={c.id}
                 role="link"
                 tabIndex={0}
-                onClick={() => navigate({ to: "/vault/$id", params: { id: c.id } })}
+                onClick={() => {
+                  if (c.source_card?.slug) navigate({ to: "/c/$slug", params: { slug: c.source_card.slug } });
+                  else navigate({ to: "/vault/$id", params: { id: c.id } });
+                }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
-                    navigate({ to: "/vault/$id", params: { id: c.id } });
+                    if (c.source_card?.slug) navigate({ to: "/c/$slug", params: { slug: c.source_card.slug } });
+                    else navigate({ to: "/vault/$id", params: { id: c.id } });
                   }
                 }}
                 className="glass card-lift group block cursor-pointer overflow-hidden rounded-2xl p-3 lg:p-4"
