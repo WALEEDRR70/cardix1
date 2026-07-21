@@ -76,6 +76,13 @@ function Dashboard() {
                 >
                   <Pencil className="h-4 w-4" />
                 </Link>
+                <button
+                  onClick={() => setQrSlug(primary.slug)}
+                  className="glass absolute right-3 top-14 grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground"
+                  aria-label="QR"
+                >
+                  <QrCode className="h-4 w-4" />
+                </button>
               </div>
             ) : (
               <EmptyHome t={t} />
