@@ -45,7 +45,7 @@ function Dashboard() {
 
   return (
     <MobileShell topBar={<PageHeader title={t.brand} subtitle={user.email ?? undefined} right={<ThemeToggle compact />} />}>
-      <div className="px-5 lg:px-8">
+      <div className="px-4 lg:px-8">
         {/* Hero row */}
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
           {/* Featured card */}
@@ -90,29 +90,30 @@ function Dashboard() {
               <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground lg:text-base lg:tracking-normal lg:normal-case lg:text-foreground">{t.myCards}</h2>
               <span className="text-[11px] text-muted-foreground">{cards.length}</span>
             </div>
-            <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-2 lg:gap-3 lg:grid-cols-2 xl:grid-cols-3">
               {cards.slice(1).map((c) => (
-                <div key={c.id} className="glass card-lift group flex items-center gap-3 rounded-2xl p-3 lg:p-4">
-                  <Link to="/cards/$id" params={{ id: c.id }} className="grid h-14 w-24 shrink-0 overflow-hidden rounded-xl lg:h-16 lg:w-28">
+                <div key={c.id} className="glass card-lift group flex items-center gap-3 rounded-2xl p-2.5 lg:p-4">
+                  <Link to="/cards/$id" params={{ id: c.id }} className="grid h-12 w-20 shrink-0 overflow-hidden rounded-lg lg:h-16 lg:w-28">
                     <MiniCard card={c} />
                   </Link>
                   <Link to="/cards/$id" params={{ id: c.id }} className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-semibold">{c.name}</p>
-                    <p className="truncate text-xs text-muted-foreground">{c.title || c.company || "/c/" + c.slug}</p>
-                    <p className="mt-1 flex items-center gap-1 text-[10px] text-muted-foreground">
+                    <p className="truncate text-[13px] font-semibold lg:text-sm">{c.name}</p>
+                    <p className="truncate text-[11px] text-muted-foreground lg:text-xs">{c.title || c.company || "/c/" + c.slug}</p>
+                    <p className="mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground">
                       <Eye className="h-3 w-3" /> {c.view_count ?? 0}
                     </p>
                   </Link>
                   <button
                     onClick={() => del(c.id)}
-                    className="grid h-9 w-9 place-items-center rounded-full text-muted-foreground opacity-0 transition group-hover:opacity-100 hover:bg-destructive/10 hover:text-destructive"
+                    className="grid h-8 w-8 place-items-center rounded-full text-muted-foreground opacity-0 transition group-hover:opacity-100 hover:bg-destructive/10 hover:text-destructive"
                     aria-label={t.delete}
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="h-3.5 w-3.5" />
                   </button>
                 </div>
               ))}
             </div>
+
           </section>
         )}
       </div>
@@ -144,14 +145,15 @@ function EmptyHome({ t }: { t: ReturnType<typeof useI18n>["t"] }) {
 
 function StatTile({ label, value, icon }: { label: string; value: number | string; icon?: React.ReactNode }) {
   return (
-    <div className="glass rounded-2xl p-3">
-      <div className="flex items-center gap-1 text-[10px] uppercase tracking-wider text-muted-foreground">
+    <div className="glass rounded-2xl p-2.5 lg:p-3">
+      <div className="flex items-center gap-1 text-[9px] uppercase tracking-wider text-muted-foreground lg:text-[10px]">
         {icon} {label}
       </div>
-      <p className="mt-1 text-2xl font-semibold tracking-tight">{value}</p>
+      <p className="mt-0.5 text-xl font-semibold tracking-tight lg:text-2xl">{value}</p>
     </div>
   );
 }
+
 
 function MiniCard({ card }: { card: { name: string; template?: string | null; accent_color: string; title?: string | null } }) {
   return <CardPreview card={{ ...card, accent_color: card.accent_color }} size="sm" />;
