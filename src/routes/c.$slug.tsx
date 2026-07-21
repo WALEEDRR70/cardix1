@@ -568,7 +568,7 @@ function PublicCard() {
             <UserPlus className="h-4 w-4" /> {t.saveContact}
           </button>
           <button
-            onClick={saveToVault}
+            onClick={openSaveDialog}
             disabled={saved || savingCard}
             aria-label={t.saveToVault}
             className="glass pointer-events-auto grid h-[52px] w-[52px] shrink-0 place-items-center rounded-full disabled:opacity-60"
