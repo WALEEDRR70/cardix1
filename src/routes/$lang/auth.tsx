@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { useI18n } from "@/lib/i18n";
-import { LangToggle } from "@/components/LangToggle";
+import { LocaleSwitcher } from "@/components/LangToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { toast } from "sonner";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
@@ -76,7 +76,7 @@ function AuthPage() {
         </Link>
         <div className="flex items-center gap-2">
           <ThemeToggle compact />
-          <LangToggle compact />
+          <LocaleSwitcher compact />
         </div>
       </header>
 
