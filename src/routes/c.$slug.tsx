@@ -549,8 +549,29 @@ function PublicCard() {
           </section>
         </div>
 
+        {/* Save contact CTA (inline) */}
+        <div className="mt-10 flex w-full max-w-[560px] items-center gap-2 self-center px-2">
+          <button
+            onClick={vcard}
+            className="flex flex-1 items-center justify-center gap-2 rounded-full py-4 text-[15px] font-semibold transition hover:scale-[1.01]"
+            style={{ background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, boxShadow: `0 14px 40px -10px ${accent}aa`, color: accentText }}
+          >
+            <UserPlus className="h-4 w-4" /> {t.saveContact}
+          </button>
+          {isAuthed && (
+            <button
+              onClick={saveToVault}
+              disabled={saved || savingCard}
+              aria-label={t.saveToVault}
+              className="glass grid h-[52px] w-[52px] shrink-0 place-items-center rounded-full disabled:opacity-60"
+            >
+              {saved ? <Check className="h-5 w-5" /> : <BookmarkPlus className="h-5 w-5" />}
+            </button>
+          )}
+        </div>
+
         {/* Footer */}
-        <footer className="mt-14 flex flex-col items-center gap-4">
+        <footer className="mt-10 flex flex-col items-center gap-4">
           {isOwner && (
             <div className="flex items-center gap-2">
               <IconOnlyAction icon={Share2} label={t.share} onClick={nativeShare} />
@@ -558,7 +579,7 @@ function PublicCard() {
               <IconOnlyAction icon={Maximize2} label={t.expand} onClick={() => setQrOpen(true)} />
             </div>
           )}
-          <div className="flex items-center justify-center gap-2">
+          <div className="flex items-center justify-center gap-2 pb-[calc(env(safe-area-inset-bottom)+96px)] lg:pb-6">
             <img src={logoAsset.url} alt="" className="h-4 w-4 opacity-70" />
             <a
               href="/"
@@ -571,30 +592,6 @@ function PublicCard() {
 
       </main>
 
-      {/* Sticky save-contact CTA */}
-      <div className={"pointer-events-none fixed inset-x-0 z-30 " + (isAuthed ? "bottom-[calc(env(safe-area-inset-bottom)+112px)] lg:bottom-0" : "bottom-0")}>
-        <div
-          className="pointer-events-none mx-auto flex w-full max-w-[560px] items-center gap-2 px-4 pb-[calc(env(safe-area-inset-bottom)+14px)] pt-8"
-          style={{ background: "linear-gradient(to top, var(--background) 60%, transparent)" }}
-        >
-          <button
-            onClick={vcard}
-            className="pointer-events-auto flex flex-1 items-center justify-center gap-2 rounded-full py-4 text-[15px] font-semibold transition hover:scale-[1.01]"
-            style={{ background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, boxShadow: `0 14px 40px -10px ${accent}aa`, color: accentText }}
-
-          >
-            <UserPlus className="h-4 w-4" /> {t.saveContact}
-          </button>
-          <button
-            onClick={saveToVault}
-            disabled={saved || savingCard}
-            aria-label={t.saveToVault}
-            className="glass pointer-events-auto grid h-[52px] w-[52px] shrink-0 place-items-center rounded-full disabled:opacity-60"
-          >
-            {saved ? <Check className="h-5 w-5" /> : <BookmarkPlus className="h-5 w-5" />}
-          </button>
-        </div>
-      </div>
 
       {/* QR modal */}
       {qrOpen && (
