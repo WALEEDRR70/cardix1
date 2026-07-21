@@ -25,19 +25,37 @@ function useIsAuthed() {
 }
 
 
+import { SUPPORTED_LOCALES, SITE_ORIGIN, isSupportedLocale, DEFAULT_LOCALE } from "@/i18n/config";
+
 export const Route = createFileRoute("/$lang/")({
-  head: () => ({
-    meta: [
-      { title: "Cardix — Premium digital business cards" },
-      { name: "description", content: "Cardix is a premium SaaS for digital business cards. Design, share via QR / NFC / link, scan paper cards with AI, and track analytics." },
-      { property: "og:title", content: "Cardix — Premium digital business cards" },
-      { property: "og:description", content: "Cardix is a premium SaaS for digital business cards. Design, share via QR / NFC / link, scan paper cards with AI, and track analytics." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: ({ params }) => {
+    const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
+    const url = `${SITE_ORIGIN}/${lang}`;
+    return {
+      meta: [
+        { title: "Cardix — Premium digital business cards" },
+        { name: "description", content: "Cardix is a premium SaaS for digital business cards. Design, share via QR / NFC / link, scan paper cards with AI, and track analytics." },
+        { property: "og:title", content: "Cardix — Premium digital business cards" },
+        { property: "og:description", content: "Cardix is a premium SaaS for digital business cards. Design, share via QR / NFC / link, scan paper cards with AI, and track analytics." },
+        { property: "og:type", content: "website" },
+        { property: "og:url", content: url },
+        { property: "og:locale", content: lang },
+        { name: "twitter:card", content: "summary_large_image" },
+      ],
+      links: [
+        { rel: "canonical", href: url },
+        ...SUPPORTED_LOCALES.map((l) => ({
+          rel: "alternate",
+          hrefLang: l,
+          href: `${SITE_ORIGIN}/${l}`,
+        })),
+        { rel: "alternate", hrefLang: "x-default", href: `${SITE_ORIGIN}/en` },
+      ],
+    };
+  },
   component: Landing,
 });
+
 
 // -------- Local bilingual copy (keeps global i18n dict small) --------
 const copy = {
