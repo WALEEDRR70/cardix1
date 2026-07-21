@@ -1,5 +1,6 @@
 import { Phone, Mail, Globe, MessageCircle, MapPin, Briefcase } from "lucide-react";
 import { SOCIALS_BY_ID } from "@/lib/socials";
+import { useI18n } from "@/lib/i18n";
 
 export interface CardData {
   name: string;
@@ -102,6 +103,7 @@ function Avatar({ card, ring, fallbackBg, size = 72 }: { card: CardData; ring: s
 type Variant = "dark" | "light";
 
 function CardBody({ card, variant, accent, brand }: { card: CardData; variant: Variant; accent: string; brand?: string }) {
+  const { t } = useI18n();
   const isDark = variant === "dark";
   const nameCls = isDark ? "text-white" : "text-black";
   const titleCls = isDark ? "text-white/85" : "text-black/75";
@@ -121,7 +123,7 @@ function CardBody({ card, variant, accent, brand }: { card: CardData; variant: V
         <Avatar card={card} ring={ring} fallbackBg={`linear-gradient(135deg, ${accent}, ${isDark ? "#111" : "#ddd"})`} size={64} />
         <div className="min-w-0 flex-1">
           <p className={`truncate text-[17px] font-semibold leading-tight ${nameCls}`}>
-            {card.name || "Your Name"}
+            {card.name || t.yourName}
           </p>
           {card.title && (
             <p className={`mt-0.5 truncate text-[11.5px] leading-tight ${titleCls}`}>{card.title}</p>

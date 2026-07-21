@@ -3,6 +3,7 @@ import { SUPPORTED_LOCALES, LOCALE_META, DEFAULT_LOCALE, isSupportedLocale, type
 import { Globe, Check } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useI18n } from "@/lib/i18n";
 
 
 /**
@@ -10,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
  * On click cycles: en → ar → en. Use <LocaleSwitcher /> for the full picker.
  */
 export function LangToggle({ compact = false }: { compact?: boolean }) {
+  const { t } = useI18n();
   const params = useParams({ strict: false }) as { lang?: string };
   const current: Locale = isSupportedLocale(params?.lang) ? params.lang : DEFAULT_LOCALE;
   const switchTo = useSwitchLocale();
@@ -17,7 +19,7 @@ export function LangToggle({ compact = false }: { compact?: boolean }) {
   return (
     <button
       onClick={() => switchTo(next)}
-      aria-label="Change language"
+      aria-label={t.changeLanguage}
       className={
         compact
           ? "grid h-9 w-9 place-items-center rounded-full border border-border bg-card text-xs font-semibold text-muted-foreground hover:text-foreground"
@@ -34,6 +36,7 @@ export function LangToggle({ compact = false }: { compact?: boolean }) {
  * Navigates to the same path under the chosen locale.
  */
 export function LocaleSwitcher({ compact = false }: { compact?: boolean }) {
+  const { t } = useI18n();
   const params = useParams({ strict: false }) as { lang?: string };
   const current: Locale = isSupportedLocale(params?.lang) ? params.lang : DEFAULT_LOCALE;
   const switchTo = useSwitchLocale();
@@ -53,7 +56,7 @@ export function LocaleSwitcher({ compact = false }: { compact?: boolean }) {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((v) => !v)}
-        aria-label="Change language"
+        aria-label={t.changeLanguage}
         aria-expanded={open}
         className={
           compact

@@ -482,6 +482,7 @@ function StatTile({ label, value, icon }: { label: string; value: number | strin
 }
 
 function CardActionsMenu({ onEdit, onQr, onDelete }: { onEdit: () => void; onQr: () => void; onDelete: () => void }) {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   return (
     <div className="absolute end-3 top-3 z-20" onClick={(e) => e.stopPropagation()}>
@@ -515,7 +516,7 @@ function CardActionsMenu({ onEdit, onQr, onDelete }: { onEdit: () => void; onQr:
             onClick={(e) => { e.stopPropagation(); setOpen(false); onDelete(); }}
             className="flex items-center gap-2 rounded-xl px-3 py-2 text-[12px] text-destructive transition hover:bg-destructive/15"
           >
-            <Trash2 className="h-3.5 w-3.5" /> <span>Delete</span>
+            <Trash2 className="h-3.5 w-3.5" /> <span>{t.delete}</span>
           </button>
         </div>
       )}

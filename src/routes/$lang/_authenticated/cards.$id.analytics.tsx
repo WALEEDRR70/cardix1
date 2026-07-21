@@ -19,9 +19,10 @@ export const Route = createFileRoute("/$lang/_authenticated/cards/$id/analytics"
 });
 
 function NotFoundView() {
+  const { t } = useI18n();
   return (
     <div className="grid min-h-[100dvh] place-items-center px-6 text-center">
-      <p className="text-sm text-muted-foreground">Card not found.</p>
+      <p className="text-sm text-muted-foreground">{t.cardNotFound}</p>
     </div>
   );
 }

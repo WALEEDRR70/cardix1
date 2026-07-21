@@ -61,7 +61,7 @@ export function CardForm({
       const { data: signed } = await supabase.storage.from("avatars").createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
       if (signed?.signedUrl) setData((d) => ({ ...d, avatar_url: signed.signedUrl }));
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "Upload failed");
+      toast.error(e instanceof Error ? e.message : t.uploadFailed);
     } finally {
       setUploading(false);
     }
@@ -74,7 +74,7 @@ export function CardForm({
       const out = await genBio({ data: { name: data.name, title: data.title, company: data.company, lang } });
       if (out.bio) setData((d) => ({ ...d, bio: out.bio }));
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "AI error");
+      toast.error(e instanceof Error ? e.message : t.aiError);
     } finally {
       setGenBusy(false);
     }
@@ -150,7 +150,7 @@ export function CardForm({
           ))}
           <label
             className="relative grid h-8 w-8 cursor-pointer place-items-center overflow-hidden rounded-full border border-dashed border-border text-[10px] text-muted-foreground hover:border-accent hover:text-foreground"
-            title="Custom color"
+            title={t.customColor}
           >
             <span aria-hidden>+</span>
             <input
@@ -276,7 +276,7 @@ export function CardForm({
               <CardPreview card={data} size="lg" />
             </div>
           </div>
-          <p className="text-center text-[11px] uppercase tracking-[0.25em] text-muted-foreground">Live preview</p>
+          <p className="text-center text-[11px] uppercase tracking-[0.25em] text-muted-foreground">{t.livePreview}</p>
         </div>
       </aside>
     </div>
@@ -312,6 +312,7 @@ function SocialsEditor({
   value: Record<string, string>;
   onChange: (next: Record<string, string>) => void;
 }) {
+  const { t } = useI18n();
   const [picker, setPicker] = useState(false);
   const active = SOCIALS.filter((s) => s.id in value);
   const remaining = SOCIALS.filter((s) => !(s.id in value));
@@ -384,7 +385,7 @@ function SocialsEditor({
                 type="button"
                 onClick={() => remove(s.id)}
                 className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                aria-label="Remove"
+                aria-label={t.remove}
               >
                 <X className="h-3.5 w-3.5" />
               </button>

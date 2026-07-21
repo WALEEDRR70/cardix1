@@ -218,7 +218,7 @@ function ScanPage() {
                 <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl text-accent-foreground shadow-glow lg:h-20 lg:w-20" style={{ background: "var(--gradient-gold)" }}>
                   <Camera className="h-6 w-6 lg:h-9 lg:w-9" />
                 </div>
-                <p className="mt-3 max-w-[220px] text-xs text-muted-foreground lg:text-sm">Position the card inside the frame.</p>
+                <p className="mt-3 max-w-[220px] text-xs text-muted-foreground lg:text-sm">{t.positionCard}</p>
               </div>
             </div>
             <div className="mt-3 space-y-2 lg:mt-0 lg:space-y-3">
