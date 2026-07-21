@@ -5,7 +5,7 @@ import { useI18n } from "@/lib/i18n";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { CardPreview } from "@/components/CardPreview";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Eye, Sparkles, Trash2 } from "lucide-react";
+import { Eye, Sparkles, Trash2, Pencil } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -51,14 +51,20 @@ function Dashboard() {
           {/* Featured card */}
           <div className="order-1">
             {primary ? (
-              <Link to="/cards/$id" params={{ id: primary.id }} className="block">
-                <div className="relative">
-                  <div className="absolute -inset-8 rounded-[2.5rem] opacity-40 blur-2xl" style={{ background: "var(--gradient-mesh)" }} />
-                  <div className="relative flex justify-center lg:justify-start">
-                    <CardPreview card={primary} size="lg" />
-                  </div>
-                </div>
-              </Link>
+              <div className="relative">
+                <div className="absolute -inset-8 rounded-[2.5rem] opacity-40 blur-2xl" style={{ background: "var(--gradient-mesh)" }} />
+                <Link to="/c/$slug" params={{ slug: primary.slug }} className="relative flex justify-center lg:justify-start">
+                  <CardPreview card={primary} size="lg" />
+                </Link>
+                <Link
+                  to="/cards/$id"
+                  params={{ id: primary.id }}
+                  className="glass absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground"
+                  aria-label="Edit"
+                >
+                  <Pencil className="h-4 w-4" />
+                </Link>
+              </div>
             ) : (
               <EmptyHome t={t} />
             )}
@@ -93,15 +99,23 @@ function Dashboard() {
             <div className="grid gap-2 lg:gap-3 lg:grid-cols-2 xl:grid-cols-3">
               {cards.slice(1).map((c) => (
                 <div key={c.id} className="glass card-lift group flex items-center gap-3 rounded-2xl p-2.5 lg:p-4">
-                  <Link to="/cards/$id" params={{ id: c.id }} className="grid h-12 w-20 shrink-0 overflow-hidden rounded-lg lg:h-16 lg:w-28">
+                  <Link to="/c/$slug" params={{ slug: c.slug }} className="grid h-12 w-20 shrink-0 overflow-hidden rounded-lg lg:h-16 lg:w-28">
                     <MiniCard card={c} />
                   </Link>
-                  <Link to="/cards/$id" params={{ id: c.id }} className="min-w-0 flex-1">
+                  <Link to="/c/$slug" params={{ slug: c.slug }} className="min-w-0 flex-1">
                     <p className="truncate text-[13px] font-semibold lg:text-sm">{c.name}</p>
                     <p className="truncate text-[11px] text-muted-foreground lg:text-xs">{c.title || c.company || "/c/" + c.slug}</p>
                     <p className="mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground">
                       <Eye className="h-3 w-3" /> {c.view_count ?? 0}
                     </p>
+                  </Link>
+                  <Link
+                    to="/cards/$id"
+                    params={{ id: c.id }}
+                    className="grid h-8 w-8 place-items-center rounded-full text-muted-foreground hover:bg-accent/10 hover:text-foreground"
+                    aria-label="Edit"
+                  >
+                    <Pencil className="h-3.5 w-3.5" />
                   </Link>
                   <button
                     onClick={() => del(c.id)}
