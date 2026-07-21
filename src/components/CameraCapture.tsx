@@ -42,12 +42,8 @@ export function CameraCapture({ open, onClose, onCapture }: Props) {
           setReady(true);
         }
       } catch (e: unknown) {
-        const msg = e instanceof Error ? e.message : "Camera unavailable";
-        setError(
-          /permission|denied|notallowed/i.test(msg)
-            ? "Camera permission denied. Enable it in your browser settings, or use Upload instead."
-            : msg
-        );
+        const msg = e instanceof Error ? e.message : t.cameraUnavailable;
+        setError(msg);
       }
     })();
 
@@ -88,7 +84,7 @@ export function CameraCapture({ open, onClose, onCapture }: Props) {
           <button
             onClick={onClose}
             className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white backdrop-blur"
-            aria-label="Close"
+            aria-label={t.close}
           >
             <X className="h-5 w-5" />
           </button>
@@ -96,7 +92,7 @@ export function CameraCapture({ open, onClose, onCapture }: Props) {
           <button
             onClick={() => setFacing((f) => (f === "environment" ? "user" : "environment"))}
             className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white backdrop-blur"
-            aria-label="Flip camera"
+            aria-label={t.flipCamera}
           >
             <RotateCcw className="h-5 w-5" />
           </button>
@@ -139,7 +135,7 @@ export function CameraCapture({ open, onClose, onCapture }: Props) {
             onClick={shoot}
             disabled={!ready}
             className="grid h-20 w-20 place-items-center rounded-full bg-white text-black shadow-2xl transition active:scale-95 disabled:opacity-50"
-            aria-label="Capture"
+            aria-label={t.capture}
           >
             <span className="grid h-16 w-16 place-items-center rounded-full ring-2 ring-black/20">
               <Camera className="h-6 w-6" />

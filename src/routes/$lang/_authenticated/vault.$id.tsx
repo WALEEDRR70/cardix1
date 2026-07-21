@@ -69,7 +69,7 @@ function VaultDetail() {
   if (!card) {
     return (
       <MobileShell>
-        <div className="px-4 py-10 text-center text-sm text-muted-foreground">Loading…</div>
+        <div className="px-4 py-10 text-center text-sm text-muted-foreground">{t.loading}</div>
       </MobileShell>
     );
   }

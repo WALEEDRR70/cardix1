@@ -17,7 +17,7 @@ export function LangToggle({ compact = false }: { compact?: boolean }) {
   return (
     <button
       onClick={() => switchTo(next)}
-      aria-label="Change language"
+      aria-label={t.changeLanguage}
       className={
         compact
           ? "grid h-9 w-9 place-items-center rounded-full border border-border bg-card text-xs font-semibold text-muted-foreground hover:text-foreground"
@@ -53,7 +53,7 @@ export function LocaleSwitcher({ compact = false }: { compact?: boolean }) {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((v) => !v)}
-        aria-label="Change language"
+        aria-label={t.changeLanguage}
         aria-expanded={open}
         className={
           compact

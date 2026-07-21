@@ -121,7 +121,7 @@ function CardBody({ card, variant, accent, brand }: { card: CardData; variant: V
         <Avatar card={card} ring={ring} fallbackBg={`linear-gradient(135deg, ${accent}, ${isDark ? "#111" : "#ddd"})`} size={64} />
         <div className="min-w-0 flex-1">
           <p className={`truncate text-[17px] font-semibold leading-tight ${nameCls}`}>
-            {card.name || "Your Name"}
+            {card.name || t.yourName}
           </p>
           {card.title && (
             <p className={`mt-0.5 truncate text-[11.5px] leading-tight ${titleCls}`}>{card.title}</p>

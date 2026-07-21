@@ -47,7 +47,7 @@ export const Route = createFileRoute("/c/$slug")({
 function NotFoundView() {
   return (
     <div className="grid min-h-[100dvh] place-items-center bg-background">
-      <p className="text-sm text-muted-foreground">Card not found.</p>
+      <p className="text-sm text-muted-foreground">{t.cardNotFound}</p>
     </div>
   );
 }

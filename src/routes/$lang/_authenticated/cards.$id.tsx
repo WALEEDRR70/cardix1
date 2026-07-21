@@ -21,7 +21,7 @@ function NotFoundView() {
   return (
     <div className="grid min-h-[100dvh] place-items-center px-6 text-center">
       <div>
-        <p className="text-sm text-muted-foreground">Card not found.</p>
+        <p className="text-sm text-muted-foreground">{t.cardNotFound}</p>
         <Link to="/dashboard" className="mt-3 inline-block text-xs font-semibold text-primary">← Dashboard</Link>
       </div>
     </div>
@@ -44,7 +44,7 @@ function EditCard() {
     },
   });
 
-  if (isLoading) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">Loading…</div>;
+  if (isLoading) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">{t.loading}</div>;
   if (!card) return <NotFoundView />;
 
   const initial: CardFormData = {
