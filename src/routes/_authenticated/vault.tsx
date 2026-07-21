@@ -89,14 +89,6 @@ function Vault() {
                         {c.company && <p className="truncate text-[11px] text-muted-foreground/80">{c.company}</p>}
                       </div>
                       <button
-                        onClick={(e) => editNote(e, c.id, c.notes)}
-                        className="grid h-7 w-7 place-items-center rounded-full text-muted-foreground transition hover:bg-accent/10 hover:text-accent"
-                        aria-label={c.notes ? t.editNote : t.addNote}
-                        title={c.notes ? t.editNote : t.addNote}
-                      >
-                        <StickyNote className="h-3.5 w-3.5" />
-                      </button>
-                      <button
                         onClick={(e) => del(e, c.id)}
                         className="grid h-7 w-7 place-items-center rounded-full text-muted-foreground opacity-0 transition hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
                         aria-label={t.delete}
@@ -114,11 +106,16 @@ function Vault() {
                         </span>
                       )}
                     </div>
-                    {c.notes && (
-                      <p className="mt-2 line-clamp-2 rounded-lg bg-secondary/60 px-2 py-1 text-[11px] italic text-muted-foreground">
-                        {c.notes}
-                      </p>
-                    )}
+                    <button
+                      onClick={(e) => editNote(e, c.id, c.notes)}
+                      className="mt-2 flex w-full items-center gap-1.5 rounded-lg bg-secondary/60 px-2 py-1.5 text-start text-[11px] italic text-muted-foreground transition hover:bg-secondary"
+                      aria-label={c.notes ? t.editNote : t.addNote}
+                    >
+                      <StickyNote className="h-3 w-3 shrink-0 opacity-70" />
+                      <span className="line-clamp-1 flex-1">
+                        {c.notes || t.addNote}
+                      </span>
+                    </button>
                   </div>
                 </div>
               </Link>
