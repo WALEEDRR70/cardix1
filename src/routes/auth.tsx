@@ -69,7 +69,7 @@ function AuthPage() {
 
       <header className="safe-top relative z-10 flex items-center justify-between px-5 pb-2">
         <Link to="/" className="flex items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-xl text-sm font-black text-accent-foreground" style={{ background: "var(--gradient-gold)" }}>C</span>
+          <img src="/__l5e/assets-v1/81d568e3-5c85-4d6c-8c64-00c952a082a2/cardix-logo.svg" alt="" className="h-9 w-9 object-contain" />
           <span className="text-base font-semibold tracking-tight">{t.brand}</span>
         </Link>
         <div className="flex items-center gap-2">

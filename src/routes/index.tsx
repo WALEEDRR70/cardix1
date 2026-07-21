@@ -185,7 +185,7 @@ function Nav({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"
     <header className={"safe-top sticky top-0 z-40 w-full transition-all " + (scrolled ? "backdrop-blur-xl bg-background/70 border-b border-border/60" : "")}>
       <div className="mx-auto flex h-16 w-full max-w-[1440px] items-center justify-between px-5 lg:px-10">
         <Link to="/" className="flex items-center gap-2.5">
-          <span className="grid h-9 w-9 place-items-center rounded-xl text-sm font-black text-accent-foreground shadow-glow" style={{ background: "var(--gradient-gold)" }}>C</span>
+          <img src="/__l5e/assets-v1/81d568e3-5c85-4d6c-8c64-00c952a082a2/cardix-logo.svg" alt="" className="h-9 w-9 object-contain" />
           <span className="text-base font-semibold tracking-tight">{t.brand}</span>
         </Link>
 
@@ -654,7 +654,7 @@ function Footer({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["
     <footer className="border-t border-border/60">
       <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center justify-between gap-5 px-5 py-10 lg:flex-row lg:px-10">
         <div className="flex items-center gap-2.5">
-          <span className="grid h-8 w-8 place-items-center rounded-lg text-xs font-black text-accent-foreground" style={{ background: "var(--gradient-gold)" }}>C</span>
+          <img src="/__l5e/assets-v1/81d568e3-5c85-4d6c-8c64-00c952a082a2/cardix-logo.svg" alt="" className="h-8 w-8 object-contain" />
           <span className="text-sm font-semibold">{t.brand}</span>
           <span className="text-xs text-muted-foreground">· {c.footerTag}</span>
         </div>
