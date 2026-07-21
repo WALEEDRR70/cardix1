@@ -1,4 +1,5 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { Link, useNavigate } from "@/lib/nav";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
@@ -8,7 +9,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { toast } from "sonner";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 
-export const Route = createFileRoute("/auth")({
+export const Route = createFileRoute("/$lang/auth")({
   head: () => ({
     meta: [
       { title: "Sign in — Cardix" },

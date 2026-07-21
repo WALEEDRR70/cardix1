@@ -1,11 +1,12 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { useNavigate } from "@/lib/nav";
 import { supabase } from "@/integrations/supabase/client";
 import { CardForm, type CardFormData } from "@/components/CardForm";
 import { useI18n } from "@/lib/i18n";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/cards/new")({
+export const Route = createFileRoute("/$lang/_authenticated/cards/new")({
   head: () => ({ meta: [{ title: "New card — Cardix" }] }),
   component: NewCard,
 });

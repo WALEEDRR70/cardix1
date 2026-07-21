@@ -1,4 +1,5 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { Link, useNavigate } from "@/lib/nav";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
@@ -13,7 +14,7 @@ import { QRCodeSVG } from "qrcode.react";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 
 
-export const Route = createFileRoute("/_authenticated/dashboard")({
+export const Route = createFileRoute("/$lang/_authenticated/dashboard")({
   head: () => ({
     meta: [
       { title: "Home — Cardix" },

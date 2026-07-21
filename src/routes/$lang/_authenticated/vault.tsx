@@ -1,4 +1,5 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { useNavigate } from "@/lib/nav";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
@@ -10,7 +11,7 @@ import { NoteDialog } from "@/components/NoteDialog";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
 import { CardPreview } from "@/components/CardPreview";
 
-export const Route = createFileRoute("/_authenticated/vault")({
+export const Route = createFileRoute("/$lang/_authenticated/vault")({
   head: () => ({
     meta: [
       { title: "Vault — Cardix" },

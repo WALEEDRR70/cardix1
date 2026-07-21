@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { Link } from "@/lib/nav";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { CardForm, type CardFormData } from "@/components/CardForm";
@@ -9,7 +10,7 @@ import { toast } from "sonner";
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 
-export const Route = createFileRoute("/_authenticated/cards/$id")({
+export const Route = createFileRoute("/$lang/_authenticated/cards/$id")({
   head: () => ({ meta: [{ title: "Edit card — Cardix" }] }),
   component: EditCard,
   errorComponent: () => <NotFoundView />,
