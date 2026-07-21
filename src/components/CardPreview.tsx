@@ -109,7 +109,8 @@ function CardBody({ card, variant, accent, brand }: { card: CardData; variant: V
   const chipCls = isDark ? "bg-white/10 text-white/90 ring-white/10" : "bg-black/5 text-black/80 ring-black/5";
   const ring = isDark ? "ring-white/25" : "ring-black/10";
 
-  const socialEntries = Object.entries(card.socials || {}).filter(([, v]) => v && v.trim());
+  const socialsObj = (card.socials && typeof card.socials === "object" && !Array.isArray(card.socials) ? card.socials : {}) as Record<string, string>;
+  const socialEntries = Object.entries(socialsObj).filter(([, v]) => typeof v === "string" && v.trim());
 
   return (
     <div className="relative flex h-full w-full flex-col p-4 sm:p-5">
