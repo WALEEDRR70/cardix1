@@ -34,9 +34,18 @@ function Vault() {
   const { data: cards } = useQuery({
     queryKey: ["saved_cards"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("saved_cards").select("*").order("created_at", { ascending: false });
+      const { data, error } = await supabase
+        .from("saved_cards")
+        .select("*, source_card:cards!saved_cards_source_card_id_fkey(slug)")
+        .order("created_at", { ascending: false });
       if (error) throw error;
-      return data;
+      type Row = {
+        id: string; name: string; title: string | null; company: string | null;
+        avatar_url: string | null; notes: string | null; phone: string | null;
+        email: string | null; website: string | null; source: string;
+        source_card: { slug: string } | null;
+      };
+      return (data ?? []) as unknown as Row[];
     },
   });
 
@@ -89,11 +98,15 @@ function Vault() {
                 key={c.id}
                 role="link"
                 tabIndex={0}
-                onClick={() => navigate({ to: "/vault/$id", params: { id: c.id } })}
+                onClick={() => {
+                  if (c.source_card?.slug) navigate({ to: "/c/$slug", params: { slug: c.source_card.slug } });
+                  else navigate({ to: "/vault/$id", params: { id: c.id } });
+                }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
-                    navigate({ to: "/vault/$id", params: { id: c.id } });
+                    if (c.source_card?.slug) navigate({ to: "/c/$slug", params: { slug: c.source_card.slug } });
+                    else navigate({ to: "/vault/$id", params: { id: c.id } });
                   }
                 }}
                 className="glass card-lift group block cursor-pointer overflow-hidden rounded-2xl p-3 lg:p-4"
