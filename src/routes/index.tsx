@@ -136,20 +136,21 @@ const demoCards = [
 function Landing() {
   const { t, lang } = useI18n();
   const c = copy[lang];
+  const authed = useIsAuthed();
 
   return (
     <div className="relative min-h-[100dvh] overflow-x-clip bg-background text-foreground">
       <BackgroundFx />
-      <Nav t={t} c={c} />
-      <Hero t={t} c={c} />
+      <Nav t={t} c={c} authed={authed} />
+      <Hero t={t} c={c} authed={authed} />
       <TrustStrip c={c} />
       <Templates c={c} />
       <HowItWorks c={c} />
       <Features c={c} />
       <Testimonials c={c} />
-      <Pricing t={t} c={c} />
+      <Pricing t={t} c={c} authed={authed} />
       <Faq c={c} />
-      <FinalCta t={t} c={c} />
+      <FinalCta t={t} c={c} authed={authed} />
       <Footer t={t} c={c} />
     </div>
   );
@@ -187,8 +188,7 @@ function BackgroundFx() {
 }
 
 /* ---------------- Nav ---------------- */
-function Nav({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"] }) {
-  const authed = useIsAuthed();
+function Nav({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"]; authed: boolean | null }) {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 8);
@@ -234,8 +234,7 @@ function Nav({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"
 }
 
 /* ---------------- Hero ---------------- */
-function Hero({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"] }) {
-  const authed = useIsAuthed();
+function Hero({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"]; authed: boolean | null }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [mx, setMx] = useState(0);
   const [my, setMy] = useState(0);
@@ -535,8 +534,7 @@ function Testimonials({ c }: { c: typeof copy["en"] }) {
 }
 
 /* ---------------- Pricing ---------------- */
-function Pricing({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"] }) {
-  const authed = useIsAuthed();
+function Pricing({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"]; authed: boolean | null }) {
   const plans = [
     { name: c.free, price: "0", feats: ["1 card", "QR sharing", "Basic analytics"], cta: c.getStartedFree, primary: false },
     { name: c.pro, price: "9", feats: ["Unlimited cards", "AI scanner", "NFC + custom slug", "30-day analytics"], cta: c.tryPro, primary: true },
@@ -628,8 +626,7 @@ function Faq({ c }: { c: typeof copy["en"] }) {
 }
 
 /* ---------------- Final CTA ---------------- */
-function FinalCta({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"] }) {
-  const authed = useIsAuthed();
+function FinalCta({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"]; authed: boolean | null }) {
   return (
     <section className="relative py-24 lg:py-32">
       <div className="mx-auto w-full max-w-[1280px] px-5 lg:px-10">
