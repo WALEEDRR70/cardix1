@@ -19,9 +19,11 @@ export interface CardFormData {
   email: string;
   website: string;
   address: string;
+  avatar_url: string;
   accent_color: string;
   is_published: boolean;
 }
+
 
 const ACCENTS = ["#D4AF37", "#111111", "#8B5CF6", "#0EA5E9", "#EF4444", "#10B981", "#F97316", "#EC4899"];
 
