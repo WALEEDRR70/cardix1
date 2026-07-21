@@ -246,6 +246,12 @@ function VaultDetail() {
           </section>
         </div>
       </div>
+      <ConfirmDeleteDialog
+        open={confirmOpen}
+        loading={deleting}
+        onOpenChange={setConfirmOpen}
+        onConfirm={() => { void confirmDelete(); }}
+      />
     </MobileShell>
   );
 }
