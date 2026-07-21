@@ -339,15 +339,46 @@ function PublicCard() {
 
         {isAuthed ? (
           <Link to="/dashboard" className="flex items-center gap-2" aria-label="Cardix">
-            <img src={logoAsset.url} alt="" className="h-7 w-7 object-contain" style={{ filter: `drop-shadow(0 0 10px ${accent}88)` }} />
+            <span
+              aria-hidden
+              className="inline-block h-7 w-7"
+              style={{
+                backgroundColor: accent,
+                WebkitMaskImage: `url(${logoAsset.url})`,
+                maskImage: `url(${logoAsset.url})`,
+                WebkitMaskRepeat: "no-repeat",
+                maskRepeat: "no-repeat",
+                WebkitMaskPosition: "center",
+                maskPosition: "center",
+                WebkitMaskSize: "contain",
+                maskSize: "contain",
+                filter: `drop-shadow(0 0 10px ${accent}88)`,
+              }}
+            />
             <span className="text-[13px] font-semibold tracking-[0.32em]" style={{ color: accent }}>CARDIX</span>
           </Link>
         ) : (
           <a href="/" className="flex items-center gap-2" aria-label="Cardix">
-            <img src={logoAsset.url} alt="" className="h-7 w-7 object-contain" style={{ filter: `drop-shadow(0 0 10px ${accent}88)` }} />
+            <span
+              aria-hidden
+              className="inline-block h-7 w-7"
+              style={{
+                backgroundColor: accent,
+                WebkitMaskImage: `url(${logoAsset.url})`,
+                maskImage: `url(${logoAsset.url})`,
+                WebkitMaskRepeat: "no-repeat",
+                maskRepeat: "no-repeat",
+                WebkitMaskPosition: "center",
+                maskPosition: "center",
+                WebkitMaskSize: "contain",
+                maskSize: "contain",
+                filter: `drop-shadow(0 0 10px ${accent}88)`,
+              }}
+            />
             <span className="text-[13px] font-semibold tracking-[0.32em]" style={{ color: accent }}>CARDIX</span>
           </a>
         )}
+
 
         <button
           className="glass grid h-11 w-11 place-items-center rounded-full text-muted-foreground transition hover:text-foreground"
