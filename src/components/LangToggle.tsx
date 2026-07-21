@@ -101,6 +101,12 @@ export function useSwitchLocale() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   return (next: Locale) => {
     try { localStorage.setItem("cardix_lang", next); } catch {}
+    // Persist to profile (fire and forget) so it follows the user across devices.
+    supabase.auth.getUser().then(({ data }) => {
+      const uid = data.user?.id;
+      if (!uid) return;
+      supabase.from("profiles").update({ preferred_lang: next }).eq("id", uid).then(() => {});
+    });
     const currentLang = isSupportedLocale(params?.lang) ? params.lang : null;
     let target: string;
     if (currentLang) {
@@ -113,3 +119,4 @@ export function useSwitchLocale() {
     nav({ to: target, replace: false });
   };
 }
+
