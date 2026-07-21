@@ -246,8 +246,6 @@ function PublicCard() {
     toast.success(t.linkCopied);
   }
 
-  const nfcAbortRef = useRef<AbortController | null>(null);
-  const nfcTickRef = useRef<number | null>(null);
   const NFC_DURATION = 30;
   async function writeNfc() {
     if (nfcState === "writing") {
