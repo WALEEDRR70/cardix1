@@ -1,9 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
-import { Trash2, Phone, Mail, Globe } from "lucide-react";
+import { Trash2, Phone, Mail, Globe, StickyNote } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/vault")({
@@ -33,12 +33,25 @@ function Vault() {
     },
   });
 
-  async function del(id: string) {
+  async function del(e: React.MouseEvent, id: string) {
+    e.preventDefault();
+    e.stopPropagation();
     if (!confirm("Delete?")) return;
     const { error } = await supabase.from("saved_cards").delete().eq("id", id);
     if (error) return toast.error(error.message);
     qc.invalidateQueries({ queryKey: ["saved_cards"] });
     toast.success("Deleted");
+  }
+
+  async function editNote(e: React.MouseEvent, id: string, current: string | null) {
+    e.preventDefault();
+    e.stopPropagation();
+    const next = window.prompt(t.notePlaceholder, current ?? "");
+    if (next === null) return;
+    const { error } = await supabase.from("saved_cards").update({ notes: next }).eq("id", id);
+    if (error) return toast.error(error.message);
+    qc.invalidateQueries({ queryKey: ["saved_cards"] });
+    toast.success(t.saveNote);
   }
 
   return (
@@ -50,56 +63,77 @@ function Vault() {
           </div>
         ) : (
           <div className="grid gap-2 lg:gap-3 lg:grid-cols-2 xl:grid-cols-3">
-
             {cards.map((c) => (
-              <div key={c.id} className="glass card-lift group rounded-2xl p-3 lg:p-4">
-                <div className="flex items-start gap-2.5">
+              <Link
+                key={c.id}
+                to="/vault/$id"
+                params={{ id: c.id }}
+                className="glass card-lift group block rounded-2xl p-3 lg:p-4"
+              >
+                <div className="flex items-start gap-3">
                   <div
-                    className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-secondary bg-cover bg-center text-[11px] font-semibold lg:h-12 lg:w-12 lg:text-sm"
+                    className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-secondary bg-cover bg-center text-sm font-semibold ring-1 ring-border/60 lg:h-24 lg:w-24"
                     style={{ backgroundImage: c.avatar_url ? `url(${c.avatar_url})` : undefined }}
                   >
-                    {!c.avatar_url && c.name.slice(0, 2).toUpperCase()}
+                    {!c.avatar_url && (
+                      <div className="grid h-full w-full place-items-center">
+                        {c.name.slice(0, 2).toUpperCase()}
+                      </div>
+                    )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-[13px] font-semibold lg:text-sm">{c.name}</p>
-                    {c.title && <p className="truncate text-[11px] text-muted-foreground lg:text-xs">{c.title}</p>}
-                    {c.company && <p className="truncate text-[10px] text-muted-foreground lg:text-[11px]">{c.company}</p>}
+                    <div className="flex items-start gap-1.5">
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-[14px] font-semibold lg:text-[15px]">{c.name}</p>
+                        {c.title && <p className="truncate text-[12px] text-muted-foreground">{c.title}</p>}
+                        {c.company && <p className="truncate text-[11px] text-muted-foreground/80">{c.company}</p>}
+                      </div>
+                      <button
+                        onClick={(e) => editNote(e, c.id, c.notes)}
+                        className="grid h-7 w-7 place-items-center rounded-full text-muted-foreground transition hover:bg-accent/10 hover:text-accent"
+                        aria-label={c.notes ? t.editNote : t.addNote}
+                        title={c.notes ? t.editNote : t.addNote}
+                      >
+                        <StickyNote className="h-3.5 w-3.5" />
+                      </button>
+                      <button
+                        onClick={(e) => del(e, c.id)}
+                        className="grid h-7 w-7 place-items-center rounded-full text-muted-foreground opacity-0 transition hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
+                        aria-label={t.delete}
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {c.phone && <QuickPill icon={<Phone className="h-3 w-3" />} label={t.call} />}
+                      {c.email && <QuickPill icon={<Mail className="h-3 w-3" />} label={t.email} />}
+                      {c.website && <QuickPill icon={<Globe className="h-3 w-3" />} label={t.website} />}
+                      {c.source === "scan" && (
+                        <span className="rounded-full bg-accent/15 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-accent">
+                          Scanned
+                        </span>
+                      )}
+                    </div>
+                    {c.notes && (
+                      <p className="mt-2 line-clamp-2 rounded-lg bg-secondary/60 px-2 py-1 text-[11px] italic text-muted-foreground">
+                        {c.notes}
+                      </p>
+                    )}
                   </div>
-                  <button
-                    onClick={() => del(c.id)}
-                    className="grid h-7 w-7 place-items-center rounded-full text-muted-foreground opacity-0 transition hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
-                    aria-label={t.delete}
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </button>
                 </div>
-                <div className="mt-2.5 flex flex-wrap gap-1.5">
-                  {c.phone && <QuickPill href={`tel:${c.phone}`} icon={<Phone className="h-3 w-3" />} label={t.call} />}
-                  {c.email && <QuickPill href={`mailto:${c.email}`} icon={<Mail className="h-3 w-3" />} label={t.email} />}
-                  {c.website && (
-                    <QuickPill href={c.website.startsWith("http") ? c.website : `https://${c.website}`} icon={<Globe className="h-3 w-3" />} label={t.website} />
-                  )}
-                  {c.source === "scan" && (
-                    <span className="rounded-full bg-accent/15 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-accent">
-                      Scanned
-                    </span>
-                  )}
-                </div>
-              </div>
+              </Link>
             ))}
           </div>
-
         )}
       </div>
     </MobileShell>
   );
 }
 
-function QuickPill({ href, icon, label }: { href: string; icon: React.ReactNode; label: string }) {
+function QuickPill({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
-    <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer" className="inline-flex items-center gap-1 rounded-full bg-secondary/80 px-2 py-0.5 text-[10px] font-medium hover:bg-muted">
+    <span className="inline-flex items-center gap-1 rounded-full bg-secondary/80 px-2 py-0.5 text-[10px] font-medium">
       {icon} {label}
-    </a>
-
+    </span>
   );
 }
