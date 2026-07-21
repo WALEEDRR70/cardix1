@@ -20,14 +20,15 @@ export function MobileShell({
         {/* Ambient background for desktop */}
         <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 hidden opacity-60 lg:block" style={{ backgroundImage: "var(--gradient-mesh)" }} />
 
-        <div className="mx-auto w-full max-w-[520px] lg:max-w-[1200px]">
+        <div className="mx-auto w-full max-w-[440px] lg:max-w-[1200px]">
           {topBar}
         </div>
         <main className={"flex-1 " + (hideNav ? "" : "pb-nav lg:pb-16")}>
-          <div className="mx-auto w-full max-w-[520px] lg:max-w-[1200px]">
+          <div className="mx-auto w-full max-w-[440px] lg:max-w-[1200px]">
             {children}
           </div>
         </main>
+
         {!hideNav && <MobileBottomNav />}
       </div>
     </div>
@@ -105,21 +106,21 @@ function MobileBottomNav() {
     <div className="lg:hidden">
       <Link
         to="/cards/new"
-        className="fixed bottom-[calc(env(safe-area-inset-bottom)+3.75rem)] left-1/2 z-30 -translate-x-1/2 grid h-16 w-16 place-items-center rounded-full text-accent-foreground shadow-luxe transition active:scale-95"
+        className="fixed bottom-[calc(env(safe-area-inset-bottom)+3.25rem)] left-1/2 z-30 -translate-x-1/2 grid h-14 w-14 place-items-center rounded-full text-accent-foreground shadow-luxe ring-4 ring-background transition active:scale-95"
         style={{ background: "var(--gradient-gold)" }}
         aria-label={t.newCard}
       >
-        <Plus className="h-7 w-7" strokeWidth={2.5} />
+        <Plus className="h-6 w-6" strokeWidth={2.5} />
       </Link>
 
-      <nav className="glass-strong fixed inset-x-0 bottom-0 z-20 mx-auto max-w-[520px] safe-bottom pt-2">
-        <div className="grid grid-cols-5 items-center px-3">
+      <nav className="glass-strong fixed inset-x-0 bottom-0 z-20 mx-auto max-w-[440px] safe-bottom pt-1.5 border-t border-border/40">
+        <div className="grid grid-cols-5 items-center px-2">
           {items.slice(0, 2).map((i) => (
-            <TabLink key={i.to} to={i.to} icon={<i.icon className="h-5 w-5" />} label={i.label} active={path === i.to} />
+            <TabLink key={i.to} to={i.to} icon={<i.icon className="h-[18px] w-[18px]" />} label={i.label} active={path === i.to} />
           ))}
           <span aria-hidden />
           {items.slice(2).map((i) => (
-            <TabLink key={i.to} to={i.to} icon={<i.icon className="h-5 w-5" />} label={i.label} active={path === i.to} />
+            <TabLink key={i.to} to={i.to} icon={<i.icon className="h-[18px] w-[18px]" />} label={i.label} active={path === i.to} />
           ))}
         </div>
       </nav>
@@ -127,20 +128,22 @@ function MobileBottomNav() {
   );
 }
 
+
 function TabLink({ to, icon, label, active }: { to: string; icon: ReactNode; label: string; active: boolean }) {
   return (
     <Link
       to={to}
       className={
-        "flex flex-col items-center gap-1 py-2 text-[10px] font-medium transition " +
+        "flex flex-col items-center gap-0.5 py-1.5 text-[9px] font-medium tracking-wide transition " +
         (active ? "text-foreground" : "text-muted-foreground hover:text-foreground")
       }
     >
-      <span className={"grid h-8 w-8 place-items-center rounded-xl transition " + (active ? "bg-secondary" : "")}>{icon}</span>
+      <span className={"grid h-7 w-7 place-items-center rounded-lg transition " + (active ? "bg-secondary text-accent" : "")}>{icon}</span>
       <span>{label}</span>
     </Link>
   );
 }
+
 
 /* -------------------- Page header -------------------- */
 export function PageHeader({
@@ -155,22 +158,22 @@ export function PageHeader({
   back?: string;
 }) {
   return (
-    <header className="safe-top px-5 pb-3 lg:px-8 lg:pb-6 lg:pt-8">
+    <header className="safe-top px-4 pb-2.5 pt-3 lg:px-8 lg:pb-6 lg:pt-8">
       <div className="flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-2">
           {back && (
             <Link
               to={back}
-              className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-border bg-card text-muted-foreground hover:text-foreground lg:hidden"
+              className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-border/60 bg-card/60 text-muted-foreground backdrop-blur hover:text-foreground lg:hidden"
               aria-label="Back"
             >
-              <span className="text-lg leading-none rtl:hidden">‹</span>
-              <span className="hidden text-lg leading-none rtl:inline">›</span>
+              <span className="text-base leading-none rtl:hidden">‹</span>
+              <span className="hidden text-base leading-none rtl:inline">›</span>
             </Link>
           )}
           <div className="min-w-0">
-            <h1 className="truncate text-2xl font-semibold tracking-tight lg:text-3xl">{title}</h1>
-            {subtitle && <p className="mt-0.5 truncate text-xs text-muted-foreground lg:text-sm">{subtitle}</p>}
+            <h1 className="truncate text-[19px] font-semibold tracking-tight lg:text-3xl">{title}</h1>
+            {subtitle && <p className="mt-0.5 truncate text-[11px] text-muted-foreground lg:text-sm">{subtitle}</p>}
           </div>
         </div>
         {right && <div className="flex shrink-0 items-center gap-2">{right}</div>}
@@ -178,6 +181,7 @@ export function PageHeader({
     </header>
   );
 }
+
 
 /* -------------------- Bottom sheet / desktop modal -------------------- */
 export function BottomSheet({ open, onClose, children, title }: { open: boolean; onClose: () => void; children: ReactNode; title?: string }) {
