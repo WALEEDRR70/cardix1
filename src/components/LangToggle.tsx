@@ -36,6 +36,7 @@ export function LangToggle({ compact = false }: { compact?: boolean }) {
  * Navigates to the same path under the chosen locale.
  */
 export function LocaleSwitcher({ compact = false }: { compact?: boolean }) {
+  const { t } = useI18n();
   const params = useParams({ strict: false }) as { lang?: string };
   const current: Locale = isSupportedLocale(params?.lang) ? params.lang : DEFAULT_LOCALE;
   const switchTo = useSwitchLocale();

@@ -1,5 +1,6 @@
 import { Phone, Mail, Globe, MessageCircle, MapPin, Briefcase } from "lucide-react";
 import { SOCIALS_BY_ID } from "@/lib/socials";
+import { useI18n } from "@/lib/i18n";
 
 export interface CardData {
   name: string;
