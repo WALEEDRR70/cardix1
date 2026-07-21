@@ -128,6 +128,13 @@ function Dashboard() {
                       <Eye className="h-3 w-3" /> {c.view_count ?? 0}
                     </p>
                   </Link>
+                  <button
+                    onClick={() => setQrSlug(c.slug)}
+                    className="grid h-8 w-8 place-items-center rounded-full text-muted-foreground hover:bg-accent/10 hover:text-foreground"
+                    aria-label="QR"
+                  >
+                    <QrCode className="h-3.5 w-3.5" />
+                  </button>
                   <Link
                     to="/cards/$id"
                     params={{ id: c.id }}
