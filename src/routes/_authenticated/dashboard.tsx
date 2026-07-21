@@ -479,3 +479,45 @@ function StatTile({ label, value, icon }: { label: string; value: number | strin
     </div>
   );
 }
+
+function CardActionsMenu({ onEdit, onQr, onDelete }: { onEdit: () => void; onQr: () => void; onDelete: () => void }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="absolute end-3 top-3 z-20" onClick={(e) => e.stopPropagation()}>
+      <button
+        type="button"
+        onClick={(e) => { e.stopPropagation(); setOpen((v) => !v); }}
+        className="glass-strong grid h-8 w-8 place-items-center rounded-full text-foreground/80 backdrop-blur transition hover:text-foreground"
+        aria-label="Actions"
+        aria-expanded={open}
+      >
+        <MoreHorizontal className="h-4 w-4" />
+      </button>
+      {open && (
+        <div className="glass-strong absolute end-0 mt-2 flex min-w-[140px] flex-col gap-0.5 rounded-2xl p-1.5 shadow-luxe backdrop-blur-xl">
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); setOpen(false); onEdit(); }}
+            className="flex items-center gap-2 rounded-xl px-3 py-2 text-[12px] text-foreground/90 transition hover:bg-white/10"
+          >
+            <Pencil className="h-3.5 w-3.5" /> <span>Edit</span>
+          </button>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); setOpen(false); onQr(); }}
+            className="flex items-center gap-2 rounded-xl px-3 py-2 text-[12px] text-foreground/90 transition hover:bg-white/10"
+          >
+            <QrCode className="h-3.5 w-3.5" /> <span>QR</span>
+          </button>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); setOpen(false); onDelete(); }}
+            className="flex items-center gap-2 rounded-xl px-3 py-2 text-[12px] text-destructive transition hover:bg-destructive/15"
+          >
+            <Trash2 className="h-3.5 w-3.5" /> <span>Delete</span>
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
