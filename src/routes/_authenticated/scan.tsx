@@ -171,7 +171,8 @@ function ScanPage() {
         )}
 
 
-        <input ref={camRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
+        <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
+        <CameraCapture open={camOpen} onClose={() => setCamOpen(false)} onCapture={(f) => { void handleFile(f); }} />
         <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
       </div>
     </MobileShell>
