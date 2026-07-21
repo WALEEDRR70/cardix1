@@ -127,7 +127,7 @@ function Dashboard() {
                     <Pencil className="h-3.5 w-3.5" />
                   </Link>
                   <button
-                    onClick={() => del(c.id)}
+                    onClick={() => setDeleteId(c.id)}
                     className="grid h-8 w-8 place-items-center rounded-full text-muted-foreground opacity-0 transition group-hover:opacity-100 hover:bg-destructive/10 hover:text-destructive"
                     aria-label={t.delete}
                   >
