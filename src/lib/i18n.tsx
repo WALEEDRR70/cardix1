@@ -100,7 +100,16 @@ const dict = {
     featureTemplatesDesc: "From Noir gold to Aurora glass — every card feels intentional.",
     welcomeBack: "Welcome back.",
     startCraft: "Start crafting your card in seconds.",
+    followMe: "Follow me",
+    instantShare: "Instant share",
+    scanQrDesc: "Scan my QR to view my card and save it instantly.",
+    shareViaNfc: "Share via NFC",
+    expand: "Expand",
+    download: "Download",
+    location: "Location",
+    website: "Website",
   },
+
   ar: {
     brand: "كارديكس",
     tagline: "بطاقتك. هويتك.",
