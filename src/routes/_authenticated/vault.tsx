@@ -39,7 +39,13 @@ function Vault() {
         .select("*, source_card:cards!saved_cards_source_card_id_fkey(slug)")
         .order("created_at", { ascending: false });
       if (error) throw error;
-      return data as Array<Record<string, unknown> & { id: string; source_card?: { slug: string } | null }>;
+      type Row = {
+        id: string; name: string; title: string | null; company: string | null;
+        avatar_url: string | null; notes: string | null; phone: string | null;
+        email: string | null; website: string | null; source: string;
+        source_card: { slug: string } | null;
+      };
+      return (data ?? []) as unknown as Row[];
     },
   });
 
