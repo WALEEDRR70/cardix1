@@ -3,11 +3,12 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
-import { Trash2, Phone, Mail, Globe, StickyNote } from "lucide-react";
+import { Trash2, StickyNote } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { NoteDialog } from "@/components/NoteDialog";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
+import { CardPreview } from "@/components/CardPreview";
 
 export const Route = createFileRoute("/_authenticated/vault")({
   head: () => ({
