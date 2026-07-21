@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_authenticated/settings")({
 });
 
 function Settings() {
-  const { t, lang, setLang } = useI18n();
+  const { t } = useI18n();
   const { theme, setTheme } = useTheme();
   const { user } = Route.useRouteContext();
   const nav = useNavigate();
