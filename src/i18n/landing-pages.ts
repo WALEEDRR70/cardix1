@@ -4,7 +4,7 @@
 
 import type { Locale } from "@/i18n/config";
 
-export type LandingCategory = "app" | "qr" | "nfc" | "ocr" | "share" | "templates" | "compare" | "profession" | "vs";
+export type LandingCategory = "app" | "qr" | "nfc" | "ocr" | "share" | "templates" | "compare" | "profession" | "vs" | "region" | "keyword";
 
 export interface LandingCopy {
   title: string;          // <title>
@@ -2095,6 +2095,689 @@ export const LANDING_PAGES: LandingPage[] = [
       },
     },
   },
+
+  // ==================== REGION PAGES ====================
+  {
+    slug: "digital-business-cards-uae", category: "region", keyword: "digital business cards UAE",
+    copy: {
+      en: {
+        title: "Digital Business Cards in the UAE — Made for Dubai & Abu Dhabi | Cardix",
+        description: "The #1 digital business card in the UAE. Trilingual Arabic/English/Urdu, Emirates ID-ready, and beloved by Dubai and Abu Dhabi professionals.",
+        h1: "Digital business cards for the UAE",
+        subtitle: "Made for Dubai, Abu Dhabi, Sharjah — every emirate, every language.",
+        intro: "The UAE runs on business. Between DIFC, ADGM, Dubai Media City, and JAFZA, thousands of professionals exchange contacts every day. Cardix is the digital business card built for the UAE market: trilingual by default, Emirates ID-compatible, and premium enough to match the city's standard.",
+        sections: [
+          { h2: "Trilingual by default", body: "Every Cardix card supports Arabic (RTL), English, and Urdu on the same card. Perfect for Dubai's international workforce and Sharjah's family-business ecosystem." },
+          { h2: "Made for GITEX, Expo, and Arab Health", body: "Trade shows in Dubai attract 100,000+ visitors. Print your Cardix QR on your booth banner and capture every visitor's contact — hands-free." },
+          { h2: "For DIFC and ADGM professionals", body: "Lawyers, bankers, and consultants in DIFC and ADGM use Cardix to share DFSA-registered credentials, firm branding, and Emirates ID-verified profiles." },
+        ],
+        features: [
+          { title: "Arabic-first RTL", desc: "Native RTL layouts designed by Arabic typographers." },
+          { title: "AED pricing", desc: "Local pricing in dirhams; billed via Mamo, Tabby, and Stripe UAE." },
+          { title: "GDPR + UAE PDPL compliant", desc: "Data hosted in the UAE-nearest region with full PDPL compliance." },
+          { title: "WhatsApp Business ready", desc: "One-tap share via WhatsApp — the UAE's default messenger." },
+        ],
+        faqs: enFaqCommon,
+        ctaTitle: "The UAE's premium digital card", ctaSub: "Trusted by professionals from DIFC to Dubai Marina.", ctaButton: "Create my UAE card",
+      },
+      ar: {
+        title: "بطاقات أعمال رقمية في الإمارات — مصمّمة لدبي وأبوظبي | Cardix",
+        description: "البطاقة الرقمية رقم 1 في الإمارات. ثلاثية اللغة عربي/إنجليزي/أردو، متوافقة مع الهوية الإماراتية، ومحبوبة من محترفي دبي وأبوظبي.",
+        h1: "بطاقات أعمال رقمية للإمارات",
+        subtitle: "مصمّمة لدبي وأبوظبي والشارقة — كل إمارة، كل لغة.",
+        intro: "الإمارات تعمل بالأعمال. بين DIFC وADGM ومدينة دبي للإعلام وجافزا، آلاف المحترفين يتبادلون جهات الاتصال يومياً. Cardix هي البطاقة الرقمية المصمّمة لسوق الإمارات: ثلاثية اللغة افتراضياً، متوافقة مع الهوية الإماراتية، وفاخرة لتليق بمستوى المدينة.",
+        sections: [
+          { h2: "ثلاثية اللغة افتراضياً", body: "كل بطاقة Cardix تدعم العربية (RTL) والإنجليزية والأردو في نفس البطاقة. مثالية للقوى العاملة الدولية في دبي." },
+          { h2: "مصمّمة لجيتكس وإكسبو والصحة العربي", body: "معارض دبي تجذب 100,000+ زائر. اطبع QR بطاقتك على لافتة جناحك والتقط جهات اتصال كل زائر — دون يدين." },
+          { h2: "لمحترفي DIFC وADGM", body: "المحامون والمصرفيون والاستشاريون في DIFC وADGM يستخدمون Cardix لمشاركة مؤهلات DFSA وهوية مكاتبهم." },
+        ],
+        features: [
+          { title: "عربي RTL أولاً", desc: "تصميمات RTL أصلية من طباعيين عرب." },
+          { title: "أسعار بالدرهم", desc: "أسعار محلية بالدرهم عبر Mamo وTabby وStripe." },
+          { title: "متوافق مع PDPL", desc: "البيانات مستضافة في أقرب منطقة للإمارات." },
+          { title: "جاهز لواتساب الأعمال", desc: "مشاركة بلمسة عبر واتساب — المراسل الافتراضي في الإمارات." },
+        ],
+        faqs: arFaqCommon,
+        ctaTitle: "بطاقة الإمارات الفاخرة", ctaSub: "موثوقة من محترفي DIFC إلى دبي مارينا.", ctaButton: "أنشئ بطاقة الإمارات",
+      },
+    },
+  },
+  {
+    slug: "digital-business-cards-saudi-arabia", category: "region", keyword: "digital business cards Saudi Arabia",
+    copy: {
+      en: {
+        title: "Digital Business Cards in Saudi Arabia | Cardix",
+        description: "The digital business card for Saudi Arabia. Built for Riyadh, Jeddah, Khobar, LEAP conference and Vision 2030 professionals.",
+        h1: "Digital business cards for Saudi Arabia",
+        subtitle: "Vision 2030 ready. Arabic-first. Loved from Riyadh to Jeddah.",
+        intro: "Saudi Arabia is transforming — LEAP, NEOM, Vision 2030 — and its professional class is scaling globally. Cardix gives Saudi professionals a bilingual (Arabic-first) digital business card that projects Saudi excellence to international counterparts.",
+        sections: [
+          { h2: "Built for LEAP, Future Investment Initiative, and Biban", body: "Saudi's biggest events attract global investors. Share your Cardix via NFC at your LEAP booth and capture every VC and executive who visits." },
+          { h2: "Arabic-first design", body: "Cards default to Arabic RTL layouts with elegant Naskh typography, with one-tap English toggle for international meetings." },
+          { h2: "For Vision 2030 industries", body: "Whether you're in NEOM, Red Sea Global, PIF portfolio companies or the giga-projects, Cardix scales with your ambition." },
+        ],
+        features: [
+          { title: "Arabic RTL native", desc: "Naskh-rendered Arabic that respects the language's beauty." },
+          { title: "SAR pricing", desc: "Local pricing in riyals; billed via Mada, HyperPay, and Tabby." },
+          { title: "Loved by Saudi founders", desc: "From Riyadh Season startups to NEOM enterprises." },
+          { title: "STC Pay + WhatsApp share", desc: "Share via Saudi's most-used channels." },
+        ],
+        faqs: enFaqCommon,
+        ctaTitle: "The card for Saudi's next chapter", ctaSub: "Vision 2030 professionals, meet your digital identity.", ctaButton: "Create my Saudi card",
+      },
+      ar: {
+        title: "بطاقات أعمال رقمية في السعودية | Cardix",
+        description: "البطاقة الرقمية للسعودية. مصمّمة للرياض وجدة والخبر ومؤتمر LEAP ومحترفي رؤية 2030.",
+        h1: "بطاقات أعمال رقمية للسعودية",
+        subtitle: "جاهزة لرؤية 2030. عربية أولاً. محبوبة من الرياض إلى جدة.",
+        intro: "السعودية تتحوّل — LEAP ونيوم ورؤية 2030 — وطبقتها المحترفة تتوسع عالمياً. Cardix تمنح المحترف السعودي بطاقة رقمية ثنائية اللغة (عربية أولاً) تعكس التميز السعودي للنظراء الدوليين.",
+        sections: [
+          { h2: "مصمّمة لـ LEAP وFII وبيبان", body: "أضخم فعاليات السعودية تجذب المستثمرين العالميين. شارك بطاقتك بـ NFC في جناح LEAP والتقط كل VC ومسؤول تنفيذي." },
+          { h2: "تصميم عربي أولاً", body: "البطاقات افتراضياً بتخطيط عربي RTL بطباعة نسخ أنيقة، مع تبديل بلمسة للإنجليزية للاجتماعات الدولية." },
+          { h2: "لقطاعات رؤية 2030", body: "سواء كنت في نيوم أو البحر الأحمر أو شركات PIF أو المشاريع العملاقة، Cardix يتوسع مع طموحك." },
+        ],
+        features: [
+          { title: "عربية RTL أصلية", desc: "نسخ عربي يحترم جمال اللغة." },
+          { title: "أسعار بالريال", desc: "أسعار محلية عبر مدى وHyperPay وTabby." },
+          { title: "محبوبة من المؤسسين السعوديين", desc: "من ناشئات موسم الرياض إلى مؤسسات نيوم." },
+          { title: "STC Pay + واتساب", desc: "شارك عبر أكثر قنوات السعودية استخداماً." },
+        ],
+        faqs: arFaqCommon,
+        ctaTitle: "بطاقة الفصل السعودي القادم", ctaSub: "محترفو رؤية 2030، تعرّفوا على هويتكم الرقمية.", ctaButton: "أنشئ بطاقة السعودية",
+      },
+    },
+  },
+  {
+    slug: "digital-business-cards-egypt", category: "region", keyword: "digital business cards Egypt",
+    copy: {
+      en: {
+        title: "Digital Business Cards in Egypt | Cardix",
+        description: "The digital business card built for Egypt. Cairo, Alexandria, New Administrative Capital — bilingual, affordable, premium.",
+        h1: "Digital business cards for Egypt",
+        subtitle: "From Cairo to Alexandria — the modern Egyptian's business card.",
+        intro: "Egypt's professional class is growing fast — from Smart Village to the New Administrative Capital, from Cairo Festival City to Alexandria's tech corridor. Cardix delivers a premium, bilingual digital business card at Egyptian pricing.",
+        sections: [
+          { h2: "Bilingual Egyptian Arabic + English", body: "Every card supports Arabic RTL and English on the same profile — perfect for Cairo's export-focused entrepreneurs and Alexandria's tourism professionals." },
+          { h2: "Made for Cairo ICT, RiseUp Summit, and Techne Summit", body: "Egypt's biggest business events see thousands of exchanges. Share your Cardix via QR and capture every VC and partner." },
+          { h2: "For freelancers and remote workers", body: "Egypt's massive freelance economy (Upwork, Toptal, Fiverr) uses Cardix as their portfolio-in-a-link — with USD earnings and Egyptian branding." },
+        ],
+        features: [
+          { title: "EGP pricing", desc: "Local pricing in Egyptian pounds; billed via Fawry, Vodafone Cash, and Stripe." },
+          { title: "Bilingual RTL", desc: "Beautiful Arabic and English on one card." },
+          { title: "USD earnings ready", desc: "Perfect for freelancers earning in dollars." },
+          { title: "WhatsApp-first share", desc: "Egypt's #1 messaging app, natively integrated." },
+        ],
+        faqs: enFaqCommon,
+        ctaTitle: "The Egyptian professional's card", ctaSub: "Premium quality at local prices.", ctaButton: "Create my Egypt card",
+      },
+      ar: {
+        title: "بطاقات أعمال رقمية في مصر | Cardix",
+        description: "البطاقة الرقمية المصمّمة لمصر. القاهرة والإسكندرية والعاصمة الإدارية — ثنائية اللغة وبأسعار مصرية.",
+        h1: "بطاقات أعمال رقمية لمصر",
+        subtitle: "من القاهرة إلى الإسكندرية — بطاقة المصري العصري.",
+        intro: "الطبقة المحترفة في مصر تنمو سريعاً — من القرية الذكية إلى العاصمة الإدارية، من كايرو فيستيفال سيتي إلى الممر التقني في الإسكندرية. Cardix تقدم بطاقة رقمية فاخرة ثنائية اللغة بأسعار مصرية.",
+        sections: [
+          { h2: "عربي مصري + إنجليزي", body: "كل بطاقة تدعم العربية RTL والإنجليزية في نفس الملف — مثالية لرواد الأعمال المصريين المتجهين للتصدير." },
+          { h2: "مصمّمة لـ Cairo ICT وRiseUp Summit وTechne", body: "أضخم فعاليات مصر التجارية ترى آلاف التبادلات. شارك Cardix بـ QR والتقط كل VC وشريك." },
+          { h2: "للمستقلين وعاملي الريموت", body: "اقتصاد مصر الضخم للمستقلين (Upwork وToptal) يستخدم Cardix كمعرض في رابط — بأرباح دولارية." },
+        ],
+        features: [
+          { title: "أسعار بالجنيه", desc: "أسعار محلية عبر فوري وVodafone Cash وStripe." },
+          { title: "ثنائي اللغة RTL", desc: "عربية وإنجليزية جميلة في بطاقة واحدة." },
+          { title: "جاهزة للأرباح الدولارية", desc: "مثالية للمستقلين." },
+          { title: "واتساب أولاً", desc: "تطبيق مصر الأول للمراسلة." },
+        ],
+        faqs: arFaqCommon,
+        ctaTitle: "بطاقة المحترف المصري", ctaSub: "جودة فاخرة بأسعار محلية.", ctaButton: "أنشئ بطاقة مصر",
+      },
+    },
+  },
+  {
+    slug: "digital-business-cards-dubai", category: "region", keyword: "digital business cards Dubai",
+    copy: {
+      en: {
+        title: "Digital Business Cards in Dubai | Cardix",
+        description: "Dubai's premium digital business card. Perfect for DIFC, Dubai Marina, Business Bay, and every Dubai professional.",
+        h1: "The digital business card for Dubai",
+        subtitle: "Downtown to DIFC — the card that matches Dubai's standard.",
+        intro: "Dubai runs at 200mph. Deals close in coffee shops, elevators, and Emirates lounges. Your business card should be as fast, as global, and as premium as the city itself. Cardix is Dubai's digital business card — trilingual, luxury-designed, and instantly shareable.",
+        sections: [
+          { h2: "For DIFC, DMCC, and JAFZA", body: "Whether you're a lawyer in DIFC, a trader in DMCC, or an entrepreneur in JAFZA, Cardix gives you a premium bilingual card that projects Dubai excellence." },
+          { h2: "Perfect for GITEX and Arabian Travel Market", body: "Dubai's mega-events attract 100,000+ visitors. Print your QR on your booth banner and capture every visitor's contact automatically." },
+          { h2: "Made for Dubai's international workforce", body: "Dubai's workforce speaks 100+ languages. Cardix supports 20 languages natively, with Arabic-English bilingual defaults." },
+        ],
+        features: [
+          { title: "Trilingual defaults", desc: "Arabic, English, and Urdu or Hindi on one card." },
+          { title: "Luxury design", desc: "Templates worthy of a Dubai brand." },
+          { title: "AED pricing", desc: "Dirham billing via Mamo and Tabby." },
+          { title: "WhatsApp share", desc: "Dubai's default messaging channel." },
+        ],
+        faqs: enFaqCommon,
+        ctaTitle: "The card Dubai deserves", ctaSub: "Trusted from Downtown to Dubai Hills.", ctaButton: "Create my Dubai card",
+      },
+      ar: {
+        title: "بطاقات رقمية في دبي | Cardix",
+        description: "البطاقة الرقمية الفاخرة لدبي. مثالية لـ DIFC ودبي مارينا وBusiness Bay وكل محترف في دبي.",
+        h1: "البطاقة الرقمية لدبي",
+        subtitle: "من داون تاون إلى DIFC — البطاقة التي تليق بمستوى دبي.",
+        intro: "دبي تعمل بسرعة 200 كم/س. الصفقات تُغلَق في المقاهي والمصاعد وصالات الإمارات. يجب أن تكون بطاقتك بنفس السرعة والعالمية والفخامة. Cardix هي بطاقة دبي الرقمية — ثلاثية اللغة، فاخرة التصميم، وقابلة للمشاركة فوراً.",
+        sections: [
+          { h2: "لـ DIFC وDMCC وJAFZA", body: "سواء كنت محامياً في DIFC أو تاجراً في DMCC، Cardix يمنحك بطاقة فاخرة ثنائية اللغة تعكس تميز دبي." },
+          { h2: "مثالي لـ GITEX وArabian Travel Market", body: "فعاليات دبي الضخمة تجذب 100,000+ زائر. اطبع QR على جناحك والتقط كل زائر تلقائياً." },
+          { h2: "مصمّمة للقوى العاملة الدولية", body: "قوى دبي العاملة تتحدث 100+ لغة. Cardix يدعم 20 لغة أصلياً، مع افتراضي عربي-إنجليزي." },
+        ],
+        features: [
+          { title: "افتراضي ثلاثي اللغة", desc: "عربي وإنجليزي وأردو أو هندي في بطاقة." },
+          { title: "تصميم فاخر", desc: "قوالب تليق بعلامة دبي." },
+          { title: "أسعار بالدرهم", desc: "فوترة بالدرهم عبر Mamo وTabby." },
+          { title: "مشاركة بالواتساب", desc: "قناة المراسلة الافتراضية في دبي." },
+        ],
+        faqs: arFaqCommon,
+        ctaTitle: "البطاقة التي تستحقها دبي", ctaSub: "موثوقة من داون تاون إلى دبي هيلز.", ctaButton: "أنشئ بطاقة دبي",
+      },
+    },
+  },
+  {
+    slug: "digital-business-cards-riyadh", category: "region", keyword: "digital business cards Riyadh",
+    copy: {
+      en: {
+        title: "Digital Business Cards in Riyadh | Cardix",
+        description: "Riyadh's premium digital business card. Built for KAFD, Diriyah, and every Vision 2030 professional in the Saudi capital.",
+        h1: "The digital business card for Riyadh",
+        subtitle: "KAFD to Diriyah — Riyadh's Vision 2030 professionals choose Cardix.",
+        intro: "Riyadh is the capital of Vision 2030 — home to PIF, giga-projects, and the region's fastest-growing professional class. Cardix delivers a premium Arabic-first digital business card that matches Riyadh's global ambition.",
+        sections: [
+          { h2: "Built for LEAP and FII", body: "The world's biggest tech and investment events happen in Riyadh. Cardix helps you capture every VC, sovereign wealth executive, and international partner you meet." },
+          { h2: "For KAFD, Olaya, and Diriyah", body: "Whether you work at PIF, Aramco Digital, or a KAFD-based startup, Cardix gives you a card that reflects Riyadh's modern professional standard." },
+          { h2: "Arabic-first, English-ready", body: "Cards default to elegant Arabic Naskh with one-tap English toggle for international meetings." },
+        ],
+        features: [
+          { title: "Naskh Arabic beauty", desc: "Typography-designed for the Arabic language." },
+          { title: "SAR + Mada billing", desc: "Local payment via Mada and STC Pay." },
+          { title: "Vision 2030 ready", desc: "For NEOM, Red Sea, and PIF-portfolio professionals." },
+          { title: "Riyadh Season networking", desc: "Perfect for the capital's biggest events." },
+        ],
+        faqs: enFaqCommon,
+        ctaTitle: "The card for Riyadh's future", ctaSub: "Vision 2030 professionals, elevated.", ctaButton: "Create my Riyadh card",
+      },
+      ar: {
+        title: "بطاقات رقمية في الرياض | Cardix",
+        description: "البطاقة الرقمية الفاخرة للرياض. مصمّمة لـ KAFD والدرعية وكل محترفي رؤية 2030 في العاصمة السعودية.",
+        h1: "البطاقة الرقمية للرياض",
+        subtitle: "من KAFD إلى الدرعية — محترفو رؤية 2030 يختارون Cardix.",
+        intro: "الرياض عاصمة رؤية 2030 — موطن PIF والمشاريع العملاقة وأسرع طبقات المحترفين نمواً. Cardix تقدم بطاقة رقمية فاخرة عربية أولاً تليق بطموح الرياض العالمي.",
+        sections: [
+          { h2: "مصمّمة لـ LEAP وFII", body: "أضخم فعاليات التقنية والاستثمار في العالم تحدث في الرياض. Cardix يساعدك على التقاط كل VC وتنفيذي صندوق سيادي." },
+          { h2: "لـ KAFD والعليا والدرعية", body: "سواء كنت في PIF أو أرامكو الرقمية أو ناشئة في KAFD، Cardix يمنحك بطاقة تعكس مستوى الرياض المحترف." },
+          { h2: "عربي أولاً، جاهز للإنجليزية", body: "البطاقات افتراضياً بنسخ عربي أنيق مع تبديل بلمسة للإنجليزية." },
+        ],
+        features: [
+          { title: "جمال النسخ العربي", desc: "طباعة مصمَّمة للغة العربية." },
+          { title: "ريال + مدى", desc: "دفع محلي عبر مدى وSTC Pay." },
+          { title: "جاهز لرؤية 2030", desc: "لمحترفي نيوم والبحر الأحمر وPIF." },
+          { title: "تشبيك موسم الرياض", desc: "مثالي لأضخم فعاليات العاصمة." },
+        ],
+        faqs: arFaqCommon,
+        ctaTitle: "بطاقة مستقبل الرياض", ctaSub: "محترفو رؤية 2030 مرتقون.", ctaButton: "أنشئ بطاقة الرياض",
+      },
+    },
+  },
+  {
+    slug: "digital-business-cards-usa", category: "region", keyword: "digital business cards USA",
+    copy: {
+      en: {
+        title: "Digital Business Cards in the USA | Cardix",
+        description: "The digital business card trusted by American professionals. From New York to San Francisco, from realtors to founders.",
+        h1: "Digital business cards for the USA",
+        subtitle: "The card American professionals choose to network smarter.",
+        intro: "American professionals network at scale — from SXSW to CES, from Manhattan sales calls to Silicon Valley pitch meetings. Cardix gives you a premium digital business card with CRM integrations, team management, and analytics that show real pipeline ROI.",
+        sections: [
+          { h2: "For every American profession", body: "Realtors, financial advisors, sales reps, doctors, lawyers, founders — Cardix has a template and workflow for every US industry, including compliance-ready cards for finance and healthcare." },
+          { h2: "CRM-native", body: "Every scan syncs to Salesforce, HubSpot, Pipedrive, or Zoho with source attribution. Perfect for American sales teams tracking event ROI." },
+          { h2: "For SXSW, CES, Dreamforce and Web Summit", body: "Print your Cardix QR on your booth, badge, and swag. Capture every attendee automatically." },
+        ],
+        features: [
+          { title: "USD pricing", desc: "Simple US pricing with annual discounts." },
+          { title: "Salesforce/HubSpot sync", desc: "Native connectors for the biggest US CRMs." },
+          { title: "Apple Wallet + Google Pay", desc: "Save your card to the wallet Americans use." },
+          { title: "SOC 2 + HIPAA-ready", desc: "Compliance for enterprise buyers." },
+        ],
+        faqs: enFaqCommon,
+        ctaTitle: "The card for American professionals", ctaSub: "From coast to coast, Cardix scales with your career.", ctaButton: "Get started",
+      },
+      ar: {
+        title: "بطاقات رقمية في الولايات المتحدة | Cardix",
+        description: "البطاقة الرقمية الموثوقة من المحترفين الأمريكيين. من نيويورك إلى سان فرانسيسكو.",
+        h1: "بطاقات رقمية للولايات المتحدة",
+        subtitle: "البطاقة التي يختارها المحترف الأمريكي.",
+        intro: "المحترفون الأمريكيون يشبّكون على نطاق واسع — من SXSW إلى CES. Cardix يمنحك بطاقة رقمية فاخرة مع تكاملات CRM وإدارة فرق وتحليلات تُظهر عائد استثمار حقيقي.",
+        sections: [
+          { h2: "لكل مهنة أمريكية", body: "وسطاء عقار ومستشارون ماليون ومندوبو مبيعات وأطباء ومحامون — Cardix له قالب لكل قطاع أمريكي." },
+          { h2: "أصلي CRM", body: "كل مسحة تُزامَن مع Salesforce أو HubSpot مع نسب المصدر." },
+          { h2: "لـ SXSW وCES وDreamforce", body: "اطبع QR على جناحك وشارتك والتقط كل حاضر تلقائياً." },
+        ],
+        features: [
+          { title: "أسعار بالدولار", desc: "أسعار أمريكية بسيطة مع خصومات سنوية." },
+          { title: "مزامنة Salesforce/HubSpot", desc: "موصلات أصلية لأكبر CRM أمريكية." },
+          { title: "Apple Wallet + Google Pay", desc: "احفظ بطاقتك في محفظة الأمريكيين." },
+          { title: "جاهز SOC 2 + HIPAA", desc: "توافق للمشترين المؤسسات." },
+        ],
+        faqs: arFaqCommon,
+        ctaTitle: "بطاقة المحترف الأمريكي", ctaSub: "من ساحل لساحل.", ctaButton: "ابدأ",
+      },
+    },
+  },
+  {
+    slug: "digital-business-cards-uk", category: "region", keyword: "digital business cards UK",
+    copy: {
+      en: {
+        title: "Digital Business Cards in the UK | Cardix",
+        description: "The digital business card for UK professionals. London, Manchester, Edinburgh — GDPR-compliant, sterling-priced, premium.",
+        h1: "Digital business cards for the United Kingdom",
+        subtitle: "From the City of London to Silicon Roundabout — British professionalism, digital.",
+        intro: "The UK's professional class deserves a business card that matches Savile Row tailoring: crafted, refined, quietly premium. Cardix delivers exactly that — with UK GDPR compliance, sterling pricing, and templates that project understated British excellence.",
+        sections: [
+          { h2: "For the City of London and Canary Wharf", body: "Bankers, solicitors, and consultants in the City use Cardix to share FCA-regulated credentials, firm branding, and Chambers-rated profiles." },
+          { h2: "Made for London Tech Week, Web Summit, and Slush", body: "The UK's biggest business events attract global executives. Share your Cardix via QR and capture every meaningful contact." },
+          { h2: "GDPR and UK Data Protection Act compliant", body: "Data hosted in the EU/UK region with full GDPR and DPA 2018 compliance. Right to be forgotten, DPA export, and consent management built in." },
+        ],
+        features: [
+          { title: "GBP pricing", desc: "Sterling pricing with VAT-compliant invoicing." },
+          { title: "GDPR + DPA 2018", desc: "Full UK compliance out of the box." },
+          { title: "Apple Wallet + LinkedIn", desc: "The UK professional's essential integrations." },
+          { title: "Understated luxury", desc: "Templates for those who prefer Bond Street to Oxford Street." },
+        ],
+        faqs: enFaqCommon,
+        ctaTitle: "British professionalism, digitised", ctaSub: "The card the UK's finest choose.", ctaButton: "Create my UK card",
+      },
+      ar: {
+        title: "بطاقات رقمية في المملكة المتحدة | Cardix",
+        description: "البطاقة الرقمية للمحترفين البريطانيين. لندن ومانشستر وأدنبرة — متوافقة مع GDPR.",
+        h1: "بطاقات رقمية للمملكة المتحدة",
+        subtitle: "من City of London إلى Silicon Roundabout — الاحتراف البريطاني، رقمياً.",
+        intro: "طبقة المملكة المتحدة المحترفة تستحق بطاقة تليق بخياطة Savile Row: مصنوعة ومصقولة وفاخرة بهدوء. Cardix تقدم ذلك بالضبط.",
+        sections: [
+          { h2: "لـ City of London وCanary Wharf", body: "المصرفيون والمحامون والاستشاريون في City يستخدمون Cardix لمشاركة مؤهلاتهم." },
+          { h2: "مصمّمة لـ London Tech Week", body: "أضخم فعاليات المملكة تجذب تنفيذيين عالميين." },
+          { h2: "متوافق مع GDPR وDPA 2018", body: "البيانات مستضافة في المنطقة الأوروبية/البريطانية." },
+        ],
+        features: [
+          { title: "أسعار بالجنيه", desc: "أسعار جنيه مع فوترة VAT." },
+          { title: "GDPR + DPA 2018", desc: "توافق بريطاني كامل." },
+          { title: "Apple Wallet + LinkedIn", desc: "تكاملات المحترف البريطاني." },
+          { title: "فخامة هادئة", desc: "قوالب لمن يفضل Bond Street." },
+        ],
+        faqs: arFaqCommon,
+        ctaTitle: "الاحتراف البريطاني رقمياً", ctaSub: "البطاقة التي يختارها الأفضل.", ctaButton: "أنشئ بطاقة المملكة",
+      },
+    },
+  },
+  {
+    slug: "digital-business-cards-london", category: "region", keyword: "digital business cards London",
+    copy: {
+      en: {
+        title: "Digital Business Cards in London | Cardix",
+        description: "London's premium digital business card. From the City to Shoreditch, from Mayfair to Canary Wharf — the card London chooses.",
+        h1: "The digital business card for London",
+        subtitle: "The City. Shoreditch. Mayfair. — London's professionals go digital.",
+        intro: "London is the world's business capital — and its professionals expect world-class tools. Cardix is London's digital business card: refined design, GDPR-native, and premium enough to hand out at a Michelin lunch in Mayfair or a pitch at Silicon Roundabout.",
+        sections: [
+          { h2: "For the City, Canary Wharf, and Shoreditch", body: "Whether you're a solicitor at a Magic Circle firm, a fund manager in Mayfair, or a founder in Shoreditch, Cardix gives you a card London respects." },
+          { h2: "Made for London Tech Week and Fintech Week", body: "London's biggest events attract global capital. Share your Cardix and capture every meaningful contact." },
+          { h2: "Understated British luxury", body: "Templates crafted for those who value Savile Row over Silicon Valley aesthetics." },
+        ],
+        features: [
+          { title: "London-quality design", desc: "Templates for the City's finest." },
+          { title: "GBP + GDPR", desc: "Sterling pricing and UK-compliant hosting." },
+          { title: "LinkedIn + Apple Wallet", desc: "London's essential integrations." },
+          { title: "Analytics that matter", desc: "Track pipeline from every London event." },
+        ],
+        faqs: enFaqCommon,
+        ctaTitle: "London's card, elevated", ctaSub: "Refined enough for Mayfair. Fast enough for Shoreditch.", ctaButton: "Create my London card",
+      },
+      ar: {
+        title: "بطاقات رقمية في لندن | Cardix",
+        description: "بطاقة لندن الرقمية الفاخرة. من City إلى Shoreditch، من Mayfair إلى Canary Wharf.",
+        h1: "البطاقة الرقمية للندن",
+        subtitle: "The City وShoreditch وMayfair — محترفو لندن يتحولون رقمياً.",
+        intro: "لندن عاصمة الأعمال العالمية — ومحترفوها يتوقعون أدوات عالمية. Cardix هي بطاقة لندن الرقمية: تصميم مصقول، GDPR أصلي، وفاخرة بما يليق بغداء في Mayfair.",
+        sections: [
+          { h2: "لـ City وCanary Wharf وShoreditch", body: "سواء كنت محامياً في Magic Circle أو مدير صندوق في Mayfair، Cardix يمنحك بطاقة تحترمها لندن." },
+          { h2: "مصمّمة لـ London Tech Week", body: "أضخم فعاليات لندن تجذب رأس المال العالمي." },
+          { h2: "فخامة بريطانية هادئة", body: "قوالب لمن يفضل Savile Row." },
+        ],
+        features: [
+          { title: "تصميم بجودة لندن", desc: "قوالب لأفضل City." },
+          { title: "جنيه + GDPR", desc: "أسعار جنيه واستضافة متوافقة." },
+          { title: "LinkedIn + Apple Wallet", desc: "تكاملات لندن الأساسية." },
+          { title: "تحليلات مهمة", desc: "تتبَّع الفرص من كل فعالية." },
+        ],
+        faqs: arFaqCommon,
+        ctaTitle: "بطاقة لندن مرتقاة", ctaSub: "مصقولة لـ Mayfair وسريعة لـ Shoreditch.", ctaButton: "أنشئ بطاقة لندن",
+      },
+    },
+  },
+
+  // ==================== KEYWORD PAGES ====================
+  {
+    slug: "free-digital-business-card", category: "keyword", keyword: "free digital business card",
+    copy: {
+      en: {
+        title: "Free Digital Business Card — Unlimited Cards Forever | Cardix",
+        description: "Create a free digital business card in 60 seconds. Unlimited cards, all templates, analytics — no credit card required.",
+        h1: "The free digital business card, done right",
+        subtitle: "Free forever. Unlimited cards. All templates. Zero credit card.",
+        intro: "Most 'free' digital business card apps lock templates, cap cards at 1, or gate analytics behind $6/month. Cardix does the opposite: unlimited cards, every luxury template, full analytics — permanently free for individuals. You only pay if you want team management, NFC hardware, or SSO.",
+        sections: [
+          { h2: "What's actually free forever", body: "Unlimited digital business cards. All 19+ luxury templates. QR codes in high-resolution PNG. Analytics on saves, scans, and clicks. AI bio generation. Multilingual support. vCard export. Contact vault. Yes — all free." },
+          { h2: "What's paid (and why)", body: "Team management (bulk provisioning, SSO, central branding), NFC hardware (physical cards and stickers), CRM integrations, and white-label deployments. If you're an individual, you'll likely never need any of these." },
+          { h2: "Why we can afford this", body: "Cardix is built lean. Our free tier is our marketing — happy free users tell their teams, and their teams become paid customers. Everyone wins." },
+        ],
+        features: [
+          { title: "Unlimited cards", desc: "Create as many cards as you want, forever." },
+          { title: "All templates", desc: "Every luxury template, unlocked from day one." },
+          { title: "Full analytics", desc: "See who viewed, saved, and clicked." },
+          { title: "No credit card", desc: "Sign up in 30 seconds without payment info." },
+        ],
+        faqs: enFaqCommon,
+        ctaTitle: "Get your free digital business card", ctaSub: "60 seconds. Zero cost. Zero limits.", ctaButton: "Create free card",
+      },
+      ar: {
+        title: "بطاقة أعمال رقمية مجانية — بطاقات غير محدودة للأبد | Cardix",
+        description: "أنشئ بطاقة رقمية مجانية في 60 ثانية. بطاقات غير محدودة وكل القوالب وتحليلات — بلا بطاقة ائتمان.",
+        h1: "البطاقة الرقمية المجانية، بشكل صحيح",
+        subtitle: "مجانية للأبد. بطاقات غير محدودة. كل القوالب. صفر بطاقة ائتمان.",
+        intro: "معظم التطبيقات 'المجانية' تقفل القوالب أو تحدد ببطاقة واحدة أو تحجب التحليلات خلف 6 دولار شهرياً. Cardix يفعل العكس: بطاقات غير محدودة وكل قالب فاخر وتحليلات كاملة — مجانية دائمة للأفراد.",
+        sections: [
+          { h2: "ما هو مجاني فعلاً للأبد", body: "بطاقات رقمية غير محدودة. كل قالب من 19+ قالباً. رموز QR بدقة عالية. تحليلات الحفظ والمسحات. توليد سيرة بالذكاء الاصطناعي. دعم متعدد اللغات. تصدير vCard. — كل ذلك مجاني." },
+          { h2: "ما هو مدفوع (ولماذا)", body: "إدارة الفرق والـ SSO وأجهزة NFC وتكاملات CRM. إذا كنت فرداً، لن تحتاجها غالباً." },
+          { h2: "لماذا نستطيع تحمل هذا", body: "Cardix مبني بكفاءة. طبقتنا المجانية هي تسويقنا — المستخدمون السعداء يخبرون فرقهم، وفرقهم تصبح عملاء مدفوعين." },
+        ],
+        features: [
+          { title: "بطاقات غير محدودة", desc: "أنشئ كما تشاء، للأبد." },
+          { title: "كل القوالب", desc: "كل قالب فاخر مفتوح من اليوم الأول." },
+          { title: "تحليلات كاملة", desc: "شاهد من فتح وحفظ ونقر." },
+          { title: "بلا بطاقة ائتمان", desc: "سجّل في 30 ثانية." },
+        ],
+        faqs: arFaqCommon,
+        ctaTitle: "احصل على بطاقتك المجانية", ctaSub: "60 ثانية. صفر تكلفة. صفر حدود.", ctaButton: "أنشئ بطاقة مجانية",
+      },
+    },
+  },
+  {
+    slug: "contactless-business-card", category: "keyword", keyword: "contactless business card",
+    copy: {
+      en: {
+        title: "Contactless Business Card — Tap, Scan, Share | Cardix",
+        description: "The contactless business card for the modern professional. NFC tap, QR scan, or link share — hygiene-first, always up-to-date.",
+        h1: "The contactless business card",
+        subtitle: "Tap to share. Scan to save. Zero touch, zero paper.",
+        intro: "Post-pandemic, professionals expect contactless everything — payments, doors, business cards. Cardix delivers a true contactless card via NFC tap, QR scan, or shareable link. No handshakes required, no paper exchanged, no germs shared.",
+        sections: [
+          { h2: "How contactless sharing works", body: "Tap your NFC card or phone on the recipient's phone — their default browser opens your card instantly. Or they scan your QR code. Or you send the link via WhatsApp. Zero physical contact required." },
+          { h2: "Perfect for healthcare, hospitality, and events", body: "Doctors, hoteliers, and event organizers use Cardix to eliminate paper exchange while looking premium. Contactless isn't just hygienic — it's a signal that you're a modern operator." },
+          { h2: "Always up-to-date", body: "Unlike paper cards, your contactless card updates instantly. Change your phone number once, and every contact you've ever shared with sees the update automatically." },
+        ],
+        features: [
+          { title: "NFC tap", desc: "Tap your card on any modern phone to share." },
+          { title: "QR scan", desc: "Scan-to-share works on every phone globally." },
+          { title: "Link share", desc: "WhatsApp, email, or iMessage in one tap." },
+          { title: "Hygiene-first", desc: "Zero physical contact required." },
+        ],
+        faqs: enFaqCommon,
+        ctaTitle: "Go contactless today", ctaSub: "The modern way to network — hygienic and premium.", ctaButton: "Create my contactless card",
+      },
+      ar: {
+        title: "بطاقة أعمال بدون تلامس — امسح، شارك | Cardix",
+        description: "البطاقة بدون تلامس للمحترف الحديث. NFC أو QR أو رابط — نظافة أولاً ومحدَّثة دائماً.",
+        h1: "البطاقة بدون تلامس",
+        subtitle: "لمسة للمشاركة. مسحة للحفظ. صفر تلامس، صفر ورق.",
+        intro: "بعد الجائحة، يتوقع المحترفون كل شيء بدون تلامس — الدفعات والأبواب والبطاقات. Cardix يقدم بطاقة بدون تلامس عبر NFC أو QR أو رابط. بلا مصافحة، بلا ورق، بلا جراثيم.",
+        sections: [
+          { h2: "كيف تعمل المشاركة بدون تلامس", body: "المس بطاقة NFC على هاتف المستلم — يفتح متصفحه بطاقتك فوراً. أو يمسح QR. أو أرسل الرابط بواتساب." },
+          { h2: "مثالي للصحة والضيافة والفعاليات", body: "الأطباء والفندقيون ومنظمو الفعاليات يستخدمون Cardix لإلغاء تبادل الورق مع مظهر فاخر." },
+          { h2: "محدَّثة دائماً", body: "على عكس الورقية، بطاقتك بدون تلامس تُحدَّث فوراً." },
+        ],
+        features: [
+          { title: "لمسة NFC", desc: "المس بطاقتك على أي هاتف حديث." },
+          { title: "مسحة QR", desc: "تعمل على كل هاتف عالمياً." },
+          { title: "مشاركة رابط", desc: "واتساب أو إيميل بلمسة." },
+          { title: "نظافة أولاً", desc: "صفر تلامس مطلوب." },
+        ],
+        faqs: arFaqCommon,
+        ctaTitle: "انتقل لبدون تلامس اليوم", ctaSub: "الطريقة الحديثة للتشبيك — صحية وفاخرة.", ctaButton: "أنشئ بطاقة بدون تلامس",
+      },
+    },
+  },
+  {
+    slug: "apple-wallet-business-card", category: "keyword", keyword: "Apple Wallet business card",
+    copy: {
+      en: {
+        title: "Apple Wallet Business Card — Add Your Card to iPhone | Cardix",
+        description: "Save your digital business card to Apple Wallet. One-tap share, always with you, works even offline. iPhone-native and beautiful.",
+        h1: "Your business card, in Apple Wallet",
+        subtitle: "Add your Cardix card to Apple Wallet — one tap to share, always available.",
+        intro: "Apple Wallet is where iPhone users keep the essentials — payment cards, boarding passes, membership cards. Now your business card belongs there too. Cardix lets you generate an Apple Wallet pass in one tap, so your card is always ready to share, even offline.",
+        sections: [
+          { h2: "Why Apple Wallet?", body: "Wallet passes are always on your lock screen when relevant. You don't need to open an app — just double-click your side button and share. It's the fastest way to hand out a card on iPhone." },
+          { h2: "Works offline", body: "Once added to Wallet, your card works even without internet. Perfect for airplane networking, subway meetings, or conference basements with terrible wifi." },
+          { h2: "Updates automatically", body: "When you update your card in Cardix, your Apple Wallet pass updates automatically via push notification. No re-downloading, no stale info." },
+        ],
+        features: [
+          { title: "One-tap add to Wallet", desc: "Generate an Apple Wallet pass from your Cardix card." },
+          { title: "Works offline", desc: "Share your card without internet." },
+          { title: "Auto-updating", desc: "Wallet passes stay in sync with your Cardix profile." },
+          { title: "Beautiful design", desc: "Your card looks native in Apple Wallet." },
+        ],
+        faqs: enFaqCommon,
+        ctaTitle: "Add your card to Apple Wallet", ctaSub: "The iPhone-native business card experience.", ctaButton: "Create my Wallet card",
+      },
+      ar: {
+        title: "بطاقة أعمال Apple Wallet — أضف بطاقتك للآيفون | Cardix",
+        description: "احفظ بطاقتك الرقمية في Apple Wallet. مشاركة بلمسة، معك دائماً، تعمل بلا إنترنت.",
+        h1: "بطاقتك في Apple Wallet",
+        subtitle: "أضف بطاقة Cardix إلى Apple Wallet — لمسة للمشاركة، متاحة دائماً.",
+        intro: "Apple Wallet هي حيث يحتفظ مستخدمو iPhone بالأساسيات. الآن بطاقتك تنتمي هناك أيضاً. Cardix يتيح توليد pass لـ Apple Wallet بلمسة، فبطاقتك جاهزة للمشاركة دائماً حتى بلا إنترنت.",
+        sections: [
+          { h2: "لماذا Apple Wallet؟", body: "Wallet passes تظهر على شاشة القفل عند الحاجة. لا تحتاج فتح تطبيق — انقر الزر الجانبي مرتين وشارك." },
+          { h2: "تعمل بلا إنترنت", body: "بعد إضافتها للـ Wallet، تعمل بطاقتك حتى بلا إنترنت." },
+          { h2: "تحديث تلقائي", body: "عندما تحدّث بطاقتك، يُحدَّث pass تلقائياً عبر إشعار push." },
+        ],
+        features: [
+          { title: "إضافة بلمسة", desc: "ولّد pass لـ Apple Wallet من بطاقتك." },
+          { title: "تعمل بلا إنترنت", desc: "شارك بطاقتك بلا اتصال." },
+          { title: "تحديث تلقائي", desc: "Passes تبقى متزامنة مع ملفك." },
+          { title: "تصميم جميل", desc: "تبدو أصلية في Apple Wallet." },
+        ],
+        faqs: arFaqCommon,
+        ctaTitle: "أضف بطاقتك إلى Apple Wallet", ctaSub: "تجربة البطاقة الأصلية للآيفون.", ctaButton: "أنشئ بطاقة Wallet",
+      },
+    },
+  },
+  {
+    slug: "google-wallet-business-card", category: "keyword", keyword: "Google Wallet business card",
+    copy: {
+      en: {
+        title: "Google Wallet Business Card — Add to Android | Cardix",
+        description: "Save your digital business card to Google Wallet on Android. One-tap share, offline-ready, and always up-to-date.",
+        h1: "Your business card, in Google Wallet",
+        subtitle: "Add your Cardix card to Google Wallet — Android-native, always ready.",
+        intro: "Google Wallet is the Android-native home for cards, passes, and IDs. Cardix generates a Google Wallet pass from your card in one tap, so your business card is always in your quick-share drawer — even offline.",
+        sections: [
+          { h2: "Why Google Wallet?", body: "Wallet passes are one tap away from any Android home screen. No app open required. Share your card at conferences, meetings, or coffee shops in seconds." },
+          { h2: "Works offline", body: "Once added, your Wallet pass works without internet. Perfect for flights, subways, or venues with weak connectivity." },
+          { h2: "Auto-updates", body: "Update your card in Cardix, and your Google Wallet pass syncs automatically. No re-downloading." },
+        ],
+        features: [
+          { title: "Android-native", desc: "Built for the Google Wallet experience." },
+          { title: "Offline-ready", desc: "Share without an internet connection." },
+          { title: "Push updates", desc: "Wallet passes stay in sync." },
+          { title: "Beautiful pass design", desc: "Matches your Cardix card branding." },
+        ],
+        faqs: enFaqCommon,
+        ctaTitle: "Add to Google Wallet", ctaSub: "The Android-native business card.", ctaButton: "Create my Wallet card",
+      },
+      ar: {
+        title: "بطاقة أعمال Google Wallet — أضف للأندرويد | Cardix",
+        description: "احفظ بطاقتك الرقمية في Google Wallet على أندرويد. مشاركة بلمسة، تعمل بلا إنترنت.",
+        h1: "بطاقتك في Google Wallet",
+        subtitle: "أضف بطاقة Cardix إلى Google Wallet — أصلية للأندرويد، جاهزة دائماً.",
+        intro: "Google Wallet هي الموطن الأصلي للبطاقات على أندرويد. Cardix يولّد pass لـ Google Wallet من بطاقتك بلمسة.",
+        sections: [
+          { h2: "لماذا Google Wallet؟", body: "Wallet passes على بعد لمسة من أي شاشة أندرويد. شارك بطاقتك في ثوانٍ." },
+          { h2: "تعمل بلا إنترنت", body: "بعد إضافتها، تعمل بلا اتصال." },
+          { h2: "تحديث تلقائي", body: "حدّث بطاقتك ويُزامَن pass تلقائياً." },
+        ],
+        features: [
+          { title: "أصلية للأندرويد", desc: "مبنية لتجربة Google Wallet." },
+          { title: "جاهزة بلا إنترنت", desc: "شارك بلا اتصال." },
+          { title: "تحديثات push", desc: "Passes تبقى متزامنة." },
+          { title: "تصميم pass جميل", desc: "يطابق هوية بطاقتك." },
+        ],
+        faqs: arFaqCommon,
+        ctaTitle: "أضف لـ Google Wallet", ctaSub: "البطاقة الأصلية للأندرويد.", ctaButton: "أنشئ بطاقة Wallet",
+      },
+    },
+  },
+  {
+    slug: "vcard-generator", category: "keyword", keyword: "vCard generator",
+    copy: {
+      en: {
+        title: "Free vCard Generator — Create .vcf Files in Seconds | Cardix",
+        description: "Generate a free vCard (.vcf) file for your contact info. Universal compatibility with iPhone, Android, Outlook, and every contact app.",
+        h1: "The modern vCard generator",
+        subtitle: "Create a vCard (.vcf) that works on every phone and every email client.",
+        intro: "A vCard (.vcf) is the universal contact file format. Every phone, every email client, and every CRM reads vCards. Cardix generates a beautiful, universal vCard from your Cardix profile — plus a shareable link and QR code, all in one.",
+        sections: [
+          { h2: "vCard + shareable link + QR", body: "Instead of just a .vcf file, Cardix gives you a full digital business card AND generates a compatible vCard for one-tap saving on any phone." },
+          { h2: "Works everywhere", body: "iPhone, Android, Outlook, Gmail, Apple Contacts, Google Contacts, HubSpot, Salesforce — every modern platform reads vCards natively." },
+          { h2: "Always up-to-date", body: "Update your Cardix profile once and the vCard generated for every save also updates. No stale contact files in your recipients' phones." },
+        ],
+        features: [
+          { title: "Universal .vcf", desc: "Compatible with every phone and CRM globally." },
+          { title: "One-tap save", desc: "Recipients save your contact with one tap." },
+          { title: "QR + link included", desc: "Not just a file — a full digital card." },
+          { title: "Auto-updates", desc: "Your card and vCard sync when you edit." },
+        ],
+        faqs: enFaqCommon,
+        ctaTitle: "Generate your vCard now", ctaSub: "Free, universal, and always up-to-date.", ctaButton: "Create my vCard",
+      },
+      ar: {
+        title: "مولّد vCard مجاني — أنشئ ملفات .vcf في ثوانٍ | Cardix",
+        description: "ولّد vCard مجاني لجهة اتصالك. توافق عالمي مع iPhone وAndroid وOutlook.",
+        h1: "مولّد vCard العصري",
+        subtitle: "أنشئ vCard (.vcf) يعمل على كل هاتف وكل عميل بريد.",
+        intro: "vCard (.vcf) صيغة ملف الاتصال العالمية. كل هاتف وعميل بريد وCRM يقرأها. Cardix يولّد vCard جميلاً من ملفك — مع رابط قابل للمشاركة وQR في واحد.",
+        sections: [
+          { h2: "vCard + رابط + QR", body: "بدل ملف .vcf فقط، Cardix يمنحك بطاقة رقمية كاملة و يولّد vCard متوافق للحفظ بلمسة." },
+          { h2: "يعمل في كل مكان", body: "iPhone وAndroid وOutlook وGmail وApple Contacts وGoogle Contacts وHubSpot — كل منصة عصرية." },
+          { h2: "محدَّث دائماً", body: "حدّث ملفك مرة وvCard المولَّد لكل حفظ يُحدَّث أيضاً." },
+        ],
+        features: [
+          { title: ".vcf عالمي", desc: "متوافق مع كل هاتف وCRM." },
+          { title: "حفظ بلمسة", desc: "المستلمون يحفظون بلمسة." },
+          { title: "QR + رابط", desc: "ليس ملفاً فقط — بطاقة كاملة." },
+          { title: "تحديث تلقائي", desc: "البطاقة وvCard تُزامَنان." },
+        ],
+        faqs: arFaqCommon,
+        ctaTitle: "ولّد vCard الآن", ctaSub: "مجاني وعالمي ومحدَّث.", ctaButton: "أنشئ vCard",
+      },
+    },
+  },
+  {
+    slug: "best-digital-business-card-app-2026", category: "keyword", keyword: "best digital business card app 2026",
+    copy: {
+      en: {
+        title: "Best Digital Business Card App of 2026 | Cardix",
+        description: "The best digital business card app of 2026 — luxury design, AI features, 20 languages, and a truly free tier. See why professionals switched.",
+        h1: "The best digital business card app of 2026",
+        subtitle: "Luxury design. AI-native. Multilingual. Free forever.",
+        intro: "The digital business card space is crowded in 2026 — but only a few apps deserve the 'best' label. Cardix wins on four axes: luxury Apple-grade design, AI-native features, 20-language global reach, and a genuinely free tier. Here's why professionals in 120+ countries switched to Cardix this year.",
+        sections: [
+          { h2: "Why Cardix wins on design", body: "Most digital card apps look like startup MVPs. Cardix invests in Apple/Stripe-quality visual identity — 19+ luxury templates, glassmorphism, animated 3D card previews, and per-card accent theming that turns the entire experience premium." },
+          { h2: "AI-native features", body: "Cardix ships AI bio generation (write a professional bio in one click), OCR paper-card scanning (turn any paper card into a digital contact), and AI layout suggestions. Competitors offer basic OCR at best." },
+          { h2: "Global from day one", body: "20 languages natively supported with full RTL for Arabic and Hebrew. Localized SEO landing pages for every language. Perfect for global teams and international professionals." },
+          { h2: "Free means free", body: "Unlimited cards, all templates, full analytics — permanently free. Paid plans exist for teams, NFC hardware, and SSO. If you're an individual, you'll never hit a paywall." },
+        ],
+        features: [
+          { title: "Luxury design", desc: "The most beautiful cards in the market." },
+          { title: "AI-native", desc: "Bio generation, OCR, and layout AI built in." },
+          { title: "20 languages + RTL", desc: "Truly global from day one." },
+          { title: "Free forever", desc: "No paywall for individuals, ever." },
+        ],
+        faqs: enFaqCommon,
+        ctaTitle: "Try the #1 app of 2026", ctaSub: "Join 100,000+ professionals who chose Cardix.", ctaButton: "Get started free",
+      },
+      ar: {
+        title: "أفضل تطبيق بطاقات رقمية 2026 | Cardix",
+        description: "أفضل تطبيق بطاقات رقمية في 2026 — تصميم فاخر وذكاء اصطناعي و20 لغة وطبقة مجانية حقيقية.",
+        h1: "أفضل تطبيق بطاقات رقمية 2026",
+        subtitle: "تصميم فاخر. أصلي بالذكاء الاصطناعي. متعدد اللغات. مجاني للأبد.",
+        intro: "سوق البطاقات الرقمية مزدحم في 2026 — لكن قلّة تستحق لقب 'الأفضل'. Cardix يفوز على أربعة محاور: تصميم فاخر بمستوى Apple، ميزات ذكاء اصطناعي أصلية، وصول لـ 20 لغة، وطبقة مجانية حقيقية.",
+        sections: [
+          { h2: "لماذا يفوز Cardix بالتصميم", body: "معظم التطبيقات تبدو كنماذج ناشئة. Cardix يستثمر في هوية بصرية بمستوى Apple — 19+ قالباً فاخراً وGlassmorphism ومعاينات 3D." },
+          { h2: "ميزات ذكاء اصطناعي أصلية", body: "Cardix يشحن توليد سيرة بالذكاء الاصطناعي، OCR للبطاقات الورقية، واقتراحات تخطيط." },
+          { h2: "عالمي من اليوم الأول", body: "20 لغة أصلية مع RTL كامل. صفحات SEO مترجمة لكل لغة." },
+          { h2: "المجاني يعني مجاني", body: "بطاقات غير محدودة وكل القوالب وتحليلات كاملة — مجاناً دائماً." },
+        ],
+        features: [
+          { title: "تصميم فاخر", desc: "أجمل البطاقات في السوق." },
+          { title: "أصلي بالذكاء الاصطناعي", desc: "سيرة وOCR وتخطيط مدمج." },
+          { title: "20 لغة + RTL", desc: "عالمي حقاً." },
+          { title: "مجاني للأبد", desc: "بلا حاجز دفع للأفراد." },
+        ],
+        faqs: arFaqCommon,
+        ctaTitle: "جرّب تطبيق 2026 الأول", ctaSub: "انضم لـ 100,000+ محترف اختاروا Cardix.", ctaButton: "ابدأ مجاناً",
+      },
+    },
+  },
+  {
+    slug: "how-to-make-digital-business-card", category: "keyword", keyword: "how to make a digital business card",
+    copy: {
+      en: {
+        title: "How to Make a Digital Business Card in 60 Seconds | Cardix",
+        description: "Step-by-step guide to creating a digital business card. Free, no design skills needed. Share via QR, NFC, or link in one tap.",
+        h1: "How to make a digital business card in 60 seconds",
+        subtitle: "No design skills. No credit card. Just a beautiful card in a minute.",
+        intro: "Making a digital business card used to require design tools, a website, and hours of tweaking. With Cardix, you go from zero to a shareable premium card in 60 seconds. Here's the step-by-step.",
+        sections: [
+          { h2: "Step 1 — Sign up (10 seconds)", body: "Create a free account with Google or email. No credit card needed. You're taken straight to the card builder." },
+          { h2: "Step 2 — Pick a template and colour (20 seconds)", body: "Choose from 19+ luxury templates. Pick an accent colour (or paste a hex code to match your brand). Your card is themed instantly." },
+          { h2: "Step 3 — Fill in your info (25 seconds)", body: "Name, title, company, phone, email, socials. Or click the AI bio button and let AI write your bio in one click." },
+          { h2: "Step 4 — Share (5 seconds)", body: "Copy your link, download your QR, or tap-to-share via NFC. Your card is live on every phone globally." },
+        ],
+        features: [
+          { title: "No design skills", desc: "Templates handle the visuals for you." },
+          { title: "AI bio in one click", desc: "Let AI write your professional bio." },
+          { title: "Instant QR + link", desc: "Share immediately after creating." },
+          { title: "Live analytics", desc: "See who views your card in real time." },
+        ],
+        faqs: enFaqCommon,
+        ctaTitle: "Make your card now", ctaSub: "60 seconds to a premium digital business card.", ctaButton: "Start creating",
+      },
+      ar: {
+        title: "كيف تنشئ بطاقة أعمال رقمية في 60 ثانية | Cardix",
+        description: "دليل خطوة بخطوة لإنشاء بطاقة رقمية. مجاني بلا مهارات تصميم. شارك بـ QR أو NFC أو رابط بلمسة.",
+        h1: "كيف تنشئ بطاقة رقمية في 60 ثانية",
+        subtitle: "بلا مهارات تصميم. بلا بطاقة ائتمان. فقط بطاقة جميلة في دقيقة.",
+        intro: "إنشاء بطاقة رقمية كان يتطلب أدوات تصميم وموقع وساعات تعديل. مع Cardix، تنتقل من الصفر إلى بطاقة فاخرة قابلة للمشاركة في 60 ثانية.",
+        sections: [
+          { h2: "الخطوة 1 — سجّل (10 ثوانٍ)", body: "أنشئ حساباً مجانياً بـ Google أو إيميل. بلا بطاقة ائتمان." },
+          { h2: "الخطوة 2 — اختر قالباً ولوناً (20 ثانية)", body: "اختر من 19+ قالباً فاخراً. اختر لوناً مميزاً (أو الصق hex ليطابق علامتك)." },
+          { h2: "الخطوة 3 — املأ معلوماتك (25 ثانية)", body: "الاسم والمسمى والشركة والهاتف والإيميل والحسابات. أو انقر زر السيرة الذكية." },
+          { h2: "الخطوة 4 — شارك (5 ثوانٍ)", body: "انسخ رابطك، نزّل QR، أو شارك بـ NFC. بطاقتك حية عالمياً." },
+        ],
+        features: [
+          { title: "بلا مهارات تصميم", desc: "القوالب تتولى المرئيات." },
+          { title: "سيرة ذكية بلمسة", desc: "دع الذكاء الاصطناعي يكتب سيرتك." },
+          { title: "QR + رابط فوري", desc: "شارك مباشرة بعد الإنشاء." },
+          { title: "تحليلات مباشرة", desc: "شاهد من يفتح بطاقتك مباشرة." },
+        ],
+        faqs: arFaqCommon,
+        ctaTitle: "أنشئ بطاقتك الآن", ctaSub: "60 ثانية لبطاقة رقمية فاخرة.", ctaButton: "ابدأ الإنشاء",
+      },
+    },
+  },
 ];
 
 // ---------- helpers ----------
@@ -2112,7 +2795,7 @@ export function getAllLandingSlugs(): string[] {
 
 export function getLandingPagesByCategory() {
   const byCat: Record<LandingCategory, LandingPage[]> = {
-    app: [], qr: [], nfc: [], ocr: [], share: [], templates: [], compare: [], profession: [], vs: [],
+    app: [], qr: [], nfc: [], ocr: [], share: [], templates: [], compare: [], profession: [], vs: [], region: [], keyword: [],
   };
   for (const p of LANDING_PAGES) byCat[p.category].push(p);
   return byCat;
@@ -2128,5 +2811,7 @@ export const CATEGORY_LABEL: Record<LandingCategory, { en: string; ar: string }>
   compare: { en: "Compare & Learn", ar: "مقارنة وتعلّم" },
   profession: { en: "By Profession", ar: "حسب المهنة" },
   vs: { en: "Cardix vs Competitors", ar: "Cardix ضد المنافسين" },
+  region: { en: "By Country & City", ar: "حسب الدولة والمدينة" },
+  keyword: { en: "Guides & Comparisons", ar: "أدلة ومقارنات" },
 };
 
