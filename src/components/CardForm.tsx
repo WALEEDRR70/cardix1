@@ -4,8 +4,9 @@ import { CardPreview, TEMPLATE_META, type TemplateId } from "@/components/CardPr
 import { useServerFn } from "@tanstack/react-start";
 import { generateBio } from "@/lib/bio.functions";
 import { supabase } from "@/integrations/supabase/client";
-import { Sparkles, Upload, X, Check } from "lucide-react";
+import { Sparkles, Upload, X, Check, Plus } from "lucide-react";
 import { toast } from "sonner";
+import { SOCIALS, SOCIALS_BY_ID } from "@/lib/socials";
 
 export interface CardFormData {
   name: string;
@@ -22,6 +23,7 @@ export interface CardFormData {
   accent_color: string;
   template: string;
   is_published: boolean;
+  socials: Record<string, string>;
 }
 
 const ACCENTS = ["#D4AF37", "#F5F5F5", "#8B5CF6", "#22D3EE", "#F97316", "#EC4899", "#10B981", "#EF4444"];
