@@ -56,9 +56,9 @@ function EditCard() {
   };
 
   async function onSubmit(d: CardFormData): Promise<void> {
-    const { error } = await supabase.from("cards").update(d).eq("id", id);
+    const { error } = await supabase.from("cards").update(d).eq("id", id).eq("user_id", user.id);
     if (error) { toast.error(error.message); return; }
-    qc.invalidateQueries({ queryKey: ["card", id] });
+    qc.invalidateQueries({ queryKey: ["card", id, user.id] });
     qc.invalidateQueries({ queryKey: ["cards"] });
     toast.success("Saved");
   }
