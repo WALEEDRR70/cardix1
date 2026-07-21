@@ -13,7 +13,7 @@ import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { supabase } from "@/integrations/supabase/client";
 
 function useIsAuthed() {
-  const [authed, setAuthed] = useState<boolean>(false);
+  const [authed, setAuthed] = useState<boolean | null>(null);
   useEffect(() => {
     let mounted = true;
     supabase.auth.getSession().then(({ data }) => { if (mounted) setAuthed(!!data.session); });
@@ -136,20 +136,21 @@ const demoCards = [
 function Landing() {
   const { t, lang } = useI18n();
   const c = copy[lang];
+  const authed = useIsAuthed();
 
   return (
     <div className="relative min-h-[100dvh] overflow-x-clip bg-background text-foreground">
       <BackgroundFx />
-      <Nav t={t} c={c} />
-      <Hero t={t} c={c} />
+      <Nav t={t} c={c} authed={authed} />
+      <Hero t={t} c={c} authed={authed} />
       <TrustStrip c={c} />
       <Templates c={c} />
       <HowItWorks c={c} />
       <Features c={c} />
       <Testimonials c={c} />
-      <Pricing t={t} c={c} />
+      <Pricing t={t} c={c} authed={authed} />
       <Faq c={c} />
-      <FinalCta t={t} c={c} />
+      <FinalCta t={t} c={c} authed={authed} />
       <Footer t={t} c={c} />
     </div>
   );
@@ -187,8 +188,7 @@ function BackgroundFx() {
 }
 
 /* ---------------- Nav ---------------- */
-function Nav({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"] }) {
-  const authed = useIsAuthed();
+function Nav({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"]; authed: boolean | null }) {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 8);
@@ -216,9 +216,11 @@ function Nav({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"
             <ThemeToggle compact />
             <LangToggle compact />
           </div>
-          <Link to={authed ? "/dashboard" : "/auth"} className="hidden md:inline-flex text-sm text-muted-foreground hover:text-foreground px-3 py-2">{t.signIn}</Link>
+          {authed === false ? (
+            <Link to="/auth" className="hidden md:inline-flex text-sm text-muted-foreground hover:text-foreground px-3 py-2">{t.signIn}</Link>
+          ) : null}
           <Link
-            to={authed ? "/dashboard" : "/auth"}
+            to={authed === false ? "/auth" : "/dashboard"}
             className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold text-accent-foreground shadow-glow transition active:scale-[0.98]"
             style={{ background: "var(--gradient-gold)" }}
           >
@@ -232,8 +234,7 @@ function Nav({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"
 }
 
 /* ---------------- Hero ---------------- */
-function Hero({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"] }) {
-  const authed = useIsAuthed();
+function Hero({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"]; authed: boolean | null }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [mx, setMx] = useState(0);
   const [my, setMy] = useState(0);
@@ -267,7 +268,7 @@ function Hero({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Link to={authed ? "/dashboard" : "/auth"}
+            <Link to={authed === false ? "/auth" : "/dashboard"}
               className="group inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-glow transition active:scale-[0.98]"
               style={{ background: "var(--gradient-gold)" }}>
               {t.getStarted}
@@ -533,8 +534,7 @@ function Testimonials({ c }: { c: typeof copy["en"] }) {
 }
 
 /* ---------------- Pricing ---------------- */
-function Pricing({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"] }) {
-  const authed = useIsAuthed();
+function Pricing({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"]; authed: boolean | null }) {
   const plans = [
     { name: c.free, price: "0", feats: ["1 card", "QR sharing", "Basic analytics"], cta: c.getStartedFree, primary: false },
     { name: c.pro, price: "9", feats: ["Unlimited cards", "AI scanner", "NFC + custom slug", "30-day analytics"], cta: c.tryPro, primary: true },
@@ -572,7 +572,7 @@ function Pricing({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy[
                 ))}
               </ul>
               <Link
-                to={authed ? "/dashboard" : "/auth"}
+                to={authed === false ? "/auth" : "/dashboard"}
                 className={
                   "mt-8 inline-flex items-center justify-center rounded-full py-3 text-sm font-semibold transition active:scale-[0.98] " +
                   (p.primary
@@ -626,8 +626,7 @@ function Faq({ c }: { c: typeof copy["en"] }) {
 }
 
 /* ---------------- Final CTA ---------------- */
-function FinalCta({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"] }) {
-  const authed = useIsAuthed();
+function FinalCta({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"]; authed: boolean | null }) {
   return (
     <section className="relative py-24 lg:py-32">
       <div className="mx-auto w-full max-w-[1280px] px-5 lg:px-10">
@@ -642,7 +641,7 @@ function FinalCta({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy
               </h2>
               <p className="mt-4 max-w-lg text-base text-muted-foreground lg:text-lg">{c.ctaDesc}</p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link to={authed ? "/dashboard" : "/auth"} className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-glow"
+                <Link to={authed === false ? "/auth" : "/dashboard"} className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-glow"
                   style={{ background: "var(--gradient-gold)" }}>
                   {t.getStarted}
                   <ArrowRight className="h-4 w-4 rtl:rotate-180" />
