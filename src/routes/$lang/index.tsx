@@ -63,92 +63,6 @@ export const Route = createFileRoute("/$lang/")({
 
 
 
-// -------- Local bilingual copy (keeps global i18n dict small) --------
-const copy = {
-  en: {
-    navFeatures: "Features", navTemplates: "Templates", navPricing: "Pricing", navFaq: "FAQ",
-    trustedBy: "Trusted by founders & teams worldwide",
-    openApp: "Open app",
-    heroKicker: "Digital business cards, refined.",
-    heroPill: "New · AI paper-card scanner",
-    liveCard: "Live card",
-    tapToOpen: "Scan · Tap · Share",
-    templatesTitle: "19 premium templates",
-    templatesDesc: "Every template is hand-crafted in the same design language. Pick one, or switch anytime.",
-    howTitle: "From blank to iconic in 60 seconds",
-    step1: "Create", step1d: "Pick a template, drop in your details, add your logo.",
-    step2: "Share", step2d: "Send a link, tap NFC, or let people scan your QR.",
-    step3: "Grow", step3d: "See views, saves and trends — refine what works.",
-    featTitle: "Everything a modern card should be",
-    featShare: "One-tap sharing", featShareD: "QR, NFC, native share sheet, or a plain link.",
-    featScan: "AI paper scanner", featScanD: "Snap any paper card. We extract every field in seconds.",
-    featNfc: "Write to NFC", featNfcD: "Turn any NFC tag into your card — no app for the receiver.",
-    featAnalytics: "Analytics", featAnalyticsD: "Real-time views, save events, and 30-day trends.",
-    featI18n: "Bilingual, RTL-ready", featI18nD: "Arabic and English, first-class — with no reload.",
-    featCloud: "Cloud-synced", featCloudD: "Sign in on any device. Your cards travel with you.",
-    testimonialsTitle: "Loved by people who care about details",
-    pricingTitle: "Simple, honest pricing", pricingDesc: "Start free. Upgrade when your card starts working for you.",
-    free: "Free", pro: "Pro", team: "Team",
-    perMonth: "/mo", getStartedFree: "Start free", tryPro: "Try Pro",
-    faqTitle: "Frequently asked",
-    ctaTitle: "Your next handshake is digital.",
-    ctaDesc: "Design a card in minutes. Share it forever.",
-    footerTag: "Crafted with intent.",
-    faqs: [
-      { q: "Do people need an app to open my card?", a: "No. Cards open in any browser — iOS, Android, desktop. NFC and QR both link to the same beautiful page." },
-      { q: "Can I use my own domain?", a: "Yes, custom slugs today and full custom domains on the Team plan." },
-      { q: "Is Arabic supported end-to-end?", a: "Yes. The entire product is RTL-native — no half-translated screens." },
-      { q: "Can I edit a card after sharing it?", a: "Anytime. Your link stays the same and the receiver always sees the latest version." },
-    ],
-    testimonials: [
-      { name: "Layla Al-Farsi", role: "Design Director, Atelier Nord", body: "The most tasteful business-card product I've used. My clients notice — every time." },
-      { name: "Kenji Ito", role: "Founder, Kōgei", body: "NFC + QR + a link that stays fresh. I removed 200 paper cards from my drawer." },
-      { name: "Maya Chen", role: "Investor, Northline", body: "Scanner is scary good. Two seconds, contact saved, done." },
-    ],
-  },
-  ar: {
-    navFeatures: "المزايا", navTemplates: "القوالب", navPricing: "الأسعار", navFaq: "الأسئلة",
-    trustedBy: "يثق بنا مؤسسون وفرق حول العالم",
-    openApp: "افتح التطبيق",
-    heroKicker: "بطاقات الأعمال الرقمية، بلمسة راقية.",
-    heroPill: "جديد · ماسح البطاقات الورقية بالذكاء الاصطناعي",
-    liveCard: "بطاقة حيّة",
-    tapToOpen: "امسح · لامس · شارك",
-    templatesTitle: "19 قالبًا فاخرًا",
-    templatesDesc: "كل قالب مصمّم بيد فنّان وبنفس اللغة البصرية. اختر واحدًا أو بدّل متى شئت.",
-    howTitle: "من فراغ إلى بطاقة أيقونية في 60 ثانية",
-    step1: "أنشئ", step1d: "اختر قالبًا، أضف بياناتك وشعارك.",
-    step2: "شارك", step2d: "أرسل رابطًا، لامس NFC، أو دع الآخرين يمسحون QR.",
-    step3: "انمُ", step3d: "تابع المشاهدات والحفظ والاتجاهات — وطوّر ما ينجح.",
-    featTitle: "كل ما يجب أن تكون عليه بطاقة عصرية",
-    featShare: "مشاركة بلمسة", featShareD: "QR أو NFC أو رابط أو مشاركة النظام.",
-    featScan: "ماسح ذكي", featScanD: "التقط بطاقة ورقية، ونستخرج كل الحقول في ثوانٍ.",
-    featNfc: "الكتابة على NFC", featNfcD: "حوّل أي بطاقة NFC إلى بطاقتك — بلا تطبيق للمستقبل.",
-    featAnalytics: "تحليلات", featAnalyticsD: "مشاهدات لحظية وأحداث حفظ واتجاهات 30 يومًا.",
-    featI18n: "ثنائية اللغة، RTL أصلي", featI18nD: "عربي وإنجليزي بلا إعادة تحميل.",
-    featCloud: "مزامنة سحابية", featCloudD: "سجّل الدخول من أي جهاز — بطاقاتك تنتقل معك.",
-    testimonialsTitle: "يحبّها من يهتم بالتفاصيل",
-    pricingTitle: "أسعار بسيطة وصادقة", pricingDesc: "ابدأ مجانًا. رقّي حين تعمل بطاقتك لصالحك.",
-    free: "مجاني", pro: "برو", team: "فرق",
-    perMonth: "/شهر", getStartedFree: "ابدأ مجانًا", tryPro: "جرّب برو",
-    faqTitle: "الأسئلة الشائعة",
-    ctaTitle: "المصافحة القادمة رقمية.",
-    ctaDesc: "صمّم بطاقة في دقائق. شاركها للأبد.",
-    footerTag: "صُنعت بعناية.",
-    faqs: [
-      { q: "هل يحتاج المستقبل إلى تطبيق لفتح البطاقة؟", a: "لا. تفتح البطاقات في أي متصفح — iOS و Android وسطح المكتب." },
-      { q: "هل يمكنني استخدام نطاقي الخاص؟", a: "نعم — اسم مسار مخصص اليوم، ونطاقات كاملة في خطة الفرق." },
-      { q: "هل العربية مدعومة بالكامل؟", a: "نعم. المنتج بأكمله RTL أصلي." },
-      { q: "هل يمكنني تعديل البطاقة بعد مشاركتها؟", a: "في أي وقت. الرابط يبقى ثابتًا ويرى المستقبل الإصدار الأحدث دائمًا." },
-    ],
-    testimonials: [
-      { name: "ليلى الفارسي", role: "مديرة تصميم، أتيليه نورد", body: "أرقى تجربة بطاقة أعمال استخدمتها — يلاحظها عملائي دائمًا." },
-      { name: "كينجي إيتو", role: "مؤسس، Kōgei", body: "NFC و QR ورابط يبقى محدّثًا. تخلّصت من 200 بطاقة ورقية." },
-      { name: "مايا تشين", role: "مستثمرة، نورث لاين", body: "الماسح مذهل. ثانيتان، تُحفظ جهة الاتصال، انتهى." },
-    ],
-  },
-};
-
 const demoCards = [
   { name: "Layla Al-Farsi", title: "Design Director", company: "Atelier Nord", accent_color: "#7c34ff", template: "luxury" },
   { name: "Kenji Ito", title: "Founder", company: "Kōgei", accent_color: "#22D3EE", template: "aurora" },
@@ -160,8 +74,9 @@ const demoCards = [
 
 function Landing() {
   const { t, lang } = useI18n();
-  const c = (copy as Record<string, typeof copy.en>)[lang] ?? copy.en;
+  const c = getLandingCopy(lang);
   const authed = useIsAuthed();
+
 
   return (
     <div className="relative min-h-[100dvh] overflow-x-clip bg-background text-foreground">
