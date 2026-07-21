@@ -32,7 +32,7 @@ function Settings() {
 
   return (
     <MobileShell topBar={<PageHeader title={t.settings} />}>
-      <div className="space-y-5 px-5">
+      <div className="mx-auto max-w-2xl space-y-5 px-5 lg:px-8">
         {/* Profile card */}
         <div className="glass flex items-center gap-3 rounded-3xl p-5">
           <div className="grid h-14 w-14 place-items-center rounded-2xl text-lg font-semibold text-accent-foreground" style={{ background: "var(--gradient-gold)" }}>

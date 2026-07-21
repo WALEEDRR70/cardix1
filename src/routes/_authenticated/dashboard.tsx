@@ -45,41 +45,55 @@ function Dashboard() {
 
   return (
     <MobileShell topBar={<PageHeader title={t.brand} subtitle={user.email ?? undefined} right={<ThemeToggle compact />} />}>
-      <div className="px-5">
-        {/* Featured (primary) card */}
-        {primary ? (
-          <Link to="/cards/$id" params={{ id: primary.id }} className="block">
-            <div className="relative">
-              <div className="absolute -inset-4 rounded-[2.5rem] opacity-40 blur-2xl" style={{ background: "var(--gradient-mesh)" }} />
-              <div className="relative flex justify-center">
-                <CardPreview card={primary} size="lg" />
-              </div>
-            </div>
-          </Link>
-        ) : (
-          <EmptyHome t={t} />
-        )}
-
-        {/* Stats */}
-        {cards && cards.length > 0 && (
-          <div className="mt-6 grid grid-cols-3 gap-2">
-            <StatTile label={t.myCards} value={cards.length} />
-            <StatTile label={t.totalViews} value={totalViews} />
-            <StatTile label={t.templates.luxury} value={new Set(cards.map((c) => c.template)).size} icon={<Sparkles className="h-3.5 w-3.5" />} />
+      <div className="px-5 lg:px-8">
+        {/* Hero row */}
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
+          {/* Featured card */}
+          <div className="order-1">
+            {primary ? (
+              <Link to="/cards/$id" params={{ id: primary.id }} className="block">
+                <div className="relative">
+                  <div className="absolute -inset-8 rounded-[2.5rem] opacity-40 blur-2xl" style={{ background: "var(--gradient-mesh)" }} />
+                  <div className="relative flex justify-center lg:justify-start">
+                    <CardPreview card={primary} size="lg" />
+                  </div>
+                </div>
+              </Link>
+            ) : (
+              <EmptyHome t={t} />
+            )}
           </div>
-        )}
+
+          {/* Stats + quick actions (desktop side column) */}
+          {cards && cards.length > 0 && (
+            <div className="order-2 space-y-3">
+              <div className="grid grid-cols-3 gap-2 lg:grid-cols-1">
+                <StatTile label={t.myCards} value={cards.length} />
+                <StatTile label={t.totalViews} value={totalViews} />
+                <StatTile label={t.templates.luxury} value={new Set(cards.map((c) => c.template)).size} icon={<Sparkles className="h-3.5 w-3.5" />} />
+              </div>
+              <Link
+                to="/cards/new"
+                className="hidden lg:flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-sm font-semibold text-accent-foreground shadow-glow"
+                style={{ background: "var(--gradient-gold)" }}
+              >
+                + {t.createCard}
+              </Link>
+            </div>
+          )}
+        </div>
 
         {/* All cards */}
         {cards && cards.length > 1 && (
-          <section className="mt-8">
-            <div className="mb-3 flex items-center justify-between px-1">
-              <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{t.myCards}</h2>
+          <section className="mt-10 lg:mt-14">
+            <div className="mb-4 flex items-center justify-between px-1">
+              <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground lg:text-base lg:tracking-normal lg:normal-case lg:text-foreground">{t.myCards}</h2>
               <span className="text-[11px] text-muted-foreground">{cards.length}</span>
             </div>
-            <div className="grid gap-3">
+            <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
               {cards.slice(1).map((c) => (
-                <div key={c.id} className="glass card-lift flex items-center gap-3 rounded-2xl p-3">
-                  <Link to="/cards/$id" params={{ id: c.id }} className="grid h-14 w-24 shrink-0 overflow-hidden rounded-xl">
+                <div key={c.id} className="glass card-lift group flex items-center gap-3 rounded-2xl p-3 lg:p-4">
+                  <Link to="/cards/$id" params={{ id: c.id }} className="grid h-14 w-24 shrink-0 overflow-hidden rounded-xl lg:h-16 lg:w-28">
                     <MiniCard card={c} />
                   </Link>
                   <Link to="/cards/$id" params={{ id: c.id }} className="min-w-0 flex-1">
@@ -91,7 +105,8 @@ function Dashboard() {
                   </Link>
                   <button
                     onClick={() => del(c.id)}
-                    className="grid h-9 w-9 place-items-center rounded-full text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                    className="grid h-9 w-9 place-items-center rounded-full text-muted-foreground opacity-0 transition group-hover:opacity-100 hover:bg-destructive/10 hover:text-destructive"
+                    aria-label={t.delete}
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -104,6 +119,7 @@ function Dashboard() {
     </MobileShell>
   );
 }
+
 
 function EmptyHome({ t }: { t: ReturnType<typeof useI18n>["t"] }) {
   return (

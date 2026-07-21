@@ -83,11 +83,14 @@ export function CardForm({
   }
 
   return (
-    <div className="space-y-6">
-      {/* Live preview */}
-      <div className="flex justify-center">
-        <CardPreview card={data} size="md" />
-      </div>
+    <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-10 lg:items-start">
+      <div className="space-y-6 lg:order-1">
+        {/* Live preview (mobile: inline top) */}
+        <div className="flex justify-center lg:hidden">
+          <CardPreview card={data} size="md" />
+        </div>
+
+
 
       {/* Template picker */}
       <section>
@@ -218,9 +221,24 @@ export function CardForm({
           {saving ? "…" : submitLabel}
         </button>
       </form>
+      </div>
+
+      {/* Desktop sticky preview */}
+      <aside className="hidden lg:block lg:order-2">
+        <div className="sticky top-8 space-y-4">
+          <div className="relative">
+            <div className="absolute -inset-6 rounded-[2.5rem] opacity-40 blur-2xl" style={{ background: "var(--gradient-mesh)" }} />
+            <div className="relative flex justify-center">
+              <CardPreview card={data} size="lg" />
+            </div>
+          </div>
+          <p className="text-center text-[11px] uppercase tracking-[0.25em] text-muted-foreground">Live preview</p>
+        </div>
+      </aside>
     </div>
   );
 }
+
 
 function Field({ label, value, onChange, required, type = "text", prefix }: {
   label: string; value: string; onChange: (v: string) => void;

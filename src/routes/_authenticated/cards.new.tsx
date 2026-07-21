@@ -30,7 +30,7 @@ function NewCard() {
 
   return (
     <MobileShell topBar={<PageHeader title={t.createCard} back="/dashboard" />}>
-      <div className="px-5">
+      <div className="px-5 lg:px-8">
         <CardForm initial={initial} onSubmit={onSubmit} submitLabel={t.createCard} />
       </div>
     </MobileShell>

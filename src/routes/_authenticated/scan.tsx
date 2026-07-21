@@ -84,35 +84,40 @@ function ScanPage() {
 
   return (
     <MobileShell topBar={<PageHeader title={t.scanCard} subtitle={t.scanCardDesc} />}>
-      <div className="px-5">
+      <div className="px-5 lg:px-8">
         {!imgUrl ? (
-          <div className="mt-4 space-y-3">
-            <div className="glass grid aspect-[3/4] w-full place-items-center overflow-hidden rounded-3xl border-2 border-dashed border-border">
+          <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-8">
+            <div className="glass grid aspect-[3/4] w-full place-items-center overflow-hidden rounded-3xl border-2 border-dashed border-border lg:aspect-[4/3]">
               <div className="text-center">
-                <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl text-accent-foreground shadow-glow" style={{ background: "var(--gradient-gold)" }}>
-                  <Camera className="h-7 w-7" />
+                <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl text-accent-foreground shadow-glow lg:h-20 lg:w-20" style={{ background: "var(--gradient-gold)" }}>
+                  <Camera className="h-7 w-7 lg:h-9 lg:w-9" />
                 </div>
-                <p className="mt-4 text-sm text-muted-foreground">Position the card inside the frame.</p>
+                <p className="mt-4 max-w-xs text-sm text-muted-foreground">Position the card inside the frame.</p>
               </div>
             </div>
-            <button
-              onClick={() => camRef.current?.click()}
-              className="flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-semibold text-accent-foreground shadow-glow"
-              style={{ background: "var(--gradient-gold)" }}
-            >
-              <Camera className="h-5 w-5" /> {t.takePhoto}
-            </button>
-            <button
-              onClick={() => fileRef.current?.click()}
-              className="glass flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-medium"
-            >
-              <Upload className="h-4 w-4" /> {t.uploadImage}
-            </button>
+            <div className="space-y-3">
+              <button
+                onClick={() => camRef.current?.click()}
+                className="flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-semibold text-accent-foreground shadow-glow"
+                style={{ background: "var(--gradient-gold)" }}
+              >
+                <Camera className="h-5 w-5" /> {t.takePhoto}
+              </button>
+              <button
+                onClick={() => fileRef.current?.click()}
+                className="glass flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-medium"
+              >
+                <Upload className="h-4 w-4" /> {t.uploadImage}
+              </button>
+              <p className="pt-2 text-xs text-muted-foreground">
+                {t.scanCardDesc}
+              </p>
+            </div>
           </div>
         ) : (
-          <div className="mt-4 space-y-4">
+          <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-8">
             <div className="relative overflow-hidden rounded-3xl border border-border bg-black">
-              <img src={imgUrl} alt="Scanned" className="max-h-72 w-full object-contain" />
+              <img src={imgUrl} alt="Scanned" className="max-h-[420px] w-full object-contain lg:max-h-[520px]" />
               {busy && (
                 <div className="absolute inset-0 grid place-items-center bg-black/60 backdrop-blur-sm">
                   <div className="flex flex-col items-center gap-3 text-white">
@@ -123,38 +128,41 @@ function ScanPage() {
               )}
             </div>
 
-            {data && !busy && (
-              <div className="glass space-y-1 rounded-3xl p-5">
-                <p className="text-lg font-semibold">{data.name || "Unknown"}</p>
-                {data.title && <p className="text-xs text-muted-foreground">{data.title}</p>}
-                {data.company && <p className="text-xs text-muted-foreground">{data.company}</p>}
-                <div className="mt-3 space-y-1 border-t border-border pt-3 text-xs text-muted-foreground">
-                  {data.phone && <p>📞 {data.phone}</p>}
-                  {data.email && <p>✉️ {data.email}</p>}
-                  {data.website && <p>🌐 {data.website}</p>}
-                  {data.address && <p>📍 {data.address}</p>}
+            <div className="space-y-4">
+              {data && !busy && (
+                <div className="glass space-y-1 rounded-3xl p-5">
+                  <p className="text-lg font-semibold">{data.name || "Unknown"}</p>
+                  {data.title && <p className="text-xs text-muted-foreground">{data.title}</p>}
+                  {data.company && <p className="text-xs text-muted-foreground">{data.company}</p>}
+                  <div className="mt-3 space-y-1 border-t border-border pt-3 text-xs text-muted-foreground">
+                    {data.phone && <p>📞 {data.phone}</p>}
+                    {data.email && <p>✉️ {data.email}</p>}
+                    {data.website && <p>🌐 {data.website}</p>}
+                    {data.address && <p>📍 {data.address}</p>}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                onClick={reset}
-                className="glass flex items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-medium"
-              >
-                <RefreshCw className="h-4 w-4" /> Retry
-              </button>
-              <button
-                onClick={save}
-                disabled={!data || saving}
-                className="flex items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-semibold text-accent-foreground shadow-glow disabled:opacity-60"
-                style={{ background: "var(--gradient-gold)" }}
-              >
-                <Save className="h-4 w-4" /> {saving ? "…" : t.saveToVault}
-              </button>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  onClick={reset}
+                  className="glass flex items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-medium"
+                >
+                  <RefreshCw className="h-4 w-4" /> Retry
+                </button>
+                <button
+                  onClick={save}
+                  disabled={!data || saving}
+                  className="flex items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-semibold text-accent-foreground shadow-glow disabled:opacity-60"
+                  style={{ background: "var(--gradient-gold)" }}
+                >
+                  <Save className="h-4 w-4" /> {saving ? "…" : t.saveToVault}
+                </button>
+              </div>
             </div>
           </div>
         )}
+
 
         <input ref={camRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
         <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
