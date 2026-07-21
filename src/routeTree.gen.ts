@@ -18,6 +18,7 @@ import { Route as AuthenticatedScanRouteImport } from './routes/_authenticated/s
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCardsNewRouteImport } from './routes/_authenticated/cards.new'
 import { Route as AuthenticatedCardsIdRouteImport } from './routes/_authenticated/cards.$id'
+import { Route as AuthenticatedCardsIdAnalyticsRouteImport } from './routes/_authenticated/cards.$id.analytics'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -63,6 +64,12 @@ const AuthenticatedCardsIdRoute = AuthenticatedCardsIdRouteImport.update({
   path: '/cards/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedCardsIdAnalyticsRoute =
+  AuthenticatedCardsIdAnalyticsRouteImport.update({
+    id: '/analytics',
+    path: '/analytics',
+    getParentRoute: () => AuthenticatedCardsIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -71,8 +78,9 @@ export interface FileRoutesByFullPath {
   '/scan': typeof AuthenticatedScanRoute
   '/vault': typeof AuthenticatedVaultRoute
   '/c/$slug': typeof CSlugRoute
-  '/cards/$id': typeof AuthenticatedCardsIdRoute
+  '/cards/$id': typeof AuthenticatedCardsIdRouteWithChildren
   '/cards/new': typeof AuthenticatedCardsNewRoute
+  '/cards/$id/analytics': typeof AuthenticatedCardsIdAnalyticsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -81,8 +89,9 @@ export interface FileRoutesByTo {
   '/scan': typeof AuthenticatedScanRoute
   '/vault': typeof AuthenticatedVaultRoute
   '/c/$slug': typeof CSlugRoute
-  '/cards/$id': typeof AuthenticatedCardsIdRoute
+  '/cards/$id': typeof AuthenticatedCardsIdRouteWithChildren
   '/cards/new': typeof AuthenticatedCardsNewRoute
+  '/cards/$id/analytics': typeof AuthenticatedCardsIdAnalyticsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -93,8 +102,9 @@ export interface FileRoutesById {
   '/_authenticated/scan': typeof AuthenticatedScanRoute
   '/_authenticated/vault': typeof AuthenticatedVaultRoute
   '/c/$slug': typeof CSlugRoute
-  '/_authenticated/cards/$id': typeof AuthenticatedCardsIdRoute
+  '/_authenticated/cards/$id': typeof AuthenticatedCardsIdRouteWithChildren
   '/_authenticated/cards/new': typeof AuthenticatedCardsNewRoute
+  '/_authenticated/cards/$id/analytics': typeof AuthenticatedCardsIdAnalyticsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/c/$slug'
     | '/cards/$id'
     | '/cards/new'
+    | '/cards/$id/analytics'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/c/$slug'
     | '/cards/$id'
     | '/cards/new'
+    | '/cards/$id/analytics'
   id:
     | '__root__'
     | '/'
@@ -128,6 +140,7 @@ export interface FileRouteTypes {
     | '/c/$slug'
     | '/_authenticated/cards/$id'
     | '/_authenticated/cards/new'
+    | '/_authenticated/cards/$id/analytics'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -202,14 +215,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCardsIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/cards/$id/analytics': {
+      id: '/_authenticated/cards/$id/analytics'
+      path: '/analytics'
+      fullPath: '/cards/$id/analytics'
+      preLoaderRoute: typeof AuthenticatedCardsIdAnalyticsRouteImport
+      parentRoute: typeof AuthenticatedCardsIdRoute
+    }
   }
 }
+
+interface AuthenticatedCardsIdRouteChildren {
+  AuthenticatedCardsIdAnalyticsRoute: typeof AuthenticatedCardsIdAnalyticsRoute
+}
+
+const AuthenticatedCardsIdRouteChildren: AuthenticatedCardsIdRouteChildren = {
+  AuthenticatedCardsIdAnalyticsRoute: AuthenticatedCardsIdAnalyticsRoute,
+}
+
+const AuthenticatedCardsIdRouteWithChildren =
+  AuthenticatedCardsIdRoute._addFileChildren(AuthenticatedCardsIdRouteChildren)
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedScanRoute: typeof AuthenticatedScanRoute
   AuthenticatedVaultRoute: typeof AuthenticatedVaultRoute
-  AuthenticatedCardsIdRoute: typeof AuthenticatedCardsIdRoute
+  AuthenticatedCardsIdRoute: typeof AuthenticatedCardsIdRouteWithChildren
   AuthenticatedCardsNewRoute: typeof AuthenticatedCardsNewRoute
 }
 
@@ -217,7 +248,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedScanRoute: AuthenticatedScanRoute,
   AuthenticatedVaultRoute: AuthenticatedVaultRoute,
-  AuthenticatedCardsIdRoute: AuthenticatedCardsIdRoute,
+  AuthenticatedCardsIdRoute: AuthenticatedCardsIdRouteWithChildren,
   AuthenticatedCardsNewRoute: AuthenticatedCardsNewRoute,
 }
 
