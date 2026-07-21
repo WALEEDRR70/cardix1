@@ -138,7 +138,7 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     toggleTheme: "تبديل المظهر", dark: "داكن", light: "فاتح", mostPopular: "الأكثر شيوعاً",
     liveCard: "بطاقة نشطة", tapToOpen: "اضغط للفتح", cameraPermissionDenied: "تم رفض صلاحية الكاميرا. يرجى تفعيلها من إعدادات المتصفح.", eyebrowTemplates: "القوالب",
     eyebrowHowItWorks: "آلية العمل", eyebrowFeatures: "الميزات", eyebrowTestimonials: "آراء العملاء", eyebrowPricing: "الأسعار",
-    cardNumber: (n, total) => `البطاقة ${n} من ${total}`,
+    cardNumber: (n: number, total: number) => `البطاقة ${n} من ${total}`,
   },
 
   fr: {
@@ -205,7 +205,7 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     toggleTheme: "Changer de thème", dark: "Sombre", light: "Clair", mostPopular: "Le plus populaire",
     liveCard: "Carte active", tapToOpen: "Appuyer pour ouvrir", cameraPermissionDenied: "Accès à la caméra refusé. Activez-le dans les paramètres de votre navigateur.", eyebrowTemplates: "Modèles",
     eyebrowHowItWorks: "Comment ça marche", eyebrowFeatures: "Fonctionnalités", eyebrowTestimonials: "Témoignages", eyebrowPricing: "Tarifs",
-    cardNumber: (n, total) => `Carte ${n} sur ${total}`,
+    cardNumber: (n: number, total: number) => `Carte ${n} sur ${total}`,
   },
 
   de: {
@@ -272,7 +272,7 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     toggleTheme: "Design wechseln", dark: "Dunkel", light: "Hell", mostPopular: "Am beliebtesten",
     liveCard: "Aktive Karte", tapToOpen: "Zum Öffnen tippen", cameraPermissionDenied: "Kamerazugriff verweigert. Bitte in den Browsereinstellungen aktivieren.", eyebrowTemplates: "Vorlagen",
     eyebrowHowItWorks: "So funktioniert's", eyebrowFeatures: "Funktionen", eyebrowTestimonials: "Kundenstimmen", eyebrowPricing: "Preise",
-    cardNumber: (n, total) => `Karte ${n} von ${total}`,
+    cardNumber: (n: number, total: number) => `Karte ${n} von ${total}`,
   },
 
   es: {
@@ -339,7 +339,7 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     toggleTheme: "Cambiar tema", dark: "Oscuro", light: "Claro", mostPopular: "Más popular",
     liveCard: "Tarjeta activa", tapToOpen: "Tocar para abrir", cameraPermissionDenied: "Permiso de cámara denegado. Actívalo en la configuración de tu navegador.", eyebrowTemplates: "Plantillas",
     eyebrowHowItWorks: "Cómo funciona", eyebrowFeatures: "Funciones", eyebrowTestimonials: "Testimonios", eyebrowPricing: "Precios",
-    cardNumber: (n, total) => `Tarjeta ${n} de ${total}`,
+    cardNumber: (n: number, total: number) => `Tarjeta ${n} de ${total}`,
   },
 
   it: {
@@ -406,7 +406,7 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     toggleTheme: "Cambia tema", dark: "Scuro", light: "Chiaro", mostPopular: "Più popolare",
     liveCard: "Biglietto attivo", tapToOpen: "Tocca per aprire", cameraPermissionDenied: "Permesso fotocamera negato. Abilitalo nelle impostazioni del browser.", eyebrowTemplates: "Modelli",
     eyebrowHowItWorks: "Come funziona", eyebrowFeatures: "Funzionalità", eyebrowTestimonials: "Recensioni", eyebrowPricing: "Prezzi",
-    cardNumber: (n, total) => `Biglietto ${n} di ${total}`,
+    cardNumber: (n: number, total: number) => `Biglietto ${n} di ${total}`,
   },
 
   pt: {
@@ -473,7 +473,7 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     toggleTheme: "Alternar tema", dark: "Escuro", light: "Claro", mostPopular: "Mais popular",
     liveCard: "Cartão ativo", tapToOpen: "Toque para abrir", cameraPermissionDenied: "Permissão de câmera negada. Ative-a nas configurações do navegador.", eyebrowTemplates: "Modelos",
     eyebrowHowItWorks: "Como funciona", eyebrowFeatures: "Recursos", eyebrowTestimonials: "Depoimentos", eyebrowPricing: "Preços",
-    cardNumber: (n, total) => `Cartão ${n} de ${total}`,
+    cardNumber: (n: number, total: number) => `Cartão ${n} de ${total}`,
   },
 
   ru: {
@@ -540,7 +540,7 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     toggleTheme: "Сменить тему", dark: "Темная", light: "Светлая", mostPopular: "Популярное",
     liveCard: "Активная визитка", tapToOpen: "Нажмите, чтобы открыть", cameraPermissionDenied: "Доступ к камере запрещен. Разрешите его в настройках браузера.", eyebrowTemplates: "Шаблоны",
     eyebrowHowItWorks: "Как это работает", eyebrowFeatures: "Возможности", eyebrowTestimonials: "Отзывы", eyebrowPricing: "Цены",
-    cardNumber: (n, total) => `Визитка ${n} из ${total}`,
+    cardNumber: (n: number, total: number) => `Визитка ${n} из ${total}`,
   },
 
   tr: {
@@ -607,7 +607,7 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     toggleTheme: "Temayı değiştir", dark: "Koyu", light: "Açık", mostPopular: "En popüler",
     liveCard: "Aktif kart", tapToOpen: "Açmak için dokun", cameraPermissionDenied: "Kamera izni reddedildi. Tarayıcı ayarlarınızdan etkinleştirin.", eyebrowTemplates: "Şablonlar",
     eyebrowHowItWorks: "Nasıl çalışır", eyebrowFeatures: "Özellikler", eyebrowTestimonials: "Görüşler", eyebrowPricing: "Fiyatlandırma",
-    cardNumber: (n, total) => `Kart ${n} / ${total}`,
+    cardNumber: (n: number, total: number) => `Kart ${n} / ${total}`,
   },
 
   nl: {
@@ -674,7 +674,7 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     toggleTheme: "Thema wisselen", dark: "Donker", light: "Licht", mostPopular: "Populairste",
     liveCard: "Live kaart", tapToOpen: "Tik om te openen", cameraPermissionDenied: "Geen toegang tot camera. Schakel dit in via de browserinstellingen.", eyebrowTemplates: "Templates",
     eyebrowHowItWorks: "Hoe het werkt", eyebrowFeatures: "Functies", eyebrowTestimonials: "Testimonials", eyebrowPricing: "Prijzen",
-    cardNumber: (n, total) => `Kaart ${n} van ${total}`,
+    cardNumber: (n: number, total: number) => `Kaart ${n} van ${total}`,
   },
 
   pl: {
@@ -741,7 +741,7 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     toggleTheme: "Zmień motyw", dark: "Ciemny", light: "Jasny", mostPopular: "Najpopularniejsze",
     liveCard: "Aktywna wizytówka", tapToOpen: "Dotknij, aby otworzyć", cameraPermissionDenied: "Odmowa dostępu do kamery. Włącz go w ustawieniach przeglądarki.", eyebrowTemplates: "Szablony",
     eyebrowHowItWorks: "Jak to działa", eyebrowFeatures: "Funkcje", eyebrowTestimonials: "Opinie", eyebrowPricing: "Cennik",
-    cardNumber: (n, total) => `Wizytówka ${n} z ${total}`,
+    cardNumber: (n: number, total: number) => `Wizytówka ${n} z ${total}`,
   },
 
   zh: {
@@ -808,7 +808,7 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     toggleTheme: "切换主题", dark: "深色", light: "浅色", mostPopular: "最受欢迎",
     liveCard: "已发布名片", tapToOpen: "点击打开", cameraPermissionDenied: "相机权限被拒。请在浏览器设置中启用。", eyebrowTemplates: "模板",
     eyebrowHowItWorks: "工作原理", eyebrowFeatures: "功能", eyebrowTestimonials: "用户评价", eyebrowPricing: "价格",
-    cardNumber: (n, total) => `第 ${n} 张，共 ${total} 张`,
+    cardNumber: (n: number, total: number) => `第 ${n} 张，共 ${total} 张`,
   },
 
   "zh-TW": {
@@ -875,7 +875,7 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     toggleTheme: "切換主題", dark: "深色", light: "淺色", mostPopular: "最受歡迎",
     liveCard: "已發布名片", tapToOpen: "點擊打開", cameraPermissionDenied: "相機權限遭拒。請在瀏覽器設定中啟用。", eyebrowTemplates: "範本",
     eyebrowHowItWorks: "運作方式", eyebrowFeatures: "功能", eyebrowTestimonials: "用戶評價", eyebrowPricing: "價格",
-    cardNumber: (n, total) => `第 ${n} 張，共 ${total} 張`,
+    cardNumber: (n: number, total: number) => `第 ${n} 張，共 ${total} 張`,
   },
 
   ja: {
@@ -942,7 +942,7 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     toggleTheme: "テーマの切り替え", dark: "ダーク", light: "ライト", mostPopular: "一番人気",
     liveCard: "公開中のカード", tapToOpen: "タップして開く", cameraPermissionDenied: "カメラのアクセスが拒否されました。ブラウザの設定で許可してください。", eyebrowTemplates: "テンプレート",
     eyebrowHowItWorks: "仕組み", eyebrowFeatures: "機能", eyebrowTestimonials: "お客様の声", eyebrowPricing: "料金プラン",
-    cardNumber: (n, total) => `${total}枚中${n}枚目のカード`,
+    cardNumber: (n: number, total: number) => `${total}枚中${n}枚目のカード`,
   },
 
   ko: {
@@ -1009,7 +1009,7 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     toggleTheme: "테마 전환", dark: "다크", light: "라이트", mostPopular: "가장 인기 있는",
     liveCard: "게시된 명함", tapToOpen: "탭하여 열기", cameraPermissionDenied: "카메라 접근이 거부되었습니다. 브라우저 설정에서 허용해 주세요.", eyebrowTemplates: "템플릿",
     eyebrowHowItWorks: "이용 방법", eyebrowFeatures: "기능", eyebrowTestimonials: "이용 후기", eyebrowPricing: "요금제",
-    cardNumber: (n, total) => `명함 ${n}/${total}`,
+    cardNumber: (n: number, total: number) => `명함 ${n}/${total}`,
   },
 
   hi: {
@@ -1076,7 +1076,7 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     toggleTheme: "थीम बदलें", dark: "डार्क", light: "लाइट", mostPopular: "सबसे लोकप्रिय",
     liveCard: "लाइव कार्ड", tapToOpen: "खोलने के लिए टैप करें", cameraPermissionDenied: "कैमरा अनुमति अस्वीकार कर दी गई। इसे अपनी ब्राउज़र सेटिंग में चालू करें।", eyebrowTemplates: "टेम्पलेट्स",
     eyebrowHowItWorks: "यह कैसे काम करता है", eyebrowFeatures: "विशेषताएं", eyebrowTestimonials: "प्रशस्ति पत्र", eyebrowPricing: "मूल्य निर्धारण",
-    cardNumber: (n, total) => `${total} में से कार्ड ${n}`,
+    cardNumber: (n: number, total: number) => `${total} में से कार्ड ${n}`,
   },
 
   id: {
@@ -1143,7 +1143,7 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     toggleTheme: "Beralih tema", dark: "Gelap", light: "Terang", mostPopular: "Paling populer",
     liveCard: "Kartu aktif", tapToOpen: "Ketuk untuk membuka", cameraPermissionDenied: "Izin kamera ditolak. Aktifkan di pengaturan browser Anda.", eyebrowTemplates: "Templat",
     eyebrowHowItWorks: "Cara kerjanya", eyebrowFeatures: "Fitur", eyebrowTestimonials: "Testimoni", eyebrowPricing: "Harga",
-    cardNumber: (n, total) => `Kartu ${n} dari ${total}`,
+    cardNumber: (n: number, total: number) => `Kartu ${n} dari ${total}`,
   },
 
   ms: {
@@ -1210,7 +1210,7 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     toggleTheme: "Tukar tema", dark: "Gelap", light: "Cerah", mostPopular: "Paling popular",
     liveCard: "Kad aktif", tapToOpen: "Ketik untuk buka", cameraPermissionDenied: "Kebenaran kamera ditolak. Dayakannya dalam tetapan pelayar anda.", eyebrowTemplates: "Templat",
     eyebrowHowItWorks: "Cara ia berfungsi", eyebrowFeatures: "Ciri-ciri", eyebrowTestimonials: "Testimoni", eyebrowPricing: "Harga",
-    cardNumber: (n, total) => `Kad ${n} daripada ${total}`,
+    cardNumber: (n: number, total: number) => `Kad ${n} daripada ${total}`,
   },
 
   th: {
@@ -1277,7 +1277,7 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     toggleTheme: "สลับธีม", dark: "มืด", light: "สว่าง", mostPopular: "ยอดนิยมที่สุด",
     liveCard: "นามบัตรที่ใช้งานอยู่", tapToOpen: "แตะเพื่อเปิด", cameraPermissionDenied: "ถูกปฏิเสธการเข้าถึงกล้อง โปรดเปิดใช้งานในการตั้งค่าเบราว์เซอร์ของคุณ", eyebrowTemplates: "แม่แบบ",
     eyebrowHowItWorks: "วิธีการทำงาน", eyebrowFeatures: "คุณสมบัติ", eyebrowTestimonials: "คำวิจารณ์จากลูกค้า", eyebrowPricing: "ราคา",
-    cardNumber: (n, total) => `นามบัตร ${n} จาก ${total}`,
+    cardNumber: (n: number, total: number) => `นามบัตร ${n} จาก ${total}`,
   },
 
   vi: {
@@ -1344,6 +1344,6 @@ export const DICTIONARIES: Partial<Record<Locale, DP<UIDict>>> = {
     toggleTheme: "Đổi giao diện", dark: "Tối", light: "Sáng", mostPopular: "Phổ biến nhất",
     liveCard: "Danh thiếp đang hoạt động", tapToOpen: "Chạm để mở", cameraPermissionDenied: "Quyền truy cập máy ảnh bị từ chối. Hãy bật trong cài đặt trình duyệt của bạn.", eyebrowTemplates: "Mẫu",
     eyebrowHowItWorks: "Cách thức hoạt động", eyebrowFeatures: "Tính năng", eyebrowTestimonials: "Nhận xét", eyebrowPricing: "Bảng giá",
-    cardNumber: (n, total) => `Danh thiếp ${n}/${total}`,
+    cardNumber: (n: number, total: number) => `Danh thiếp ${n}/${total}`,
   },
 };
