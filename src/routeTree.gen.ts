@@ -9,6 +9,8 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SitemapLangDotxmlRouteImport } from './routes/sitemap-$lang[.]xml'
 import { Route as LangRouteRouteImport } from './routes/$lang/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LangIndexRouteImport } from './routes/$lang/index'
@@ -24,6 +26,16 @@ import { Route as LangAuthenticatedCardsNewRouteImport } from './routes/$lang/_a
 import { Route as LangAuthenticatedCardsIdRouteImport } from './routes/$lang/_authenticated/cards.$id'
 import { Route as LangAuthenticatedCardsIdAnalyticsRouteImport } from './routes/$lang/_authenticated/cards.$id.analytics'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapLangDotxmlRoute = SitemapLangDotxmlRouteImport.update({
+  id: '/sitemap-$lang.xml',
+  path: '/sitemap-$lang.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LangRouteRoute = LangRouteRouteImport.update({
   id: '/$lang',
   path: '/$lang',
@@ -103,6 +115,8 @@ const LangAuthenticatedCardsIdAnalyticsRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$lang': typeof LangRouteRouteWithChildren
+  '/sitemap-$lang.xml': typeof SitemapLangDotxmlRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang/auth': typeof LangAuthRoute
   '/c/$slug': typeof CSlugRoute
   '/$lang/': typeof LangIndexRoute
@@ -117,6 +131,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/sitemap-$lang.xml': typeof SitemapLangDotxmlRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang': typeof LangIndexRoute
   '/$lang/auth': typeof LangAuthRoute
   '/c/$slug': typeof CSlugRoute
@@ -133,6 +149,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$lang': typeof LangRouteRouteWithChildren
+  '/sitemap-$lang.xml': typeof SitemapLangDotxmlRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang/_authenticated': typeof LangAuthenticatedRouteRouteWithChildren
   '/$lang/auth': typeof LangAuthRoute
   '/c/$slug': typeof CSlugRoute
@@ -151,6 +169,8 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$lang'
+    | '/sitemap-$lang.xml'
+    | '/sitemap.xml'
     | '/$lang/auth'
     | '/c/$slug'
     | '/$lang/'
@@ -165,6 +185,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/sitemap-$lang.xml'
+    | '/sitemap.xml'
     | '/$lang'
     | '/$lang/auth'
     | '/c/$slug'
@@ -180,6 +202,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/$lang'
+    | '/sitemap-$lang.xml'
+    | '/sitemap.xml'
     | '/$lang/_authenticated'
     | '/$lang/auth'
     | '/c/$slug'
@@ -197,11 +221,27 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LangRouteRoute: typeof LangRouteRouteWithChildren
+  SitemapLangDotxmlRoute: typeof SitemapLangDotxmlRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   CSlugRoute: typeof CSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap-$lang.xml': {
+      id: '/sitemap-$lang.xml'
+      path: '/sitemap-$lang.xml'
+      fullPath: '/sitemap-$lang.xml'
+      preLoaderRoute: typeof SitemapLangDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/$lang': {
       id: '/$lang'
       path: '/$lang'
@@ -375,6 +415,8 @@ const LangRouteRouteWithChildren = LangRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LangRouteRoute: LangRouteRouteWithChildren,
+  SitemapLangDotxmlRoute: SitemapLangDotxmlRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   CSlugRoute: CSlugRoute,
 }
 export const routeTree = rootRouteImport
