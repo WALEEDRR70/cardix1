@@ -14,7 +14,137 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      card_events: {
+        Row: {
+          card_id: string
+          created_at: string
+          event_type: string
+          id: string
+          metadata: Json | null
+        }
+        Insert: {
+          card_id: string
+          created_at?: string
+          event_type: string
+          id?: string
+          metadata?: Json | null
+        }
+        Update: {
+          card_id?: string
+          created_at?: string
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "card_events_card_id_fkey"
+            columns: ["card_id"]
+            isOneToOne: false
+            referencedRelation: "cards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cards: {
+        Row: {
+          accent_color: string
+          address: string | null
+          avatar_url: string | null
+          bio: string | null
+          company: string | null
+          cover_url: string | null
+          created_at: string
+          email: string | null
+          id: string
+          is_published: boolean
+          name: string
+          phone: string | null
+          slug: string
+          socials: Json
+          template: string
+          title: string | null
+          updated_at: string
+          user_id: string
+          view_count: number
+          website: string | null
+          whatsapp: string | null
+        }
+        Insert: {
+          accent_color?: string
+          address?: string | null
+          avatar_url?: string | null
+          bio?: string | null
+          company?: string | null
+          cover_url?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_published?: boolean
+          name: string
+          phone?: string | null
+          slug: string
+          socials?: Json
+          template?: string
+          title?: string | null
+          updated_at?: string
+          user_id: string
+          view_count?: number
+          website?: string | null
+          whatsapp?: string | null
+        }
+        Update: {
+          accent_color?: string
+          address?: string | null
+          avatar_url?: string | null
+          bio?: string | null
+          company?: string | null
+          cover_url?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_published?: boolean
+          name?: string
+          phone?: string | null
+          slug?: string
+          socials?: Json
+          template?: string
+          title?: string | null
+          updated_at?: string
+          user_id?: string
+          view_count?: number
+          website?: string | null
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+          username: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id: string
+          updated_at?: string
+          username: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          username?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
