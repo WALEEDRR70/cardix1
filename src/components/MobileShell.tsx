@@ -51,7 +51,7 @@ function DesktopSidebar() {
   return (
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-border/60 bg-card/40 backdrop-blur-xl lg:flex">
       <Link to="/dashboard" className="flex items-center gap-2.5 px-6 pt-6">
-        <img src="/__l5e/assets-v1/81d568e3-5c85-4d6c-8c64-00c952a082a2/cardix-logo.svg" alt="" className="h-9 w-9 object-contain" />
+        <img src={logoAsset.url} alt="" className="h-9 w-9 object-contain" />
         <span className="text-base font-semibold tracking-tight">{t.brand}</span>
       </Link>
 
