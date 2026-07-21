@@ -130,10 +130,9 @@ function EditCard() {
         </div>
         <p className="mt-4 truncate rounded-xl bg-secondary px-4 py-2 text-center text-xs text-muted-foreground">{publicUrl}</p>
 
-        <div className="mt-4 grid grid-cols-4 gap-2">
+        <div className="mt-4 grid grid-cols-3 gap-2">
           <SheetAction icon={<Share2 className="h-5 w-5" />} label={t.share} onClick={nativeShare} />
           <SheetAction icon={<Copy className="h-5 w-5" />} label={t.copyLink} onClick={() => { navigator.clipboard.writeText(publicUrl); toast.success(t.linkCopied); }} />
-          <SheetAction icon={<Radio className="h-5 w-5" />} label="NFC" onClick={writeNfc} />
           <SheetAction icon={<Download className="h-5 w-5" />} label="QR" onClick={downloadQr} />
         </div>
         <a href={`/c/${card.slug}`} target="_blank" rel="noreferrer" className="mt-4 flex items-center justify-center gap-2 rounded-2xl border border-border py-3 text-sm">
