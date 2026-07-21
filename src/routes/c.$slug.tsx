@@ -78,6 +78,7 @@ function PublicCard() {
   const [qrOpen, setQrOpen] = useState(false);
   const [nfcState, setNfcState] = useState<"idle" | "writing">("idle");
   const [isOwner, setIsOwner] = useState(false);
+  const [isAuthed, setIsAuthed] = useState(false);
   const cardWrapRef = useRef<HTMLDivElement | null>(null);
   const qrSvgRef = useRef<SVGSVGElement | null>(null);
 
