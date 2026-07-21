@@ -18,14 +18,16 @@ export interface CardData {
 export const TEMPLATES = ["luxury", "aurora", "ivory", "noir", "neon", "platinum"] as const;
 export type TemplateId = (typeof TEMPLATES)[number];
 
-export function CardPreview({ card, size = "md" }: { card: CardData; size?: "sm" | "md" | "lg" }) {
+export function CardPreview({ card, size = "md" }: { card: CardData; size?: "sm" | "md" | "lg" | "xl" }) {
   const tpl = (card.template as TemplateId) || "luxury";
   const cls =
     size === "sm"
       ? "aspect-[1.65/1] w-full max-w-[320px]"
       : size === "lg"
         ? "aspect-[1.62/1] w-full max-w-[420px]"
-        : "aspect-[1.62/1] w-full max-w-[380px]";
+        : size === "xl"
+          ? "aspect-[1.62/1] w-full max-w-[588px]"
+          : "aspect-[1.62/1] w-full max-w-[380px]";
   return (
     <div className={cls + " card-lift shadow-luxe rounded-3xl overflow-hidden"}>
       <TemplateSwitch tpl={tpl} card={card} />
