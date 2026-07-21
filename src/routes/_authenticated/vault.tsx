@@ -115,59 +115,64 @@ function SavedCardItem({ card, onDelete }: { card: SavedRow; onDelete: () => voi
   }
 
   return (
-    <div className="glass card-lift group rounded-3xl p-3 lg:p-4">
-      {/* Owner's original design */}
-      <div className="flex justify-center">
-        <CardPreview card={preview} size="sm" />
-      </div>
-
-      {/* Meta + actions */}
-      <div className="mt-3 flex items-start justify-between gap-2">
-        <div className="min-w-0">
-          <p className="truncate text-[13px] font-semibold">{card.name}</p>
-          {card.title && <p className="truncate text-[11px] text-muted-foreground">{card.title}</p>}
-        </div>
-        <div className="flex items-center gap-1">
-          {card.source === "scan" && (
-            <span className="rounded-full bg-accent/15 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-accent">
-              Scanned
-            </span>
-          )}
-          <button
-            onClick={onDelete}
-            className="grid h-7 w-7 place-items-center rounded-full text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-            aria-label={t.delete}
-          >
-            <Trash2 className="h-3.5 w-3.5" />
-          </button>
-        </div>
-      </div>
-
-      {/* Quick contact */}
-      <div className="mt-2 flex flex-wrap gap-1.5">
-        {card.phone && <QuickPill href={`tel:${card.phone}`} icon={<Phone className="h-3 w-3" />} label={t.call} />}
-        {card.email && <QuickPill href={`mailto:${card.email}`} icon={<Mail className="h-3 w-3" />} label={t.email} />}
-        {card.website && (
-          <QuickPill href={card.website.startsWith("http") ? card.website : `https://${card.website}`} icon={<Globe className="h-3 w-3" />} label={t.website} />
+    <div className="group relative">
+      {/* Delete + scanned tag floating on top of the card */}
+      <div className="absolute right-2 top-2 z-10 flex items-center gap-1">
+        {card.source === "scan" && (
+          <span className="rounded-full bg-black/50 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-white backdrop-blur">
+            Scanned
+          </span>
         )}
+        <button
+          onClick={onDelete}
+          className="grid h-7 w-7 place-items-center rounded-full bg-black/40 text-white/80 backdrop-blur hover:bg-destructive/80 hover:text-white"
+          aria-label={t.delete}
+        >
+          <Trash2 className="h-3.5 w-3.5" />
+        </button>
       </div>
 
-      {/* Personal note */}
-      <div className="mt-3 rounded-2xl bg-secondary/40 p-3 ring-1 ring-white/5">
-        <div className="mb-1.5 flex items-center justify-between">
-          <div className="flex items-center gap-1.5 text-[10.5px] font-semibold uppercase tracking-wide text-muted-foreground">
-            <StickyNote className="h-3 w-3" /> {t.personalNote}
+      {/* Owner's original card — untouched size */}
+      <CardPreview card={preview} size="md" />
+
+      {/* Compact footer visually fused to the card bottom */}
+      <div className="mx-auto -mt-3 w-[92%] max-w-[380px] rounded-2xl bg-background/80 p-2.5 shadow-lg ring-1 ring-border/60 backdrop-blur">
+        <div className="flex flex-wrap items-center gap-1.5">
+          {card.phone && <QuickPill href={`tel:${card.phone}`} icon={<Phone className="h-3 w-3" />} label={t.call} />}
+          {card.email && <QuickPill href={`mailto:${card.email}`} icon={<Mail className="h-3 w-3" />} label={t.email} />}
+          {card.website && (
+            <QuickPill href={card.website.startsWith("http") ? card.website : `https://${card.website}`} icon={<Globe className="h-3 w-3" />} label={t.website} />
+          )}
+        </div>
+
+        <div className="mt-2 flex items-start gap-1.5 border-t border-border/50 pt-2">
+          <StickyNote className="mt-0.5 h-3 w-3 shrink-0 text-muted-foreground" />
+          <div className="min-w-0 flex-1">
+            {!editing ? (
+              <p className={`truncate text-[11.5px] leading-snug ${card.notes ? "text-foreground" : "text-muted-foreground/70 italic"}`}>
+                {card.notes || t.noNote}
+              </p>
+            ) : (
+              <textarea
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                placeholder={t.personalNotePlaceholder}
+                rows={2}
+                autoFocus
+                className="w-full resize-none rounded-lg bg-secondary/60 p-1.5 text-[11.5px] outline-none ring-1 ring-white/5 focus:ring-accent/60"
+              />
+            )}
           </div>
           {!editing ? (
             <button
               onClick={() => { setDraft(card.notes ?? ""); setEditing(true); }}
-              className="grid h-6 w-6 place-items-center rounded-full text-muted-foreground hover:bg-secondary hover:text-foreground"
+              className="grid h-6 w-6 shrink-0 place-items-center rounded-full text-muted-foreground hover:bg-secondary hover:text-foreground"
               aria-label={t.editNote}
             >
               <Pencil className="h-3 w-3" />
             </button>
           ) : (
-            <div className="flex items-center gap-1">
+            <div className="flex shrink-0 items-center gap-1">
               <button
                 onClick={() => { setEditing(false); setDraft(card.notes ?? ""); }}
                 disabled={saving}
@@ -188,20 +193,6 @@ function SavedCardItem({ card, onDelete }: { card: SavedRow; onDelete: () => voi
             </div>
           )}
         </div>
-        {!editing ? (
-          <p className={`text-[12px] leading-snug ${card.notes ? "text-foreground" : "text-muted-foreground/70 italic"}`}>
-            {card.notes || t.noNote}
-          </p>
-        ) : (
-          <textarea
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            placeholder={t.personalNotePlaceholder}
-            rows={3}
-            autoFocus
-            className="w-full resize-none rounded-xl bg-background/60 p-2 text-[12px] outline-none ring-1 ring-white/5 focus:ring-accent/60"
-          />
-        )}
       </div>
     </div>
   );
