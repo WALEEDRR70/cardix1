@@ -107,6 +107,13 @@ const dict = {
     expand: "Expand",
     download: "Download",
     location: "Location",
+    addNote: "Add note",
+    editNote: "Edit note",
+    notePlaceholder: "Where you met, context, follow-up…",
+    noteOptional: "Add a note (optional)",
+    viewDetails: "View details",
+    saveNote: "Save note",
+    back: "Back",
   },
 
 
@@ -214,6 +221,13 @@ const dict = {
     expand: "تكبير",
     download: "تحميل",
     location: "الموقع",
+    addNote: "إضافة ملاحظة",
+    editNote: "تعديل الملاحظة",
+    notePlaceholder: "أين التقيتم، السياق، خطوات المتابعة…",
+    noteOptional: "أضف ملاحظة (اختياري)",
+    viewDetails: "عرض التفاصيل",
+    saveNote: "حفظ الملاحظة",
+    back: "رجوع",
   },
 
 };
