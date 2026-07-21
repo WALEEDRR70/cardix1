@@ -81,8 +81,6 @@ function PublicCard() {
   const [isAuthed, setIsAuthed] = useState(false);
   const cardWrapRef = useRef<HTMLDivElement | null>(null);
   const qrSvgRef = useRef<SVGSVGElement | null>(null);
-  const nfcAbortRef = useRef<AbortController | null>(null);
-  const nfcTickRef = useRef<number | null>(null);
 
   const { data: card } = useQuery({
     queryKey: ["public-card", slug],
