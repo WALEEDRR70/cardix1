@@ -90,8 +90,42 @@ export function CardForm({
   return (
     <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
       <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="text-xs font-medium text-muted-foreground">{t.avatar}</label>
+          <div className="mt-2 flex items-center gap-3">
+            <div
+              className="h-16 w-16 rounded-2xl border border-border bg-muted bg-cover bg-center"
+              style={{ backgroundImage: data.avatar_url ? `url(${data.avatar_url})` : undefined }}
+            />
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadAvatar(f); }}
+            />
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              disabled={uploading}
+              className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs hover:bg-muted disabled:opacity-60"
+            >
+              <Upload className="h-3.5 w-3.5" /> {uploading ? t.uploading : t.uploadPhoto}
+            </button>
+            {data.avatar_url && (
+              <button
+                type="button"
+                onClick={() => set("avatar_url", "")}
+                className="inline-flex items-center gap-1 rounded-full border border-border px-2.5 py-1.5 text-xs text-muted-foreground hover:bg-muted"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            )}
+          </div>
+        </div>
         <Field label={t.name} value={data.name} onChange={(v) => set("name", v)} required />
         <Field label={t.slug} value={data.slug} onChange={(v) => set("slug", v.toLowerCase().replace(/[^a-z0-9-]/g, "-"))} required prefix="/c/" />
+
         <div className="grid grid-cols-2 gap-3">
           <Field label={t.title} value={data.title} onChange={(v) => set("title", v)} />
           <Field label={t.company} value={data.company} onChange={(v) => set("company", v)} />
