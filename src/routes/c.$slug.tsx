@@ -467,7 +467,8 @@ function PublicCard() {
               </section>
             )}
 
-            {/* QR panel */}
+            {/* QR panel — visible only to the card owner */}
+            {isOwner && (
             <section className="w-full max-w-md animate-fade-in">
               <div
                 className="relative overflow-hidden rounded-[28px] p-[1.5px]"
