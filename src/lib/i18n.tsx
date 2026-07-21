@@ -49,7 +49,9 @@ const dict = {
     scanFailed: "Could not read that card. Try a clearer photo.",
     saveToVault: "Save to vault",
     savedToVault: "Saved to your vault",
+    saving: "Saving…",
     emptyVault: "Your vault is empty. Scan or save a card to get started.",
+
     notes: "Notes",
     tags: "Tags",
     delete: "Delete",
@@ -124,7 +126,9 @@ const dict = {
     scanFailed: "تعذّرت قراءة هذه البطاقة. جرّب صورة أوضح.",
     saveToVault: "حفظ في الخزنة",
     savedToVault: "تم الحفظ في خزنتك",
+    saving: "جارٍ الحفظ…",
     emptyVault: "خزنتك فارغة. امسح أو احفظ بطاقة للبدء.",
+
     notes: "ملاحظات",
     tags: "الوسوم",
     delete: "حذف",
