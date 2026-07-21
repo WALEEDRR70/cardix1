@@ -29,7 +29,7 @@ export function QrScanner({ open, onClose, onDetect }: Props) {
     (async () => {
       try {
         if (!navigator.mediaDevices?.getUserMedia) {
-          throw new Error("Camera API not available in this browser.");
+          throw new Error(t.cameraUnavailable);
         }
         const stream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: { ideal: facing } },
@@ -47,10 +47,10 @@ export function QrScanner({ open, onClose, onDetect }: Props) {
           startLoop();
         }
       } catch (e: unknown) {
-        const msg = e instanceof Error ? e.message : "Camera unavailable";
+        const msg = e instanceof Error ? e.message : t.cameraUnavailable;
         setError(
           /permission|denied|notallowed/i.test(msg)
-            ? "Camera permission denied. Enable it in your browser settings."
+            ? t.cameraPermissionDenied
             : msg,
         );
       }
@@ -106,7 +106,7 @@ export function QrScanner({ open, onClose, onDetect }: Props) {
           <button
             onClick={onClose}
             className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white backdrop-blur"
-            aria-label="Close"
+            aria-label={t.close}
           >
             <X className="h-5 w-5" />
           </button>
@@ -114,7 +114,7 @@ export function QrScanner({ open, onClose, onDetect }: Props) {
           <button
             onClick={() => setFacing((f) => (f === "environment" ? "user" : "environment"))}
             className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white backdrop-blur"
-            aria-label="Flip camera"
+            aria-label={t.flipCamera}
           >
             <RotateCcw className="h-5 w-5" />
           </button>

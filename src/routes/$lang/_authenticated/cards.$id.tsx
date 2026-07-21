@@ -62,7 +62,7 @@ function EditCard() {
     if (error) { toast.error(error.message); return; }
     qc.invalidateQueries({ queryKey: ["card", id, user.id] });
     qc.invalidateQueries({ queryKey: ["cards"] });
-    toast.success("Saved");
+    toast.success(t.saved);
   }
 
   const publicUrl = typeof window !== "undefined" ? `${window.location.origin}/c/${card.slug}` : `/c/${card.slug}`;

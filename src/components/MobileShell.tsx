@@ -175,7 +175,7 @@ export function PageHeader({
             <Link
               to={back}
               className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-border/60 bg-card/60 text-muted-foreground backdrop-blur hover:text-foreground lg:hidden"
-              aria-label="Back"
+              aria-label={t.back}
             >
               <span className="text-base leading-none rtl:hidden">‹</span>
               <span className="hidden text-base leading-none rtl:inline">›</span>
