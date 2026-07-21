@@ -133,7 +133,7 @@ function VaultDetail() {
             <ArrowLeft className={"h-4 w-4 " + (isRTL ? "rotate-180" : "")} />
           </Link>
           <button
-            onClick={del}
+            onClick={() => setConfirmOpen(true)}
             className="glass grid h-10 w-10 place-items-center rounded-full text-muted-foreground transition hover:text-destructive"
             aria-label={t.delete}
           >
