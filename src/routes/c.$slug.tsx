@@ -75,6 +75,8 @@ function PublicCard() {
   const { t, lang } = useI18n();
   const [saved, setSaved] = useState(false);
   const [savingCard, setSavingCard] = useState(false);
+  const [noteOpen, setNoteOpen] = useState(false);
+  const [noteDraft, setNoteDraft] = useState("");
   const [qrOpen, setQrOpen] = useState(false);
   const [nfcState, setNfcState] = useState<"idle" | "writing">("idle");
   const cardWrapRef = useRef<HTMLDivElement | null>(null);
