@@ -216,6 +216,12 @@ export function CardForm({
         </div>
         <Field label={t.address} value={data.address} onChange={(v) => set("address", v)} />
 
+        {/* Social accounts */}
+        <SocialsEditor
+          value={data.socials}
+          onChange={(next) => set("socials", next)}
+        />
+
         <label className="flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-3 text-sm">
           <input type="checkbox" checked={data.is_published} onChange={(e) => set("is_published", e.target.checked)} className="h-4 w-4 accent-accent" />
           <span>{t.published}</span>
