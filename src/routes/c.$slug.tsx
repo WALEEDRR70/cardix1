@@ -83,6 +83,7 @@ function PublicCard() {
   const [nfcRemaining, setNfcRemaining] = useState(0);
   const [nfcSentCount, setNfcSentCount] = useState(0);
   const [nfcError, setNfcError] = useState<string | null>(null);
+  const [nfcGuideOpen, setNfcGuideOpen] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [isAuthed, setIsAuthed] = useState(false);
   const cardWrapRef = useRef<HTMLDivElement | null>(null);
@@ -279,6 +280,7 @@ function PublicCard() {
     setNfcSentCount(0);
     try {
       setNfcState("writing");
+      setNfcGuideOpen(true);
       toast(t.nfcTap);
       const reader = new w.NDEFReader();
       while (!controller.signal.aborted) {
@@ -313,6 +315,7 @@ function PublicCard() {
       nfcAbortRef.current = null;
       setNfcRemaining(0);
       setNfcState("idle");
+      setNfcGuideOpen(false);
       if (hardError) {
         setNfcError(hardError);
         setNfcResult("failed");
@@ -670,6 +673,14 @@ function PublicCard() {
                           </div>
                         )}
                       </div>
+                      {nfcState === "writing" && !nfcGuideOpen && (
+                        <button
+                          onClick={() => setNfcGuideOpen(true)}
+                          className="mt-3 w-full rounded-full border border-white/15 bg-white/[0.05] py-2 text-[11px] font-medium text-foreground/80 hover:bg-white/[0.08]"
+                        >
+                          {t.nfcShowGuide}
+                        </button>
+                      )}
                     </div>
                   )}
 
@@ -765,6 +776,121 @@ function PublicCard() {
           </div>
         </div>
       )}
+
+      {/* NFC guide overlay */}
+      {nfcGuideOpen && nfcState === "writing" && (
+        <div
+          className="fixed inset-0 z-[60] flex animate-fade-in flex-col bg-black/85 backdrop-blur-xl"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="mx-auto flex w-full max-w-md flex-1 flex-col px-6 pt-[calc(env(safe-area-inset-top)+20px)] pb-[calc(env(safe-area-inset-bottom)+20px)]">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.32em] text-foreground/50">Cardix · NFC</p>
+                <h2 className="mt-1 text-xl font-semibold text-foreground">{t.nfcGuideTitle}</h2>
+                <p className="mt-1 text-[13px] text-foreground/60">{t.nfcGuideSubtitle}</p>
+              </div>
+              <button
+                onClick={() => setNfcGuideOpen(false)}
+                className="glass grid h-9 w-9 place-items-center rounded-full text-foreground"
+                aria-label={t.nfcHideGuide}
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* Animated phones */}
+            <div className="relative mx-auto mt-8 grid h-48 w-full max-w-xs place-items-center">
+              <div
+                className="absolute inset-0 rounded-[2rem] opacity-70 blur-2xl"
+                style={{ background: `radial-gradient(closest-side, ${accent}55, transparent 70%)` }}
+              />
+              <div className="relative flex items-center gap-2">
+                <div
+                  className="h-40 w-24 rounded-[1.4rem] border border-white/15 bg-white/[0.06] shadow-2xl"
+                  style={{ transform: "rotate(-6deg) translateX(6px)" }}
+                >
+                  <div className="mx-auto mt-2 h-1 w-8 rounded-full bg-white/30" />
+                  <div className="mx-3 mt-3 h-3 rounded bg-white/10" />
+                  <div className="mx-3 mt-2 h-3 rounded bg-white/10" />
+                </div>
+                <div className="relative grid h-14 w-14 place-items-center">
+                  <span
+                    className="absolute inset-0 animate-ping rounded-full"
+                    style={{ background: `${accent}55` }}
+                  />
+                  <span
+                    className="relative grid h-10 w-10 place-items-center rounded-full text-accent-foreground shadow-glow"
+                    style={{ background: "var(--gradient-gold)" }}
+                  >
+                    <Radio className="h-4 w-4" />
+                  </span>
+                </div>
+                <div
+                  className="h-40 w-24 rounded-[1.4rem] border border-white/15 bg-white/[0.06] shadow-2xl"
+                  style={{ transform: "rotate(6deg) translateX(-6px)" }}
+                >
+                  <div className="mx-auto mt-2 h-1 w-8 rounded-full bg-white/30" />
+                  <div className="mx-3 mt-3 h-3 rounded bg-white/10" />
+                  <div className="mx-3 mt-2 h-3 rounded bg-white/10" />
+                </div>
+              </div>
+            </div>
+
+            {/* Steps */}
+            <ol className="mt-8 space-y-3">
+              {[
+                { t: t.nfcStep1Title, d: t.nfcStep1Desc },
+                { t: t.nfcStep2Title, d: t.nfcStep2Desc },
+                { t: t.nfcStep3Title, d: t.nfcStep3Desc },
+              ].map((s, i) => (
+                <li
+                  key={i}
+                  className="flex gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-3"
+                >
+                  <span
+                    className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-[12px] font-semibold text-accent-foreground"
+                    style={{ background: "var(--gradient-gold)" }}
+                  >
+                    {i + 1}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-[13px] font-semibold text-foreground">{s.t}</p>
+                    <p className="mt-0.5 text-[12px] leading-relaxed text-foreground/65">{s.d}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            <div className="mt-auto pt-6">
+              {/* Countdown pill */}
+              <div className="mb-3 flex items-center justify-center gap-2 text-[12px] text-foreground/70">
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400">
+                  <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400/60" />
+                </span>
+                {t.nfcBroadcasting} · {nfcRemaining}
+                {t.secondsAbbr} · {t.nfcSentLabel}: {nfcSentCount}
+              </div>
+
+              <button
+                onClick={writeNfc}
+                className="flex w-full items-center justify-center gap-2 rounded-full bg-red-500 py-4 text-[15px] font-semibold text-white shadow-glow transition hover:scale-[1.01] hover:bg-red-500/90"
+              >
+                <X className="h-5 w-5" /> {t.nfcStopNow}
+              </button>
+              <button
+                onClick={() => setNfcGuideOpen(false)}
+                className="mt-2 w-full rounded-full py-3 text-[12px] font-medium text-foreground/60 hover:text-foreground"
+              >
+                {t.nfcHideGuide}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+
 
       {isAuthed && <MobileBottomNav />}
     </div>
