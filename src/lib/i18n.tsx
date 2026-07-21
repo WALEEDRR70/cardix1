@@ -271,7 +271,7 @@ const dict = {
     featureShareDesc: "QR أو NFC أو رابط. لا يحتاج المستلم لأي تطبيق.",
     featureScan: "ماسح ذكي",
     featureScanDesc: "التقط بطاقة ورقية وسنحفظ جهة الاتصال في ثوانٍ.",
-    featureTemplates: "ستة قوالب فاخرة",
+    featureTemplates: "19 قالبًا فاخرًا",
     featureTemplatesDesc: "من أسود ذهبي إلى شفق زجاجي — كل بطاقة تبدو مقصودة.",
     welcomeBack: "أهلًا بعودتك.",
     startCraft: "ابدأ تصميم بطاقتك في ثوانٍ.",
