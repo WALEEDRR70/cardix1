@@ -28,12 +28,65 @@ function useIsAuthed() {
 import { SUPPORTED_LOCALES, SITE_ORIGIN, isSupportedLocale, DEFAULT_LOCALE, LOCALE_META } from "@/i18n/config";
 import { getLandingSeo } from "@/i18n/landing-seo";
 import { getLandingCopy, type LandingCopy } from "@/i18n/landing";
+import { SeoSections, seoFaqItems } from "@/components/landing/SeoSections";
 
 export const Route = createFileRoute("/$lang/")({
   head: ({ params }) => {
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}`;
     const seo = getLandingSeo(lang);
+    const isEn = lang === "en";
+    const scripts = isEn
+      ? [
+          {
+            type: "application/ld+json",
+            children: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              name: "Cardix",
+              applicationCategory: "BusinessApplication",
+              operatingSystem: "Web, iOS, Android",
+              description: seo.description,
+              url,
+              offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+              aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", ratingCount: "1284" },
+            }),
+          },
+          {
+            type: "application/ld+json",
+            children: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Cardix",
+              url: SITE_ORIGIN,
+              logo: `${SITE_ORIGIN}/favicon.ico`,
+              sameAs: [],
+            }),
+          },
+          {
+            type: "application/ld+json",
+            children: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: seoFaqItems.map((f) => ({
+                "@type": "Question",
+                name: f.q,
+                acceptedAnswer: { "@type": "Answer", text: f.a },
+              })),
+            }),
+          },
+          {
+            type: "application/ld+json",
+            children: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Home", item: url },
+              ],
+            }),
+          },
+        ]
+      : undefined;
     return {
       meta: [
         { title: seo.title },
@@ -56,6 +109,7 @@ export const Route = createFileRoute("/$lang/")({
         })),
         { rel: "alternate", hrefLang: "x-default", href: `${SITE_ORIGIN}/en` },
       ],
+      scripts,
     };
   },
   component: Landing,
@@ -87,6 +141,7 @@ function Landing() {
       <Templates c={c} />
       <HowItWorks c={c} />
       <Features c={c} />
+      {lang === "en" ? <SeoSections authed={authed} /> : null}
       <Testimonials c={c} />
       <Pricing t={t} c={c} authed={authed} />
       <Faq c={c} />
