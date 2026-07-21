@@ -92,6 +92,8 @@ function PublicCard() {
   const [isAuthed, setIsAuthed] = useState(false);
   const cardWrapRef = useRef<HTMLDivElement | null>(null);
   const qrSvgRef = useRef<SVGSVGElement | null>(null);
+  const nfcAbortRef = useRef<AbortController | null>(null);
+  const nfcTickRef = useRef<number | null>(null);
 
   const { data: card } = useQuery({
     queryKey: ["public-card", slug],
@@ -244,8 +246,6 @@ function PublicCard() {
     toast.success(t.linkCopied);
   }
 
-  const nfcAbortRef = useRef<AbortController | null>(null);
-  const nfcTickRef = useRef<number | null>(null);
   const NFC_DURATION = 30;
   async function writeNfc() {
     if (nfcState === "writing") {
