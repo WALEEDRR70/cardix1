@@ -94,8 +94,8 @@ export function CardForm({
 
       {/* Template picker */}
       <section>
-        <label className="mb-2 block px-1 text-xs font-medium text-muted-foreground">{t.template}</label>
-        <div className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-1">
+        <label className="mb-2 block px-1 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{t.template}</label>
+        <div className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-2.5 overflow-x-auto px-4 pb-1 lg:mx-0 lg:px-0">
           {TEMPLATE_META.map((tpl) => {
             const active = data.template === tpl.id;
             return (
@@ -103,18 +103,22 @@ export function CardForm({
                 key={tpl.id}
                 type="button"
                 onClick={() => set("template", tpl.id as TemplateId)}
-                className={
-                  "relative snap-start shrink-0 overflow-hidden rounded-2xl border transition " +
-                  (active ? "border-accent ring-2 ring-accent" : "border-border")
-                }
-                style={{ width: 96, height: 60, background: tpl.preview }}
+                className="group flex snap-start shrink-0 flex-col items-center gap-1.5"
               >
-                {active && (
-                  <span className="absolute right-1 top-1 grid h-5 w-5 place-items-center rounded-full bg-accent text-accent-foreground">
-                    <Check className="h-3 w-3" strokeWidth={3} />
-                  </span>
-                )}
-                <span className="absolute bottom-1 left-1.5 text-[9px] font-semibold uppercase tracking-wider text-white mix-blend-difference">
+                <span
+                  className={
+                    "relative block overflow-hidden rounded-xl border transition " +
+                    (active ? "border-accent ring-2 ring-accent shadow-glow" : "border-border/60")
+                  }
+                  style={{ width: 72, height: 46, background: tpl.preview }}
+                >
+                  {active && (
+                    <span className="absolute right-1 top-1 grid h-4 w-4 place-items-center rounded-full bg-accent text-accent-foreground">
+                      <Check className="h-2.5 w-2.5" strokeWidth={3} />
+                    </span>
+                  )}
+                </span>
+                <span className={"text-[10px] font-medium tracking-wide transition " + (active ? "text-foreground" : "text-muted-foreground")}>
                   {tpl.label}
                 </span>
               </button>
@@ -123,9 +127,10 @@ export function CardForm({
         </div>
       </section>
 
+
       {/* Accent color */}
       <section>
-        <label className="mb-2 block px-1 text-xs font-medium text-muted-foreground">{t.accent}</label>
+        <label className="mb-2 block px-1 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{t.accent}</label>
         <div className="flex flex-wrap gap-2">
           {ACCENTS.map((c) => (
             <button
@@ -133,12 +138,13 @@ export function CardForm({
               type="button"
               onClick={() => set("accent_color", c)}
               aria-label={c}
-              className={"h-9 w-9 rounded-xl ring-offset-2 ring-offset-background transition " + (data.accent_color === c ? "ring-2 ring-ring" : "")}
+              className={"h-8 w-8 rounded-full ring-offset-2 ring-offset-background transition " + (data.accent_color === c ? "ring-2 ring-ring scale-110" : "hover:scale-105")}
               style={{ backgroundColor: c }}
             />
           ))}
         </div>
       </section>
+
 
       {/* Form fields */}
       <form onSubmit={handleSubmit} className="space-y-3">
@@ -215,11 +221,12 @@ export function CardForm({
 
         <button
           disabled={saving}
-          className="mt-2 w-full rounded-2xl py-3.5 text-sm font-semibold text-accent-foreground shadow-glow transition active:scale-[0.98] disabled:opacity-60"
+          className="mt-3 mb-24 w-full rounded-2xl py-3.5 text-sm font-semibold text-accent-foreground shadow-glow transition active:scale-[0.98] disabled:opacity-60 lg:mb-2"
           style={{ background: "var(--gradient-gold)" }}
         >
           {saving ? "…" : submitLabel}
         </button>
+
       </form>
       </div>
 

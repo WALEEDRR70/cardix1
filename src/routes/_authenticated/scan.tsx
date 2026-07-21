@@ -84,36 +84,42 @@ function ScanPage() {
 
   return (
     <MobileShell topBar={<PageHeader title={t.scanCard} subtitle={t.scanCardDesc} />}>
-      <div className="px-5 lg:px-8">
+      <div className="px-4 lg:px-8">
         {!imgUrl ? (
-          <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-8">
-            <div className="glass grid aspect-[3/4] w-full place-items-center overflow-hidden rounded-3xl border-2 border-dashed border-border lg:aspect-[4/3]">
+          <div className="mt-2 grid gap-3 lg:mt-4 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-8">
+            <div className="glass relative grid aspect-[4/5] w-full place-items-center overflow-hidden rounded-3xl border border-dashed border-border/60 lg:aspect-[4/3]">
+              {/* Corner scan brackets */}
+              <span className="pointer-events-none absolute left-4 top-4 h-6 w-6 border-l-2 border-t-2 border-accent/70 rounded-tl-lg" />
+              <span className="pointer-events-none absolute right-4 top-4 h-6 w-6 border-r-2 border-t-2 border-accent/70 rounded-tr-lg" />
+              <span className="pointer-events-none absolute bottom-4 left-4 h-6 w-6 border-b-2 border-l-2 border-accent/70 rounded-bl-lg" />
+              <span className="pointer-events-none absolute bottom-4 right-4 h-6 w-6 border-b-2 border-r-2 border-accent/70 rounded-br-lg" />
               <div className="text-center">
-                <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl text-accent-foreground shadow-glow lg:h-20 lg:w-20" style={{ background: "var(--gradient-gold)" }}>
-                  <Camera className="h-7 w-7 lg:h-9 lg:w-9" />
+                <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl text-accent-foreground shadow-glow lg:h-20 lg:w-20" style={{ background: "var(--gradient-gold)" }}>
+                  <Camera className="h-6 w-6 lg:h-9 lg:w-9" />
                 </div>
-                <p className="mt-4 max-w-xs text-sm text-muted-foreground">Position the card inside the frame.</p>
+                <p className="mt-3 max-w-[220px] text-xs text-muted-foreground lg:text-sm">Position the card inside the frame.</p>
               </div>
             </div>
-            <div className="space-y-3">
+            <div className="mt-3 space-y-2 lg:mt-0 lg:space-y-3">
               <button
                 onClick={() => camRef.current?.click()}
-                className="flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-semibold text-accent-foreground shadow-glow"
+                className="flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-semibold text-accent-foreground shadow-glow lg:py-4"
                 style={{ background: "var(--gradient-gold)" }}
               >
-                <Camera className="h-5 w-5" /> {t.takePhoto}
+                <Camera className="h-4 w-4 lg:h-5 lg:w-5" /> {t.takePhoto}
               </button>
               <button
                 onClick={() => fileRef.current?.click()}
-                className="glass flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-medium"
+                className="glass flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-sm font-medium lg:py-3.5"
               >
                 <Upload className="h-4 w-4" /> {t.uploadImage}
               </button>
-              <p className="pt-2 text-xs text-muted-foreground">
+              <p className="hidden pt-2 text-xs text-muted-foreground lg:block">
                 {t.scanCardDesc}
               </p>
             </div>
           </div>
+
         ) : (
           <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-8">
             <div className="relative overflow-hidden rounded-3xl border border-border bg-black">
