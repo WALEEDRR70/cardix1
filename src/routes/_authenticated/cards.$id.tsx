@@ -43,7 +43,8 @@ function EditCard() {
     },
   });
 
-  if (isLoading || !card) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">Loading…</div>;
+  if (isLoading) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">Loading…</div>;
+  if (!card) return <NotFoundView />;
 
   const initial: CardFormData = {
     name: card.name, slug: card.slug, title: card.title ?? "", company: card.company ?? "",
