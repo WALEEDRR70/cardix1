@@ -15,6 +15,7 @@ import { I18nProvider } from "@/lib/i18n";
 import { ThemeProvider } from "@/lib/theme";
 import { supabase } from "@/integrations/supabase/client";
 import { Toaster } from "sonner";
+import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 
 function NotFoundComponent() {
   return (
