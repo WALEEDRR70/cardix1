@@ -32,8 +32,9 @@ function EditCard() {
     name: card.name, slug: card.slug, title: card.title ?? "", company: card.company ?? "",
     bio: card.bio ?? "", phone: card.phone ?? "", whatsapp: card.whatsapp ?? "",
     email: card.email ?? "", website: card.website ?? "", address: card.address ?? "",
-    accent_color: card.accent_color, is_published: card.is_published,
+    avatar_url: card.avatar_url ?? "", accent_color: card.accent_color, is_published: card.is_published,
   };
+
 
   async function onSubmit(d: CardFormData): Promise<void> {
     const { error } = await supabase.from("cards").update(d).eq("id", id);

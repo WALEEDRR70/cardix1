@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useI18n } from "@/lib/i18n";
 import { CardPreview } from "@/components/CardPreview";
 import { useServerFn } from "@tanstack/react-start";
 import { generateBio } from "@/lib/bio.functions";
-import { Sparkles } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { Sparkles, Upload, X } from "lucide-react";
 import { toast } from "sonner";
+
 
 export interface CardFormData {
   name: string;
@@ -17,9 +19,11 @@ export interface CardFormData {
   email: string;
   website: string;
   address: string;
+  avatar_url: string;
   accent_color: string;
   is_published: boolean;
 }
+
 
 const ACCENTS = ["#D4AF37", "#111111", "#8B5CF6", "#0EA5E9", "#EF4444", "#10B981", "#F97316", "#EC4899"];
 
@@ -36,7 +40,28 @@ export function CardForm({
   const [data, setData] = useState<CardFormData>(initial);
   const [saving, setSaving] = useState(false);
   const [genBusy, setGenBusy] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
   const genBio = useServerFn(generateBio);
+
+  async function uploadAvatar(file: File) {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    setUploading(true);
+    try {
+      const ext = file.name.split(".").pop() || "jpg";
+      const path = `${user.id}/${Date.now()}.${ext}`;
+      const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
+      if (error) throw error;
+      const { data: signed } = await supabase.storage.from("avatars").createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
+      if (signed?.signedUrl) setData((d) => ({ ...d, avatar_url: signed.signedUrl }));
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  }
+
 
   async function aiBio() {
     if (!data.name.trim()) {
@@ -65,8 +90,42 @@ export function CardForm({
   return (
     <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
       <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="text-xs font-medium text-muted-foreground">{t.avatar}</label>
+          <div className="mt-2 flex items-center gap-3">
+            <div
+              className="h-16 w-16 rounded-2xl border border-border bg-muted bg-cover bg-center"
+              style={{ backgroundImage: data.avatar_url ? `url(${data.avatar_url})` : undefined }}
+            />
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadAvatar(f); }}
+            />
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              disabled={uploading}
+              className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs hover:bg-muted disabled:opacity-60"
+            >
+              <Upload className="h-3.5 w-3.5" /> {uploading ? t.uploading : t.uploadPhoto}
+            </button>
+            {data.avatar_url && (
+              <button
+                type="button"
+                onClick={() => set("avatar_url", "")}
+                className="inline-flex items-center gap-1 rounded-full border border-border px-2.5 py-1.5 text-xs text-muted-foreground hover:bg-muted"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            )}
+          </div>
+        </div>
         <Field label={t.name} value={data.name} onChange={(v) => set("name", v)} required />
         <Field label={t.slug} value={data.slug} onChange={(v) => set("slug", v.toLowerCase().replace(/[^a-z0-9-]/g, "-"))} required prefix="/c/" />
+
         <div className="grid grid-cols-2 gap-3">
           <Field label={t.title} value={data.title} onChange={(v) => set("title", v)} />
           <Field label={t.company} value={data.company} onChange={(v) => set("company", v)} />
