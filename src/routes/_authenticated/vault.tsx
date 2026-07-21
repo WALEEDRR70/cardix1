@@ -65,11 +65,18 @@ function Vault() {
         ) : (
           <div className="grid gap-2 lg:gap-3 lg:grid-cols-2 xl:grid-cols-3">
             {cards.map((c) => (
-              <Link
+              <div
                 key={c.id}
-                to="/vault/$id"
-                params={{ id: c.id }}
-                className="glass card-lift group block overflow-hidden rounded-2xl p-3 lg:p-4"
+                role="link"
+                tabIndex={0}
+                onClick={() => navigate({ to: "/vault/$id", params: { id: c.id } })}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    navigate({ to: "/vault/$id", params: { id: c.id } });
+                  }
+                }}
+                className="glass card-lift group block cursor-pointer overflow-hidden rounded-2xl p-3 lg:p-4"
               >
                 <div className="flex items-start gap-3">
                   <div
@@ -90,6 +97,7 @@ function Vault() {
                         {c.company && <p className="truncate text-[11px] text-muted-foreground/80">{c.company}</p>}
                       </div>
                       <button
+                        type="button"
                         onClick={(e) => editNote(e, c.id, c.notes)}
                         className="flex min-h-[48px] w-[38%] min-w-0 shrink-0 items-start gap-1 overflow-hidden rounded-lg bg-secondary/60 px-2 py-1.5 text-start text-[10.5px] italic leading-tight text-muted-foreground transition hover:bg-secondary"
                         aria-label={c.notes ? t.editNote : t.addNote}
@@ -98,6 +106,7 @@ function Vault() {
                         <span dir="auto" className="line-clamp-2 min-w-0 flex-1 [overflow-wrap:anywhere] [word-break:break-word]">{c.notes || t.addNote}</span>
                       </button>
                       <button
+                        type="button"
                         onClick={(e) => del(e, c.id)}
                         className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-muted-foreground opacity-0 transition hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
                         aria-label={t.delete}
@@ -117,7 +126,7 @@ function Vault() {
                     </div>
                   </div>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         )}
