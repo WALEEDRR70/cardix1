@@ -151,6 +151,19 @@ function Vault() {
           </div>
         )}
       </div>
+      <NoteDialog
+        open={!!noteTarget}
+        initial={noteTarget?.notes ?? ""}
+        saving={busy}
+        onOpenChange={(v) => { if (!v) setNoteTarget(null); }}
+        onSave={saveNote}
+      />
+      <ConfirmDeleteDialog
+        open={!!deleteId}
+        loading={busy}
+        onOpenChange={(v) => { if (!v) setDeleteId(null); }}
+        onConfirm={confirmDelete}
+      />
     </MobileShell>
   );
 }
