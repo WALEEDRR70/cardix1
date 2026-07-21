@@ -266,7 +266,7 @@ function ScanPage() {
             <div className="space-y-4">
               {data && !busy && (
                 <div className="glass space-y-1 rounded-3xl p-5">
-                  <p className="text-lg font-semibold">{data.name || "Unknown"}</p>
+                  <p className="text-lg font-semibold">{data.name || t.unknown}</p>
                   {data.title && <p className="text-xs text-muted-foreground">{data.title}</p>}
                   {data.company && <p className="text-xs text-muted-foreground">{data.company}</p>}
                   <div className="mt-3 space-y-1 border-t border-border pt-3 text-xs text-muted-foreground">
@@ -283,7 +283,7 @@ function ScanPage() {
                   onClick={reset}
                   className="glass flex items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-medium"
                 >
-                  <RefreshCw className="h-4 w-4" /> Retry
+                  <RefreshCw className="h-4 w-4" /> {t.retry}
                 </button>
                 <button
                   onClick={save}
@@ -310,7 +310,7 @@ function ScanPage() {
             <button
               onClick={() => setScanned(null)}
               className="absolute end-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-secondary/60 text-muted-foreground hover:text-foreground"
-              aria-label="Close"
+              aria-label={t.close}
             >
               <X className="h-4 w-4" />
             </button>

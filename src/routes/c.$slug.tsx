@@ -267,11 +267,11 @@ function PublicCard() {
 
   type ActionItem = { id: string; label: string; icon: typeof Phone; href?: string; onClick?: () => void };
   const actions: ActionItem[] = [
-    card.email ? { id: "email", label: "Email", icon: Mail, href: `mailto:${card.email}` } : null,
+    card.email ? { id: "email", label: t.email, icon: Mail, href: `mailto:${card.email}` } : null,
     card.whatsapp
       ? {
           id: "wa",
-          label: "WhatsApp",
+          label: t.whatsapp,
           icon: MessageCircle,
           href: `https://wa.me/${card.whatsapp.replace(/\D/g, "")}`,
         }
@@ -386,7 +386,7 @@ function PublicCard() {
 
         <button
           className="glass grid h-11 w-11 place-items-center rounded-full text-muted-foreground transition hover:text-foreground"
-          aria-label="More"
+          aria-label={t.more}
           onClick={nativeShare}
         >
           <MoreHorizontal className="h-4 w-4" />
@@ -631,7 +631,7 @@ function PublicCard() {
             <button
               onClick={() => setQrOpen(false)}
               className="glass absolute -top-3 -right-3 grid h-9 w-9 place-items-center rounded-full text-foreground"
-              aria-label="Close"
+              aria-label={t.close}
             >
               <X className="h-4 w-4" />
             </button>
