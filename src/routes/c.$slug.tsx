@@ -634,7 +634,7 @@ function PublicCard() {
                               <Copy className="h-3 w-3" /> {t.copyLink}
                             </button>
                             <button
-                              onClick={shareCard}
+                              onClick={nativeShare}
                               className="flex items-center justify-center gap-1 rounded-full py-2 text-[11px] font-semibold text-accent-foreground shadow-glow"
                               style={{ background: "var(--gradient-gold)" }}
                             >
