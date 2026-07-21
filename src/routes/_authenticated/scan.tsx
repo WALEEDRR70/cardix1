@@ -7,6 +7,7 @@ import { scanBusinessCard } from "@/lib/ocr.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
+import { CameraCapture } from "@/components/CameraCapture";
 
 export const Route = createFileRoute("/_authenticated/scan")({
   head: () => ({
@@ -29,7 +30,7 @@ function ScanPage() {
   const nav = useNavigate();
   const scan = useServerFn(scanBusinessCard);
   const fileRef = useRef<HTMLInputElement>(null);
-  const camRef = useRef<HTMLInputElement>(null);
+  const [camOpen, setCamOpen] = useState(false);
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [saving, setSaving] = useState(false);
