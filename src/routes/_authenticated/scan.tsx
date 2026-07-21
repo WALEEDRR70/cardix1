@@ -2,12 +2,14 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
-import { Camera, Upload, Loader2, Save, RefreshCw, QrCode } from "lucide-react";
+import { Camera, Upload, Loader2, Save, RefreshCw, QrCode, StickyNote, X } from "lucide-react";
 import { scanBusinessCard } from "@/lib/ocr.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { QrScanner } from "@/components/QrScanner";
+import { CardPreview, type CardData } from "@/components/CardPreview";
+import { NoteDialog } from "@/components/NoteDialog";
 
 
 export const Route = createFileRoute("/_authenticated/scan")({
@@ -26,6 +28,25 @@ export const Route = createFileRoute("/_authenticated/scan")({
 
 type Extracted = Awaited<ReturnType<typeof scanBusinessCard>>;
 
+type ScannedCard = {
+  id: string;
+  user_id: string;
+  slug: string;
+  name: string;
+  title: string | null;
+  company: string | null;
+  bio: string | null;
+  phone: string | null;
+  whatsapp: string | null;
+  email: string | null;
+  website: string | null;
+  address: string | null;
+  avatar_url: string | null;
+  accent_color: string;
+  template: string | null;
+  socials: Record<string, string> | null;
+};
+
 function ScanPage() {
   const { t } = useI18n();
   const nav = useNavigate();
@@ -38,11 +59,13 @@ function ScanPage() {
   const [data, setData] = useState<Extracted | null>(null);
   const [qrOpen, setQrOpen] = useState(false);
   const [qrBusy, setQrBusy] = useState(false);
+  const [scanned, setScanned] = useState<ScannedCard | null>(null);
+  const [note, setNote] = useState("");
+  const [noteOpen, setNoteOpen] = useState(false);
 
   async function handleQrDetect(text: string) {
     setQrBusy(true);
     try {
-      // Extract slug: accept full URLs (…/c/<slug>) or bare slug
       let slug: string | null = null;
       try {
         const u = new URL(text);
@@ -58,7 +81,7 @@ function ScanPage() {
       }
       const { data: card, error } = await supabase
         .from("cards")
-        .select("id,user_id,slug,name,title,company,phone,whatsapp,email,website,address,bio,avatar_url")
+        .select("id,user_id,slug,name,title,company,phone,whatsapp,email,website,address,bio,avatar_url,accent_color,template,socials")
         .eq("slug", slug)
         .eq("is_published", true)
         .maybeSingle();
@@ -84,34 +107,47 @@ function ScanPage() {
         nav({ to: "/vault" });
         return;
       }
-      const { error: insErr } = await supabase.from("saved_cards").insert({
-        user_id: u.user.id,
-        source_card_id: card.id,
-        source: "qr",
-        name: card.name,
-        title: card.title,
-        company: card.company,
-        phone: card.phone,
-        whatsapp: card.whatsapp,
-        email: card.email,
-        website: card.website,
-        address: card.address,
-        bio: card.bio,
-        avatar_url: card.avatar_url,
+      // Preview the scanned card — user chooses Save / Add note
+      setScanned({
+        ...card,
+        socials: (card.socials as Record<string, string> | null) ?? null,
       });
-      if (insErr) {
-        toast.error(insErr.message);
-        return;
-      }
-      // log analytics event (best-effort)
-      supabase.from("card_events").insert({ card_id: card.id, event_type: "save" }).then(() => {});
-
-      toast.success(t.savedToVault);
-      nav({ to: "/vault" });
+      setNote("");
+      setQrOpen(false);
     } finally {
       setQrBusy(false);
-      setQrOpen(false);
     }
+  }
+
+  async function saveScanned() {
+    if (!scanned) return;
+    setSaving(true);
+    const { data: u } = await supabase.auth.getUser();
+    if (!u.user) { setSaving(false); return; }
+    const { error: insErr } = await supabase.from("saved_cards").insert({
+      user_id: u.user.id,
+      source_card_id: scanned.id,
+      source: "qr",
+      name: scanned.name,
+      title: scanned.title,
+      company: scanned.company,
+      phone: scanned.phone,
+      whatsapp: scanned.whatsapp,
+      email: scanned.email,
+      website: scanned.website,
+      address: scanned.address,
+      bio: scanned.bio,
+      avatar_url: scanned.avatar_url,
+      accent_color: scanned.accent_color,
+      template: scanned.template ?? "luxury",
+      socials: scanned.socials ?? {},
+      notes: note.trim() || null,
+    });
+    setSaving(false);
+    if (insErr) { toast.error(insErr.message); return; }
+    supabase.from("card_events").insert({ card_id: scanned.id, event_type: "save" }).then(() => {});
+    toast.success(t.savedToVault);
+    nav({ to: "/vault" });
   }
 
 
