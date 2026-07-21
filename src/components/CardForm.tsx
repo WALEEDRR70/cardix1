@@ -125,7 +125,7 @@ export function CardForm({
                   )}
                 </span>
                 <span className={"text-[10px] font-medium tracking-wide transition " + (active ? "text-foreground" : "text-muted-foreground")}>
-                  {tpl.label}
+                  {(t.templates as Record<string, string>)[tpl.id] ?? tpl.label}
                 </span>
               </button>
             );
