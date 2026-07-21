@@ -13,16 +13,19 @@ import {
   Globe,
   MessageCircle,
   MapPin,
-  QrCode,
+  Maximize2,
   X,
   BadgeCheck,
-  ArrowUpRight,
+  MoreHorizontal,
+  Radio,
+  UserPlus,
 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { useQuery } from "@tanstack/react-query";
 import { useI18n } from "@/lib/i18n";
 import { toast } from "sonner";
 import { SOCIALS_BY_ID } from "@/lib/socials";
+import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 
 export const Route = createFileRoute("/c/$slug")({
   head: ({ params }) => ({
@@ -69,10 +72,11 @@ type CardRow = {
 
 function PublicCard() {
   const { slug } = Route.useParams();
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [saved, setSaved] = useState(false);
   const [savingCard, setSavingCard] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
+  const [nfcState, setNfcState] = useState<"idle" | "writing">("idle");
   const cardWrapRef = useRef<HTMLDivElement | null>(null);
   const qrSvgRef = useRef<SVGSVGElement | null>(null);
 
@@ -108,7 +112,7 @@ function PublicCard() {
       const y = (e.clientY - r.top) / r.height - 0.5;
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
-        el.style.transform = `perspective(1200px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) translateZ(0)`;
+        el.style.transform = `perspective(1200px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateZ(0)`;
       });
     };
     const onLeave = () => {
@@ -135,6 +139,7 @@ function PublicCard() {
   const socials = (card.socials as Record<string, string> | null) ?? {};
   const socialEntries = Object.entries(socials).filter(([id, v]) => v && SOCIALS_BY_ID[id]);
   const publicUrl = typeof window !== "undefined" ? window.location.href : `/c/${slug}`;
+  const isRTL = lang === "ar";
 
   function vcard() {
     const socialLines = socialEntries.map(([id, v]) => {
@@ -217,6 +222,25 @@ function PublicCard() {
     toast.success(t.linkCopied);
   }
 
+  async function writeNfc() {
+    const w = window as unknown as { NDEFReader?: new () => { write: (m: unknown) => Promise<void> } };
+    if (!w.NDEFReader) {
+      toast.error(t.nfcUnsupported);
+      return;
+    }
+    try {
+      setNfcState("writing");
+      toast(t.nfcTap);
+      const reader = new w.NDEFReader();
+      await reader.write({ records: [{ recordType: "url", data: publicUrl }] });
+      toast.success(t.nfcWritten);
+    } catch (e) {
+      toast.error((e as Error).message);
+    } finally {
+      setNfcState("idle");
+    }
+  }
+
   async function downloadQr() {
     const svg = qrSvgRef.current;
     if (!svg) return;
@@ -245,14 +269,9 @@ function PublicCard() {
     img.src = url;
   }
 
-  const actions: {
-    id: string;
-    label: string;
-    icon: typeof Phone;
-    href?: string;
-    onClick?: () => void;
-  }[] = [
-    card.phone ? { id: "call", label: t.call, icon: Phone, href: `tel:${card.phone}` } : null,
+  type ActionItem = { id: string; label: string; icon: typeof Phone; href?: string; onClick?: () => void };
+  const actions: ActionItem[] = [
+    card.email ? { id: "email", label: "Email", icon: Mail, href: `mailto:${card.email}` } : null,
     card.whatsapp
       ? {
           id: "wa",
@@ -261,44 +280,39 @@ function PublicCard() {
           href: `https://wa.me/${card.whatsapp.replace(/\D/g, "")}`,
         }
       : null,
-    card.email ? { id: "email", label: "Email", icon: Mail, href: `mailto:${card.email}` } : null,
-    card.website
-      ? {
-          id: "web",
-          label: "Website",
-          icon: Globe,
-          href: card.website.startsWith("http") ? card.website : `https://${card.website}`,
-        }
-      : null,
+    card.phone ? { id: "call", label: t.call, icon: Phone, href: `tel:${card.phone}` } : null,
     card.address
       ? {
           id: "map",
-          label: "Location",
+          label: t.location,
           icon: MapPin,
           href: `https://maps.google.com/?q=${encodeURIComponent(card.address)}`,
         }
       : null,
-  ].filter(Boolean) as {
-    id: string;
-    label: string;
-    icon: typeof Phone;
-    href?: string;
-    onClick?: () => void;
-  }[];
+    card.website
+      ? {
+          id: "web",
+          label: t.website,
+          icon: Globe,
+          href: card.website.startsWith("http") ? card.website : `https://${card.website}`,
+        }
+      : null,
+    { id: "save", label: t.saveContact, icon: UserPlus, onClick: vcard },
+  ].filter(Boolean) as ActionItem[];
 
   return (
     <div className="relative min-h-[100dvh] w-full overflow-hidden bg-background">
       {/* Ambient background */}
       <div
         className="pointer-events-none absolute inset-0"
-        style={{ background: "var(--gradient-mesh)", opacity: 0.6 }}
+        style={{ background: "var(--gradient-mesh)", opacity: 0.55 }}
       />
       <div
         className="pointer-events-none absolute -top-40 left-1/2 h-[640px] w-[640px] -translate-x-1/2 rounded-full opacity-50 blur-[140px]"
         style={{ background: `radial-gradient(circle, ${accent}, transparent 65%)` }}
       />
       <div
-        className="pointer-events-none absolute -bottom-40 -left-40 h-[520px] w-[520px] rounded-full opacity-30 blur-[140px]"
+        className="pointer-events-none absolute -bottom-40 -left-40 h-[520px] w-[520px] rounded-full opacity-25 blur-[140px]"
         style={{ background: `radial-gradient(circle, ${accent}66, transparent 70%)` }}
       />
       <div
@@ -308,51 +322,52 @@ function PublicCard() {
           backgroundSize: "3px 3px",
         }}
       />
-      {/* Floating particles */}
       <Particles accent={accent} />
 
       {/* Top bar */}
       <header className="safe-top relative z-20 mx-auto flex w-full max-w-[1200px] items-center justify-between px-5 pb-2 pt-4">
-        <a
-          href="/"
-          className="text-[10px] font-semibold uppercase tracking-[0.32em] text-muted-foreground hover:text-foreground"
-        >
-          Cardix
-        </a>
         <div className="flex items-center gap-2">
           <button
-            onClick={copyLink}
-            className="glass grid h-10 w-10 place-items-center rounded-full text-muted-foreground transition hover:text-foreground"
-            aria-label={t.copyLink}
-          >
-            <Copy className="h-4 w-4" />
-          </button>
-          <button
             onClick={nativeShare}
-            className="grid h-10 w-10 place-items-center rounded-full text-accent-foreground shadow-glow transition hover:scale-105"
+            className="grid h-11 w-11 place-items-center rounded-full text-accent-foreground shadow-glow transition hover:scale-105"
             style={{ background: "var(--gradient-gold)" }}
             aria-label={t.share}
           >
             <Share2 className="h-4 w-4" />
           </button>
+          <button
+            onClick={copyLink}
+            className="glass grid h-11 w-11 place-items-center rounded-full text-muted-foreground transition hover:text-foreground"
+            aria-label={t.copyLink}
+          >
+            <Copy className="h-4 w-4" />
+          </button>
         </div>
+
+        <a href="/" className="flex items-center gap-2" aria-label="Cardix">
+          <img src={logoAsset.url} alt="" className="h-7 w-7 object-contain" />
+          <span className="text-[13px] font-semibold tracking-[0.32em] text-foreground">CARDIX</span>
+        </a>
+
+        <button
+          className="glass grid h-11 w-11 place-items-center rounded-full text-muted-foreground transition hover:text-foreground"
+          aria-label="More"
+          onClick={nativeShare}
+        >
+          <MoreHorizontal className="h-4 w-4" />
+        </button>
       </header>
 
       {/* Main */}
-      <main className="relative z-10 mx-auto w-full max-w-[1200px] px-5 pb-40 pt-2 lg:pb-24">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-center lg:gap-16 lg:pt-6">
+      <main className="relative z-10 mx-auto w-full max-w-[1200px] px-5 pb-40 pt-3 lg:pb-24">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-start lg:gap-16 lg:pt-4">
           {/* HERO CARD */}
-          <section className="flex flex-col items-center lg:items-end">
-            <div
-              className="relative w-full max-w-[588px] animate-fade-in"
-              style={{ perspective: "1200px" }}
-            >
-              {/* Glow halo */}
+          <section className="flex flex-col items-center lg:sticky lg:top-6 lg:items-end">
+            <div className="relative w-full max-w-[560px] animate-fade-in" style={{ perspective: "1200px" }}>
               <div
                 className="absolute -inset-10 rounded-[3rem] opacity-60 blur-3xl"
                 style={{ background: `radial-gradient(circle, ${accent}55, transparent 70%)` }}
               />
-              {/* Reflection under card */}
               <div
                 className="absolute -bottom-6 left-1/2 h-8 w-3/4 -translate-x-1/2 rounded-full opacity-40 blur-2xl"
                 style={{ background: `radial-gradient(ellipse, ${accent}88, transparent 70%)` }}
@@ -364,21 +379,37 @@ function PublicCard() {
           </section>
 
           {/* IDENTITY + ACTIONS */}
-          <section className="flex flex-col items-center gap-8 lg:items-start lg:pl-4">
+          <section className="flex flex-col items-center gap-7 lg:items-start lg:pl-2">
             {/* Identity */}
-            <div className="w-full max-w-md text-center lg:text-left animate-fade-in">
+            <div className="w-full max-w-md text-center lg:text-start animate-fade-in">
               <div className="flex items-center justify-center gap-2 lg:justify-start">
-                <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">{card.name}</h1>
-                <BadgeCheck className="h-6 w-6" style={{ color: accent }} aria-hidden />
+                <BadgeCheck className="h-6 w-6 shrink-0" style={{ color: accent }} aria-hidden />
+                <h1 className="text-[34px] font-semibold leading-tight tracking-tight sm:text-5xl">
+                  {card.name}
+                </h1>
               </div>
               {(card.title || card.company) && (
-                <p className="mt-2 text-base text-muted-foreground">
+                <p className="mt-2 text-[15px] text-muted-foreground">
                   {[card.title, card.company].filter(Boolean).join(" · ")}
                 </p>
               )}
               {card.bio && (
-                <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-foreground/80 lg:mx-0">
+                <p className="relative mx-auto mt-5 max-w-md px-6 text-[15px] leading-relaxed text-foreground/85 lg:mx-0">
+                  <span
+                    className="absolute start-0 top-0 text-2xl leading-none"
+                    style={{ color: accent, opacity: 0.7 }}
+                    aria-hidden
+                  >
+                    “
+                  </span>
                   {card.bio}
+                  <span
+                    className="absolute end-0 bottom-0 text-2xl leading-none"
+                    style={{ color: accent, opacity: 0.7 }}
+                    aria-hidden
+                  >
+                    ”
+                  </span>
                 </p>
               )}
             </div>
@@ -386,8 +417,7 @@ function PublicCard() {
             {/* Action grid */}
             {actions.length > 0 && (
               <section className="w-full max-w-md animate-fade-in">
-                <SectionLabel accent={accent}>Quick actions</SectionLabel>
-                <div className="mt-3 grid grid-cols-3 gap-2.5 sm:grid-cols-4 lg:grid-cols-3">
+                <div className="grid grid-cols-3 gap-2.5">
                   {actions.map((a) => (
                     <ActionTile key={a.id} accent={accent} {...a} />
                   ))}
@@ -398,8 +428,10 @@ function PublicCard() {
             {/* Socials */}
             {socialEntries.length > 0 && (
               <section className="w-full max-w-md animate-fade-in">
-                <SectionLabel accent={accent}>Follow · Connect</SectionLabel>
-                <div className="mt-3 flex flex-wrap gap-2.5">
+                <SectionLabel accent={accent} centered={!isRTL ? false : true}>
+                  {t.followMe}
+                </SectionLabel>
+                <div className="mt-4 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
                   {socialEntries.map(([id, val]) => {
                     const meta = SOCIALS_BY_ID[id];
                     return (
@@ -409,12 +441,14 @@ function PublicCard() {
                         target="_blank"
                         rel="noreferrer"
                         title={meta.name}
-                        className="glass group grid h-12 w-12 place-items-center rounded-full text-foreground/85 transition-all hover:-translate-y-0.5 hover:text-foreground"
+                        className="glass group grid h-12 w-12 place-items-center rounded-full text-foreground/90 transition-all hover:-translate-y-0.5 hover:text-foreground"
                         style={{ boxShadow: `0 0 0 0 ${accent}00` }}
                         onMouseEnter={(e) =>
-                          (e.currentTarget.style.boxShadow = `0 0 24px -4px ${accent}aa`)
+                          (e.currentTarget.style.boxShadow = `0 0 22px -4px ${accent}aa`)
                         }
-                        onMouseLeave={(e) => (e.currentTarget.style.boxShadow = `0 0 0 0 ${accent}00`)}
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.style.boxShadow = `0 0 0 0 ${accent}00`)
+                        }
                       >
                         <meta.Icon className="h-5 w-5" />
                       </a>
@@ -423,51 +457,77 @@ function PublicCard() {
                 </div>
               </section>
             )}
+
+            {/* QR panel */}
+            <section className="w-full max-w-md animate-fade-in">
+              <div
+                className="relative overflow-hidden rounded-[28px] p-[1.5px]"
+                style={{
+                  background: `linear-gradient(140deg, ${accent}, transparent 45%, ${accent}66 90%)`,
+                }}
+              >
+                <div className="glass-strong rounded-[calc(28px-1.5px)] p-5">
+                  <SectionLabel accent={accent} centered>
+                    {t.instantShare}
+                  </SectionLabel>
+
+                  <div className="mt-5 grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4">
+                    <button
+                      onClick={() => setQrOpen(true)}
+                      className="relative rounded-2xl p-[1.5px] transition hover:scale-[1.02]"
+                      style={{
+                        background: `linear-gradient(140deg, ${accent}, ${accent}55)`,
+                      }}
+                      aria-label={t.expand}
+                    >
+                      <div className="relative rounded-[calc(1rem-1px)] bg-white p-2.5">
+                        <QRCodeSVG
+                          ref={qrSvgRef}
+                          value={publicUrl}
+                          size={140}
+                          fgColor="#0a0a0a"
+                          bgColor="#ffffff"
+                          level="H"
+                          marginSize={0}
+                          imageSettings={{
+                            src: logoAsset.url,
+                            height: 28,
+                            width: 28,
+                            excavate: true,
+                          }}
+                        />
+                      </div>
+                    </button>
+
+                    <div className="min-w-0">
+                      <p className="text-[13px] leading-relaxed text-foreground/80">
+                        {t.scanQrDesc}
+                      </p>
+                      <button
+                        onClick={writeNfc}
+                        disabled={nfcState === "writing"}
+                        className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-[12px] font-semibold text-accent-foreground shadow-glow transition hover:scale-[1.02] disabled:opacity-70"
+                        style={{ background: "var(--gradient-gold)" }}
+                      >
+                        <Radio className="h-3.5 w-3.5" /> {t.shareViaNfc}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 grid grid-cols-3 gap-2">
+                    <QrAction icon={Share2} label={t.share} onClick={nativeShare} />
+                    <QrAction icon={Download} label={t.download} onClick={downloadQr} />
+                    <QrAction icon={Maximize2} label={t.expand} onClick={() => setQrOpen(true)} />
+                  </div>
+                </div>
+              </div>
+            </section>
           </section>
         </div>
 
-        {/* QR SECTION */}
-        <section className="mx-auto mt-16 w-full max-w-2xl animate-fade-in">
-          <div className="text-center">
-            <SectionLabel accent={accent} centered>
-              Instant share
-            </SectionLabel>
-            <h2 className="mt-2 text-xl font-semibold tracking-tight">Scan the code</h2>
-          </div>
-          <div className="mt-5 grid gap-4 sm:grid-cols-[auto_minmax(0,1fr)] sm:items-center">
-            <div className="mx-auto sm:mx-0">
-              <div
-                className="relative overflow-hidden rounded-[1.75rem] p-[1.5px]"
-                style={{ background: `linear-gradient(140deg, ${accent}, transparent 40%, ${accent}66 90%)` }}
-              >
-                <div className="rounded-[calc(1.75rem-1.5px)] bg-white p-4">
-                  <QRCodeSVG
-                    ref={qrSvgRef}
-                    value={publicUrl}
-                    size={168}
-                    fgColor="#0a0a0a"
-                    bgColor="#ffffff"
-                    level="H"
-                    marginSize={0}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="glass rounded-2xl p-4 sm:p-5">
-              <p className="text-sm text-muted-foreground">
-                Point any camera at the code to open this card instantly — no app required.
-              </p>
-              <div className="mt-4 grid grid-cols-3 gap-2">
-                <QrAction icon={QrCode} label="Expand" onClick={() => setQrOpen(true)} />
-                <QrAction icon={Download} label="Download" onClick={downloadQr} />
-                <QrAction icon={Share2} label="Share" onClick={nativeShare} />
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Footer */}
-        <footer className="mt-16 text-center">
+        <footer className="mt-14 flex items-center justify-center gap-2">
+          <img src={logoAsset.url} alt="" className="h-4 w-4 opacity-70" />
           <a
             href="/"
             className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground hover:text-foreground"
@@ -479,15 +539,16 @@ function PublicCard() {
 
       {/* Sticky save-contact CTA */}
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30">
-        <div className="pointer-events-none mx-auto flex w-full max-w-[560px] items-center gap-2 px-4 pb-[calc(env(safe-area-inset-bottom)+14px)] pt-6"
-          style={{ background: "linear-gradient(to top, var(--background) 55%, transparent)" }}
+        <div
+          className="pointer-events-none mx-auto flex w-full max-w-[560px] items-center gap-2 px-4 pb-[calc(env(safe-area-inset-bottom)+14px)] pt-8"
+          style={{ background: "linear-gradient(to top, var(--background) 60%, transparent)" }}
         >
           <button
             onClick={vcard}
-            className="pointer-events-auto flex flex-1 items-center justify-center gap-2 rounded-full py-4 text-sm font-semibold text-accent-foreground shadow-glow transition hover:scale-[1.01]"
+            className="pointer-events-auto flex flex-1 items-center justify-center gap-2 rounded-full py-4 text-[15px] font-semibold text-accent-foreground shadow-glow transition hover:scale-[1.01]"
             style={{ background: "var(--gradient-gold)" }}
           >
-            <Download className="h-4 w-4" /> {t.saveContact}
+            <UserPlus className="h-4 w-4" /> {t.saveContact}
           </button>
           <button
             onClick={saveToVault}
@@ -508,12 +569,27 @@ function PublicCard() {
         >
           <div
             className="relative w-full max-w-sm rounded-[2rem] p-[1.5px]"
-            style={{ background: `linear-gradient(140deg, ${accent}, transparent 40%, ${accent}66 90%)` }}
+            style={{
+              background: `linear-gradient(140deg, ${accent}, transparent 40%, ${accent}66 90%)`,
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="rounded-[calc(2rem-1.5px)] bg-white p-6">
               <div className="grid place-items-center">
-                <QRCodeSVG value={publicUrl} size={280} fgColor="#0a0a0a" bgColor="#ffffff" level="H" marginSize={0} />
+                <QRCodeSVG
+                  value={publicUrl}
+                  size={280}
+                  fgColor="#0a0a0a"
+                  bgColor="#ffffff"
+                  level="H"
+                  marginSize={0}
+                  imageSettings={{
+                    src: logoAsset.url,
+                    height: 52,
+                    width: 52,
+                    excavate: true,
+                  }}
+                />
               </div>
               <p className="mt-4 text-center text-xs font-semibold uppercase tracking-[0.3em] text-black/60">
                 {card.name}
@@ -545,9 +621,11 @@ function SectionLabel({
   return (
     <div className={"flex items-center gap-2 " + (centered ? "justify-center" : "")}>
       <span className="h-1 w-1 rounded-full" style={{ background: accent }} />
-      <span className="text-[10px] font-semibold uppercase tracking-[0.32em] text-muted-foreground">
+      <span className="h-px w-6" style={{ background: `linear-gradient(to right, transparent, ${accent}88)` }} />
+      <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
         {children}
       </span>
+      <span className="h-px w-6" style={{ background: `linear-gradient(to left, transparent, ${accent}88)` }} />
       <span className="h-1 w-1 rounded-full" style={{ background: accent }} />
     </div>
   );
@@ -567,19 +645,26 @@ function ActionTile({
   accent: string;
 }) {
   const inner = (
-    <div className="glass card-lift group relative flex aspect-square flex-col items-center justify-center gap-2 overflow-hidden rounded-3xl p-3 text-center transition hover:-translate-y-0.5">
+    <div
+      className="glass card-lift group relative flex aspect-[1.05/1] flex-col items-center justify-center gap-2 overflow-hidden rounded-2xl p-3 text-center transition hover:-translate-y-0.5"
+      style={{
+        boxShadow: `inset 0 0 0 1px rgba(255,255,255,0.04)`,
+      }}
+    >
       <div
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100"
         style={{ background: `radial-gradient(circle at 50% 0%, ${accent}22, transparent 70%)` }}
       />
       <span
-        className="relative grid h-11 w-11 place-items-center rounded-2xl text-accent-foreground shadow-glow"
-        style={{ background: "var(--gradient-gold)" }}
+        className="relative grid h-10 w-10 place-items-center rounded-full"
+        style={{
+          color: accent,
+          background: `radial-gradient(circle at 50% 30%, ${accent}22, transparent 70%)`,
+        }}
       >
         <Icon className="h-5 w-5" />
       </span>
-      <span className="relative text-[11px] font-medium text-foreground/80">{label}</span>
-      <ArrowUpRight className="absolute right-2 top-2 h-3.5 w-3.5 text-foreground/30 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+      <span className="relative text-[12px] font-medium text-foreground/85">{label}</span>
     </div>
   );
   return href ? (
@@ -593,11 +678,19 @@ function ActionTile({
   );
 }
 
-function QrAction({ icon: Icon, label, onClick }: { icon: typeof Phone; label: string; onClick: () => void }) {
+function QrAction({
+  icon: Icon,
+  label,
+  onClick,
+}: {
+  icon: typeof Phone;
+  label: string;
+  onClick: () => void;
+}) {
   return (
     <button
       onClick={onClick}
-      className="glass card-lift flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-medium text-foreground/85 transition hover:text-foreground"
+      className="glass card-lift flex items-center justify-center gap-1.5 rounded-full py-2.5 text-[11px] font-medium text-foreground/85 transition hover:text-foreground"
     >
       <Icon className="h-3.5 w-3.5" />
       {label}

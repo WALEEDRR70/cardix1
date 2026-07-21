@@ -100,7 +100,16 @@ const dict = {
     featureTemplatesDesc: "From Noir gold to Aurora glass — every card feels intentional.",
     welcomeBack: "Welcome back.",
     startCraft: "Start crafting your card in seconds.",
+    followMe: "Follow me",
+    instantShare: "Instant share",
+    scanQrDesc: "Scan my QR to view my card and save it instantly.",
+    shareViaNfc: "Share via NFC",
+    expand: "Expand",
+    download: "Download",
+    location: "Location",
   },
+
+
   ar: {
     brand: "كارديكس",
     tagline: "بطاقتك. هويتك.",
@@ -198,7 +207,15 @@ const dict = {
     featureTemplatesDesc: "من أسود ذهبي إلى شفق زجاجي — كل بطاقة تبدو مقصودة.",
     welcomeBack: "أهلًا بعودتك.",
     startCraft: "ابدأ تصميم بطاقتك في ثوانٍ.",
+    followMe: "تابعني على",
+    instantShare: "مشاركة فورية",
+    scanQrDesc: "امسح رمز QR لمشاهدة بطاقتي وحفظها مباشرة.",
+    shareViaNfc: "مشاركة عبر NFC",
+    expand: "تكبير",
+    download: "تحميل",
+    location: "الموقع",
   },
+
 };
 
 type Dict = typeof dict.en;
