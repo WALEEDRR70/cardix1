@@ -105,7 +105,7 @@ function PublicCard() {
     }
     await supabase.from("card_events").insert({ card_id: card!.id, event_type: "save" });
     setSaved(true);
-    toast.success(t("savedToVault"));
+    toast.success(t.savedToVault);
   }
 
   const publicUrl = typeof window !== "undefined" ? window.location.href : `/c/${slug}`;
@@ -117,7 +117,7 @@ function PublicCard() {
 
         <div className="flex w-full max-w-md flex-col gap-3">
           <button onClick={vcard} className="flex items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-sm font-medium text-primary-foreground hover:opacity-90">
-            <Download className="h-4 w-4" /> {t("saveContact")}
+            <Download className="h-4 w-4" /> {t.saveContact}
           </button>
 
           <button
@@ -126,7 +126,7 @@ function PublicCard() {
             className="flex items-center justify-center gap-2 rounded-2xl border border-border bg-card py-4 text-sm font-medium text-foreground hover:bg-muted disabled:opacity-60"
           >
             {saved ? <Check className="h-4 w-4" /> : <BookmarkPlus className="h-4 w-4" />}
-            {saved ? t("savedToVault") : savingCard ? t("saving") : t("saveToVault")}
+            {saved ? t.savedToVault : savingCard ? t.saving : t.saveToVault}
           </button>
 
 
