@@ -57,6 +57,16 @@ export type UIDict = {
   yourName: string; livePreview: string; nfcReady: string; cardNotFound: string;
   loading: string; tryAgain: string; somethingWrong: string; positionCard: string;
   customColor: string;
+  goHome: string; pageNotFound: string; tryAgainDesc: string;
+  retry: string; copied: string; actions: string; more: string; edit: string;
+  saved: string; cardCreated: string; checkEmail: string;
+  stackView: string; listView: string; previous: string; next: string;
+  unknown: string; toggleTheme: string; dark: string; light: string;
+  mostPopular: string; liveCard: string; tapToOpen: string;
+  cameraPermissionDenied: string;
+  cardNumber: (n: number, total: number) => string;
+  eyebrowTemplates: string; eyebrowHowItWorks: string;
+  eyebrowFeatures: string; eyebrowTestimonials: string; eyebrowPricing: string;
 };
 
 type DP<T> = { [K in keyof T]?: T[K] extends object ? DP<T[K]> : T[K] };
