@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LangRouteRouteImport } from './routes/$lang/route'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as LangIndexRouteImport } from './routes/$lang/index'
 import { Route as CSlugRouteImport } from './routes/c.$slug'
 import { Route as LangAuthRouteImport } from './routes/$lang/auth'
@@ -26,6 +27,11 @@ import { Route as LangAuthenticatedCardsIdAnalyticsRouteImport } from './routes/
 const LangRouteRoute = LangRouteRouteImport.update({
   id: '/$lang',
   path: '/$lang',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LangIndexRoute = LangIndexRouteImport.update({
@@ -95,6 +101,7 @@ const LangAuthenticatedCardsIdAnalyticsRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/$lang': typeof LangRouteRouteWithChildren
   '/$lang/auth': typeof LangAuthRoute
   '/c/$slug': typeof CSlugRoute
@@ -109,6 +116,7 @@ export interface FileRoutesByFullPath {
   '/$lang/cards/$id/analytics': typeof LangAuthenticatedCardsIdAnalyticsRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/$lang': typeof LangIndexRoute
   '/$lang/auth': typeof LangAuthRoute
   '/c/$slug': typeof CSlugRoute
@@ -123,6 +131,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/$lang': typeof LangRouteRouteWithChildren
   '/$lang/_authenticated': typeof LangAuthenticatedRouteRouteWithChildren
   '/$lang/auth': typeof LangAuthRoute
@@ -140,6 +149,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/$lang'
     | '/$lang/auth'
     | '/c/$slug'
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
     | '/$lang/cards/$id/analytics'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/$lang'
     | '/$lang/auth'
     | '/c/$slug'
@@ -167,6 +178,7 @@ export interface FileRouteTypes {
     | '/$lang/cards/$id/analytics'
   id:
     | '__root__'
+    | '/'
     | '/$lang'
     | '/$lang/_authenticated'
     | '/$lang/auth'
@@ -183,6 +195,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   LangRouteRoute: typeof LangRouteRouteWithChildren
   CSlugRoute: typeof CSlugRoute
 }
@@ -194,6 +207,13 @@ declare module '@tanstack/react-router' {
       path: '/$lang'
       fullPath: '/$lang'
       preLoaderRoute: typeof LangRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$lang/': {
@@ -353,6 +373,7 @@ const LangRouteRouteWithChildren = LangRouteRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   LangRouteRoute: LangRouteRouteWithChildren,
   CSlugRoute: CSlugRoute,
 }

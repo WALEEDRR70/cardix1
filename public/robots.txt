@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /*/dashboard
+Disallow: /*/scan
+Disallow: /*/vault
+Disallow: /*/settings
+Disallow: /*/cards/
+Disallow: /auth
+Disallow: /*/auth
+
+Sitemap: https://cardix1.lovable.app/sitemap.xml
