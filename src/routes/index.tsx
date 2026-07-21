@@ -16,7 +16,7 @@ export const Route = createFileRoute("/")({
       { title: "Cardix — Premium digital business cards" },
       { name: "description", content: "Cardix is a premium SaaS for digital business cards. Design, share via QR / NFC / link, scan paper cards with AI, and track analytics." },
       { property: "og:title", content: "Cardix — Premium digital business cards" },
-      { property: "og:description", content: "Design, share, scan and track premium digital business cards." },
+      { property: "og:description", content: "Cardix is a premium SaaS for digital business cards. Design, share via QR / NFC / link, scan paper cards with AI, and track analytics." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
