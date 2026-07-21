@@ -3,7 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { useTheme } from "@/lib/theme";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
-import { LogOut, Moon, Sun, Languages, User, Sparkles, ChevronRight } from "lucide-react";
+import { LocaleSwitcher } from "@/components/LangToggle";
+import { LogOut, Moon, Sun, User, Sparkles, ChevronRight } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/_authenticated/settings")({
