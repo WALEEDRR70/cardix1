@@ -35,7 +35,7 @@ const copy = {
     heroPill: "New · AI paper-card scanner",
     liveCard: "Live card",
     tapToOpen: "Scan · Tap · Share",
-    templatesTitle: "Six premium templates",
+    templatesTitle: "19 premium templates",
     templatesDesc: "Every template is hand-crafted in the same design language. Pick one, or switch anytime.",
     howTitle: "From blank to iconic in 60 seconds",
     step1: "Create", step1d: "Pick a template, drop in your details, add your logo.",
