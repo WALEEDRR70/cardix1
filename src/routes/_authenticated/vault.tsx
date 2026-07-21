@@ -97,7 +97,7 @@ function Vault() {
   async function saveNote(value: string) {
     if (!noteTarget) return;
     setBusy(true);
-    const { error } = await supabase.from("saved_cards").update({ notes: value }).eq("id", noteTarget.id);
+    const { error } = await supabase.from("saved_cards").update({ notes: value }).eq("id", noteTarget.id).eq("user_id", user.id);
     setBusy(false);
     if (error) return toast.error(error.message);
     qc.invalidateQueries({ queryKey: ["saved_cards"] });
