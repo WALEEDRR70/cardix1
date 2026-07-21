@@ -233,6 +233,11 @@ const dict = {
     viewDetails: "عرض التفاصيل",
     saveNote: "حفظ الملاحظة",
     back: "رجوع",
+    cancel: "إلغاء",
+    confirm: "تأكيد",
+    deleteConfirmTitle: "حذف هذه البطاقة؟",
+    deleteConfirmDesc: "سيتم حذف البطاقة من خزنتك بشكل نهائي. لا يمكن التراجع عن هذا الإجراء.",
+    deleted: "تم الحذف",
   },
 
 };
