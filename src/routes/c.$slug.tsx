@@ -606,11 +606,43 @@ function PublicCard() {
                       <button
                         onClick={writeNfc}
                         aria-pressed={nfcState === "writing"}
-                        className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-[12px] font-semibold text-accent-foreground shadow-glow transition hover:scale-[1.02] disabled:opacity-70"
+                        disabled={nfcSupported === false}
+                        className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-[12px] font-semibold text-accent-foreground shadow-glow transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:scale-100"
                         style={{ background: "var(--gradient-gold)" }}
                       >
                         <Radio className={`h-3.5 w-3.5 ${nfcState === "writing" ? "animate-pulse" : ""}`} /> {nfcState === "writing" ? t.stopNfc : t.shareViaNfc}
                       </button>
+                      {nfcSupported === false && (
+                        <div className="mt-3 rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+                          <div className="flex items-start gap-2">
+                            <Radio className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-foreground/50" />
+                            <p className="text-[11.5px] leading-relaxed text-foreground/60">
+                              {t.nfcUnsupported}
+                            </p>
+                          </div>
+                          <div className="mt-2.5 grid grid-cols-3 gap-1.5">
+                            <button
+                              onClick={() => setQrOpen(true)}
+                              className="flex items-center justify-center gap-1 rounded-full border border-white/10 bg-white/[0.04] py-2 text-[11px] font-medium text-foreground/85 transition hover:bg-white/[0.08]"
+                            >
+                              <Maximize2 className="h-3 w-3" /> QR
+                            </button>
+                            <button
+                              onClick={copyLink}
+                              className="flex items-center justify-center gap-1 rounded-full border border-white/10 bg-white/[0.04] py-2 text-[11px] font-medium text-foreground/85 transition hover:bg-white/[0.08]"
+                            >
+                              <Copy className="h-3 w-3" /> {t.copyLink}
+                            </button>
+                            <button
+                              onClick={shareCard}
+                              className="flex items-center justify-center gap-1 rounded-full py-2 text-[11px] font-semibold text-accent-foreground shadow-glow"
+                              style={{ background: "var(--gradient-gold)" }}
+                            >
+                              <Share2 className="h-3 w-3" /> {t.share ?? "Share"}
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 
