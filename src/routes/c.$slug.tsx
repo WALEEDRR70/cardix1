@@ -560,7 +560,7 @@ function PublicCard() {
       </main>
 
       {/* Sticky save-contact CTA */}
-      <div className={"pointer-events-none fixed inset-x-0 z-30 " + (isAuthed ? "bottom-[calc(env(safe-area-inset-bottom)+64px)] lg:bottom-0" : "bottom-0")}>
+      <div className={"pointer-events-none fixed inset-x-0 z-30 " + (isAuthed ? "bottom-[calc(env(safe-area-inset-bottom)+112px)] lg:bottom-0" : "bottom-0")}>
         <div
           className="pointer-events-none mx-auto flex w-full max-w-[560px] items-center gap-2 px-4 pb-[calc(env(safe-area-inset-bottom)+14px)] pt-8"
           style={{ background: "linear-gradient(to top, var(--background) 60%, transparent)" }}
