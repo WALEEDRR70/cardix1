@@ -25,22 +25,27 @@ function useIsAuthed() {
 }
 
 
-import { SUPPORTED_LOCALES, SITE_ORIGIN, isSupportedLocale, DEFAULT_LOCALE } from "@/i18n/config";
+import { SUPPORTED_LOCALES, SITE_ORIGIN, isSupportedLocale, DEFAULT_LOCALE, LOCALE_META } from "@/i18n/config";
+import { getLandingSeo } from "@/i18n/landing-seo";
+import { getLandingCopy } from "@/i18n/landing";
 
 export const Route = createFileRoute("/$lang/")({
   head: ({ params }) => {
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}`;
+    const seo = getLandingSeo(lang);
     return {
       meta: [
-        { title: "Cardix — Premium digital business cards" },
-        { name: "description", content: "Cardix is a premium SaaS for digital business cards. Design, share via QR / NFC / link, scan paper cards with AI, and track analytics." },
-        { property: "og:title", content: "Cardix — Premium digital business cards" },
-        { property: "og:description", content: "Cardix is a premium SaaS for digital business cards. Design, share via QR / NFC / link, scan paper cards with AI, and track analytics." },
+        { title: seo.title },
+        { name: "description", content: seo.description },
+        { property: "og:title", content: seo.title },
+        { property: "og:description", content: seo.description },
         { property: "og:type", content: "website" },
         { property: "og:url", content: url },
-        { property: "og:locale", content: lang },
+        { property: "og:locale", content: LOCALE_META[lang].ogLocale },
         { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: seo.title },
+        { name: "twitter:description", content: seo.description },
       ],
       links: [
         { rel: "canonical", href: url },
@@ -55,6 +60,7 @@ export const Route = createFileRoute("/$lang/")({
   },
   component: Landing,
 });
+
 
 
 // -------- Local bilingual copy (keeps global i18n dict small) --------
