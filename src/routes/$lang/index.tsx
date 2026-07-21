@@ -27,7 +27,7 @@ function useIsAuthed() {
 
 import { SUPPORTED_LOCALES, SITE_ORIGIN, isSupportedLocale, DEFAULT_LOCALE, LOCALE_META } from "@/i18n/config";
 import { getLandingSeo } from "@/i18n/landing-seo";
-import { getLandingCopy } from "@/i18n/landing";
+import { getLandingCopy, type LandingCopy } from "@/i18n/landing";
 
 export const Route = createFileRoute("/$lang/")({
   head: ({ params }) => {
@@ -128,7 +128,7 @@ function BackgroundFx() {
 }
 
 /* ---------------- Nav ---------------- */
-function Nav({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"]; authed: boolean | null }) {
+function Nav({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy; authed: boolean | null }) {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 8);
@@ -174,7 +174,7 @@ function Nav({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: typeof c
 }
 
 /* ---------------- Hero ---------------- */
-function Hero({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"]; authed: boolean | null }) {
+function Hero({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy; authed: boolean | null }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [mx, setMx] = useState(0);
   const [my, setMy] = useState(0);
@@ -304,7 +304,7 @@ function Hero({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: typeof 
 }
 
 /* ---------------- Trust strip ---------------- */
-function TrustStrip({ c }: { c: typeof copy["en"] }) {
+function TrustStrip({ c }: { c: LandingCopy }) {
   const names = ["Atelier Nord", "Kōgei", "Northline", "Meridian", "Halo Labs", "Kōan"];
   return (
     <section className="border-y border-border/60 bg-background/40 backdrop-blur">
@@ -321,7 +321,7 @@ function TrustStrip({ c }: { c: typeof copy["en"] }) {
 }
 
 /* ---------------- Templates ---------------- */
-function Templates({ c }: { c: typeof copy["en"] }) {
+function Templates({ c }: { c: LandingCopy }) {
   return (
     <section id="templates" className="relative py-24 lg:py-32">
       <div className="mx-auto w-full max-w-[1440px] px-5 lg:px-10">
@@ -346,7 +346,7 @@ function Templates({ c }: { c: typeof copy["en"] }) {
 }
 
 /* ---------------- How it works ---------------- */
-function HowItWorks({ c }: { c: typeof copy["en"] }) {
+function HowItWorks({ c }: { c: LandingCopy }) {
   const steps = [
     { n: "01", icon: Sparkles, title: c.step1, d: c.step1d },
     { n: "02", icon: QrCode, title: c.step2, d: c.step2d },
@@ -376,7 +376,7 @@ function HowItWorks({ c }: { c: typeof copy["en"] }) {
 }
 
 /* ---------------- Features (bento) ---------------- */
-function Features({ c }: { c: typeof copy["en"] }) {
+function Features({ c }: { c: LandingCopy }) {
   return (
     <section id="features" className="relative py-24 lg:py-32">
       <div className="mx-auto w-full max-w-[1440px] px-5 lg:px-10">
@@ -444,7 +444,7 @@ function FeatureCard({
 }
 
 /* ---------------- Testimonials ---------------- */
-function Testimonials({ c }: { c: typeof copy["en"] }) {
+function Testimonials({ c }: { c: LandingCopy }) {
   return (
     <section className="relative py-24 lg:py-32">
       <div className="mx-auto w-full max-w-[1440px] px-5 lg:px-10">
@@ -474,7 +474,7 @@ function Testimonials({ c }: { c: typeof copy["en"] }) {
 }
 
 /* ---------------- Pricing ---------------- */
-function Pricing({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"]; authed: boolean | null }) {
+function Pricing({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy; authed: boolean | null }) {
   const plans = [
     { name: c.free, price: "0", feats: ["1 card", "QR sharing", "Basic analytics"], cta: c.getStartedFree, primary: false },
     { name: c.pro, price: "9", feats: ["Unlimited cards", "AI scanner", "NFC + custom slug", "30-day analytics"], cta: c.tryPro, primary: true },
@@ -532,7 +532,7 @@ function Pricing({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: type
 }
 
 /* ---------------- FAQ ---------------- */
-function Faq({ c }: { c: typeof copy["en"] }) {
+function Faq({ c }: { c: LandingCopy }) {
   const [open, setOpen] = useState<number | null>(0);
   return (
     <section id="faq" className="relative py-24 lg:py-32">
@@ -566,7 +566,7 @@ function Faq({ c }: { c: typeof copy["en"] }) {
 }
 
 /* ---------------- Final CTA ---------------- */
-function FinalCta({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"]; authed: boolean | null }) {
+function FinalCta({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy; authed: boolean | null }) {
   return (
     <section className="relative py-24 lg:py-32">
       <div className="mx-auto w-full max-w-[1280px] px-5 lg:px-10">
@@ -606,7 +606,7 @@ function FinalCta({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: typ
 }
 
 /* ---------------- Footer ---------------- */
-function Footer({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: typeof copy["en"] }) {
+function Footer({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy }) {
   return (
     <footer className="border-t border-border/60">
       <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center justify-between gap-5 px-5 py-10 lg:flex-row lg:px-10">
