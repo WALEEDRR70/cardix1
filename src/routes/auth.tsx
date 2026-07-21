@@ -6,6 +6,7 @@ import { useI18n } from "@/lib/i18n";
 import { LangToggle } from "@/components/LangToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { toast } from "sonner";
+import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
