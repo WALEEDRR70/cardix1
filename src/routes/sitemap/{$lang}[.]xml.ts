@@ -5,7 +5,7 @@ import { SUPPORTED_LOCALES, SITE_ORIGIN, isSupportedLocale } from "@/i18n/config
 // Public, indexable page paths (relative to the locale). Add new SEO pages here.
 const INDEXABLE_PATHS = ["/", "/features", "/pricing", "/about", "/contact", "/blog"];
 
-export const Route = createFileRoute("/sitemap/$lang.xml")({
+export const Route = createFileRoute("/sitemap/{$lang}.xml")({
   server: {
     handlers: {
       GET: async ({ params }) => {
