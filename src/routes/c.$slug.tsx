@@ -733,6 +733,20 @@ function QrAction({
   );
 }
 
+function getReadableText(hex: string): string {
+  const h = hex.replace("#", "");
+  const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+  const r = parseInt(full.slice(0, 2), 16);
+  const g = parseInt(full.slice(2, 4), 16);
+  const b = parseInt(full.slice(4, 6), 16);
+  const toLin = (v: number) => {
+    const s = v / 255;
+    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  };
+  const L = 0.2126 * toLin(r) + 0.7152 * toLin(g) + 0.0722 * toLin(b);
+  return L > 0.5 ? "#0a0a0a" : "#ffffff";
+
+
 function Particles({ accent }: { accent: string }) {
   const items = Array.from({ length: 14 });
   return (
