@@ -156,7 +156,7 @@ function Vault() {
         initial={noteTarget?.notes ?? ""}
         saving={busy}
         onOpenChange={(v) => { if (!v) setNoteTarget(null); }}
-        onSave={saveNote}
+        onSave={(v) => { void saveNote(v); }}
       />
       <ConfirmDeleteDialog
         open={!!deleteId}
