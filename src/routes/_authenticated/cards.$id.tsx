@@ -55,6 +55,9 @@ function EditCard() {
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <h1 className="text-3xl font-semibold tracking-tight">{t.editCard}</h1>
           <div className="flex items-center gap-2">
+            <Link to="/cards/$id/analytics" params={{ id }} className="inline-flex items-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm hover:bg-muted">
+              <BarChart3 className="h-3.5 w-3.5" /> {t.analytics}
+            </Link>
             <a href={`/c/${card.slug}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm hover:bg-muted">
               <ExternalLink className="h-3.5 w-3.5" /> {t.view}
             </a>
