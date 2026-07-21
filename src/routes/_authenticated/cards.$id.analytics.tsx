@@ -63,14 +63,15 @@ function Analytics() {
 
   return (
     <MobileShell topBar={<PageHeader title={t.analytics} subtitle={card?.name} back={`/cards/${id}`} />}>
-      <div className="space-y-4 px-5">
-        <div className="grid grid-cols-3 gap-2">
+      <div className="space-y-4 px-5 lg:px-8 lg:space-y-6">
+        <div className="grid grid-cols-3 gap-2 lg:gap-4">
           <Stat icon={<Eye className="h-3.5 w-3.5" />} label={t.totalViews} value={card?.view_count ?? 0} />
           <Stat icon={<MousePointerClick className="h-3.5 w-3.5" />} label={t.last7days} value={stats.in7} />
           <Stat icon={<Download className="h-3.5 w-3.5" />} label={t.contactSaves} value={stats.saves} />
         </div>
 
-        <div className="glass rounded-3xl p-5">
+        <div className="glass rounded-3xl p-5 lg:p-8">
+
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-sm font-semibold">{t.last30days}</h2>
             <span className="text-[11px] text-muted-foreground">{stats.views} {t.totalViews.toLowerCase()}</span>
@@ -78,7 +79,7 @@ function Analytics() {
           {events && events.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted-foreground">{t.noAnalytics}</p>
           ) : (
-            <div className="flex h-40 items-end gap-1">
+            <div className="flex h-40 items-end gap-1 lg:h-64">
               {stats.series.map(([day, v]) => (
                 <div key={day} className="group relative flex-1">
                   <div
