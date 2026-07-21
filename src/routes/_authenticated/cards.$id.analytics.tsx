@@ -36,6 +36,7 @@ function Analytics() {
     queryFn: async () => {
       const { data, error } = await supabase.from("cards").select("*").eq("id", id).eq("user_id", user.id).maybeSingle();
       if (error) throw error;
+      if (!data) throw new Error("Card not found");
       return data;
     },
   });
