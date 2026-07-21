@@ -7,6 +7,9 @@ import { CardPreview } from "@/components/CardPreview";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Eye, Sparkles, Trash2, Pencil } from "lucide-react";
 import { toast } from "sonner";
+import { useState } from "react";
+import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
+
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
