@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
 
 export const Route = createFileRoute("/_authenticated/vault/$id")({
   head: () => ({
@@ -32,6 +33,8 @@ function VaultDetail() {
   const navigate = useNavigate();
   const [note, setNote] = useState("");
   const [savingNote, setSavingNote] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const { data: card } = useQuery({
     queryKey: ["saved_card", id],
@@ -68,12 +71,14 @@ function VaultDetail() {
     toast.success(t.saveNote);
   }
 
-  async function del() {
-    if (!confirm("Delete?")) return;
+  async function confirmDelete() {
+    setDeleting(true);
     const { error } = await supabase.from("saved_cards").delete().eq("id", id);
+    setDeleting(false);
     if (error) return toast.error(error.message);
     qc.invalidateQueries({ queryKey: ["saved_cards"] });
-    toast.success("Deleted");
+    toast.success(t.deleted);
+    setConfirmOpen(false);
     navigate({ to: "/vault" });
   }
 
@@ -128,7 +133,7 @@ function VaultDetail() {
             <ArrowLeft className={"h-4 w-4 " + (isRTL ? "rotate-180" : "")} />
           </Link>
           <button
-            onClick={del}
+            onClick={() => setConfirmOpen(true)}
             className="glass grid h-10 w-10 place-items-center rounded-full text-muted-foreground transition hover:text-destructive"
             aria-label={t.delete}
           >
@@ -241,6 +246,12 @@ function VaultDetail() {
           </section>
         </div>
       </div>
+      <ConfirmDeleteDialog
+        open={confirmOpen}
+        loading={deleting}
+        onOpenChange={setConfirmOpen}
+        onConfirm={() => { void confirmDelete(); }}
+      />
     </MobileShell>
   );
 }

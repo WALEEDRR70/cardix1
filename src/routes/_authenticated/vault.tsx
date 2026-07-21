@@ -5,6 +5,9 @@ import { useI18n } from "@/lib/i18n";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { Trash2, Phone, Mail, Globe, StickyNote } from "lucide-react";
 import { toast } from "sonner";
+import { useState } from "react";
+import { NoteDialog } from "@/components/NoteDialog";
+import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
 
 export const Route = createFileRoute("/_authenticated/vault")({
   head: () => ({
@@ -24,6 +27,9 @@ function Vault() {
   const { t } = useI18n();
   const qc = useQueryClient();
   const navigate = useNavigate();
+  const [noteTarget, setNoteTarget] = useState<{ id: string; notes: string } | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
 
   const { data: cards } = useQuery({
     queryKey: ["saved_cards"],
@@ -34,26 +40,40 @@ function Vault() {
     },
   });
 
-  async function del(e: React.MouseEvent, id: string) {
+  function askDelete(e: React.MouseEvent, id: string) {
     e.preventDefault();
     e.stopPropagation();
-    if (!confirm("Delete?")) return;
-    const { error } = await supabase.from("saved_cards").delete().eq("id", id);
-    if (error) return toast.error(error.message);
-    qc.invalidateQueries({ queryKey: ["saved_cards"] });
-    toast.success("Deleted");
+    setDeleteId(id);
   }
 
-  async function editNote(e: React.MouseEvent, id: string, current: string | null) {
+  async function confirmDelete() {
+    if (!deleteId) return;
+    setBusy(true);
+    const { error } = await supabase.from("saved_cards").delete().eq("id", deleteId);
+    setBusy(false);
+    if (error) return toast.error(error.message);
+    qc.invalidateQueries({ queryKey: ["saved_cards"] });
+    toast.success(t.deleted);
+    setDeleteId(null);
+  }
+
+  function askEditNote(e: React.MouseEvent, id: string, current: string | null) {
     e.preventDefault();
     e.stopPropagation();
-    const next = window.prompt(t.notePlaceholder, current ?? "");
-    if (next === null) return;
-    const { error } = await supabase.from("saved_cards").update({ notes: next }).eq("id", id);
+    setNoteTarget({ id, notes: current ?? "" });
+  }
+
+  async function saveNote(value: string) {
+    if (!noteTarget) return;
+    setBusy(true);
+    const { error } = await supabase.from("saved_cards").update({ notes: value }).eq("id", noteTarget.id);
+    setBusy(false);
     if (error) return toast.error(error.message);
     qc.invalidateQueries({ queryKey: ["saved_cards"] });
     toast.success(t.saveNote);
+    setNoteTarget(null);
   }
+
 
   return (
     <MobileShell topBar={<PageHeader title={t.vault} subtitle={cards ? `${cards.length}` : undefined} />}>
@@ -98,7 +118,7 @@ function Vault() {
                       </div>
                       <button
                         type="button"
-                        onClick={(e) => editNote(e, c.id, c.notes)}
+                        onClick={(e) => askEditNote(e, c.id, c.notes)}
                         className="flex min-h-[48px] w-[38%] min-w-0 shrink-0 items-start gap-1 overflow-hidden rounded-lg bg-secondary/60 px-2 py-1.5 text-start text-[10.5px] italic leading-tight text-muted-foreground transition hover:bg-secondary"
                         aria-label={c.notes ? t.editNote : t.addNote}
                       >
@@ -107,7 +127,7 @@ function Vault() {
                       </button>
                       <button
                         type="button"
-                        onClick={(e) => del(e, c.id)}
+                        onClick={(e) => askDelete(e, c.id)}
                         className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-muted-foreground opacity-0 transition hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
                         aria-label={t.delete}
                       >
@@ -131,6 +151,19 @@ function Vault() {
           </div>
         )}
       </div>
+      <NoteDialog
+        open={!!noteTarget}
+        initial={noteTarget?.notes ?? ""}
+        saving={busy}
+        onOpenChange={(v) => { if (!v) setNoteTarget(null); }}
+        onSave={(v) => { void saveNote(v); }}
+      />
+      <ConfirmDeleteDialog
+        open={!!deleteId}
+        loading={busy}
+        onOpenChange={(v) => { if (!v) setDeleteId(null); }}
+        onConfirm={() => { void confirmDelete(); }}
+      />
     </MobileShell>
   );
 }

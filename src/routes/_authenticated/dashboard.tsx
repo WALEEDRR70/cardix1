@@ -7,6 +7,9 @@ import { CardPreview } from "@/components/CardPreview";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Eye, Sparkles, Trash2, Pencil } from "lucide-react";
 import { toast } from "sonner";
+import { useState } from "react";
+import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
+
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -22,6 +25,8 @@ function Dashboard() {
   const { t } = useI18n();
   const qc = useQueryClient();
   const { user } = Route.useRouteContext();
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const { data: cards } = useQuery({
     queryKey: ["cards", user.id],
@@ -32,13 +37,17 @@ function Dashboard() {
     },
   });
 
-  async function del(id: string) {
-    if (!confirm("Delete this card?")) return;
-    const { error } = await supabase.from("cards").delete().eq("id", id);
+  async function confirmDelete() {
+    if (!deleteId) return;
+    setDeleting(true);
+    const { error } = await supabase.from("cards").delete().eq("id", deleteId);
+    setDeleting(false);
     if (error) return toast.error(error.message);
     qc.invalidateQueries({ queryKey: ["cards"] });
-    toast.success("Deleted");
+    toast.success(t.deleted);
+    setDeleteId(null);
   }
+
 
   const totalViews = cards?.reduce((a, c) => a + (c.view_count ?? 0), 0) ?? 0;
   const primary = cards?.[0];
@@ -118,7 +127,7 @@ function Dashboard() {
                     <Pencil className="h-3.5 w-3.5" />
                   </Link>
                   <button
-                    onClick={() => del(c.id)}
+                    onClick={() => setDeleteId(c.id)}
                     className="grid h-8 w-8 place-items-center rounded-full text-muted-foreground opacity-0 transition group-hover:opacity-100 hover:bg-destructive/10 hover:text-destructive"
                     aria-label={t.delete}
                   >
@@ -131,6 +140,12 @@ function Dashboard() {
           </section>
         )}
       </div>
+      <ConfirmDeleteDialog
+        open={!!deleteId}
+        loading={deleting}
+        onOpenChange={(v) => { if (!v) setDeleteId(null); }}
+        onConfirm={() => { void confirmDelete(); }}
+      />
     </MobileShell>
   );
 }

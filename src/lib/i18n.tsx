@@ -114,6 +114,11 @@ const dict = {
     viewDetails: "View details",
     saveNote: "Save note",
     back: "Back",
+    cancel: "Cancel",
+    confirm: "Confirm",
+    deleteConfirmTitle: "Delete this card?",
+    deleteConfirmDesc: "This will permanently remove the card from your vault. This action can't be undone.",
+    deleted: "Deleted",
   },
 
 
@@ -228,6 +233,11 @@ const dict = {
     viewDetails: "عرض التفاصيل",
     saveNote: "حفظ الملاحظة",
     back: "رجوع",
+    cancel: "إلغاء",
+    confirm: "تأكيد",
+    deleteConfirmTitle: "حذف هذه البطاقة؟",
+    deleteConfirmDesc: "سيتم حذف البطاقة من خزنتك بشكل نهائي. لا يمكن التراجع عن هذا الإجراء.",
+    deleted: "تم الحذف",
   },
 
 };
