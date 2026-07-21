@@ -312,6 +312,7 @@ function SocialsEditor({
   value: Record<string, string>;
   onChange: (next: Record<string, string>) => void;
 }) {
+  const { t } = useI18n();
   const [picker, setPicker] = useState(false);
   const active = SOCIALS.filter((s) => s.id in value);
   const remaining = SOCIALS.filter((s) => !(s.id in value));

@@ -102,6 +102,7 @@ function Avatar({ card, ring, fallbackBg, size = 72 }: { card: CardData; ring: s
 type Variant = "dark" | "light";
 
 function CardBody({ card, variant, accent, brand }: { card: CardData; variant: Variant; accent: string; brand?: string }) {
+  const { t } = useI18n();
   const isDark = variant === "dark";
   const nameCls = isDark ? "text-white" : "text-black";
   const titleCls = isDark ? "text-white/85" : "text-black/75";

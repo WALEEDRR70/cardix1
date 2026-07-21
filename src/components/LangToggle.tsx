@@ -3,6 +3,7 @@ import { SUPPORTED_LOCALES, LOCALE_META, DEFAULT_LOCALE, isSupportedLocale, type
 import { Globe, Check } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useI18n } from "@/lib/i18n";
 
 
 /**
@@ -10,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
  * On click cycles: en → ar → en. Use <LocaleSwitcher /> for the full picker.
  */
 export function LangToggle({ compact = false }: { compact?: boolean }) {
+  const { t } = useI18n();
   const params = useParams({ strict: false }) as { lang?: string };
   const current: Locale = isSupportedLocale(params?.lang) ? params.lang : DEFAULT_LOCALE;
   const switchTo = useSwitchLocale();
