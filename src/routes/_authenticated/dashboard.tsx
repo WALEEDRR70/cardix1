@@ -1,15 +1,17 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
-import { LangToggle } from "@/components/LangToggle";
-import { Plus, ExternalLink, LogOut, Pencil } from "lucide-react";
+import { MobileShell, PageHeader } from "@/components/MobileShell";
+import { CardPreview } from "@/components/CardPreview";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { Eye, Sparkles, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
-      { title: "Dashboard — Cardix" },
+      { title: "Home — Cardix" },
       { name: "description", content: "Manage your Cardix digital business cards." },
     ],
   }),
@@ -19,7 +21,6 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 function Dashboard() {
   const { t } = useI18n();
   const qc = useQueryClient();
-  const nav = useNavigate();
   const { user } = Route.useRouteContext();
 
   const { data: cards } = useQuery({
@@ -31,13 +32,6 @@ function Dashboard() {
     },
   });
 
-  async function signOut() {
-    await qc.cancelQueries();
-    qc.clear();
-    await supabase.auth.signOut();
-    nav({ to: "/auth", replace: true });
-  }
-
   async function del(id: string) {
     if (!confirm("Delete this card?")) return;
     const { error } = await supabase.from("cards").delete().eq("id", id);
@@ -46,75 +40,103 @@ function Dashboard() {
     toast.success("Deleted");
   }
 
+  const totalViews = cards?.reduce((a, c) => a + (c.view_count ?? 0), 0) ?? 0;
+  const primary = cards?.[0];
+
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-border">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-primary-foreground text-sm font-bold">C</span>
-            <span className="font-semibold tracking-tight">{t.brand}</span>
+    <MobileShell topBar={<PageHeader title={t.brand} subtitle={user.email ?? undefined} right={<ThemeToggle compact />} />}>
+      <div className="px-5">
+        {/* Featured (primary) card */}
+        {primary ? (
+          <Link to="/cards/$id" params={{ id: primary.id }} className="block">
+            <div className="relative">
+              <div className="absolute -inset-4 rounded-[2.5rem] opacity-40 blur-2xl" style={{ background: "var(--gradient-mesh)" }} />
+              <div className="relative flex justify-center">
+                <CardPreview card={primary} size="lg" />
+              </div>
+            </div>
           </Link>
-          <div className="flex items-center gap-2">
-            <Link to="/vault" className="rounded-full border border-border px-3 py-1.5 text-xs hover:bg-muted">
-              {t.vault}
-            </Link>
-            <Link to="/scan" className="rounded-full border border-border px-3 py-1.5 text-xs hover:bg-muted">
-              {t.scanCard}
-            </Link>
-            <LangToggle />
-            <button onClick={signOut} className="flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs hover:bg-muted">
-              <LogOut className="h-3.5 w-3.5" /> {t.signOut}
-            </button>
-          </div>
-        </div>
-      </header>
+        ) : (
+          <EmptyHome t={t} />
+        )}
 
-      <main className="mx-auto max-w-6xl px-6 py-10">
-        <div className="mb-8 flex items-end justify-between">
-          <div>
-            <h1 className="text-3xl font-semibold tracking-tight">{t.myCards}</h1>
-            <p className="mt-1 text-sm text-muted-foreground">{user.email}</p>
-          </div>
-          <Link to="/cards/new" className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90">
-            <Plus className="h-4 w-4" /> {t.newCard}
-          </Link>
-        </div>
-
-        {cards && cards.length === 0 && (
-          <div className="rounded-3xl border border-dashed border-border p-16 text-center">
-            <p className="text-muted-foreground">{t.noCards}</p>
-            <Link to="/cards/new" className="mt-4 inline-flex rounded-full bg-primary px-5 py-2 text-sm text-primary-foreground">
-              {t.createCard}
-            </Link>
+        {/* Stats */}
+        {cards && cards.length > 0 && (
+          <div className="mt-6 grid grid-cols-3 gap-2">
+            <StatTile label={t.myCards} value={cards.length} />
+            <StatTile label={t.totalViews} value={totalViews} />
+            <StatTile label={t.templates.luxury} value={new Set(cards.map((c) => c.template)).size} icon={<Sparkles className="h-3.5 w-3.5" />} />
           </div>
         )}
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {cards?.map((c) => (
-            <div key={c.id} className="group rounded-3xl border border-border bg-card p-5 transition hover:shadow-soft">
-              <div className="flex items-start justify-between">
-                <div className="min-w-0">
-                  <h3 className="truncate text-lg font-semibold">{c.name}</h3>
-                  <p className="truncate text-sm text-muted-foreground">{c.title || c.company || "—"}</p>
-                </div>
-                <span className="h-8 w-8 rounded-xl" style={{ backgroundColor: c.accent_color }} />
-              </div>
-              <div className="mt-3 text-xs text-muted-foreground">/c/{c.slug}</div>
-              <div className="mt-5 flex items-center gap-2">
-                <Link to="/cards/$id" params={{ id: c.id }} className="flex-1 rounded-xl bg-secondary px-3 py-2 text-center text-xs font-medium hover:bg-muted">
-                  <Pencil className="mx-auto h-3.5 w-3.5" />
-                </Link>
-                <a href={`/c/${c.slug}`} target="_blank" rel="noreferrer" className="flex-1 rounded-xl bg-secondary px-3 py-2 text-center text-xs font-medium hover:bg-muted">
-                  <ExternalLink className="mx-auto h-3.5 w-3.5" />
-                </a>
-                <button onClick={() => del(c.id)} className="flex-1 rounded-xl bg-secondary px-3 py-2 text-center text-xs font-medium hover:bg-destructive/10 hover:text-destructive">
-                  ✕
-                </button>
-              </div>
+        {/* All cards */}
+        {cards && cards.length > 1 && (
+          <section className="mt-8">
+            <div className="mb-3 flex items-center justify-between px-1">
+              <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{t.myCards}</h2>
+              <span className="text-[11px] text-muted-foreground">{cards.length}</span>
             </div>
-          ))}
-        </div>
-      </main>
+            <div className="grid gap-3">
+              {cards.slice(1).map((c) => (
+                <div key={c.id} className="glass card-lift flex items-center gap-3 rounded-2xl p-3">
+                  <Link to="/cards/$id" params={{ id: c.id }} className="grid h-14 w-24 shrink-0 overflow-hidden rounded-xl">
+                    <MiniCard card={c} />
+                  </Link>
+                  <Link to="/cards/$id" params={{ id: c.id }} className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold">{c.name}</p>
+                    <p className="truncate text-xs text-muted-foreground">{c.title || c.company || "/c/" + c.slug}</p>
+                    <p className="mt-1 flex items-center gap-1 text-[10px] text-muted-foreground">
+                      <Eye className="h-3 w-3" /> {c.view_count ?? 0}
+                    </p>
+                  </Link>
+                  <button
+                    onClick={() => del(c.id)}
+                    className="grid h-9 w-9 place-items-center rounded-full text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+    </MobileShell>
+  );
+}
+
+function EmptyHome({ t }: { t: ReturnType<typeof useI18n>["t"] }) {
+  return (
+    <div className="glass mt-4 flex flex-col items-center gap-4 rounded-3xl p-8 text-center">
+      <div className="grid h-14 w-14 place-items-center rounded-2xl text-accent-foreground" style={{ background: "var(--gradient-gold)" }}>
+        <Sparkles className="h-6 w-6" />
+      </div>
+      <div>
+        <p className="text-lg font-semibold">{t.createCard}</p>
+        <p className="mt-1 text-sm text-muted-foreground">{t.noCards}</p>
+      </div>
+      <Link
+        to="/cards/new"
+        className="rounded-full px-5 py-2.5 text-sm font-semibold text-accent-foreground"
+        style={{ background: "var(--gradient-gold)" }}
+      >
+        {t.createCard}
+      </Link>
     </div>
   );
+}
+
+function StatTile({ label, value, icon }: { label: string; value: number | string; icon?: React.ReactNode }) {
+  return (
+    <div className="glass rounded-2xl p-3">
+      <div className="flex items-center gap-1 text-[10px] uppercase tracking-wider text-muted-foreground">
+        {icon} {label}
+      </div>
+      <p className="mt-1 text-2xl font-semibold tracking-tight">{value}</p>
+    </div>
+  );
+}
+
+function MiniCard({ card }: { card: { name: string; template?: string | null; accent_color: string; title?: string | null } }) {
+  return <CardPreview card={{ ...card, accent_color: card.accent_color }} size="sm" />;
 }

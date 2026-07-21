@@ -1,16 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n";
 import { LangToggle } from "@/components/LangToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { CardPreview } from "@/components/CardPreview";
-import { ArrowRight, QrCode, Sparkles, ScanLine } from "lucide-react";
+import { ArrowRight, QrCode, ScanLine, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Cardix — The premium digital business card" },
+      { title: "Cardix — Premium digital business cards" },
       { name: "description", content: "Create beautiful, luxury digital business cards. Share with a tap, a scan, or a link." },
-      { property: "og:title", content: "Cardix — The premium digital business card" },
+      { property: "og:title", content: "Cardix — Premium digital business cards" },
       { property: "og:description", content: "Create beautiful, luxury digital business cards. Share with a tap, a scan, or a link." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Landing,
@@ -18,79 +21,98 @@ export const Route = createFileRoute("/")({
 
 function Landing() {
   const { t } = useI18n();
-  const icons = [<Sparkles key="0" className="h-5 w-5" />, <QrCode key="1" className="h-5 w-5" />, <ScanLine key="2" className="h-5 w-5" />];
+
+  const features = [
+    { icon: Sparkles, title: t.featureTemplates, desc: t.featureTemplatesDesc },
+    { icon: QrCode, title: t.featureShare, desc: t.featureShareDesc },
+    { icon: ScanLine, title: t.featureScan, desc: t.featureScanDesc },
+  ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-        <Link to="/" className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-primary-foreground text-sm font-bold">C</span>
-          <span className="text-lg font-semibold tracking-tight">{t.brand}</span>
-        </Link>
-        <div className="flex items-center gap-3">
-          <LangToggle />
-          <Link to="/auth" className="text-sm font-medium hover:opacity-70">{t.signIn}</Link>
-          <Link to="/auth" className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90">
-            {t.getStarted}
-          </Link>
+    <div className="relative min-h-[100dvh] overflow-hidden bg-background">
+      {/* Ambient background */}
+      <div className="pointer-events-none absolute inset-0 opacity-70" style={{ backgroundImage: "var(--gradient-mesh)" }} />
+
+      <header className="safe-top relative z-10 mx-auto flex w-full max-w-[520px] items-center justify-between px-5 pb-2">
+        <div className="flex items-center gap-2">
+          <span className="grid h-9 w-9 place-items-center rounded-xl text-sm font-black text-accent-foreground" style={{ background: "var(--gradient-gold)" }}>C</span>
+          <span className="text-base font-semibold tracking-tight">{t.brand}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <ThemeToggle compact />
+          <LangToggle compact />
         </div>
       </header>
 
-      <section className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-16 px-6 pt-16 pb-24 lg:grid-cols-2 lg:pt-24">
-        <div>
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-            Cardix · Digital Business Cards
-          </div>
-          <h1 className="text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
-            {t.tagline.split(" ").slice(0, -2).join(" ")}{" "}
-            <span className="text-gradient-gold">{t.tagline.split(" ").slice(-2).join(" ")}</span>
-          </h1>
-          <p className="mt-6 max-w-lg text-lg text-muted-foreground">{t.subtagline}</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link to="/auth" className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-soft transition hover:shadow-luxe">
-              {t.getStarted}
-              <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 rtl:rotate-180" />
-            </Link>
-          </div>
+      <main className="relative z-10 mx-auto flex w-full max-w-[520px] flex-col px-5 pt-6">
+        <div className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1 text-[11px] text-muted-foreground backdrop-blur">
+          <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+          {t.landingBadge}
+        </div>
 
-          <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {t.features.map((f, i) => (
-              <div key={i} className="glass rounded-2xl p-4">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">{icons[i]}</div>
-                <h3 className="mt-3 text-sm font-semibold">{f.t}</h3>
-                <p className="mt-1 text-xs text-muted-foreground">{f.d}</p>
+        <h1 className="mt-5 text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
+          {t.tagline.split(".")[0]}
+          <br />
+          <span className="text-gradient-gold">{t.tagline.split(".")[1]?.trim() || t.brand}</span>
+        </h1>
+        <p className="mt-4 max-w-md text-sm text-muted-foreground sm:text-base">{t.subtagline}</p>
+
+        {/* Card stack */}
+        <div className="relative mx-auto mt-10 h-[280px] w-full max-w-[380px]">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute -rotate-6 opacity-60 blur-[1px]">
+              <CardPreview card={demoCards[1]} size="sm" />
+            </div>
+            <div className="absolute rotate-6 opacity-80 blur-[0.5px]">
+              <CardPreview card={demoCards[2]} size="sm" />
+            </div>
+            <div className="relative float-slow">
+              <CardPreview card={demoCards[0]} size="md" />
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8 flex flex-col gap-3">
+          <Link
+            to="/auth"
+            className="group inline-flex items-center justify-center gap-2 rounded-2xl py-4 text-sm font-semibold text-accent-foreground shadow-glow transition active:scale-[0.98]"
+            style={{ background: "var(--gradient-gold)" }}
+          >
+            {t.getStarted}
+            <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+          </Link>
+          <Link
+            to="/auth"
+            className="glass inline-flex items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-medium hover:bg-card"
+          >
+            {t.signIn}
+          </Link>
+        </div>
+
+        <section className="mt-12 grid gap-3">
+          {features.map((f) => (
+            <div key={f.title} className="glass flex items-start gap-3 rounded-2xl p-4">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-secondary text-foreground">
+                <f.icon className="h-5 w-5" />
+              </span>
+              <div className="min-w-0">
+                <p className="text-sm font-semibold">{f.title}</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">{f.desc}</p>
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          ))}
+        </section>
 
-        <div className="relative flex justify-center">
-          <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-accent/20 via-transparent to-primary/10 blur-2xl" />
-          <div className="relative">
-            <CardPreview
-              card={{
-                name: "Layla Al-Farsi",
-                title: "Design Director",
-                company: "Atelier Nord",
-                bio: "Building quiet, beautiful products at the intersection of craft and technology.",
-                phone: "+971 50 123 4567",
-                email: "layla@ateliernord.co",
-                website: "ateliernord.co",
-                whatsapp: "+971501234567",
-                accent_color: "#D4AF37",
-              }}
-            />
-          </div>
-        </div>
-      </section>
-
-      <footer className="border-t border-border">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8 text-xs text-muted-foreground">
-          <span>© {new Date().getFullYear()} {t.brand}</span>
-          <span>Made with craft.</span>
-        </div>
-      </footer>
+        <footer className="mt-14 pb-10 text-center text-[11px] text-muted-foreground">
+          © {new Date().getFullYear()} {t.brand} · Crafted with intent.
+        </footer>
+      </main>
     </div>
   );
 }
+
+const demoCards = [
+  { name: "Layla Al-Farsi", title: "Design Director", company: "Atelier Nord", accent_color: "#D4AF37", template: "luxury" },
+  { name: "Kenji Ito", title: "Founder", company: "Kōgei", accent_color: "#22D3EE", template: "aurora" },
+  { name: "Maya Chen", title: "Investor", company: "Northline", accent_color: "#9C7A3C", template: "ivory" },
+];
