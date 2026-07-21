@@ -674,6 +674,15 @@ function PublicCard() {
                         )}
                       </div>
                     </div>
+                    {nfcState === "writing" && !nfcGuideOpen && (
+                      <button
+                        onClick={() => setNfcGuideOpen(true)}
+                        className="mt-3 w-full rounded-full border border-white/15 bg-white/[0.05] py-2 text-[11px] font-medium text-foreground/80 hover:bg-white/[0.08]"
+                      >
+                        {t.nfcShowGuide}
+                      </button>
+                    )}
+                  </div>
                   )}
 
                   <div className="mt-4 grid grid-cols-3 gap-2">
