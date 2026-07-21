@@ -280,6 +280,7 @@ function PublicCard() {
     setNfcSentCount(0);
     try {
       setNfcState("writing");
+      setNfcGuideOpen(true);
       toast(t.nfcTap);
       const reader = new w.NDEFReader();
       while (!controller.signal.aborted) {
