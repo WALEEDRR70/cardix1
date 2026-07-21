@@ -163,7 +163,62 @@ function Dashboard() {
         onOpenChange={(v) => { if (!v) setDeleteId(null); }}
         onConfirm={() => { void confirmDelete(); }}
       />
+      <QrDialog slug={qrSlug} onClose={() => setQrSlug(null)} />
     </MobileShell>
+  );
+}
+
+function QrDialog({ slug, onClose }: { slug: string | null; onClose: () => void }) {
+  if (!slug) return null;
+  const url = `${typeof window !== "undefined" ? window.location.origin : ""}/c/${slug}`;
+  async function share() {
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try { await navigator.share({ title: "Cardix", url }); } catch { /* cancelled */ }
+    } else {
+      await navigator.clipboard.writeText(url);
+      toast.success("Copied");
+    }
+  }
+  async function copy() {
+    await navigator.clipboard.writeText(url);
+    toast.success("Copied");
+  }
+  return (
+    <div className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4 backdrop-blur-md" onClick={onClose}>
+      <div className="glass-strong relative w-full max-w-sm rounded-3xl border border-border/40 p-6" onClick={(e) => e.stopPropagation()}>
+        <button
+          onClick={onClose}
+          className="absolute end-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-secondary/60 text-muted-foreground hover:text-foreground"
+          aria-label="Close"
+        >
+          <X className="h-4 w-4" />
+        </button>
+        <div className="mx-auto grid w-fit rounded-2xl bg-white p-4">
+          <QRCodeSVG
+            value={url}
+            size={220}
+            fgColor="#0a0a0a"
+            bgColor="#ffffff"
+            level="H"
+            marginSize={0}
+            imageSettings={{ src: logoAsset.url, height: 40, width: 40, excavate: true }}
+          />
+        </div>
+        <p dir="ltr" className="mt-4 truncate text-center text-[12px] text-muted-foreground">{url}</p>
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          <button onClick={copy} className="glass flex items-center justify-center gap-2 rounded-2xl py-3 text-sm font-medium">
+            <Copy className="h-4 w-4" /> Copy
+          </button>
+          <button
+            onClick={share}
+            className="flex items-center justify-center gap-2 rounded-2xl py-3 text-sm font-semibold text-accent-foreground shadow-glow"
+            style={{ background: "var(--gradient-gold)" }}
+          >
+            <Share2 className="h-4 w-4" /> Share
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 
