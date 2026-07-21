@@ -162,7 +162,7 @@ function Vault() {
         open={!!deleteId}
         loading={busy}
         onOpenChange={(v) => { if (!v) setDeleteId(null); }}
-        onConfirm={confirmDelete}
+        onConfirm={() => { void confirmDelete(); }}
       />
     </MobileShell>
   );
