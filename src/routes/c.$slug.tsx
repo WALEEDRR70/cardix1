@@ -574,8 +574,9 @@ function PublicCard() {
         >
           <button
             onClick={vcard}
-            className="pointer-events-auto flex flex-1 items-center justify-center gap-2 rounded-full py-4 text-[15px] font-semibold text-accent-foreground transition hover:scale-[1.01]"
-            style={{ background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, boxShadow: `0 14px 40px -10px ${accent}aa` }}
+            className="pointer-events-auto flex flex-1 items-center justify-center gap-2 rounded-full py-4 text-[15px] font-semibold transition hover:scale-[1.01]"
+            style={{ background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, boxShadow: `0 14px 40px -10px ${accent}aa`, color: accentText }}
+
           >
             <UserPlus className="h-4 w-4" /> {t.saveContact}
           </button>
