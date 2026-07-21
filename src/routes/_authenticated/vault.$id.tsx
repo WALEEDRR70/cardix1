@@ -71,12 +71,14 @@ function VaultDetail() {
     toast.success(t.saveNote);
   }
 
-  async function del() {
-    if (!confirm("Delete?")) return;
+  async function confirmDelete() {
+    setDeleting(true);
     const { error } = await supabase.from("saved_cards").delete().eq("id", id);
+    setDeleting(false);
     if (error) return toast.error(error.message);
     qc.invalidateQueries({ queryKey: ["saved_cards"] });
-    toast.success("Deleted");
+    toast.success(t.deleted);
+    setConfirmOpen(false);
     navigate({ to: "/vault" });
   }
 
