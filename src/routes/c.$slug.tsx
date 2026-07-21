@@ -1012,13 +1012,13 @@ function ActionTile({
         style={{ background: `radial-gradient(circle at 50% 0%, ${accent}22, transparent 70%)` }}
       />
       <span
-        className="relative grid h-10 w-10 place-items-center rounded-full"
+        className="relative grid h-10 w-10 place-items-center rounded-full text-foreground"
         style={{
-          color: accent,
-          background: `radial-gradient(circle at 50% 30%, ${accent}22, transparent 70%)`,
+          background: `radial-gradient(circle at 50% 30%, ${accent}33, ${accent}11 60%, transparent 75%)`,
+          boxShadow: `inset 0 0 0 1px ${accent}33`,
         }}
       >
-        <Icon className="h-5 w-5" />
+        <Icon className="h-5 w-5" strokeWidth={1.75} />
       </span>
       <span className="relative text-[12px] font-medium text-foreground/85">{label}</span>
     </div>
