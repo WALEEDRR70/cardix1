@@ -19,6 +19,7 @@ function NewCard() {
     name: "", slug: "card-" + Math.random().toString(36).slice(2, 7),
     title: "", company: "", bio: "", phone: "", whatsapp: "", email: user.email ?? "",
     website: "", address: "", avatar_url: "", accent_color: "#D4AF37", template: "luxury", is_published: true,
+    socials: {},
   };
 
   async function onSubmit(d: CardFormData): Promise<void> {
