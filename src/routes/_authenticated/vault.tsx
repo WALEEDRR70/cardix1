@@ -90,11 +90,11 @@ function Vault() {
                       </div>
                       <button
                         onClick={(e) => editNote(e, c.id, c.notes)}
-                        className="flex min-h-[48px] w-[40%] shrink-0 items-start gap-1 rounded-lg bg-secondary/60 px-2 py-1.5 text-start text-[10.5px] italic leading-tight text-muted-foreground transition hover:bg-secondary"
+                        className="flex min-h-[48px] w-[40%] min-w-0 shrink-0 items-start gap-1 overflow-hidden rounded-lg bg-secondary/60 px-2 py-1.5 text-start text-[10.5px] italic leading-tight text-muted-foreground transition hover:bg-secondary"
                         aria-label={c.notes ? t.editNote : t.addNote}
                       >
                         <StickyNote className="mt-0.5 h-3 w-3 shrink-0 opacity-70" />
-                        <span className="line-clamp-2 flex-1">{c.notes || t.addNote}</span>
+                        <span dir="auto" className="line-clamp-2 min-w-0 flex-1 break-words">{c.notes || t.addNote}</span>
                       </button>
                       <button
                         onClick={(e) => del(e, c.id)}
