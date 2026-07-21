@@ -14,7 +14,7 @@ export interface CardData {
   avatar_url?: string | null;
   accent_color: string;
   template?: string | null;
-  socials?: Record<string, string> | null;
+  socials?: Record<string, string> | null | unknown;
 }
 
 export const TEMPLATES = [
