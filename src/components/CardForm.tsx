@@ -83,11 +83,14 @@ export function CardForm({
   }
 
   return (
-    <div className="space-y-6">
-      {/* Live preview */}
-      <div className="flex justify-center">
-        <CardPreview card={data} size="md" />
-      </div>
+    <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-10 lg:items-start">
+      <div className="space-y-6 lg:order-1">
+        {/* Live preview (mobile: inline top) */}
+        <div className="flex justify-center lg:hidden">
+          <CardPreview card={data} size="md" />
+        </div>
+
+
 
       {/* Template picker */}
       <section>
