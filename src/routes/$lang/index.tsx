@@ -322,6 +322,7 @@ function TrustStrip({ c }: { c: LandingCopy }) {
 
 /* ---------------- Templates ---------------- */
 function Templates({ c }: { c: LandingCopy }) {
+  const { t } = useI18n();
   return (
     <section id="templates" className="relative py-24 lg:py-32">
       <div className="mx-auto w-full max-w-[1440px] px-5 lg:px-10">
@@ -347,6 +348,7 @@ function Templates({ c }: { c: LandingCopy }) {
 
 /* ---------------- How it works ---------------- */
 function HowItWorks({ c }: { c: LandingCopy }) {
+  const { t } = useI18n();
   const steps = [
     { n: "01", icon: Sparkles, title: c.step1, d: c.step1d },
     { n: "02", icon: QrCode, title: c.step2, d: c.step2d },
@@ -377,6 +379,7 @@ function HowItWorks({ c }: { c: LandingCopy }) {
 
 /* ---------------- Features (bento) ---------------- */
 function Features({ c }: { c: LandingCopy }) {
+  const { t } = useI18n();
   return (
     <section id="features" className="relative py-24 lg:py-32">
       <div className="mx-auto w-full max-w-[1440px] px-5 lg:px-10">
@@ -445,10 +448,11 @@ function FeatureCard({
 
 /* ---------------- Testimonials ---------------- */
 function Testimonials({ c }: { c: LandingCopy }) {
+  const { t: dict } = useI18n();
   return (
     <section className="relative py-24 lg:py-32">
       <div className="mx-auto w-full max-w-[1440px] px-5 lg:px-10">
-        <SectionHeader eyebrow={t.eyebrowTestimonials} title={c.testimonialsTitle} />
+        <SectionHeader eyebrow={dict.eyebrowTestimonials} title={c.testimonialsTitle} />
         <div className="mt-14 grid gap-5 lg:grid-cols-3">
           {c.testimonials.map((t) => (
             <figure key={t.name} className="glass flex h-full flex-col justify-between rounded-3xl p-7">
