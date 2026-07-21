@@ -4,7 +4,7 @@
 
 import type { Locale } from "@/i18n/config";
 
-export type LandingCategory = "app" | "qr" | "nfc" | "ocr" | "share" | "templates" | "compare";
+export type LandingCategory = "app" | "qr" | "nfc" | "ocr" | "share" | "templates" | "compare" | "profession" | "vs";
 
 export interface LandingCopy {
   title: string;          // <title>
