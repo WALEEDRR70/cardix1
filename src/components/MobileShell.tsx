@@ -98,19 +98,19 @@ function MobileBottomNav() {
   const items = [
     { to: "/dashboard", icon: Home, label: t.home },
     { to: "/vault", icon: BookmarkCheck, label: t.vault },
-    { to: "/scan", icon: ScanLine, label: t.scanShort },
+    { to: "/cards/new", icon: Plus, label: t.newCard },
     { to: "/settings", icon: Layers, label: t.settingsShort },
   ] as const;
 
   return (
     <div className="lg:hidden">
       <Link
-        to="/cards/new"
+        to="/scan"
         className="fixed bottom-[calc(env(safe-area-inset-bottom)+3.25rem)] left-1/2 z-30 -translate-x-1/2 grid h-14 w-14 place-items-center rounded-full text-accent-foreground shadow-luxe ring-4 ring-background transition active:scale-95"
         style={{ background: "var(--gradient-gold)" }}
-        aria-label={t.newCard}
+        aria-label={t.scanCard}
       >
-        <Plus className="h-6 w-6" strokeWidth={2.5} />
+        <ScanLine className="h-6 w-6" strokeWidth={2.5} />
       </Link>
 
       <nav className="glass-strong fixed inset-x-0 bottom-0 z-20 mx-auto max-w-[440px] safe-bottom pt-1.5 border-t border-border/40">
