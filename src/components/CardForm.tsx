@@ -40,7 +40,28 @@ export function CardForm({
   const [data, setData] = useState<CardFormData>(initial);
   const [saving, setSaving] = useState(false);
   const [genBusy, setGenBusy] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
   const genBio = useServerFn(generateBio);
+
+  async function uploadAvatar(file: File) {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    setUploading(true);
+    try {
+      const ext = file.name.split(".").pop() || "jpg";
+      const path = `${user.id}/${Date.now()}.${ext}`;
+      const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
+      if (error) throw error;
+      const { data: signed } = await supabase.storage.from("avatars").createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
+      if (signed?.signedUrl) setData((d) => ({ ...d, avatar_url: signed.signedUrl }));
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  }
+
 
   async function aiBio() {
     if (!data.name.trim()) {
