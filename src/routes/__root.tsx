@@ -19,13 +19,21 @@ import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 
 function NotFoundComponent() {
   return (
+    <I18nProvider>
+      <NotFoundInner />
+    </I18nProvider>
+  );
+}
+function NotFoundInner() {
+  const { t } = useI18nSafe();
+  return (
     <div className="grid min-h-[100dvh] place-items-center bg-background px-4">
       <div className="max-w-md text-center">
-        <p className="text-[10px] uppercase tracking-[0.4em] text-muted-foreground">Cardix</p>
+        <p className="text-[10px] uppercase tracking-[0.4em] text-muted-foreground">{t.brand}</p>
         <h1 className="mt-2 text-7xl font-semibold tracking-tight">404</h1>
-        <p className="mt-3 text-muted-foreground">This page doesn't exist.</p>
+        <p className="mt-3 text-muted-foreground">{t.pageNotFound}</p>
         <Link to="/" className="mt-6 inline-flex rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90">
-          Go home
+          {t.goHome}
         </Link>
       </div>
     </div>
@@ -39,16 +47,24 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
   return (
+    <I18nProvider>
+      <ErrorInner router={router} reset={reset} />
+    </I18nProvider>
+  );
+}
+function ErrorInner({ router, reset }: { router: ReturnType<typeof useRouter>; reset: () => void }) {
+  const { t } = useI18nSafe();
+  return (
     <div className="grid min-h-[100dvh] place-items-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold">Something went wrong</h1>
-        <p className="mt-2 text-sm text-muted-foreground">Try again or head back home.</p>
+        <h1 className="text-xl font-semibold">{t.somethingWrong}</h1>
+        <p className="mt-2 text-sm text-muted-foreground">{t.tryAgainDesc}</p>
         <div className="mt-6 flex justify-center gap-2">
           <button
             onClick={() => { router.invalidate(); reset(); }}
             className="rounded-full bg-primary px-5 py-2 text-sm text-primary-foreground"
-          >Try again</button>
-          <a href="/" className="rounded-full border border-input px-5 py-2 text-sm">Home</a>
+          >{t.tryAgain}</button>
+          <a href="/" className="rounded-full border border-input px-5 py-2 text-sm">{t.goHome}</a>
         </div>
       </div>
     </div>
