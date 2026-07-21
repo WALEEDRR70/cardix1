@@ -86,7 +86,7 @@ function initials(name: string) {
 function Avatar({ card, ring, fallbackBg }: { card: CardData; ring: string; fallbackBg: string }) {
   return (
     <div
-      className={`grid h-14 w-14 shrink-0 place-items-center rounded-2xl text-base font-semibold ring-1 ${ring} bg-cover bg-center`}
+      className={`grid h-20 w-20 shrink-0 place-items-center rounded-2xl text-lg font-semibold ring-1 ${ring} bg-cover bg-center shadow-lg`}
       style={{
         background: card.avatar_url ? undefined : fallbackBg,
         backgroundImage: card.avatar_url ? `url(${card.avatar_url})` : undefined,
