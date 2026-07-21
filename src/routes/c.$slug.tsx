@@ -542,11 +542,6 @@ function PublicCard() {
                   </div>
 
 
-                  <div className="mt-4 grid grid-cols-3 gap-2">
-                    <QrAction icon={Share2} label={t.share} onClick={nativeShare} />
-                    <QrAction icon={Download} label={t.download} onClick={downloadQr} />
-                    <QrAction icon={Maximize2} label={t.expand} onClick={() => setQrOpen(true)} />
-                  </div>
                 </div>
               </div>
             </section>
@@ -555,15 +550,25 @@ function PublicCard() {
         </div>
 
         {/* Footer */}
-        <footer className="mt-14 flex items-center justify-center gap-2">
-          <img src={logoAsset.url} alt="" className="h-4 w-4 opacity-70" />
-          <a
-            href="/"
-            className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground hover:text-foreground"
-          >
-            Powered by Cardix
-          </a>
+        <footer className="mt-14 flex flex-col items-center gap-4">
+          {isOwner && (
+            <div className="flex items-center gap-2">
+              <IconOnlyAction icon={Share2} label={t.share} onClick={nativeShare} />
+              <IconOnlyAction icon={Download} label={t.download} onClick={downloadQr} />
+              <IconOnlyAction icon={Maximize2} label={t.expand} onClick={() => setQrOpen(true)} />
+            </div>
+          )}
+          <div className="flex items-center justify-center gap-2">
+            <img src={logoAsset.url} alt="" className="h-4 w-4 opacity-70" />
+            <a
+              href="/"
+              className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground hover:text-foreground"
+            >
+              Powered by Cardix
+            </a>
+          </div>
         </footer>
+
       </main>
 
       {/* Sticky save-contact CTA */}
