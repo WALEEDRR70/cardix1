@@ -1,13 +1,13 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { CardPreview, ContactActions } from "@/components/CardPreview";
-import { Download, QrCode as QrIcon, BookmarkPlus, Check, Share2 } from "lucide-react";
+import { CardPreview } from "@/components/CardPreview";
+import { Download, BookmarkPlus, Check, Share2, Copy, Phone, Mail, Globe, MessageCircle, MapPin } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { useQuery } from "@tanstack/react-query";
 import { useI18n } from "@/lib/i18n";
 import { toast } from "sonner";
-import { BottomSheet } from "@/components/MobileShell";
+import { SOCIALS_BY_ID } from "@/lib/socials";
 
 export const Route = createFileRoute("/c/$slug")({
   head: ({ params }) => ({
@@ -37,7 +37,6 @@ function PublicCard() {
   const { t } = useI18n();
   const [saved, setSaved] = useState(false);
   const [savingCard, setSavingCard] = useState(false);
-  const [qrOpen, setQrOpen] = useState(false);
 
   const { data: card } = useQuery({
     queryKey: ["public-card", slug],
@@ -56,7 +55,15 @@ function PublicCard() {
 
   if (!card) return <div className="grid min-h-[100dvh] place-items-center bg-background text-sm text-muted-foreground">Loading…</div>;
 
+  const accent = card.accent_color || "#D4AF37";
+  const socials = (card.socials as Record<string, string> | null) ?? {};
+  const socialEntries = Object.entries(socials).filter(([id, v]) => v && SOCIALS_BY_ID[id]);
+
   function vcard() {
+    const socialLines = socialEntries.map(([id, v]) => {
+      const meta = SOCIALS_BY_ID[id];
+      return `X-SOCIALPROFILE;TYPE=${meta.name}:${meta.toUrl(v)}`;
+    });
     const vcf = [
       "BEGIN:VCARD", "VERSION:3.0",
       `FN:${card!.name}`,
@@ -66,6 +73,7 @@ function PublicCard() {
       card!.email && `EMAIL:${card!.email}`,
       card!.website && `URL:${card!.website}`,
       card!.address && `ADR:;;${card!.address};;;;`,
+      ...socialLines,
       "END:VCARD",
     ].filter(Boolean).join("\n");
     const blob = new Blob([vcf], { type: "text/vcard" });
@@ -101,70 +109,189 @@ function PublicCard() {
     toast.success(t.linkCopied);
   }
 
+  function copyLink() {
+    navigator.clipboard.writeText(window.location.href);
+    toast.success(t.linkCopied);
+  }
+
   const publicUrl = typeof window !== "undefined" ? window.location.href : `/c/${slug}`;
 
   return (
-    <div className="relative mx-auto min-h-[100dvh] w-full max-w-[520px] overflow-hidden bg-background">
-      <div className="pointer-events-none absolute inset-0 opacity-60" style={{ backgroundImage: "var(--gradient-mesh)" }} />
+    <div className="relative min-h-[100dvh] w-full overflow-hidden bg-background">
+      {/* Ambient luxurious background */}
+      <div className="pointer-events-none absolute inset-0" style={{ background: "var(--gradient-mesh)", opacity: 0.55 }} />
+      <div
+        className="pointer-events-none absolute -top-32 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full opacity-40 blur-[120px]"
+        style={{ background: `radial-gradient(circle, ${accent}, transparent 65%)` }}
+      />
+      <div className="pointer-events-none absolute inset-0 opacity-[0.04] mix-blend-overlay" style={{
+        backgroundImage: "radial-gradient(rgba(255,255,255,0.9) 1px, transparent 1px)",
+        backgroundSize: "3px 3px",
+      }} />
 
-      <div className="safe-top relative z-10 flex items-center justify-between px-5 pb-2">
-        <a href="/" className="text-[11px] font-semibold uppercase tracking-[0.3em] text-muted-foreground hover:text-foreground">
-          Cardix
-        </a>
-        <button onClick={nativeShare} className="grid h-9 w-9 place-items-center rounded-full border border-border bg-card/70 text-muted-foreground backdrop-blur hover:text-foreground">
-          <Share2 className="h-4 w-4" />
-        </button>
+      <div className="relative z-10 mx-auto w-full max-w-[560px] px-5">
+        {/* Top bar */}
+        <div className="safe-top flex items-center justify-between pb-2 pt-4">
+          <a href="/" className="text-[10px] font-semibold uppercase tracking-[0.32em] text-muted-foreground hover:text-foreground">
+            Cardix
+          </a>
+          <div className="flex items-center gap-2">
+            <button onClick={copyLink} className="glass grid h-9 w-9 place-items-center rounded-full text-muted-foreground hover:text-foreground" aria-label={t.copyLink}>
+              <Copy className="h-4 w-4" />
+            </button>
+            <button onClick={nativeShare} className="grid h-9 w-9 place-items-center rounded-full text-accent-foreground shadow-glow" style={{ background: "var(--gradient-gold)" }} aria-label={t.share}>
+              <Share2 className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+
+        <main className="flex flex-col items-center gap-6 pb-10 pt-3">
+          {/* Hero card */}
+          <div className="float-slow relative">
+            <div className="absolute -inset-6 rounded-[2.5rem] opacity-60 blur-2xl" style={{ background: `radial-gradient(circle, ${accent}55, transparent 70%)` }} />
+            <div className="relative">
+              <CardPreview card={card} size="lg" />
+            </div>
+          </div>
+
+          {/* Name / title stack */}
+          <div className="text-center">
+            <h1 className="text-2xl font-semibold tracking-tight">{card.name}</h1>
+            {(card.title || card.company) && (
+              <p className="mt-1 text-sm text-muted-foreground">
+                {[card.title, card.company].filter(Boolean).join(" · ")}
+              </p>
+            )}
+          </div>
+
+          {card.bio && (
+            <p className="glass max-w-md rounded-2xl px-5 py-4 text-center text-sm leading-relaxed text-foreground/85">
+              {card.bio}
+            </p>
+          )}
+
+          {/* QR — centerpiece */}
+          <div className="relative mt-2 w-full max-w-[300px]">
+            <div className="absolute -inset-3 rounded-[2rem] opacity-70 blur-2xl" style={{ background: `radial-gradient(circle, ${accent}55, transparent 70%)` }} />
+            <div
+              className="relative overflow-hidden rounded-[2rem] p-[1.5px]"
+              style={{ background: `linear-gradient(140deg, ${accent}, transparent 40%, ${accent}66 90%)` }}
+            >
+              <div className="rounded-[calc(2rem-1.5px)] bg-white p-6">
+                <div className="grid place-items-center">
+                  <QRCodeSVG
+                    value={publicUrl}
+                    size={220}
+                    fgColor="#0a0a0a"
+                    bgColor="#ffffff"
+                    level="H"
+                    marginSize={0}
+                  />
+                </div>
+                <div className="mt-4 flex items-center justify-center gap-2">
+                  <span className="h-1 w-1 rounded-full" style={{ background: accent }} />
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.32em] text-black/60">Scan to connect</span>
+                  <span className="h-1 w-1 rounded-full" style={{ background: accent }} />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Contact rows */}
+          <ContactList card={card} />
+
+          {/* Socials */}
+          {socialEntries.length > 0 && (
+            <section className="w-full max-w-md">
+              <p className="mb-3 text-center text-[10px] font-semibold uppercase tracking-[0.32em] text-muted-foreground">
+                Follow · Connect
+              </p>
+              <div className="flex flex-wrap justify-center gap-2.5">
+                {socialEntries.map(([id, val]) => {
+                  const meta = SOCIALS_BY_ID[id];
+                  return (
+                    <a
+                      key={id}
+                      href={meta.toUrl(val)}
+                      target="_blank"
+                      rel="noreferrer"
+                      title={meta.name}
+                      className="group relative grid h-12 w-12 place-items-center rounded-2xl text-white shadow-glow transition hover:scale-110"
+                      style={{ background: meta.color }}
+                    >
+                      <meta.Icon className="h-5 w-5" />
+                    </a>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          {/* Primary CTAs */}
+          <div className="mt-2 grid w-full max-w-md grid-cols-2 gap-2">
+            <button
+              onClick={vcard}
+              className="flex items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-semibold text-accent-foreground shadow-glow"
+              style={{ background: "var(--gradient-gold)" }}
+            >
+              <Download className="h-4 w-4" /> {t.saveContact}
+            </button>
+            <button
+              onClick={saveToVault}
+              disabled={saved || savingCard}
+              className="glass flex items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-semibold disabled:opacity-60"
+            >
+              {saved ? <Check className="h-4 w-4" /> : <BookmarkPlus className="h-4 w-4" />}
+              {saved ? t.savedToVault : t.saveToVault}
+            </button>
+          </div>
+
+          <a href="/" className="mt-2 text-[10px] uppercase tracking-[0.32em] text-muted-foreground hover:text-foreground">
+            Powered by Cardix
+          </a>
+        </main>
       </div>
-
-      <main className="relative z-10 flex flex-col items-center gap-6 px-5 pb-10 pt-4">
-        <div className="float-slow">
-          <CardPreview card={card} size="lg" />
-        </div>
-
-        {card.bio && (
-          <p className="glass max-w-md rounded-2xl px-5 py-4 text-center text-sm text-foreground/80">{card.bio}</p>
-        )}
-
-        <div className="w-full max-w-md">
-          <ContactActions card={card} />
-        </div>
-
-        <div className="mt-2 grid w-full max-w-md grid-cols-3 gap-2">
-          <ActionButton onClick={vcard} icon={<Download className="h-4 w-4" />} label={t.saveContact} primary />
-          <ActionButton onClick={() => setQrOpen(true)} icon={<QrIcon className="h-4 w-4" />} label="QR" />
-          <ActionButton onClick={saveToVault} disabled={saved || savingCard} icon={saved ? <Check className="h-4 w-4" /> : <BookmarkPlus className="h-4 w-4" />} label={saved ? t.savedToVault : t.saveToVault} />
-        </div>
-
-        <a href="/" className="mt-4 text-[10px] uppercase tracking-[0.3em] text-muted-foreground hover:text-foreground">
-          Powered by Cardix
-        </a>
-      </main>
-
-      <BottomSheet open={qrOpen} onClose={() => setQrOpen(false)} title={t.scan}>
-        <div className="mx-auto mt-2 grid w-fit place-items-center rounded-3xl bg-white p-5">
-          <QRCodeSVG value={publicUrl} size={220} fgColor="#0a0a0a" bgColor="#ffffff" level="M" />
-        </div>
-        <p className="mt-4 truncate rounded-xl bg-secondary px-4 py-2 text-center text-xs text-muted-foreground">{publicUrl}</p>
-      </BottomSheet>
     </div>
   );
 }
 
-function ActionButton({ icon, label, onClick, disabled, primary }: { icon: React.ReactNode; label: string; onClick: () => void; disabled?: boolean; primary?: boolean }) {
+function ContactList({ card }: { card: {
+  phone?: string | null; whatsapp?: string | null; email?: string | null;
+  website?: string | null; address?: string | null;
+} }) {
+  const items = [
+    card.phone && { icon: Phone, label: card.phone, href: `tel:${card.phone}` },
+    card.whatsapp && { icon: MessageCircle, label: "WhatsApp", href: `https://wa.me/${card.whatsapp.replace(/\D/g, "")}` },
+    card.email && { icon: Mail, label: card.email, href: `mailto:${card.email}` },
+    card.website && {
+      icon: Globe,
+      label: card.website.replace(/^https?:\/\//, ""),
+      href: card.website.startsWith("http") ? card.website : `https://${card.website}`,
+    },
+    card.address && { icon: MapPin, label: card.address, href: undefined as string | undefined },
+  ].filter(Boolean) as { icon: typeof Phone; label: string; href?: string }[];
+
+  if (items.length === 0) return null;
+
   return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={
-        (primary
-          ? "text-accent-foreground shadow-glow"
-          : "glass text-foreground") +
-        " flex flex-col items-center justify-center gap-1 rounded-2xl py-3 text-[11px] font-semibold disabled:opacity-60"
-      }
-      style={primary ? { background: "var(--gradient-gold)" } : undefined}
-    >
-      {icon}
-      <span className="line-clamp-1">{label}</span>
-    </button>
+    <div className="grid w-full max-w-md gap-2">
+      {items.map((it, i) => {
+        const inner = (
+          <div className="glass card-lift flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm">
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-secondary text-foreground">
+              <it.icon className="h-4 w-4" />
+            </span>
+            <span className="truncate">{it.label}</span>
+          </div>
+        );
+        return it.href ? (
+          <a key={i} href={it.href} target={it.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
+            {inner}
+          </a>
+        ) : (
+          <div key={i}>{inner}</div>
+        );
+      })}
+    </div>
   );
 }
