@@ -1,4 +1,5 @@
-import { Phone, Mail, Globe, MessageCircle, MapPin } from "lucide-react";
+import { Phone, Mail, Globe, MessageCircle, MapPin, Briefcase } from "lucide-react";
+import { SOCIALS_BY_ID } from "@/lib/socials";
 
 export interface CardData {
   name: string;
@@ -13,6 +14,7 @@ export interface CardData {
   avatar_url?: string | null;
   accent_color: string;
   template?: string | null;
+  socials?: Record<string, string> | null | unknown;
 }
 
 export const TEMPLATES = [
@@ -28,10 +30,10 @@ export function CardPreview({ card, size = "md" }: { card: CardData; size?: "sm"
     size === "sm"
       ? "aspect-[1.65/1] w-full max-w-[320px]"
       : size === "lg"
-        ? "aspect-[1.62/1] w-full max-w-[420px]"
+        ? "aspect-[1.62/1] w-full max-w-[440px]"
         : size === "xl"
-          ? "aspect-[1.62/1] w-full max-w-[588px]"
-          : "aspect-[1.62/1] w-full max-w-[380px]";
+          ? "aspect-[1.62/1] w-full max-w-[600px]"
+          : "aspect-[1.62/1] w-full max-w-[400px]";
   return (
     <div className={cls + " card-lift shadow-luxe rounded-3xl overflow-hidden"}>
       <TemplateSwitch tpl={tpl} card={card} />
@@ -74,20 +76,16 @@ function TemplateSwitch({ tpl, card }: { tpl: TemplateId; card: CardData }) {
 }
 
 function initials(name: string) {
-  return name
-    .split(" ")
-    .map((s) => s[0])
-    .filter(Boolean)
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
+  return name.split(" ").map((s) => s[0]).filter(Boolean).slice(0, 2).join("").toUpperCase();
 }
 
-function Avatar({ card, ring, fallbackBg }: { card: CardData; ring: string; fallbackBg: string }) {
+function Avatar({ card, ring, fallbackBg, size = 72 }: { card: CardData; ring: string; fallbackBg: string; size?: number }) {
   return (
     <div
-      className={`grid h-20 w-20 shrink-0 place-items-center rounded-2xl text-lg font-semibold ring-1 ${ring} bg-cover bg-center shadow-lg`}
+      className={`grid shrink-0 place-items-center rounded-2xl text-base font-semibold ring-1 ${ring} bg-cover bg-center shadow-lg`}
       style={{
+        width: size,
+        height: size,
         background: card.avatar_url ? undefined : fallbackBg,
         backgroundImage: card.avatar_url ? `url(${card.avatar_url})` : undefined,
       }}
@@ -97,153 +95,295 @@ function Avatar({ card, ring, fallbackBg }: { card: CardData; ring: string; fall
   );
 }
 
-/* ---------- Templates ---------- */
+/* ---------- Shared body used by every template ---------- */
 
-function LuxuryTemplate({ card }: { card: CardData }) {
-  const a = card.accent_color || "#7c34ff";
+type Variant = "dark" | "light";
+
+function CardBody({ card, variant, accent, brand }: { card: CardData; variant: Variant; accent: string; brand?: string }) {
+  const isDark = variant === "dark";
+  const nameCls = isDark ? "text-white" : "text-black";
+  const titleCls = isDark ? "text-white/85" : "text-black/75";
+  const subCls = isDark ? "text-white/60" : "text-black/55";
+  const rowCls = isDark ? "text-white/85" : "text-black/75";
+  const iconWrap = isDark ? "bg-white/10 text-white" : "bg-black/5 text-black/80";
+  const chipCls = isDark ? "bg-white/10 text-white/90 ring-white/10" : "bg-black/5 text-black/80 ring-black/5";
+  const ring = isDark ? "ring-white/25" : "ring-black/10";
+
+  const socialsObj = (card.socials && typeof card.socials === "object" && !Array.isArray(card.socials) ? card.socials : {}) as Record<string, string>;
+  const socialEntries = Object.entries(socialsObj).filter(([, v]) => typeof v === "string" && v.trim());
+
   return (
-    <div className="relative h-full w-full text-white" style={{ background: "linear-gradient(160deg,#161513,#050505)" }}>
-      <div className="absolute inset-0 opacity-70" style={{ background: `radial-gradient(circle at 85% 0%, ${a}44, transparent 55%)` }} />
-      <div
-        className="absolute -right-24 -bottom-24 h-64 w-64 rounded-full blur-3xl"
-        style={{ background: `radial-gradient(circle, ${a}33, transparent 70%)` }}
-      />
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-[0.15] mix-blend-overlay"
-        style={{
-          backgroundImage:
-            "linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%)",
-        }}
-      />
-      <div className="relative flex h-full flex-col justify-between p-5">
-        <div className="flex items-center gap-3">
-          <Avatar card={card} ring="ring-white/25" fallbackBg={`linear-gradient(135deg, ${a}, #6b4a15)`} />
-          <div className="min-w-0">
-            <p className="truncate text-lg font-semibold leading-tight">{card.name || "Your Name"}</p>
-            {card.title && <p className="truncate text-xs text-white/70">{card.title}</p>}
-            {card.company && <p className="truncate text-[11px] text-white/50">{card.company}</p>}
-          </div>
+    <div className="relative flex h-full w-full flex-col p-4 sm:p-5">
+      {/* Identity */}
+      <div className="flex items-start gap-3">
+        <Avatar card={card} ring={ring} fallbackBg={`linear-gradient(135deg, ${accent}, ${isDark ? "#111" : "#ddd"})`} size={64} />
+        <div className="min-w-0 flex-1">
+          <p className={`truncate text-[17px] font-semibold leading-tight ${nameCls}`}>
+            {card.name || "Your Name"}
+          </p>
+          {card.title && (
+            <p className={`mt-0.5 truncate text-[11.5px] leading-tight ${titleCls}`}>{card.title}</p>
+          )}
+          {card.company && (
+            <div className={`mt-1 flex items-center gap-1 truncate text-[10.5px] ${subCls}`}>
+              <Briefcase className="h-3 w-3 shrink-0" />
+              <span className="truncate">{card.company}</span>
+            </div>
+          )}
         </div>
-        <div className="flex items-end justify-between">
-          <div className="text-[10px] uppercase tracking-[0.3em] text-white/40">Cardix</div>
-          <div className="h-6 w-6 rounded-md" style={{ background: `linear-gradient(135deg, ${a}, #6b4a15)` }} />
-        </div>
+        {brand && (
+          <span className={`shrink-0 text-[9px] uppercase tracking-[0.3em] ${subCls}`}>{brand}</span>
+        )}
       </div>
+
+      {/* Info rows */}
+      <div className="mt-3 grid gap-1">
+        {card.phone && (
+          <InfoRow icon={<Phone className="h-3 w-3" />} text={card.phone} rowCls={rowCls} iconWrap={iconWrap} />
+        )}
+        {card.address && (
+          <InfoRow icon={<MapPin className="h-3 w-3" />} text={card.address} rowCls={rowCls} iconWrap={iconWrap} />
+        )}
+      </div>
+
+      {/* Socials */}
+      {socialEntries.length > 0 && (
+        <div className="mt-auto flex flex-wrap gap-1.5 pt-3">
+          {socialEntries.slice(0, 5).map(([id, val]) => {
+            const meta = SOCIALS_BY_ID[id];
+            if (!meta) return null;
+            const label = /^https?:\/\//i.test(val) ? meta.name : val.replace(/^@/, "");
+            return (
+              <span
+                key={id}
+                className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9.5px] font-medium ring-1 ${chipCls}`}
+              >
+                <span
+                  className="grid h-3.5 w-3.5 shrink-0 place-items-center rounded-full text-white"
+                  style={{ background: meta.color }}
+                >
+                  <meta.Icon className="h-2 w-2" />
+                </span>
+                <span className="max-w-[92px] truncate">{label}</span>
+              </span>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
 
-function AuroraTemplate({ card }: { card: CardData }) {
+function InfoRow({
+  icon, text, rowCls, iconWrap,
+}: { icon: React.ReactNode; text: string; rowCls: string; iconWrap: string }) {
   return (
-    <div className="relative h-full w-full text-white" style={{ background: "var(--gradient-aurora)" }}>
-      <div className="absolute inset-0" style={{ backgroundImage: "var(--gradient-mesh)" }} />
-      <div className="glass-strong absolute inset-3 rounded-2xl" />
-      <div className="relative flex h-full flex-col justify-between p-6">
-        <div className="flex items-center gap-3">
-          <Avatar card={card} ring="ring-white/40" fallbackBg="linear-gradient(135deg,#a78bfa,#4ade80)" />
-          <div className="min-w-0">
-            <p className="truncate text-lg font-semibold">{card.name || "Your Name"}</p>
-            {card.title && <p className="truncate text-xs text-white/80">{card.title}</p>}
-            {card.company && <p className="truncate text-[11px] text-white/60">{card.company}</p>}
-          </div>
-        </div>
-        <div className="text-[10px] uppercase tracking-[0.3em] text-white/60">Aurora · Cardix</div>
-      </div>
+    <div className={`flex items-center gap-2 text-[10.5px] ${rowCls}`}>
+      <span className={`grid h-4 w-4 shrink-0 place-items-center rounded-md ${iconWrap}`}>{icon}</span>
+      <span className="truncate">{text}</span>
     </div>
+  );
+}
+
+/* ---------- Backgrounds ---------- */
+
+function Bg({ children, style, className = "" }: { children?: React.ReactNode; style?: React.CSSProperties; className?: string }) {
+  return <div className={`relative h-full w-full ${className}`} style={style}>{children}</div>;
+}
+
+function LuxuryTemplate({ card }: { card: CardData }) {
+  const a = card.accent_color || "#7c34ff";
+  return (
+    <Bg style={{ background: "linear-gradient(160deg,#161513,#050505)" }}>
+      <div className="absolute inset-0 opacity-70" style={{ background: `radial-gradient(circle at 85% 0%, ${a}44, transparent 55%)` }} />
+      <div className="absolute -right-24 -bottom-24 h-64 w-64 rounded-full blur-3xl" style={{ background: `radial-gradient(circle, ${a}33, transparent 70%)` }} />
+      <div aria-hidden className="absolute inset-0 opacity-[0.12] mix-blend-overlay" style={{ backgroundImage: "linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%)" }} />
+      <CardBody card={card} variant="dark" accent={a} brand="Luxury" />
+    </Bg>
+  );
+}
+
+function AuroraTemplate({ card }: { card: CardData }) {
+  const a = card.accent_color || "#a78bfa";
+  return (
+    <Bg style={{ background: "var(--gradient-aurora, linear-gradient(135deg,#7c3aed,#22d3ee,#f472b6))" }}>
+      <div className="absolute inset-0 opacity-60" style={{ backgroundImage: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%)" }} />
+      <CardBody card={card} variant="dark" accent={a} brand="Aurora" />
+    </Bg>
   );
 }
 
 function IvoryTemplate({ card }: { card: CardData }) {
   const a = card.accent_color || "#9C7A3C";
   return (
-    <div className="relative h-full w-full" style={{ background: "linear-gradient(160deg,#faf7f0,#ece5d3)", color: "#1a1a1a" }}>
-      <div className="absolute right-4 top-4 h-8 w-8 rounded-full" style={{ background: a }} />
-      <div className="relative flex h-full flex-col justify-between p-6">
-        <div>
-          <p style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[26px] leading-none tracking-tight">
-            {card.name || "Your Name"}
-          </p>
-          {card.title && <p className="mt-1 text-xs uppercase tracking-[0.2em] text-black/60">{card.title}</p>}
-        </div>
-        <div className="flex items-end justify-between">
-          <div>
-            {card.company && <p className="text-xs text-black/70">{card.company}</p>}
-            {card.email && <p className="text-[11px] text-black/50">{card.email}</p>}
-          </div>
-          <div className="text-[10px] uppercase tracking-[0.3em] text-black/40">Ivory</div>
-        </div>
-      </div>
-    </div>
+    <Bg style={{ background: "linear-gradient(160deg,#faf7f0,#ece5d3)" }}>
+      <div className="absolute right-4 top-4 h-6 w-6 rounded-full" style={{ background: a }} />
+      <CardBody card={card} variant="light" accent={a} brand="Ivory" />
+    </Bg>
   );
 }
 
 function NoirTemplate({ card }: { card: CardData }) {
+  const a = card.accent_color || "#ffffff";
   return (
-    <div className="relative h-full w-full text-white" style={{ background: "#0a0a0a" }}>
-      <div className="absolute left-0 top-0 h-full w-1.5 bg-white" />
-      <div className="relative flex h-full flex-col justify-between p-6 pl-8">
-        <div>
-          <p className="text-[10px] uppercase tracking-[0.4em] text-white/50">{card.company || "Independent"}</p>
-          <p className="mt-2 text-xl font-semibold tracking-tight">{card.name || "Your Name"}</p>
-          {card.title && <p className="text-xs text-white/60">{card.title}</p>}
-        </div>
-        <div className="flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-white/70">
-          {card.phone && <span>{card.phone}</span>}
-          {card.email && <span className="truncate">{card.email}</span>}
-        </div>
-      </div>
-    </div>
+    <Bg style={{ background: "#0a0a0a" }}>
+      <div className="absolute left-0 top-0 h-full w-1.5" style={{ background: a }} />
+      <CardBody card={card} variant="dark" accent={a} brand="Noir" />
+    </Bg>
   );
 }
 
 function NeonTemplate({ card }: { card: CardData }) {
   const a = card.accent_color || "#22d3ee";
   return (
-    <div className="relative h-full w-full text-white" style={{ background: "#08070f" }}>
-      <div
-        className="absolute inset-0 opacity-90"
-        style={{
-          background: `radial-gradient(circle at 20% 100%, ${a}55, transparent 55%), radial-gradient(circle at 100% 0%, #a78bfa55, transparent 55%)`,
-        }}
-      />
-      <div className="relative flex h-full flex-col justify-between p-6">
-        <div className="flex items-center gap-3">
-          <Avatar card={card} ring="ring-white/30" fallbackBg={`linear-gradient(135deg,${a},#a78bfa)`} />
-          <div className="min-w-0">
-            <p className="truncate text-lg font-semibold">{card.name || "Your Name"}</p>
-            {card.title && <p className="truncate text-xs text-white/70">{card.title}</p>}
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="h-1.5 w-6 rounded-full" style={{ background: a, boxShadow: `0 0 12px ${a}` }} />
-          <span className="text-[10px] uppercase tracking-[0.3em] text-white/50">Neon · Cardix</span>
-        </div>
-      </div>
-    </div>
+    <Bg style={{ background: "#08070f" }}>
+      <div className="absolute inset-0 opacity-90" style={{ background: `radial-gradient(circle at 20% 100%, ${a}55, transparent 55%), radial-gradient(circle at 100% 0%, #a78bfa55, transparent 55%)` }} />
+      <CardBody card={card} variant="dark" accent={a} brand="Neon" />
+    </Bg>
   );
 }
 
 function PlatinumTemplate({ card }: { card: CardData }) {
+  const a = card.accent_color || "#7c34ff";
   return (
-    <div className="relative h-full w-full" style={{ color: "#141414", background: "linear-gradient(135deg,#e8e8ea,#b6b6bb 40%,#f4f4f5 60%,#9a9aa2)" }}>
+    <Bg style={{ background: "linear-gradient(135deg,#e8e8ea,#b6b6bb 40%,#f4f4f5 60%,#9a9aa2)" }}>
       <div className="absolute inset-0 opacity-40" style={{ background: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.7) 50%, transparent 70%)" }} />
-      <div className="relative flex h-full flex-col justify-between p-6">
-        <div>
-          <p className="text-[10px] uppercase tracking-[0.4em] text-black/50">Platinum</p>
-          <p className="mt-2 text-xl font-semibold tracking-tight">{card.name || "Your Name"}</p>
-          {card.title && <p className="text-xs text-black/60">{card.title}</p>}
-        </div>
-        <div className="flex items-center justify-between text-[11px] text-black/60">
-          <span>{card.company}</span>
-          <span className="truncate">{card.website?.replace(/^https?:\/\//, "")}</span>
-        </div>
-      </div>
-    </div>
+      <CardBody card={card} variant="light" accent={a} brand="Platinum" />
+    </Bg>
   );
 }
 
-/* ---------- Actions ---------- */
+function MidnightTemplate({ card }: { card: CardData }) {
+  const a = card.accent_color || "#7c34ff";
+  return (
+    <Bg style={{ background: "linear-gradient(160deg,#0b1026,#050817)" }}>
+      <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse at 20% 0%, ${a}55, transparent 60%), radial-gradient(ellipse at 100% 100%, #1e3a8a55, transparent 60%)` }} />
+      <div aria-hidden className="absolute inset-0 opacity-40" style={{ backgroundImage: "radial-gradient(#ffffff33 1px, transparent 1px)", backgroundSize: "18px 18px" }} />
+      <CardBody card={card} variant="dark" accent={a} brand="Midnight" />
+    </Bg>
+  );
+}
+
+function SunsetTemplate({ card }: { card: CardData }) {
+  const a = card.accent_color || "#ffd60a";
+  return (
+    <Bg style={{ background: "linear-gradient(135deg,#ff512f,#dd2476 55%,#7b2cbf)" }}>
+      <div className="absolute inset-0" style={{ background: "radial-gradient(circle at 80% 20%, #ffd60a55, transparent 60%)" }} />
+      <CardBody card={card} variant="dark" accent={a} brand="Sunset" />
+    </Bg>
+  );
+}
+
+function OceanTemplate({ card }: { card: CardData }) {
+  const a = card.accent_color || "#38bdf8";
+  return (
+    <Bg style={{ background: "linear-gradient(160deg,#012a4a,#01497c 60%,#2a6f97)" }}>
+      <div className="absolute inset-0 opacity-70" style={{ background: `radial-gradient(circle at 100% 100%, ${a}55, transparent 55%)` }} />
+      <CardBody card={card} variant="dark" accent={a} brand="Ocean" />
+    </Bg>
+  );
+}
+
+function ForestTemplate({ card }: { card: CardData }) {
+  const a = card.accent_color || "#84cc16";
+  return (
+    <Bg style={{ background: "linear-gradient(160deg,#0b3d2e,#164a3a 60%,#22593d)" }}>
+      <div className="absolute inset-0 opacity-30" style={{ backgroundImage: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%)" }} />
+      <CardBody card={card} variant="dark" accent={a} brand="Forest" />
+    </Bg>
+  );
+}
+
+function HolographicTemplate({ card }: { card: CardData }) {
+  const a = card.accent_color || "#c4b5fd";
+  return (
+    <Bg style={{ background: "linear-gradient(115deg,#a7f3d0,#93c5fd 25%,#c4b5fd 50%,#f9a8d4 75%,#fde68a)" }}>
+      <div className="absolute inset-0 opacity-60" style={{ backgroundImage: "linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.6) 45%, transparent 70%)" }} />
+      <CardBody card={card} variant="light" accent={a} brand="Holographic" />
+    </Bg>
+  );
+}
+
+function ExecutiveTemplate({ card }: { card: CardData }) {
+  const a = card.accent_color || "#c9a96e";
+  return (
+    <Bg style={{ background: "linear-gradient(180deg,#111827,#0b1120)" }}>
+      <div className="absolute left-0 top-0 h-full w-1" style={{ background: a }} />
+      <CardBody card={card} variant="dark" accent={a} brand="Executive" />
+    </Bg>
+  );
+}
+
+function MonoTemplate({ card }: { card: CardData }) {
+  const a = card.accent_color || "#0a0a0a";
+  return (
+    <Bg style={{ background: "#ffffff" }}>
+      <div className="absolute inset-0" style={{ backgroundImage: "linear-gradient(#00000008 1px, transparent 1px), linear-gradient(90deg, #00000008 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
+      <CardBody card={card} variant="light" accent={a} brand="Mono" />
+    </Bg>
+  );
+}
+
+function MarbleTemplate({ card }: { card: CardData }) {
+  const a = card.accent_color || "#7c34ff";
+  return (
+    <Bg style={{ background: "radial-gradient(circle at 20% 20%, #ffffff 0%, #ececec 25%, #d7d7d7 55%, #f5f5f5 80%)" }}>
+      <div aria-hidden className="absolute inset-0 opacity-40" style={{ backgroundImage: "linear-gradient(120deg, transparent 30%, rgba(0,0,0,0.06) 50%, transparent 70%)" }} />
+      <CardBody card={card} variant="light" accent={a} brand="Marble" />
+    </Bg>
+  );
+}
+
+function CarbonTemplate({ card }: { card: CardData }) {
+  const a = card.accent_color || "#22d3ee";
+  return (
+    <Bg style={{ background: "#0a0a0a" }}>
+      <div className="absolute inset-0 opacity-70" style={{ backgroundImage: "repeating-linear-gradient(45deg, #1a1a1a 0 6px, #0a0a0a 6px 12px)" }} />
+      <CardBody card={card} variant="dark" accent={a} brand="Carbon" />
+    </Bg>
+  );
+}
+
+function SandTemplate({ card }: { card: CardData }) {
+  const a = card.accent_color || "#a0522d";
+  return (
+    <Bg style={{ background: "linear-gradient(160deg,#f5e6c8,#e8c9a0 60%,#c9a274)" }}>
+      <CardBody card={card} variant="light" accent={a} brand="Sand" />
+    </Bg>
+  );
+}
+
+function RoseTemplate({ card }: { card: CardData }) {
+  const a = card.accent_color || "#fda4af";
+  return (
+    <Bg style={{ background: "linear-gradient(160deg,#831843,#be185d 60%,#f472b6)" }}>
+      <div className="absolute inset-0" style={{ background: "radial-gradient(circle at 100% 0%, #fda4af66, transparent 55%)" }} />
+      <CardBody card={card} variant="dark" accent={a} brand="Rose" />
+    </Bg>
+  );
+}
+
+function EmeraldTemplate({ card }: { card: CardData }) {
+  const a = card.accent_color || "#10b981";
+  return (
+    <Bg style={{ background: "linear-gradient(160deg,#022c22,#065f46 60%,#10b981)" }}>
+      <div className="absolute inset-0 opacity-60" style={{ background: "radial-gradient(circle at 0% 100%, #fbbf2455, transparent 55%)" }} />
+      <CardBody card={card} variant="dark" accent={a} brand="Emerald" />
+    </Bg>
+  );
+}
+
+function CosmicTemplate({ card }: { card: CardData }) {
+  const a = card.accent_color || "#a78bfa";
+  return (
+    <Bg style={{ background: "radial-gradient(ellipse at 30% 20%, #4c1d95 0%, #1e1b4b 40%, #030014 100%)" }}>
+      <div aria-hidden className="absolute inset-0" style={{ backgroundImage: "radial-gradient(#ffffff88 1px, transparent 1px), radial-gradient(#ffffff44 1px, transparent 1px)", backgroundSize: "40px 40px, 25px 25px", backgroundPosition: "0 0, 12px 8px" }} />
+      <CardBody card={card} variant="dark" accent={a} brand="Cosmic" />
+    </Bg>
+  );
+}
+
+/* ---------- Contact actions (used on public page) ---------- */
 
 export function ContactActions({ card }: { card: CardData }) {
   const items = [
@@ -282,250 +422,6 @@ function ActionRow({ icon, label, href }: { icon: React.ReactNode; label: string
     </a>
   ) : (
     inner
-  );
-}
-
-/* ---------- Extra Templates ---------- */
-
-function MidnightTemplate({ card }: { card: CardData }) {
-  const a = card.accent_color || "#7c34ff";
-  return (
-    <div className="relative h-full w-full text-white" style={{ background: "linear-gradient(160deg,#0b1026,#050817)" }}>
-      <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse at 20% 0%, ${a}55, transparent 60%), radial-gradient(ellipse at 100% 100%, #1e3a8a55, transparent 60%)` }} />
-      <div aria-hidden className="absolute inset-0 opacity-40" style={{ backgroundImage: "radial-gradient(#ffffff33 1px, transparent 1px)", backgroundSize: "18px 18px" }} />
-      <div className="relative flex h-full flex-col justify-between p-6">
-        <div>
-          <p className="text-[10px] uppercase tracking-[0.4em] text-white/50">{card.company || "Midnight"}</p>
-          <p className="mt-2 text-xl font-semibold tracking-tight">{card.name || "Your Name"}</p>
-          {card.title && <p className="text-xs text-white/70">{card.title}</p>}
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full" style={{ background: a, boxShadow: `0 0 10px ${a}` }} />
-          <span className="text-[10px] uppercase tracking-[0.3em] text-white/50">Cardix</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function SunsetTemplate({ card }: { card: CardData }) {
-  return (
-    <div className="relative h-full w-full text-white" style={{ background: "linear-gradient(135deg,#ff512f,#dd2476 55%,#7b2cbf)" }}>
-      <div className="absolute inset-0" style={{ background: "radial-gradient(circle at 80% 20%, #ffd60a55, transparent 60%)" }} />
-      <div className="relative flex h-full flex-col justify-between p-6">
-        <div className="flex items-center gap-3">
-          <Avatar card={card} ring="ring-white/40" fallbackBg="linear-gradient(135deg,#ffd60a,#ff512f)" />
-          <div className="min-w-0">
-            <p className="truncate text-lg font-semibold">{card.name || "Your Name"}</p>
-            {card.title && <p className="truncate text-xs text-white/85">{card.title}</p>}
-            {card.company && <p className="truncate text-[11px] text-white/70">{card.company}</p>}
-          </div>
-        </div>
-        <div className="text-[10px] uppercase tracking-[0.35em] text-white/75">Sunset</div>
-      </div>
-    </div>
-  );
-}
-
-function OceanTemplate({ card }: { card: CardData }) {
-  const a = card.accent_color || "#38bdf8";
-  return (
-    <div className="relative h-full w-full text-white" style={{ background: "linear-gradient(160deg,#012a4a,#01497c 60%,#2a6f97)" }}>
-      <div className="absolute inset-0 opacity-70" style={{ background: `radial-gradient(circle at 100% 100%, ${a}55, transparent 55%)` }} />
-      <div className="relative flex h-full flex-col justify-between p-6">
-        <div>
-          <p className="text-[10px] uppercase tracking-[0.4em] text-white/60">{card.company || "Ocean"}</p>
-          <p className="mt-2 text-xl font-semibold tracking-tight">{card.name || "Your Name"}</p>
-          {card.title && <p className="text-xs text-white/70">{card.title}</p>}
-        </div>
-        <div className="flex items-end justify-between text-[11px] text-white/70">
-          <span>{card.email}</span>
-          <span className="h-6 w-6 rounded-full ring-2 ring-white/40" style={{ background: a }} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ForestTemplate({ card }: { card: CardData }) {
-  return (
-    <div className="relative h-full w-full text-white" style={{ background: "linear-gradient(160deg,#0b3d2e,#164a3a 60%,#22593d)" }}>
-      <div className="absolute inset-0 opacity-30" style={{ backgroundImage: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%)" }} />
-      <div className="relative flex h-full flex-col justify-between p-6">
-        <div className="flex items-center gap-3">
-          <Avatar card={card} ring="ring-white/25" fallbackBg="linear-gradient(135deg,#84cc16,#166534)" />
-          <div className="min-w-0">
-            <p className="truncate text-lg font-semibold">{card.name || "Your Name"}</p>
-            {card.title && <p className="truncate text-xs text-white/75">{card.title}</p>}
-          </div>
-        </div>
-        <div className="text-[10px] uppercase tracking-[0.35em] text-white/60">Forest · Cardix</div>
-      </div>
-    </div>
-  );
-}
-
-function HolographicTemplate({ card }: { card: CardData }) {
-  return (
-    <div className="relative h-full w-full text-white" style={{ background: "linear-gradient(115deg,#a7f3d0,#93c5fd 25%,#c4b5fd 50%,#f9a8d4 75%,#fde68a)" }}>
-      <div className="absolute inset-0 opacity-60" style={{ backgroundImage: "linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.6) 45%, transparent 70%)" }} />
-      <div className="relative flex h-full flex-col justify-between p-6" style={{ color: "#1a1030" }}>
-        <div>
-          <p className="text-[10px] uppercase tracking-[0.4em] opacity-70">Holographic</p>
-          <p className="mt-2 text-xl font-semibold tracking-tight">{card.name || "Your Name"}</p>
-          {card.title && <p className="text-xs opacity-80">{card.title}</p>}
-        </div>
-        <div className="text-[10px] uppercase tracking-[0.35em] opacity-70">{card.company || "Cardix"}</div>
-      </div>
-    </div>
-  );
-}
-
-function ExecutiveTemplate({ card }: { card: CardData }) {
-  const a = card.accent_color || "#c9a96e";
-  return (
-    <div className="relative h-full w-full text-white" style={{ background: "linear-gradient(180deg,#111827,#0b1120)" }}>
-      <div className="absolute left-0 top-0 h-full w-1" style={{ background: a }} />
-      <div className="relative flex h-full flex-col justify-between p-6 pl-7">
-        <div>
-          <p className="text-[10px] uppercase tracking-[0.4em]" style={{ color: a }}>{card.company || "Executive"}</p>
-          <p className="mt-2 text-xl font-semibold tracking-tight">{card.name || "Your Name"}</p>
-          {card.title && <p className="text-xs text-white/70">{card.title}</p>}
-        </div>
-        <div className="flex items-end justify-between text-[11px] text-white/60">
-          <span>{card.phone}</span>
-          <span className="truncate">{card.website?.replace(/^https?:\/\//, "")}</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function MonoTemplate({ card }: { card: CardData }) {
-  return (
-    <div className="relative h-full w-full" style={{ background: "#ffffff", color: "#0a0a0a" }}>
-      <div className="absolute inset-0" style={{ backgroundImage: "linear-gradient(#00000008 1px, transparent 1px), linear-gradient(90deg, #00000008 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
-      <div className="relative flex h-full flex-col justify-between p-6">
-        <div>
-          <p className="text-[10px] uppercase tracking-[0.4em] text-black/50">{card.company || "Studio"}</p>
-          <p className="mt-2 text-2xl font-semibold tracking-tight">{card.name || "Your Name"}</p>
-          {card.title && <p className="text-xs text-black/60">{card.title}</p>}
-        </div>
-        <div className="flex items-end justify-between text-[11px] text-black/60">
-          <span>{card.email}</span>
-          <span>Cardix</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function MarbleTemplate({ card }: { card: CardData }) {
-  const a = card.accent_color || "#7c34ff";
-  return (
-    <div className="relative h-full w-full" style={{ color: "#1a1a1a", background: "radial-gradient(circle at 20% 20%, #ffffff 0%, #ececec 25%, #d7d7d7 55%, #f5f5f5 80%)" }}>
-      <div aria-hidden className="absolute inset-0 opacity-40" style={{ backgroundImage: "linear-gradient(120deg, transparent 30%, rgba(0,0,0,0.06) 50%, transparent 70%)" }} />
-      <div className="relative flex h-full flex-col justify-between p-6">
-        <div>
-          <p style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[28px] leading-none">{card.name || "Your Name"}</p>
-          {card.title && <p className="mt-1 text-xs uppercase tracking-[0.25em] text-black/60">{card.title}</p>}
-        </div>
-        <div className="flex items-center justify-between text-[11px] text-black/60">
-          <span>{card.company}</span>
-          <span className="h-2 w-10 rounded-full" style={{ background: a }} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function CarbonTemplate({ card }: { card: CardData }) {
-  const a = card.accent_color || "#22d3ee";
-  return (
-    <div className="relative h-full w-full text-white" style={{ background: "#0a0a0a" }}>
-      <div className="absolute inset-0 opacity-70" style={{ backgroundImage: "repeating-linear-gradient(45deg, #1a1a1a 0 6px, #0a0a0a 6px 12px)" }} />
-      <div className="relative flex h-full flex-col justify-between p-6">
-        <div className="flex items-center gap-3">
-          <Avatar card={card} ring="ring-white/20" fallbackBg={`linear-gradient(135deg, ${a}, #1a1a1a)`} />
-          <div className="min-w-0">
-            <p className="truncate text-lg font-semibold">{card.name || "Your Name"}</p>
-            {card.title && <p className="truncate text-xs text-white/70">{card.title}</p>}
-          </div>
-        </div>
-        <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-white/50">
-          <span className="h-1.5 w-1.5 rounded-full" style={{ background: a }} /> Carbon
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function SandTemplate({ card }: { card: CardData }) {
-  const a = card.accent_color || "#a0522d";
-  return (
-    <div className="relative h-full w-full" style={{ background: "linear-gradient(160deg,#f5e6c8,#e8c9a0 60%,#c9a274)", color: "#3d2914" }}>
-      <div className="relative flex h-full flex-col justify-between p-6">
-        <div>
-          <p className="text-[10px] uppercase tracking-[0.4em] opacity-70">{card.company || "Sand"}</p>
-          <p className="mt-2 text-xl font-semibold tracking-tight">{card.name || "Your Name"}</p>
-          {card.title && <p className="text-xs opacity-70">{card.title}</p>}
-        </div>
-        <div className="h-1 w-16 rounded-full" style={{ background: a }} />
-      </div>
-    </div>
-  );
-}
-
-function RoseTemplate({ card }: { card: CardData }) {
-  return (
-    <div className="relative h-full w-full text-white" style={{ background: "linear-gradient(160deg,#831843,#be185d 60%,#f472b6)" }}>
-      <div className="absolute inset-0" style={{ background: "radial-gradient(circle at 100% 0%, #fda4af66, transparent 55%)" }} />
-      <div className="relative flex h-full flex-col justify-between p-6">
-        <div className="flex items-center gap-3">
-          <Avatar card={card} ring="ring-white/40" fallbackBg="linear-gradient(135deg,#fda4af,#be185d)" />
-          <div className="min-w-0">
-            <p className="truncate text-lg font-semibold">{card.name || "Your Name"}</p>
-            {card.title && <p className="truncate text-xs text-white/85">{card.title}</p>}
-          </div>
-        </div>
-        <div className="text-[10px] uppercase tracking-[0.35em] text-white/70">Rose · Cardix</div>
-      </div>
-    </div>
-  );
-}
-
-function EmeraldTemplate({ card }: { card: CardData }) {
-  return (
-    <div className="relative h-full w-full text-white" style={{ background: "linear-gradient(160deg,#022c22,#065f46 60%,#10b981)" }}>
-      <div className="absolute inset-0 opacity-60" style={{ background: "radial-gradient(circle at 0% 100%, #fbbf2455, transparent 55%)" }} />
-      <div className="relative flex h-full flex-col justify-between p-6">
-        <div>
-          <p className="text-[10px] uppercase tracking-[0.4em] text-white/70">{card.company || "Emerald"}</p>
-          <p className="mt-2 text-xl font-semibold tracking-tight">{card.name || "Your Name"}</p>
-          {card.title && <p className="text-xs text-white/80">{card.title}</p>}
-        </div>
-        <div className="text-[10px] uppercase tracking-[0.35em] text-white/60">Cardix</div>
-      </div>
-    </div>
-  );
-}
-
-function CosmicTemplate({ card }: { card: CardData }) {
-  const a = card.accent_color || "#a78bfa";
-  return (
-    <div className="relative h-full w-full text-white" style={{ background: "radial-gradient(ellipse at 30% 20%, #4c1d95 0%, #1e1b4b 40%, #030014 100%)" }}>
-      <div aria-hidden className="absolute inset-0" style={{ backgroundImage: "radial-gradient(#ffffff88 1px, transparent 1px), radial-gradient(#ffffff44 1px, transparent 1px)", backgroundSize: "40px 40px, 25px 25px", backgroundPosition: "0 0, 12px 8px" }} />
-      <div className="relative flex h-full flex-col justify-between p-6">
-        <div className="flex items-center gap-3">
-          <Avatar card={card} ring="ring-white/30" fallbackBg={`linear-gradient(135deg, ${a}, #4c1d95)`} />
-          <div className="min-w-0">
-            <p className="truncate text-lg font-semibold">{card.name || "Your Name"}</p>
-            {card.title && <p className="truncate text-xs text-white/75">{card.title}</p>}
-          </div>
-        </div>
-        <div className="text-[10px] uppercase tracking-[0.35em] text-white/60">Cosmic</div>
-      </div>
-    </div>
   );
 }
 
