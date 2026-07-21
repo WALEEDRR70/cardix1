@@ -1,10 +1,13 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { CardPreview } from "@/components/CardPreview";
-import { Download, QrCode as QrIcon } from "lucide-react";
+import { Download, QrCode as QrIcon, BookmarkPlus, Check } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { useQuery } from "@tanstack/react-query";
+import { useI18n } from "@/lib/i18n";
+import { toast } from "sonner";
+
 
 export const Route = createFileRoute("/c/$slug")({
   head: ({ params }) => ({
@@ -31,6 +34,10 @@ function NotFoundView() {
 
 function PublicCard() {
   const { slug } = Route.useParams();
+  const { t } = useI18n();
+  const [saved, setSaved] = useState(false);
+  const [savingCard, setSavingCard] = useState(false);
+
 
   const { data: card } = useQuery({
     queryKey: ["public-card", slug],
@@ -69,6 +76,38 @@ function PublicCard() {
     URL.revokeObjectURL(url);
   }
 
+  async function saveToVault() {
+    const { data: userRes } = await supabase.auth.getUser();
+    if (!userRes.user) {
+      window.location.href = `/auth?next=/c/${slug}`;
+      return;
+    }
+    setSavingCard(true);
+    const { error } = await supabase.from("saved_cards").insert({
+      user_id: userRes.user.id,
+      source: "public",
+      source_card_id: card!.id,
+      name: card!.name,
+      title: card!.title,
+      company: card!.company,
+      bio: card!.bio,
+      phone: card!.phone,
+      whatsapp: card!.whatsapp,
+      email: card!.email,
+      address: card!.address,
+      website: card!.website,
+      avatar_url: card!.avatar_url,
+    });
+    setSavingCard(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    await supabase.from("card_events").insert({ card_id: card!.id, event_type: "save" });
+    setSaved(true);
+    toast.success(t.savedToVault);
+  }
+
   const publicUrl = typeof window !== "undefined" ? window.location.href : `/c/${slug}`;
 
   return (
@@ -78,8 +117,18 @@ function PublicCard() {
 
         <div className="flex w-full max-w-md flex-col gap-3">
           <button onClick={vcard} className="flex items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-sm font-medium text-primary-foreground hover:opacity-90">
-            <Download className="h-4 w-4" /> Save contact
+            <Download className="h-4 w-4" /> {t.saveContact}
           </button>
+
+          <button
+            onClick={saveToVault}
+            disabled={saved || savingCard}
+            className="flex items-center justify-center gap-2 rounded-2xl border border-border bg-card py-4 text-sm font-medium text-foreground hover:bg-muted disabled:opacity-60"
+          >
+            {saved ? <Check className="h-4 w-4" /> : <BookmarkPlus className="h-4 w-4" />}
+            {saved ? t.savedToVault : savingCard ? t.saving : t.saveToVault}
+          </button>
+
 
           <details className="rounded-2xl border border-border bg-card p-4">
             <summary className="flex cursor-pointer items-center justify-center gap-2 text-sm text-muted-foreground">
