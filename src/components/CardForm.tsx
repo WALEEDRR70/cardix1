@@ -221,9 +221,24 @@ export function CardForm({
           {saving ? "…" : submitLabel}
         </button>
       </form>
+      </div>
+
+      {/* Desktop sticky preview */}
+      <aside className="hidden lg:block lg:order-2">
+        <div className="sticky top-8 space-y-4">
+          <div className="relative">
+            <div className="absolute -inset-6 rounded-[2.5rem] opacity-40 blur-2xl" style={{ background: "var(--gradient-mesh)" }} />
+            <div className="relative flex justify-center">
+              <CardPreview card={data} size="lg" />
+            </div>
+          </div>
+          <p className="text-center text-[11px] uppercase tracking-[0.25em] text-muted-foreground">Live preview</p>
+        </div>
+      </aside>
     </div>
   );
 }
+
 
 function Field({ label, value, onChange, required, type = "text", prefix }: {
   label: string; value: string; onChange: (v: string) => void;
