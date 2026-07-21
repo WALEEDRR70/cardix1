@@ -2,11 +2,13 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
-import { Camera, Upload, Loader2, Save, RefreshCw } from "lucide-react";
+import { Camera, Upload, Loader2, Save, RefreshCw, QrCode } from "lucide-react";
 import { scanBusinessCard } from "@/lib/ocr.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
+import { QrScanner } from "@/components/QrScanner";
+
 
 export const Route = createFileRoute("/_authenticated/scan")({
   head: () => ({
@@ -34,6 +36,84 @@ function ScanPage() {
   const [busy, setBusy] = useState(false);
   const [saving, setSaving] = useState(false);
   const [data, setData] = useState<Extracted | null>(null);
+  const [qrOpen, setQrOpen] = useState(false);
+  const [qrBusy, setQrBusy] = useState(false);
+
+  async function handleQrDetect(text: string) {
+    setQrBusy(true);
+    try {
+      // Extract slug: accept full URLs (…/c/<slug>) or bare slug
+      let slug: string | null = null;
+      try {
+        const u = new URL(text);
+        const m = u.pathname.match(/\/c\/([^/?#]+)/);
+        if (m) slug = decodeURIComponent(m[1]);
+      } catch {
+        const m = text.match(/\/c\/([^/?#]+)/) ?? text.match(/^([a-zA-Z0-9_-]{2,64})$/);
+        if (m) slug = m[1];
+      }
+      if (!slug) {
+        toast.error(t.invalidQr);
+        return;
+      }
+      const { data: card, error } = await supabase
+        .from("cards")
+        .select("id,user_id,slug,name,title,company,phone,whatsapp,email,website,address,bio,avatar_url")
+        .eq("slug", slug)
+        .eq("is_published", true)
+        .maybeSingle();
+      if (error || !card) {
+        toast.error(t.invalidQr);
+        return;
+      }
+      const { data: u } = await supabase.auth.getUser();
+      if (!u.user) return;
+      if (u.user.id === card.user_id) {
+        toast.info(t.ownCard);
+        nav({ to: "/c/$slug", params: { slug } });
+        return;
+      }
+      const { data: existing } = await supabase
+        .from("saved_cards")
+        .select("id")
+        .eq("user_id", u.user.id)
+        .eq("card_id", card.id)
+        .maybeSingle();
+      if (existing) {
+        toast.info(t.alreadySaved);
+        nav({ to: "/vault" });
+        return;
+      }
+      const { error: insErr } = await supabase.from("saved_cards").insert({
+        user_id: u.user.id,
+        card_id: card.id,
+        source: "qr",
+        name: card.name,
+        title: card.title,
+        company: card.company,
+        phone: card.phone,
+        whatsapp: card.whatsapp,
+        email: card.email,
+        website: card.website,
+        address: card.address,
+        bio: card.bio,
+        avatar_url: card.avatar_url,
+      });
+      if (insErr) {
+        toast.error(insErr.message);
+        return;
+      }
+      // log analytics event (best-effort)
+      supabase.from("card_events").insert({ card_id: card.id, kind: "save" }).then(() => {});
+      toast.success(t.savedToVault);
+      nav({ to: "/vault" });
+    } finally {
+      setQrBusy(false);
+      setQrOpen(false);
+    }
+  }
+
+
 
   async function handleFile(f: File) {
     const reader = new FileReader();
