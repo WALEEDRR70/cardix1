@@ -275,3 +275,104 @@ function Field({ label, value, onChange, required, type = "text", prefix }: {
     </div>
   );
 }
+
+function SocialsEditor({
+  value,
+  onChange,
+}: {
+  value: Record<string, string>;
+  onChange: (next: Record<string, string>) => void;
+}) {
+  const [picker, setPicker] = useState(false);
+  const active = SOCIALS.filter((s) => s.id in value);
+  const remaining = SOCIALS.filter((s) => !(s.id in value));
+
+  const setVal = (id: string, v: string) => onChange({ ...value, [id]: v });
+  const remove = (id: string) => {
+    const next = { ...value };
+    delete next[id];
+    onChange(next);
+  };
+
+  return (
+    <section>
+      <div className="mb-2 flex items-center justify-between px-1">
+        <label className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+          Social accounts
+        </label>
+        <button
+          type="button"
+          onClick={() => setPicker((p) => !p)}
+          className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-[11px] font-medium text-muted-foreground hover:text-foreground"
+        >
+          <Plus className="h-3 w-3" /> Add
+        </button>
+      </div>
+
+      {picker && remaining.length > 0 && (
+        <div className="mb-3 grid grid-cols-4 gap-2 rounded-2xl border border-border bg-card p-3 sm:grid-cols-6">
+          {remaining.map((s) => (
+            <button
+              key={s.id}
+              type="button"
+              onClick={() => {
+                setVal(s.id, "");
+                setPicker(false);
+              }}
+              className="group flex flex-col items-center gap-1 rounded-xl p-2 text-[10px] text-muted-foreground hover:bg-muted hover:text-foreground"
+              title={s.name}
+            >
+              <span
+                className="grid h-9 w-9 place-items-center rounded-xl text-white transition group-hover:scale-105"
+                style={{ background: s.color }}
+              >
+                <s.Icon className="h-4 w-4" />
+              </span>
+              <span className="line-clamp-1">{s.name}</span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {active.length > 0 && (
+        <div className="space-y-2">
+          {active.map((s) => (
+            <div key={s.id} className="flex items-center gap-2 rounded-2xl border border-input bg-card pr-2 focus-within:ring-2 focus-within:ring-ring">
+              <span
+                className="ml-2 grid h-9 w-9 shrink-0 place-items-center rounded-xl text-white"
+                style={{ background: s.color }}
+                title={s.name}
+              >
+                <s.Icon className="h-4 w-4" />
+              </span>
+              <input
+                value={value[s.id]}
+                onChange={(e) => setVal(s.id, e.target.value)}
+                placeholder={s.placeholder}
+                className="w-full bg-transparent py-3 text-sm outline-none"
+              />
+              <button
+                type="button"
+                onClick={() => remove(s.id)}
+                className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                aria-label="Remove"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {active.length === 0 && !picker && (
+        <p className="rounded-2xl border border-dashed border-border/70 px-4 py-3 text-center text-xs text-muted-foreground">
+          Add your X, Instagram, LinkedIn, TikTok, YouTube and more.
+        </p>
+      )}
+    </section>
+  );
+}
+
+// Suppress unused import warning: SOCIALS_BY_ID is re-exported for consumers of the public card.
+void SOCIALS_BY_ID;
+
