@@ -79,6 +79,10 @@ function PublicCard() {
   const [savingCard, setSavingCard] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
   const [nfcState, setNfcState] = useState<"idle" | "writing">("idle");
+  const [nfcResult, setNfcResult] = useState<null | "sent" | "failed" | "stopped">(null);
+  const [nfcRemaining, setNfcRemaining] = useState(0);
+  const [nfcSentCount, setNfcSentCount] = useState(0);
+  const [nfcError, setNfcError] = useState<string | null>(null);
   const [isOwner, setIsOwner] = useState(false);
   const [isAuthed, setIsAuthed] = useState(false);
   const cardWrapRef = useRef<HTMLDivElement | null>(null);
@@ -236,10 +240,11 @@ function PublicCard() {
   }
 
   const nfcAbortRef = useRef<AbortController | null>(null);
+  const nfcTickRef = useRef<number | null>(null);
+  const NFC_DURATION = 30;
   async function writeNfc() {
     if (nfcState === "writing") {
       nfcAbortRef.current?.abort();
-      setNfcState("idle");
       return;
     }
     const w = window as unknown as {
@@ -248,39 +253,76 @@ function PublicCard() {
       };
     };
     if (!w.NDEFReader) {
+      setNfcResult("failed");
+      setNfcError(t.nfcUnsupported);
       toast.error(t.nfcUnsupported);
       return;
     }
     const controller = new AbortController();
     nfcAbortRef.current = controller;
-    const timer = window.setTimeout(() => controller.abort(), 30000);
+    const deadline = Date.now() + NFC_DURATION * 1000;
+    const timer = window.setTimeout(() => controller.abort(), NFC_DURATION * 1000);
+    if (nfcTickRef.current) window.clearInterval(nfcTickRef.current);
+    setNfcRemaining(NFC_DURATION);
+    nfcTickRef.current = window.setInterval(() => {
+      const left = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+      setNfcRemaining(left);
+      if (left <= 0 && nfcTickRef.current) {
+        window.clearInterval(nfcTickRef.current);
+        nfcTickRef.current = null;
+      }
+    }, 250);
+    let sent = 0;
+    let hardError: string | null = null;
+    setNfcResult(null);
+    setNfcError(null);
+    setNfcSentCount(0);
     try {
       setNfcState("writing");
       toast(t.nfcTap);
       const reader = new w.NDEFReader();
-      // Broadcast the card URL — receiver's phone auto-opens it on tap.
       while (!controller.signal.aborted) {
         try {
           await reader.write(
             { records: [{ recordType: "url", data: publicUrl }] },
             { signal: controller.signal, overwrite: true },
           );
-          toast.success(t.nfcWritten);
+          sent += 1;
+          setNfcSentCount(sent);
+          setNfcResult("sent");
         } catch (err) {
           if (controller.signal.aborted) break;
           const name = (err as { name?: string }).name;
-          if (name === "AbortError" || name === "NotAllowedError") break;
-          // NoModificationAllowedError / NetworkError: tag pulled away — retry
+          if (name === "NotAllowedError") {
+            hardError = (err as Error).message;
+            break;
+          }
+          if (name === "AbortError") break;
           await new Promise((r) => setTimeout(r, 300));
         }
       }
     } catch (e) {
       const name = (e as { name?: string }).name;
-      if (name !== "AbortError") toast.error((e as Error).message);
+      if (name !== "AbortError") hardError = (e as Error).message;
     } finally {
       window.clearTimeout(timer);
+      if (nfcTickRef.current) {
+        window.clearInterval(nfcTickRef.current);
+        nfcTickRef.current = null;
+      }
       nfcAbortRef.current = null;
+      setNfcRemaining(0);
       setNfcState("idle");
+      if (hardError) {
+        setNfcError(hardError);
+        setNfcResult("failed");
+        toast.error(hardError);
+      } else if (sent === 0) {
+        setNfcResult("stopped");
+      } else {
+        setNfcResult("sent");
+        toast.success(t.nfcWritten);
+      }
     }
   }
 
@@ -564,6 +606,72 @@ function PublicCard() {
                       </button>
                     </div>
                   </div>
+
+                  {(nfcState === "writing" || nfcResult) && (
+                    <div
+                      className="mt-4 rounded-2xl border border-white/10 bg-white/[0.04] p-3"
+                      role="status"
+                      aria-live="polite"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span
+                          className={`relative inline-flex h-2.5 w-2.5 shrink-0 rounded-full ${
+                            nfcState === "writing"
+                              ? "bg-emerald-400"
+                              : nfcResult === "sent"
+                              ? "bg-emerald-400"
+                              : nfcResult === "failed"
+                              ? "bg-red-400"
+                              : "bg-yellow-400"
+                          }`}
+                        >
+                          {nfcState === "writing" && (
+                            <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400/60" />
+                          )}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-[12px] font-semibold text-foreground">
+                            {nfcState === "writing"
+                              ? t.nfcBroadcasting
+                              : nfcResult === "sent"
+                              ? t.nfcResultSent
+                              : nfcResult === "failed"
+                              ? t.nfcResultFailed
+                              : t.nfcResultStopped}
+                          </p>
+                          <p className="mt-0.5 truncate text-[11px] text-foreground/60">
+                            {nfcState === "writing"
+                              ? `${nfcRemaining}${t.secondsAbbr} · ${t.nfcSentLabel}: ${nfcSentCount}`
+                              : nfcResult === "failed" && nfcError
+                              ? nfcError
+                              : `${t.nfcSentLabel}: ${nfcSentCount}`}
+                          </p>
+                        </div>
+                        {nfcState === "writing" && (
+                          <div className="relative h-9 w-9 shrink-0">
+                            <svg viewBox="0 0 36 36" className="h-9 w-9 -rotate-90">
+                              <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="3" />
+                              <circle
+                                cx="18"
+                                cy="18"
+                                r="15"
+                                fill="none"
+                                stroke={accent}
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                strokeDasharray={2 * Math.PI * 15}
+                                strokeDashoffset={2 * Math.PI * 15 * (1 - nfcRemaining / NFC_DURATION)}
+                                style={{ transition: "stroke-dashoffset 250ms linear" }}
+                              />
+                            </svg>
+                            <span className="absolute inset-0 grid place-items-center text-[10px] font-semibold text-foreground">
+                              {nfcRemaining}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
 
                   <div className="mt-4 grid grid-cols-3 gap-2">
                     <QrAction icon={Share2} label={t.share} onClick={nativeShare} />
