@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LangRouteRouteImport } from './routes/$lang/route'
 import { Route as LangIndexRouteImport } from './routes/$lang/index'
 import { Route as CSlugRouteImport } from './routes/c.$slug'
 import { Route as LangAuthRouteImport } from './routes/$lang/auth'
@@ -22,10 +23,15 @@ import { Route as LangAuthenticatedCardsNewRouteImport } from './routes/$lang/_a
 import { Route as LangAuthenticatedCardsIdRouteImport } from './routes/$lang/_authenticated/cards.$id'
 import { Route as LangAuthenticatedCardsIdAnalyticsRouteImport } from './routes/$lang/_authenticated/cards.$id.analytics'
 
-const LangIndexRoute = LangIndexRouteImport.update({
-  id: '/$lang/',
-  path: '/$lang/',
+const LangRouteRoute = LangRouteRouteImport.update({
+  id: '/$lang',
+  path: '/$lang',
   getParentRoute: () => rootRouteImport,
+} as any)
+const LangIndexRoute = LangIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LangRouteRoute,
 } as any)
 const CSlugRoute = CSlugRouteImport.update({
   id: '/c/$slug',
@@ -33,14 +39,13 @@ const CSlugRoute = CSlugRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const LangAuthRoute = LangAuthRouteImport.update({
-  id: '/$lang/auth',
-  path: '/$lang/auth',
-  getParentRoute: () => rootRouteImport,
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => LangRouteRoute,
 } as any)
 const LangAuthenticatedRouteRoute = LangAuthenticatedRouteRouteImport.update({
-  id: '/$lang/_authenticated',
-  path: '/$lang',
-  getParentRoute: () => rootRouteImport,
+  id: '/_authenticated',
+  getParentRoute: () => LangRouteRoute,
 } as any)
 const LangAuthenticatedVaultRoute = LangAuthenticatedVaultRouteImport.update({
   id: '/vault',
@@ -90,7 +95,7 @@ const LangAuthenticatedCardsIdAnalyticsRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/$lang': typeof LangAuthenticatedRouteRouteWithChildren
+  '/$lang': typeof LangRouteRouteWithChildren
   '/$lang/auth': typeof LangAuthRoute
   '/c/$slug': typeof CSlugRoute
   '/$lang/': typeof LangIndexRoute
@@ -118,6 +123,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/$lang': typeof LangRouteRouteWithChildren
   '/$lang/_authenticated': typeof LangAuthenticatedRouteRouteWithChildren
   '/$lang/auth': typeof LangAuthRoute
   '/c/$slug': typeof CSlugRoute
@@ -161,6 +167,7 @@ export interface FileRouteTypes {
     | '/$lang/cards/$id/analytics'
   id:
     | '__root__'
+    | '/$lang'
     | '/$lang/_authenticated'
     | '/$lang/auth'
     | '/c/$slug'
@@ -176,20 +183,25 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  LangAuthenticatedRouteRoute: typeof LangAuthenticatedRouteRouteWithChildren
-  LangAuthRoute: typeof LangAuthRoute
+  LangRouteRoute: typeof LangRouteRouteWithChildren
   CSlugRoute: typeof CSlugRoute
-  LangIndexRoute: typeof LangIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/$lang': {
+      id: '/$lang'
+      path: '/$lang'
+      fullPath: '/$lang'
+      preLoaderRoute: typeof LangRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/$lang/': {
       id: '/$lang/'
-      path: '/$lang'
+      path: '/'
       fullPath: '/$lang/'
       preLoaderRoute: typeof LangIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof LangRouteRoute
     }
     '/c/$slug': {
       id: '/c/$slug'
@@ -200,17 +212,17 @@ declare module '@tanstack/react-router' {
     }
     '/$lang/auth': {
       id: '/$lang/auth'
-      path: '/$lang/auth'
+      path: '/auth'
       fullPath: '/$lang/auth'
       preLoaderRoute: typeof LangAuthRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof LangRouteRoute
     }
     '/$lang/_authenticated': {
       id: '/$lang/_authenticated'
-      path: '/$lang'
+      path: ''
       fullPath: '/$lang'
       preLoaderRoute: typeof LangAuthenticatedRouteRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof LangRouteRoute
     }
     '/$lang/_authenticated/vault': {
       id: '/$lang/_authenticated/vault'
@@ -324,11 +336,25 @@ const LangAuthenticatedRouteRouteWithChildren =
     LangAuthenticatedRouteRouteChildren,
   )
 
-const rootRouteChildren: RootRouteChildren = {
+interface LangRouteRouteChildren {
+  LangAuthenticatedRouteRoute: typeof LangAuthenticatedRouteRouteWithChildren
+  LangAuthRoute: typeof LangAuthRoute
+  LangIndexRoute: typeof LangIndexRoute
+}
+
+const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangAuthenticatedRouteRoute: LangAuthenticatedRouteRouteWithChildren,
   LangAuthRoute: LangAuthRoute,
-  CSlugRoute: CSlugRoute,
   LangIndexRoute: LangIndexRoute,
+}
+
+const LangRouteRouteWithChildren = LangRouteRoute._addFileChildren(
+  LangRouteRouteChildren,
+)
+
+const rootRouteChildren: RootRouteChildren = {
+  LangRouteRoute: LangRouteRouteWithChildren,
+  CSlugRoute: CSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
