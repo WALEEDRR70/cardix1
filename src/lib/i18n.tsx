@@ -119,6 +119,13 @@ const dict = {
     deleteConfirmTitle: "Delete this card?",
     deleteConfirmDesc: "This will permanently remove the card from your vault. This action can't be undone.",
     deleted: "Deleted",
+    scanQr: "Scan QR",
+    scanQrCardix: "Scan Cardix QR",
+    scanPaper: "Scan paper card",
+    pointAtQr: "Point the camera at a Cardix QR code.",
+    invalidQr: "This QR is not a Cardix card.",
+    alreadySaved: "This card is already in your vault.",
+    ownCard: "This is your own card.",
   },
 
 
@@ -238,6 +245,13 @@ const dict = {
     deleteConfirmTitle: "حذف هذه البطاقة؟",
     deleteConfirmDesc: "سيتم حذف البطاقة من خزنتك بشكل نهائي. لا يمكن التراجع عن هذا الإجراء.",
     deleted: "تم الحذف",
+    scanQr: "مسح رمز QR",
+    scanQrCardix: "مسح بطاقة كارديكس",
+    scanPaper: "مسح بطاقة ورقية",
+    pointAtQr: "وجّه الكاميرا نحو رمز QR الخاص ببطاقة كارديكس.",
+    invalidQr: "هذا الرمز ليس بطاقة كارديكس.",
+    alreadySaved: "هذه البطاقة محفوظة في خزنتك مسبقًا.",
+    ownCard: "هذه بطاقتك الخاصة.",
   },
 
 };
