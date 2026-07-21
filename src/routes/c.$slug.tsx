@@ -173,7 +173,17 @@ function PublicCard() {
     supabase.from("card_events").insert({ card_id: card!.id, event_type: "save" });
   }
 
-  async function saveToVault() {
+  async function openSaveDialog() {
+    const { data: userRes } = await supabase.auth.getUser();
+    if (!userRes.user) {
+      window.location.href = `/auth?next=/c/${slug}`;
+      return;
+    }
+    setNoteDraft("");
+    setNoteOpen(true);
+  }
+
+  async function confirmSaveToVault() {
     const { data: userRes } = await supabase.auth.getUser();
     if (!userRes.user) {
       window.location.href = `/auth?next=/c/${slug}`;
@@ -194,6 +204,10 @@ function PublicCard() {
       address: card!.address,
       website: card!.website,
       avatar_url: card!.avatar_url,
+      template: card!.template || "luxury",
+      accent_color: card!.accent_color,
+      socials: card!.socials || {},
+      notes: noteDraft.trim() || null,
     });
     setSavingCard(false);
     if (error) {
@@ -202,6 +216,7 @@ function PublicCard() {
     }
     await supabase.from("card_events").insert({ card_id: card!.id, event_type: "save" });
     setSaved(true);
+    setNoteOpen(false);
     toast.success(t.savedToVault);
   }
 
