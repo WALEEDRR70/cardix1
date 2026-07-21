@@ -2,6 +2,8 @@ import { useNavigate, useParams, useRouterState } from "@tanstack/react-router";
 import { SUPPORTED_LOCALES, LOCALE_META, DEFAULT_LOCALE, isSupportedLocale, type Locale } from "@/i18n/config";
 import { Globe, Check } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+
 
 /**
  * Compact language toggle (kept for back-compat).
