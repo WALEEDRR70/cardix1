@@ -96,6 +96,14 @@ function Vault() {
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
                     </div>
+                    <button
+                      onClick={(e) => editNote(e, c.id, c.notes)}
+                      className="mt-1.5 flex w-full items-center gap-1.5 rounded-lg bg-secondary/60 px-2 py-1 text-start text-[11px] italic text-muted-foreground transition hover:bg-secondary"
+                      aria-label={c.notes ? t.editNote : t.addNote}
+                    >
+                      <StickyNote className="h-3 w-3 shrink-0 opacity-70" />
+                      <span className="line-clamp-1 flex-1">{c.notes || t.addNote}</span>
+                    </button>
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {c.phone && <QuickPill icon={<Phone className="h-3 w-3" />} label={t.call} />}
                       {c.email && <QuickPill icon={<Mail className="h-3 w-3" />} label={t.email} />}
@@ -106,16 +114,6 @@ function Vault() {
                         </span>
                       )}
                     </div>
-                    <button
-                      onClick={(e) => editNote(e, c.id, c.notes)}
-                      className="mt-2 flex w-full items-center gap-1.5 rounded-lg bg-secondary/60 px-2 py-1.5 text-start text-[11px] italic text-muted-foreground transition hover:bg-secondary"
-                      aria-label={c.notes ? t.editNote : t.addNote}
-                    >
-                      <StickyNote className="h-3 w-3 shrink-0 opacity-70" />
-                      <span className="line-clamp-1 flex-1">
-                        {c.notes || t.addNote}
-                      </span>
-                    </button>
                   </div>
                 </div>
               </Link>
