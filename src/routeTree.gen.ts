@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CSlugRouteImport } from './routes/c.$slug'
 import { Route as AuthenticatedVaultRouteImport } from './routes/_authenticated/vault'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedScanRouteImport } from './routes/_authenticated/scan'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCardsNewRouteImport } from './routes/_authenticated/cards.new'
@@ -42,6 +43,11 @@ const CSlugRoute = CSlugRouteImport.update({
 const AuthenticatedVaultRoute = AuthenticatedVaultRouteImport.update({
   id: '/vault',
   path: '/vault',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedScanRoute = AuthenticatedScanRouteImport.update({
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/scan': typeof AuthenticatedScanRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/vault': typeof AuthenticatedVaultRoute
   '/c/$slug': typeof CSlugRoute
   '/cards/$id': typeof AuthenticatedCardsIdRouteWithChildren
@@ -87,6 +94,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/scan': typeof AuthenticatedScanRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/vault': typeof AuthenticatedVaultRoute
   '/c/$slug': typeof CSlugRoute
   '/cards/$id': typeof AuthenticatedCardsIdRouteWithChildren
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/scan': typeof AuthenticatedScanRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/vault': typeof AuthenticatedVaultRoute
   '/c/$slug': typeof CSlugRoute
   '/_authenticated/cards/$id': typeof AuthenticatedCardsIdRouteWithChildren
@@ -113,6 +122,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/scan'
+    | '/settings'
     | '/vault'
     | '/c/$slug'
     | '/cards/$id'
@@ -124,6 +134,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/scan'
+    | '/settings'
     | '/vault'
     | '/c/$slug'
     | '/cards/$id'
@@ -136,6 +147,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/dashboard'
     | '/_authenticated/scan'
+    | '/_authenticated/settings'
     | '/_authenticated/vault'
     | '/c/$slug'
     | '/_authenticated/cards/$id'
@@ -185,6 +197,13 @@ declare module '@tanstack/react-router' {
       path: '/vault'
       fullPath: '/vault'
       preLoaderRoute: typeof AuthenticatedVaultRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/scan': {
@@ -239,6 +258,7 @@ const AuthenticatedCardsIdRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedScanRoute: typeof AuthenticatedScanRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedVaultRoute: typeof AuthenticatedVaultRoute
   AuthenticatedCardsIdRoute: typeof AuthenticatedCardsIdRouteWithChildren
   AuthenticatedCardsNewRoute: typeof AuthenticatedCardsNewRoute
@@ -247,6 +267,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedScanRoute: AuthenticatedScanRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedVaultRoute: AuthenticatedVaultRoute,
   AuthenticatedCardsIdRoute: AuthenticatedCardsIdRouteWithChildren,
   AuthenticatedCardsNewRoute: AuthenticatedCardsNewRoute,

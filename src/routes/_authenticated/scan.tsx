@@ -1,13 +1,12 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Camera, Upload, Loader2, Save } from "lucide-react";
+import { Camera, Upload, Loader2, Save, RefreshCw } from "lucide-react";
 import { scanBusinessCard } from "@/lib/ocr.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
-import { LangToggle } from "@/components/LangToggle";
-import { CardPreview } from "@/components/CardPreview";
+import { MobileShell, PageHeader } from "@/components/MobileShell";
 
 export const Route = createFileRoute("/_authenticated/scan")({
   head: () => ({
@@ -48,11 +47,8 @@ function ScanPage() {
     setBusy(true);
     try {
       const out = await scan({ data: { imageDataUrl: dataUrl } });
-      if (!out.name) {
-        toast.error(t.scanFailed);
-      } else {
-        setData(out);
-      }
+      if (!out.name) toast.error(t.scanFailed);
+      else setData(out);
     } catch (e: unknown) {
       toast.error(e instanceof Error ? e.message : t.scanFailed);
     } finally {
@@ -84,86 +80,85 @@ function ScanPage() {
     nav({ to: "/vault" });
   }
 
+  function reset() { setImgUrl(null); setData(null); }
+
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-border">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link to="/dashboard" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="h-4 w-4" /> {t.dashboard}
-          </Link>
-          <LangToggle />
-        </div>
-      </header>
-
-      <main className="mx-auto grid max-w-5xl gap-8 px-6 py-10 md:grid-cols-2">
-        <section>
-          <h1 className="text-3xl font-semibold tracking-tight">{t.scanCard}</h1>
-          <p className="mt-2 text-sm text-muted-foreground">{t.scanCardDesc}</p>
-
-          <div className="mt-6 flex gap-3">
+    <MobileShell topBar={<PageHeader title={t.scanCard} subtitle={t.scanCardDesc} />}>
+      <div className="px-5">
+        {!imgUrl ? (
+          <div className="mt-4 space-y-3">
+            <div className="glass grid aspect-[3/4] w-full place-items-center overflow-hidden rounded-3xl border-2 border-dashed border-border">
+              <div className="text-center">
+                <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl text-accent-foreground shadow-glow" style={{ background: "var(--gradient-gold)" }}>
+                  <Camera className="h-7 w-7" />
+                </div>
+                <p className="mt-4 text-sm text-muted-foreground">Position the card inside the frame.</p>
+              </div>
+            </div>
             <button
               onClick={() => camRef.current?.click()}
-              className="flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90"
+              className="flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-semibold text-accent-foreground shadow-glow"
+              style={{ background: "var(--gradient-gold)" }}
             >
-              <Camera className="h-4 w-4" /> {t.takePhoto}
+              <Camera className="h-5 w-5" /> {t.takePhoto}
             </button>
             <button
               onClick={() => fileRef.current?.click()}
-              className="flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-medium hover:bg-muted"
+              className="glass flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-medium"
             >
               <Upload className="h-4 w-4" /> {t.uploadImage}
             </button>
           </div>
-
-          <input
-            ref={camRef}
-            type="file"
-            accept="image/*"
-            capture="environment"
-            className="hidden"
-            onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-          />
-          <input
-            ref={fileRef}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-          />
-
-          {imgUrl && (
-            <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-muted">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={imgUrl} alt="Scanned card" className="max-h-80 w-full object-contain" />
+        ) : (
+          <div className="mt-4 space-y-4">
+            <div className="relative overflow-hidden rounded-3xl border border-border bg-black">
+              <img src={imgUrl} alt="Scanned" className="max-h-72 w-full object-contain" />
+              {busy && (
+                <div className="absolute inset-0 grid place-items-center bg-black/60 backdrop-blur-sm">
+                  <div className="flex flex-col items-center gap-3 text-white">
+                    <Loader2 className="h-8 w-8 animate-spin" />
+                    <p className="text-sm">{t.scanning}</p>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
 
-          {busy && (
-            <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
-              <Loader2 className="h-4 w-4 animate-spin" /> {t.scanning}
-            </div>
-          )}
-        </section>
+            {data && !busy && (
+              <div className="glass space-y-1 rounded-3xl p-5">
+                <p className="text-lg font-semibold">{data.name || "Unknown"}</p>
+                {data.title && <p className="text-xs text-muted-foreground">{data.title}</p>}
+                {data.company && <p className="text-xs text-muted-foreground">{data.company}</p>}
+                <div className="mt-3 space-y-1 border-t border-border pt-3 text-xs text-muted-foreground">
+                  {data.phone && <p>📞 {data.phone}</p>}
+                  {data.email && <p>✉️ {data.email}</p>}
+                  {data.website && <p>🌐 {data.website}</p>}
+                  {data.address && <p>📍 {data.address}</p>}
+                </div>
+              </div>
+            )}
 
-        <section>
-          {data ? (
-            <div className="space-y-4">
-              <CardPreview card={{ ...data, name: data.name || "Unknown", accent_color: "#D4AF37" }} />
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                onClick={reset}
+                className="glass flex items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-medium"
+              >
+                <RefreshCw className="h-4 w-4" /> Retry
+              </button>
               <button
                 onClick={save}
-                disabled={saving}
-                className="flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground hover:opacity-90 disabled:opacity-60"
+                disabled={!data || saving}
+                className="flex items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-semibold text-accent-foreground shadow-glow disabled:opacity-60"
+                style={{ background: "var(--gradient-gold)" }}
               >
                 <Save className="h-4 w-4" /> {saving ? "…" : t.saveToVault}
               </button>
             </div>
-          ) : (
-            <div className="flex h-full min-h-[300px] items-center justify-center rounded-2xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
-              {t.scanCardDesc}
-            </div>
-          )}
-        </section>
-      </main>
-    </div>
+          </div>
+        )}
+
+        <input ref={camRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
+        <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
+      </div>
+    </MobileShell>
   );
 }
