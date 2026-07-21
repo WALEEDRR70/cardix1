@@ -91,7 +91,7 @@ function DesktopSidebar() {
 }
 
 /* -------------------- Mobile bottom nav + FAB -------------------- */
-function MobileBottomNav() {
+export function MobileBottomNav() {
   const { t } = useI18n();
   const path = useRouterState({ select: (s) => s.location.pathname });
 
