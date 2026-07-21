@@ -167,6 +167,7 @@ export function PageHeader({
   right?: ReactNode;
   back?: string;
 }) {
+  const { t } = useI18n();
   return (
     <header className="safe-top px-4 pb-2.5 pt-3 lg:px-8 lg:pb-6 lg:pt-8">
       <div className="flex items-center justify-between gap-3">
