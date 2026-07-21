@@ -542,11 +542,6 @@ function PublicCard() {
                   </div>
 
 
-                  <div className="mt-4 grid grid-cols-3 gap-2">
-                    <QrAction icon={Share2} label={t.share} onClick={nativeShare} />
-                    <QrAction icon={Download} label={t.download} onClick={downloadQr} />
-                    <QrAction icon={Maximize2} label={t.expand} onClick={() => setQrOpen(true)} />
-                  </div>
                 </div>
               </div>
             </section>
@@ -555,15 +550,25 @@ function PublicCard() {
         </div>
 
         {/* Footer */}
-        <footer className="mt-14 flex items-center justify-center gap-2">
-          <img src={logoAsset.url} alt="" className="h-4 w-4 opacity-70" />
-          <a
-            href="/"
-            className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground hover:text-foreground"
-          >
-            Powered by Cardix
-          </a>
+        <footer className="mt-14 flex flex-col items-center gap-4">
+          {isOwner && (
+            <div className="flex items-center gap-2">
+              <IconOnlyAction icon={Share2} label={t.share} onClick={nativeShare} />
+              <IconOnlyAction icon={Download} label={t.download} onClick={downloadQr} />
+              <IconOnlyAction icon={Maximize2} label={t.expand} onClick={() => setQrOpen(true)} />
+            </div>
+          )}
+          <div className="flex items-center justify-center gap-2">
+            <img src={logoAsset.url} alt="" className="h-4 w-4 opacity-70" />
+            <a
+              href="/"
+              className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground hover:text-foreground"
+            >
+              Powered by Cardix
+            </a>
+          </div>
         </footer>
+
       </main>
 
       {/* Sticky save-contact CTA */}
@@ -715,7 +720,7 @@ function ActionTile({
   );
 }
 
-function QrAction({
+function IconOnlyAction({
   icon: Icon,
   label,
   onClick,
@@ -727,13 +732,15 @@ function QrAction({
   return (
     <button
       onClick={onClick}
-      className="glass card-lift flex items-center justify-center gap-1.5 rounded-full py-2.5 text-[11px] font-medium text-foreground/85 transition hover:text-foreground"
+      aria-label={label}
+      title={label}
+      className="glass card-lift grid h-10 w-10 place-items-center rounded-full text-foreground/85 transition hover:text-foreground"
     >
-      <Icon className="h-3.5 w-3.5" />
-      {label}
+      <Icon className="h-4 w-4" />
     </button>
   );
 }
+
 
 function getReadableText(hex: string): string {
   const h = hex.replace("#", "");
