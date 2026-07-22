@@ -829,7 +829,7 @@ function CardPoster({
                   <div style={{ position: "relative" }}>
                     <div style={{ position: "absolute", inset: -6, borderRadius: "50%", background: `radial-gradient(circle, ${accent}66, transparent 70%)`, filter: "blur(10px)" }} />
                     <span style={{ position: "relative", width: 82, height: 82, display: "grid", placeItems: "center", borderRadius: "50%", background: `linear-gradient(135deg, ${accent}, ${accent}99)`, color: accentText, boxShadow: `0 12px 30px -8px ${accent}, inset 0 1px 0 rgba(255,255,255,0.3)` }}>
-                      <meta.Icon className="h-9 w-9" />
+                      <meta.Icon size={40} />
                     </span>
                   </div>
                   <span dir="ltr" style={{ fontSize: 17, fontWeight: 700, color: "#fff", opacity: 0.95 }}>@{handle}</span>
