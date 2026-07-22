@@ -18,9 +18,9 @@ export interface SocialMeta {
 }
 
 /* Compact brand glyphs, viewBox 0 0 24 24, currentColor fill */
-const P = (d: string) => (props: { className?: string; size?: number; style?: React.CSSProperties }) => (
+const P = (d: string, viewBox = "0 0 24 24") => (props: { className?: string; size?: number; style?: React.CSSProperties }) => (
   <svg
-    viewBox="0 0 24 24"
+    viewBox={viewBox}
     fill="currentColor"
     preserveAspectRatio="xMidYMid meet"
     width={props.size}
