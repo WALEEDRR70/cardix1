@@ -790,18 +790,18 @@ function CardPoster({
 
       {/* Contact rows */}
       {infoRows.length > 0 && (
-        <div style={{ position: "relative", width: "100%", display: "flex", flexDirection: "column", gap: 14 }}>
+        <div style={{ position: "relative", width: "100%", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
           {infoRows.map((a) => {
             const Icon = a.icon;
             return (
-              <div key={a.id} style={{ display: "flex", alignItems: "center", gap: 20, padding: "18px 24px", background: "linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015))", border: `1px solid ${accent}33`, borderRadius: 20, position: "relative", overflow: "hidden" }}>
-                <div style={{ position: "absolute", insetInlineEnd: 0, top: 12, bottom: 12, width: 3, borderRadius: 3, background: `linear-gradient(180deg, transparent, ${accent}, transparent)` }} />
-                <span style={{ width: 60, height: 60, display: "grid", placeItems: "center", borderRadius: 18, background: `linear-gradient(135deg, ${accent}44, ${accent}11)`, border: `1px solid ${accent}66`, color: accent, flexShrink: 0, boxShadow: `inset 0 1px 0 rgba(255,255,255,0.08), 0 6px 20px -6px ${accent}88` }}>
-                  <Icon style={{ width: 26, height: 26 }} strokeWidth={2.2} />
+              <div key={a.id} style={{ display: "flex", alignItems: "center", gap: 18, padding: "22px 24px", background: "linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015))", border: `1px solid ${accent}33`, borderRadius: 22, position: "relative", overflow: "hidden", minWidth: 0 }}>
+                <div style={{ position: "absolute", insetInlineEnd: 0, top: 14, bottom: 14, width: 3, borderRadius: 3, background: `linear-gradient(180deg, transparent, ${accent}, transparent)` }} />
+                <span style={{ width: 64, height: 64, display: "grid", placeItems: "center", borderRadius: 18, background: `linear-gradient(135deg, ${accent}44, ${accent}11)`, border: `1px solid ${accent}66`, color: accent, flexShrink: 0, boxShadow: `inset 0 1px 0 rgba(255,255,255,0.08), 0 6px 20px -6px ${accent}88` }}>
+                  <Icon style={{ width: 30, height: 30 }} strokeWidth={2.2} />
                 </span>
                 <div style={{ minWidth: 0, flex: 1 }}>
-                  <div style={{ fontSize: 13, opacity: 0.55, letterSpacing: "0.14em", fontWeight: 600, textTransform: "uppercase" }}>{a.label}</div>
-                  <div dir="ltr" style={{ fontSize: 24, fontWeight: 700, marginTop: 4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", textAlign: isRtl ? "right" : "left", color: "#fff" }}>{a.value}</div>
+                  <div style={{ fontSize: 18, opacity: 0.6, letterSpacing: "0.06em", fontWeight: 600 }}>{a.label}</div>
+                  <div dir="ltr" style={{ fontSize: 28, fontWeight: 800, marginTop: 4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", textAlign: isRtl ? "right" : "left", color: "#fff" }}>{a.value}</div>
                 </div>
               </div>
             );
