@@ -843,11 +843,11 @@ function CardPoster({
       {/* QR + NFC block */}
       <div style={{ position: "relative", width: "100%", marginTop: "auto", display: "flex", alignItems: "center", gap: 32, padding: 28, background: "linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015))", border: `1px solid ${accent}44`, borderRadius: 32, boxShadow: `0 20px 60px -20px ${accent}66` }}>
         <div style={{ position: "relative", flexShrink: 0 }}>
-          <div style={{ position: "absolute", inset: -14, borderRadius: 28, background: `linear-gradient(135deg, ${accent}, transparent, ${accent})`, filter: "blur(18px)", opacity: 0.85 }} />
-          <div style={{ position: "relative", background: "#fff", padding: 16, borderRadius: 24, boxShadow: `0 0 0 2px ${accent}` }}>
-            {qrDataUrl && <img src={qrDataUrl} alt="" style={{ width: 260, height: 260, display: "block" }} />}
-            <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 66, height: 66, borderRadius: 16, background: "linear-gradient(135deg, #1a0b2e, #0a0514)", display: "grid", placeItems: "center", border: "4px solid #fff", boxShadow: `0 6px 18px ${accent}` }}>
-              <img src={logoUrl} alt="" crossOrigin="anonymous" style={{ width: 36, height: 36 }} />
+          <div style={{ position: "absolute", inset: -14, borderRadius: 32, background: `linear-gradient(135deg, ${accent}, transparent, ${accent})`, filter: "blur(18px)", opacity: 0.85 }} />
+          <div style={{ position: "relative", background: "#fff", padding: 18, borderRadius: 28, boxShadow: `0 0 0 2px ${accent}` }}>
+            {qrDataUrl && <img src={qrDataUrl} alt="" style={{ width: 340, height: 340, display: "block" }} />}
+            <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 82, height: 82, borderRadius: 20, background: "linear-gradient(135deg, #1a0b2e, #0a0514)", display: "grid", placeItems: "center", border: "5px solid #fff", boxShadow: `0 6px 18px ${accent}` }}>
+              <img src={logoUrl} alt="" crossOrigin="anonymous" style={{ width: 44, height: 44 }} />
             </div>
           </div>
         </div>
