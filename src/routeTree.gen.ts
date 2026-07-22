@@ -17,6 +17,7 @@ import { Route as SitemapChar123langChar125DotxmlRouteImport } from './routes/si
 import { Route as CSlugRouteImport } from './routes/c.$slug'
 import { Route as LangAuthRouteImport } from './routes/$lang/auth'
 import { Route as LangAuthenticatedRouteRouteImport } from './routes/$lang/_authenticated/route'
+import { Route as LangToolsIndexRouteImport } from './routes/$lang/tools/index'
 import { Route as LangLIndexRouteImport } from './routes/$lang/l/index'
 import { Route as LangBlogIndexRouteImport } from './routes/$lang/blog/index'
 import { Route as LangLSlugRouteImport } from './routes/$lang/l/$slug'
@@ -68,6 +69,11 @@ const LangAuthRoute = LangAuthRouteImport.update({
 } as any)
 const LangAuthenticatedRouteRoute = LangAuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => LangRouteRoute,
+} as any)
+const LangToolsIndexRoute = LangToolsIndexRouteImport.update({
+  id: '/tools/',
+  path: '/tools/',
   getParentRoute: () => LangRouteRoute,
 } as any)
 const LangLIndexRoute = LangLIndexRouteImport.update({
@@ -153,6 +159,7 @@ export interface FileRoutesByFullPath {
   '/$lang/l/$slug': typeof LangLSlugRoute
   '/$lang/blog/': typeof LangBlogIndexRoute
   '/$lang/l/': typeof LangLIndexRoute
+  '/$lang/tools/': typeof LangToolsIndexRoute
   '/$lang/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/cards/new': typeof LangAuthenticatedCardsNewRoute
   '/$lang/vault/$id': typeof LangAuthenticatedVaultIdRoute
@@ -173,6 +180,7 @@ export interface FileRoutesByTo {
   '/$lang/l/$slug': typeof LangLSlugRoute
   '/$lang/blog': typeof LangBlogIndexRoute
   '/$lang/l': typeof LangLIndexRoute
+  '/$lang/tools': typeof LangToolsIndexRoute
   '/$lang/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/cards/new': typeof LangAuthenticatedCardsNewRoute
   '/$lang/vault/$id': typeof LangAuthenticatedVaultIdRoute
@@ -196,6 +204,7 @@ export interface FileRoutesById {
   '/$lang/l/$slug': typeof LangLSlugRoute
   '/$lang/blog/': typeof LangBlogIndexRoute
   '/$lang/l/': typeof LangLIndexRoute
+  '/$lang/tools/': typeof LangToolsIndexRoute
   '/$lang/_authenticated/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/_authenticated/cards/new': typeof LangAuthenticatedCardsNewRoute
   '/$lang/_authenticated/vault/$id': typeof LangAuthenticatedVaultIdRoute
@@ -219,6 +228,7 @@ export interface FileRouteTypes {
     | '/$lang/l/$slug'
     | '/$lang/blog/'
     | '/$lang/l/'
+    | '/$lang/tools/'
     | '/$lang/cards/$id'
     | '/$lang/cards/new'
     | '/$lang/vault/$id'
@@ -239,6 +249,7 @@ export interface FileRouteTypes {
     | '/$lang/l/$slug'
     | '/$lang/blog'
     | '/$lang/l'
+    | '/$lang/tools'
     | '/$lang/cards/$id'
     | '/$lang/cards/new'
     | '/$lang/vault/$id'
@@ -261,6 +272,7 @@ export interface FileRouteTypes {
     | '/$lang/l/$slug'
     | '/$lang/blog/'
     | '/$lang/l/'
+    | '/$lang/tools/'
     | '/$lang/_authenticated/cards/$id'
     | '/$lang/_authenticated/cards/new'
     | '/$lang/_authenticated/vault/$id'
@@ -331,6 +343,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/$lang'
       preLoaderRoute: typeof LangAuthenticatedRouteRouteImport
+      parentRoute: typeof LangRouteRoute
+    }
+    '/$lang/tools/': {
+      id: '/$lang/tools/'
+      path: '/tools'
+      fullPath: '/$lang/tools/'
+      preLoaderRoute: typeof LangToolsIndexRouteImport
       parentRoute: typeof LangRouteRoute
     }
     '/$lang/l/': {
@@ -481,6 +500,7 @@ interface LangRouteRouteChildren {
   LangLSlugRoute: typeof LangLSlugRoute
   LangBlogIndexRoute: typeof LangBlogIndexRoute
   LangLIndexRoute: typeof LangLIndexRoute
+  LangToolsIndexRoute: typeof LangToolsIndexRoute
 }
 
 const LangRouteRouteChildren: LangRouteRouteChildren = {
@@ -491,6 +511,7 @@ const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangLSlugRoute: LangLSlugRoute,
   LangBlogIndexRoute: LangBlogIndexRoute,
   LangLIndexRoute: LangLIndexRoute,
+  LangToolsIndexRoute: LangToolsIndexRoute,
 }
 
 const LangRouteRouteWithChildren = LangRouteRoute._addFileChildren(
