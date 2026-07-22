@@ -757,7 +757,7 @@ function CardPoster({
             <span style={{ width: 6, height: 6, borderRadius: 999, background: accent }} />
             <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.2em", color: accent }}>DIGITAL CARD</span>
           </div>
-          <div style={{ fontSize: 64, fontWeight: 800, lineHeight: 1.02, letterSpacing: "-0.03em", background: `linear-gradient(135deg, #ffffff 0%, ${accent}dd 100%)`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>{card.name}</div>
+          <div style={{ fontSize: 64, fontWeight: 800, lineHeight: 1.02, letterSpacing: "-0.03em", color: "#ffffff", textShadow: `0 4px 30px ${accent}88` }}>{card.name}</div>
           {(card.title || card.company) && (
             <div style={{ marginTop: 16, fontSize: 26, opacity: 0.85, fontWeight: 500 }}>
               {[card.company, card.title].filter(Boolean).join(" · ")}
@@ -845,7 +845,7 @@ function CardPoster({
           {publicUrl.replace(/^https?:\/\//, "")}
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <span style={{ fontSize: 18, fontWeight: 800, letterSpacing: "0.4em", background: `linear-gradient(135deg, #fff, ${accent})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>CARDIX</span>
+          <span style={{ fontSize: 18, fontWeight: 800, letterSpacing: "0.4em", color: accent }}>CARDIX</span>
           <div style={{ width: 40, height: 40, borderRadius: 12, background: `linear-gradient(135deg, ${accent}, ${accent}88)`, display: "grid", placeItems: "center", boxShadow: `0 8px 24px -6px ${accent}` }}>
             <img src={logoUrl} alt="" crossOrigin="anonymous" style={{ width: 24, height: 24 }} />
           </div>
