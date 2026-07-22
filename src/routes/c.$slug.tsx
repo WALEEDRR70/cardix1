@@ -27,6 +27,8 @@ import { useI18n } from "@/lib/i18n";
 import { toast } from "sonner";
 import { SOCIALS_BY_ID } from "@/lib/socials";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
+import { toPng } from "html-to-image";
+import QRCode from "qrcode";
 
 export const Route = createFileRoute("/c/$slug")({
   head: ({ params }) => ({
