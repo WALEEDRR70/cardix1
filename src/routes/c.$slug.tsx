@@ -619,7 +619,7 @@ function PublicCard() {
           {isOwner && (
             <div className="flex items-center gap-2">
               <IconOnlyAction icon={Share2} label={t.share} onClick={nativeShare} />
-              <IconOnlyAction icon={Download} label={t.download} onClick={downloadQr} />
+              <IconOnlyAction icon={Download} label={t.download} onClick={downloadCardImage} disabled={downloadingPoster} />
               <IconOnlyAction icon={Maximize2} label={t.expand} onClick={() => setQrOpen(true)} />
             </div>
           )}
