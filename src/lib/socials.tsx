@@ -14,15 +14,24 @@ export interface SocialMeta {
   placeholder: string;
   /** Build a full URL from the user's stored value. Value may be handle or URL. */
   toUrl: (value: string) => string;
-  Icon: (props: { className?: string }) => ReactNode;
+  Icon: (props: { className?: string; size?: number; style?: React.CSSProperties }) => ReactNode;
 }
 
 /* Compact brand glyphs, viewBox 0 0 24 24, currentColor fill */
-const P = (d: string) => (props: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={props.className}>
+const P = (d: string) => (props: { className?: string; size?: number; style?: React.CSSProperties }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    preserveAspectRatio="xMidYMid meet"
+    width={props.size}
+    height={props.size}
+    className={props.className}
+    style={{ display: "block", flexShrink: 0, ...props.style }}
+  >
     <path d={d} />
   </svg>
 );
+
 
 const stripAt = (v: string) => v.replace(/^@/, "").trim();
 const asUrl = (v: string, base: string) => {
