@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { SUPPORTED_LOCALES, SITE_ORIGIN, isSupportedLocale } from "@/i18n/config";
 import { getAllLandingSlugs } from "@/i18n/landing-pages";
+import { getAllPostSlugs } from "@/i18n/blog-posts";
 
 const BASE_PATHS = ["/", "/features", "/pricing", "/about", "/contact", "/blog", "/l"];
 
@@ -13,7 +14,8 @@ export const Route = createFileRoute("/sitemap/{$lang}.xml")({
         if (!isSupportedLocale(lang)) return new Response("Not found", { status: 404 });
 
         const landingPaths = getAllLandingSlugs().map((s) => `/l/${s}`);
-        const allPaths = [...BASE_PATHS, ...landingPaths];
+        const blogPaths = getAllPostSlugs().map((s) => `/blog/${s}`);
+        const allPaths = [...BASE_PATHS, ...landingPaths, ...blogPaths];
 
         const urls = allPaths.map((p) => {
           const path = p === "/" ? "" : p;
