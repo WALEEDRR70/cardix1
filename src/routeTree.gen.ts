@@ -20,6 +20,7 @@ import { Route as LangAuthenticatedRouteRouteImport } from './routes/$lang/_auth
 import { Route as LangToolsIndexRouteImport } from './routes/$lang/tools/index'
 import { Route as LangLIndexRouteImport } from './routes/$lang/l/index'
 import { Route as LangBlogIndexRouteImport } from './routes/$lang/blog/index'
+import { Route as LangToolsSlugRouteImport } from './routes/$lang/tools/$slug'
 import { Route as LangLSlugRouteImport } from './routes/$lang/l/$slug'
 import { Route as LangBlogSlugRouteImport } from './routes/$lang/blog/$slug'
 import { Route as LangAuthenticatedVaultRouteImport } from './routes/$lang/_authenticated/vault'
@@ -84,6 +85,11 @@ const LangLIndexRoute = LangLIndexRouteImport.update({
 const LangBlogIndexRoute = LangBlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
+  getParentRoute: () => LangRouteRoute,
+} as any)
+const LangToolsSlugRoute = LangToolsSlugRouteImport.update({
+  id: '/tools/$slug',
+  path: '/tools/$slug',
   getParentRoute: () => LangRouteRoute,
 } as any)
 const LangLSlugRoute = LangLSlugRouteImport.update({
@@ -157,6 +163,7 @@ export interface FileRoutesByFullPath {
   '/$lang/vault': typeof LangAuthenticatedVaultRouteWithChildren
   '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/l/$slug': typeof LangLSlugRoute
+  '/$lang/tools/$slug': typeof LangToolsSlugRoute
   '/$lang/blog/': typeof LangBlogIndexRoute
   '/$lang/l/': typeof LangLIndexRoute
   '/$lang/tools/': typeof LangToolsIndexRoute
@@ -178,6 +185,7 @@ export interface FileRoutesByTo {
   '/$lang/vault': typeof LangAuthenticatedVaultRouteWithChildren
   '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/l/$slug': typeof LangLSlugRoute
+  '/$lang/tools/$slug': typeof LangToolsSlugRoute
   '/$lang/blog': typeof LangBlogIndexRoute
   '/$lang/l': typeof LangLIndexRoute
   '/$lang/tools': typeof LangToolsIndexRoute
@@ -202,6 +210,7 @@ export interface FileRoutesById {
   '/$lang/_authenticated/vault': typeof LangAuthenticatedVaultRouteWithChildren
   '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/l/$slug': typeof LangLSlugRoute
+  '/$lang/tools/$slug': typeof LangToolsSlugRoute
   '/$lang/blog/': typeof LangBlogIndexRoute
   '/$lang/l/': typeof LangLIndexRoute
   '/$lang/tools/': typeof LangToolsIndexRoute
@@ -226,6 +235,7 @@ export interface FileRouteTypes {
     | '/$lang/vault'
     | '/$lang/blog/$slug'
     | '/$lang/l/$slug'
+    | '/$lang/tools/$slug'
     | '/$lang/blog/'
     | '/$lang/l/'
     | '/$lang/tools/'
@@ -247,6 +257,7 @@ export interface FileRouteTypes {
     | '/$lang/vault'
     | '/$lang/blog/$slug'
     | '/$lang/l/$slug'
+    | '/$lang/tools/$slug'
     | '/$lang/blog'
     | '/$lang/l'
     | '/$lang/tools'
@@ -270,6 +281,7 @@ export interface FileRouteTypes {
     | '/$lang/_authenticated/vault'
     | '/$lang/blog/$slug'
     | '/$lang/l/$slug'
+    | '/$lang/tools/$slug'
     | '/$lang/blog/'
     | '/$lang/l/'
     | '/$lang/tools/'
@@ -364,6 +376,13 @@ declare module '@tanstack/react-router' {
       path: '/blog'
       fullPath: '/$lang/blog/'
       preLoaderRoute: typeof LangBlogIndexRouteImport
+      parentRoute: typeof LangRouteRoute
+    }
+    '/$lang/tools/$slug': {
+      id: '/$lang/tools/$slug'
+      path: '/tools/$slug'
+      fullPath: '/$lang/tools/$slug'
+      preLoaderRoute: typeof LangToolsSlugRouteImport
       parentRoute: typeof LangRouteRoute
     }
     '/$lang/l/$slug': {
@@ -498,6 +517,7 @@ interface LangRouteRouteChildren {
   LangIndexRoute: typeof LangIndexRoute
   LangBlogSlugRoute: typeof LangBlogSlugRoute
   LangLSlugRoute: typeof LangLSlugRoute
+  LangToolsSlugRoute: typeof LangToolsSlugRoute
   LangBlogIndexRoute: typeof LangBlogIndexRoute
   LangLIndexRoute: typeof LangLIndexRoute
   LangToolsIndexRoute: typeof LangToolsIndexRoute
@@ -509,6 +529,7 @@ const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangIndexRoute: LangIndexRoute,
   LangBlogSlugRoute: LangBlogSlugRoute,
   LangLSlugRoute: LangLSlugRoute,
+  LangToolsSlugRoute: LangToolsSlugRoute,
   LangBlogIndexRoute: LangBlogIndexRoute,
   LangLIndexRoute: LangLIndexRoute,
   LangToolsIndexRoute: LangToolsIndexRoute,
