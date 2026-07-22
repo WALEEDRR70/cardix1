@@ -774,17 +774,20 @@ function IconOnlyAction({
   icon: Icon,
   label,
   onClick,
+  disabled,
 }: {
   icon: typeof Phone;
   label: string;
   onClick: () => void;
+  disabled?: boolean;
 }) {
   return (
     <button
       onClick={onClick}
+      disabled={disabled}
       aria-label={label}
       title={label}
-      className="glass card-lift grid h-10 w-10 place-items-center rounded-full text-foreground/85 transition hover:text-foreground"
+      className="glass card-lift grid h-10 w-10 place-items-center rounded-full text-foreground/85 transition hover:text-foreground disabled:opacity-50"
     >
       <Icon className="h-4 w-4" />
     </button>
