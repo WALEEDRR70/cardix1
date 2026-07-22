@@ -198,9 +198,11 @@ function Nav({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingC
           <span className="text-base font-semibold tracking-tight">{t.brand}</span>
         </Link>
 
-        <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
+        <nav className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
           <a href="#features" className="hover:text-foreground transition">{c.navFeatures}</a>
           <a href="#templates" className="hover:text-foreground transition">{c.navTemplates}</a>
+          <Link to="/tools" className="hover:text-foreground transition">Tools</Link>
+          <Link to="/blog" className="hover:text-foreground transition">Blog</Link>
           <a href="#pricing" className="hover:text-foreground transition">{c.navPricing}</a>
           <a href="#faq" className="hover:text-foreground transition">{c.navFaq}</a>
         </nav>
