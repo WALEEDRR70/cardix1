@@ -845,7 +845,7 @@ function CardPoster({
           {publicUrl.replace(/^https?:\/\//, "")}
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <span style={{ fontSize: 18, fontWeight: 800, letterSpacing: "0.4em", background: `linear-gradient(135deg, #fff, ${accent})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>CARDIX</span>
+          <span style={{ fontSize: 18, fontWeight: 800, letterSpacing: "0.4em", color: accent }}>CARDIX</span>
           <div style={{ width: 40, height: 40, borderRadius: 12, background: `linear-gradient(135deg, ${accent}, ${accent}88)`, display: "grid", placeItems: "center", boxShadow: `0 8px 24px -6px ${accent}` }}>
             <img src={logoUrl} alt="" crossOrigin="anonymous" style={{ width: 24, height: 24 }} />
           </div>
