@@ -84,6 +84,9 @@ function PublicCard() {
   const [isAuthed, setIsAuthed] = useState(false);
   const cardWrapRef = useRef<HTMLDivElement | null>(null);
   const qrSvgRef = useRef<SVGSVGElement | null>(null);
+  const posterRef = useRef<HTMLDivElement | null>(null);
+  const [posterQr, setPosterQr] = useState<string>("");
+  const [downloadingPoster, setDownloadingPoster] = useState(false);
 
   const { data: card } = useQuery({
     queryKey: ["public-card", slug],
