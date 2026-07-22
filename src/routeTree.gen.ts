@@ -18,7 +18,9 @@ import { Route as CSlugRouteImport } from './routes/c.$slug'
 import { Route as LangAuthRouteImport } from './routes/$lang/auth'
 import { Route as LangAuthenticatedRouteRouteImport } from './routes/$lang/_authenticated/route'
 import { Route as LangLIndexRouteImport } from './routes/$lang/l/index'
+import { Route as LangBlogIndexRouteImport } from './routes/$lang/blog/index'
 import { Route as LangLSlugRouteImport } from './routes/$lang/l/$slug'
+import { Route as LangBlogSlugRouteImport } from './routes/$lang/blog/$slug'
 import { Route as LangAuthenticatedVaultRouteImport } from './routes/$lang/_authenticated/vault'
 import { Route as LangAuthenticatedSettingsRouteImport } from './routes/$lang/_authenticated/settings'
 import { Route as LangAuthenticatedScanRouteImport } from './routes/$lang/_authenticated/scan'
@@ -73,9 +75,19 @@ const LangLIndexRoute = LangLIndexRouteImport.update({
   path: '/l/',
   getParentRoute: () => LangRouteRoute,
 } as any)
+const LangBlogIndexRoute = LangBlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => LangRouteRoute,
+} as any)
 const LangLSlugRoute = LangLSlugRouteImport.update({
   id: '/l/$slug',
   path: '/l/$slug',
+  getParentRoute: () => LangRouteRoute,
+} as any)
+const LangBlogSlugRoute = LangBlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
   getParentRoute: () => LangRouteRoute,
 } as any)
 const LangAuthenticatedVaultRoute = LangAuthenticatedVaultRouteImport.update({
@@ -137,7 +149,9 @@ export interface FileRoutesByFullPath {
   '/$lang/scan': typeof LangAuthenticatedScanRoute
   '/$lang/settings': typeof LangAuthenticatedSettingsRoute
   '/$lang/vault': typeof LangAuthenticatedVaultRouteWithChildren
+  '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/l/$slug': typeof LangLSlugRoute
+  '/$lang/blog/': typeof LangBlogIndexRoute
   '/$lang/l/': typeof LangLIndexRoute
   '/$lang/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/cards/new': typeof LangAuthenticatedCardsNewRoute
@@ -155,7 +169,9 @@ export interface FileRoutesByTo {
   '/$lang/scan': typeof LangAuthenticatedScanRoute
   '/$lang/settings': typeof LangAuthenticatedSettingsRoute
   '/$lang/vault': typeof LangAuthenticatedVaultRouteWithChildren
+  '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/l/$slug': typeof LangLSlugRoute
+  '/$lang/blog': typeof LangBlogIndexRoute
   '/$lang/l': typeof LangLIndexRoute
   '/$lang/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/cards/new': typeof LangAuthenticatedCardsNewRoute
@@ -176,7 +192,9 @@ export interface FileRoutesById {
   '/$lang/_authenticated/scan': typeof LangAuthenticatedScanRoute
   '/$lang/_authenticated/settings': typeof LangAuthenticatedSettingsRoute
   '/$lang/_authenticated/vault': typeof LangAuthenticatedVaultRouteWithChildren
+  '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/l/$slug': typeof LangLSlugRoute
+  '/$lang/blog/': typeof LangBlogIndexRoute
   '/$lang/l/': typeof LangLIndexRoute
   '/$lang/_authenticated/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/_authenticated/cards/new': typeof LangAuthenticatedCardsNewRoute
@@ -197,7 +215,9 @@ export interface FileRouteTypes {
     | '/$lang/scan'
     | '/$lang/settings'
     | '/$lang/vault'
+    | '/$lang/blog/$slug'
     | '/$lang/l/$slug'
+    | '/$lang/blog/'
     | '/$lang/l/'
     | '/$lang/cards/$id'
     | '/$lang/cards/new'
@@ -215,7 +235,9 @@ export interface FileRouteTypes {
     | '/$lang/scan'
     | '/$lang/settings'
     | '/$lang/vault'
+    | '/$lang/blog/$slug'
     | '/$lang/l/$slug'
+    | '/$lang/blog'
     | '/$lang/l'
     | '/$lang/cards/$id'
     | '/$lang/cards/new'
@@ -235,7 +257,9 @@ export interface FileRouteTypes {
     | '/$lang/_authenticated/scan'
     | '/$lang/_authenticated/settings'
     | '/$lang/_authenticated/vault'
+    | '/$lang/blog/$slug'
     | '/$lang/l/$slug'
+    | '/$lang/blog/'
     | '/$lang/l/'
     | '/$lang/_authenticated/cards/$id'
     | '/$lang/_authenticated/cards/new'
@@ -316,11 +340,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangLIndexRouteImport
       parentRoute: typeof LangRouteRoute
     }
+    '/$lang/blog/': {
+      id: '/$lang/blog/'
+      path: '/blog'
+      fullPath: '/$lang/blog/'
+      preLoaderRoute: typeof LangBlogIndexRouteImport
+      parentRoute: typeof LangRouteRoute
+    }
     '/$lang/l/$slug': {
       id: '/$lang/l/$slug'
       path: '/l/$slug'
       fullPath: '/$lang/l/$slug'
       preLoaderRoute: typeof LangLSlugRouteImport
+      parentRoute: typeof LangRouteRoute
+    }
+    '/$lang/blog/$slug': {
+      id: '/$lang/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/$lang/blog/$slug'
+      preLoaderRoute: typeof LangBlogSlugRouteImport
       parentRoute: typeof LangRouteRoute
     }
     '/$lang/_authenticated/vault': {
@@ -439,7 +477,9 @@ interface LangRouteRouteChildren {
   LangAuthenticatedRouteRoute: typeof LangAuthenticatedRouteRouteWithChildren
   LangAuthRoute: typeof LangAuthRoute
   LangIndexRoute: typeof LangIndexRoute
+  LangBlogSlugRoute: typeof LangBlogSlugRoute
   LangLSlugRoute: typeof LangLSlugRoute
+  LangBlogIndexRoute: typeof LangBlogIndexRoute
   LangLIndexRoute: typeof LangLIndexRoute
 }
 
@@ -447,7 +487,9 @@ const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangAuthenticatedRouteRoute: LangAuthenticatedRouteRouteWithChildren,
   LangAuthRoute: LangAuthRoute,
   LangIndexRoute: LangIndexRoute,
+  LangBlogSlugRoute: LangBlogSlugRoute,
   LangLSlugRoute: LangLSlugRoute,
+  LangBlogIndexRoute: LangBlogIndexRoute,
   LangLIndexRoute: LangLIndexRoute,
 }
 
