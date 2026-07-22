@@ -3,8 +3,9 @@ import type {} from "@tanstack/react-start";
 import { SUPPORTED_LOCALES, SITE_ORIGIN, isSupportedLocale } from "@/i18n/config";
 import { getAllLandingSlugs } from "@/i18n/landing-pages";
 import { getAllPostSlugs } from "@/i18n/blog-posts";
+import { getAllToolSlugs } from "@/i18n/tools";
 
-const BASE_PATHS = ["/", "/features", "/pricing", "/about", "/contact", "/blog", "/l"];
+const BASE_PATHS = ["/", "/features", "/pricing", "/about", "/contact", "/blog", "/l", "/tools"];
 
 export const Route = createFileRoute("/sitemap/{$lang}.xml")({
   server: {
@@ -15,7 +16,8 @@ export const Route = createFileRoute("/sitemap/{$lang}.xml")({
 
         const landingPaths = getAllLandingSlugs().map((s) => `/l/${s}`);
         const blogPaths = getAllPostSlugs().map((s) => `/blog/${s}`);
-        const allPaths = [...BASE_PATHS, ...landingPaths, ...blogPaths];
+        const toolPaths = getAllToolSlugs().map((s) => `/tools/${s}`);
+        const allPaths = [...BASE_PATHS, ...landingPaths, ...blogPaths, ...toolPaths];
 
         const urls = allPaths.map((p) => {
           const path = p === "/" ? "" : p;
