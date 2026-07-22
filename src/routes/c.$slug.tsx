@@ -265,35 +265,39 @@ function PublicCard() {
     img.src = url;
   }
 
-  type ActionItem = { id: string; label: string; icon: typeof Phone; href?: string; onClick?: () => void };
+  type ActionItem = { id: string; label: string; value?: string; icon: typeof Phone; href?: string; onClick?: () => void };
+  const prettyWebsite = card.website ? card.website.replace(/^https?:\/\//, "").replace(/\/$/, "") : "";
   const actions: ActionItem[] = [
-    card.email ? { id: "email", label: t.email, icon: Mail, href: `mailto:${card.email}` } : null,
+    card.phone ? { id: "call", label: t.call, value: card.phone, icon: Phone, href: `tel:${card.phone}` } : null,
     card.whatsapp
       ? {
           id: "wa",
           label: t.whatsapp,
+          value: card.whatsapp,
           icon: MessageCircle,
           href: `https://wa.me/${card.whatsapp.replace(/\D/g, "")}`,
         }
       : null,
-    card.phone ? { id: "call", label: t.call, icon: Phone, href: `tel:${card.phone}` } : null,
-    card.address
-      ? {
-          id: "map",
-          label: t.location,
-          icon: MapPin,
-          href: `https://maps.google.com/?q=${encodeURIComponent(card.address)}`,
-        }
-      : null,
+    card.email ? { id: "email", label: t.email, value: card.email, icon: Mail, href: `mailto:${card.email}` } : null,
     card.website
       ? {
           id: "web",
           label: t.website,
+          value: prettyWebsite,
           icon: Globe,
           href: card.website.startsWith("http") ? card.website : `https://${card.website}`,
         }
       : null,
-    { id: "save", label: t.saveContact, icon: UserPlus, onClick: vcard },
+    card.address
+      ? {
+          id: "map",
+          label: t.location,
+          value: card.address,
+          icon: MapPin,
+          href: `https://maps.google.com/?q=${encodeURIComponent(card.address)}`,
+        }
+      : null,
+    { id: "save", label: t.saveContact, value: card.name, icon: UserPlus, onClick: vcard },
   ].filter(Boolean) as ActionItem[];
 
   return (
