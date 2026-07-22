@@ -265,35 +265,39 @@ function PublicCard() {
     img.src = url;
   }
 
-  type ActionItem = { id: string; label: string; icon: typeof Phone; href?: string; onClick?: () => void };
+  type ActionItem = { id: string; label: string; value?: string; icon: typeof Phone; href?: string; onClick?: () => void };
+  const prettyWebsite = card.website ? card.website.replace(/^https?:\/\//, "").replace(/\/$/, "") : "";
   const actions: ActionItem[] = [
-    card.email ? { id: "email", label: t.email, icon: Mail, href: `mailto:${card.email}` } : null,
+    card.phone ? { id: "call", label: t.call, value: card.phone, icon: Phone, href: `tel:${card.phone}` } : null,
     card.whatsapp
       ? {
           id: "wa",
           label: t.whatsapp,
+          value: card.whatsapp,
           icon: MessageCircle,
           href: `https://wa.me/${card.whatsapp.replace(/\D/g, "")}`,
         }
       : null,
-    card.phone ? { id: "call", label: t.call, icon: Phone, href: `tel:${card.phone}` } : null,
-    card.address
-      ? {
-          id: "map",
-          label: t.location,
-          icon: MapPin,
-          href: `https://maps.google.com/?q=${encodeURIComponent(card.address)}`,
-        }
-      : null,
+    card.email ? { id: "email", label: t.email, value: card.email, icon: Mail, href: `mailto:${card.email}` } : null,
     card.website
       ? {
           id: "web",
           label: t.website,
+          value: prettyWebsite,
           icon: Globe,
           href: card.website.startsWith("http") ? card.website : `https://${card.website}`,
         }
       : null,
-    { id: "save", label: t.saveContact, icon: UserPlus, onClick: vcard },
+    card.address
+      ? {
+          id: "map",
+          label: t.location,
+          value: card.address,
+          icon: MapPin,
+          href: `https://maps.google.com/?q=${encodeURIComponent(card.address)}`,
+        }
+      : null,
+    { id: "save", label: t.saveContact, value: card.name, icon: UserPlus, onClick: vcard },
   ].filter(Boolean) as ActionItem[];
 
   return (
@@ -452,7 +456,7 @@ function PublicCard() {
             {/* Action grid */}
             {actions.length > 0 && (
               <section className="w-full max-w-md animate-fade-in">
-                <div className="grid grid-cols-3 gap-2.5">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   {actions.map((a) => (
                     <ActionTile key={a.id} accent={accent} {...a} />
                   ))}
@@ -674,29 +678,29 @@ function SectionLabel({
 function ActionTile({
   icon: Icon,
   label,
+  value,
   href,
   onClick,
   accent,
 }: {
   icon: typeof Phone;
   label: string;
+  value?: string;
   href?: string;
   onClick?: () => void;
   accent: string;
 }) {
   const inner = (
     <div
-      className="glass card-lift group relative flex aspect-[1.05/1] flex-col items-center justify-center gap-2 overflow-hidden rounded-2xl p-3 text-center transition hover:-translate-y-0.5"
-      style={{
-        boxShadow: `inset 0 0 0 1px rgba(255,255,255,0.04)`,
-      }}
+      className="glass card-lift group relative flex items-center gap-3 overflow-hidden rounded-2xl p-3 pe-4 text-start transition hover:-translate-y-0.5"
+      style={{ boxShadow: `inset 0 0 0 1px rgba(255,255,255,0.04)` }}
     >
       <div
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100"
-        style={{ background: `radial-gradient(circle at 50% 0%, ${accent}22, transparent 70%)` }}
+        style={{ background: `radial-gradient(circle at 0% 50%, ${accent}22, transparent 70%)` }}
       />
       <span
-        className="relative grid h-10 w-10 place-items-center rounded-full text-foreground"
+        className="relative grid h-11 w-11 shrink-0 place-items-center rounded-xl text-foreground"
         style={{
           background: `radial-gradient(circle at 50% 30%, ${accent}33, ${accent}11 60%, transparent 75%)`,
           boxShadow: `inset 0 0 0 1px ${accent}33`,
@@ -704,7 +708,16 @@ function ActionTile({
       >
         <Icon className="h-5 w-5" strokeWidth={1.75} />
       </span>
-      <span className="relative text-[12px] font-medium text-foreground/85">{label}</span>
+      <span className="relative flex min-w-0 flex-1 flex-col">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+          {label}
+        </span>
+        {value && (
+          <span dir="ltr" className="truncate text-[13px] font-medium text-foreground/90">
+            {value}
+          </span>
+        )}
+      </span>
     </div>
   );
   return href ? (
