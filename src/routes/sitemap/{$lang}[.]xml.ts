@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { SUPPORTED_LOCALES, SITE_ORIGIN, isSupportedLocale } from "@/i18n/config";
+import { getAllLandingSlugs } from "@/i18n/landing-pages";
 import { getAllPostSlugs } from "@/i18n/blog-posts";
 import { getAllToolSlugs } from "@/i18n/tools";
 
