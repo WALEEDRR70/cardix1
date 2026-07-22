@@ -270,6 +270,40 @@ function PublicCard() {
     img.src = url;
   }
 
+  async function downloadCardImage() {
+    if (!card) return;
+    try {
+      setDownloadingPoster(true);
+      const qr = await QRCode.toDataURL(publicUrl, {
+        errorCorrectionLevel: "H",
+        margin: 1,
+        width: 480,
+        color: { dark: "#0a0a0a", light: "#ffffff" },
+      });
+      setPosterQr(qr);
+      // wait a frame so the poster re-renders with the QR
+      await new Promise((r) => requestAnimationFrame(() => r(null)));
+      await new Promise((r) => setTimeout(r, 60));
+      const node = posterRef.current;
+      if (!node) return;
+      const dataUrl = await toPng(node, {
+        pixelRatio: 2,
+        cacheBust: true,
+        backgroundColor: "#050505",
+      });
+      const a = document.createElement("a");
+      a.href = dataUrl;
+      a.download = `${card.slug}-card.png`;
+      a.click();
+      supabase.from("card_events").insert({ card_id: card.id, event_type: "save" });
+    } catch (e) {
+      console.error(e);
+      toast.error("Failed to generate image");
+    } finally {
+      setDownloadingPoster(false);
+    }
+  }
+
   type ActionItem = { id: string; label: string; value?: string; icon: typeof Phone; href?: string; onClick?: () => void };
   const prettyWebsite = card.website ? card.website.replace(/^https?:\/\//, "").replace(/\/$/, "") : "";
   const actions: ActionItem[] = [
