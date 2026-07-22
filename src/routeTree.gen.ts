@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as LangRouteRouteImport } from './routes/$lang/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LangIndexRouteImport } from './routes/$lang/index'
@@ -36,11 +35,6 @@ import { Route as LangAuthenticatedCardsIdAnalyticsRouteImport } from './routes/
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
-  id: '/robots.txt',
-  path: '/robots.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LangRouteRoute = LangRouteRouteImport.update({
@@ -158,7 +152,6 @@ const LangAuthenticatedCardsIdAnalyticsRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$lang': typeof LangRouteRouteWithChildren
-  '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang/auth': typeof LangAuthRoute
   '/c/$slug': typeof CSlugRoute
@@ -181,7 +174,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang': typeof LangIndexRoute
   '/$lang/auth': typeof LangAuthRoute
@@ -206,7 +198,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$lang': typeof LangRouteRouteWithChildren
-  '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang/_authenticated': typeof LangAuthenticatedRouteRouteWithChildren
   '/$lang/auth': typeof LangAuthRoute
@@ -233,7 +224,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$lang'
-    | '/robots.txt'
     | '/sitemap.xml'
     | '/$lang/auth'
     | '/c/$slug'
@@ -256,7 +246,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/robots.txt'
     | '/sitemap.xml'
     | '/$lang'
     | '/$lang/auth'
@@ -280,7 +269,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/$lang'
-    | '/robots.txt'
     | '/sitemap.xml'
     | '/$lang/_authenticated'
     | '/$lang/auth'
@@ -306,7 +294,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LangRouteRoute: typeof LangRouteRouteWithChildren
-  RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   CSlugRoute: typeof CSlugRoute
   SitemapChar123langChar125DotxmlRoute: typeof SitemapChar123langChar125DotxmlRoute
@@ -319,13 +306,6 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/robots.txt': {
-      id: '/robots.txt'
-      path: '/robots.txt'
-      fullPath: '/robots.txt'
-      preLoaderRoute: typeof RobotsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$lang': {
@@ -562,7 +542,6 @@ const LangRouteRouteWithChildren = LangRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LangRouteRoute: LangRouteRouteWithChildren,
-  RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   CSlugRoute: CSlugRoute,
   SitemapChar123langChar125DotxmlRoute: SitemapChar123langChar125DotxmlRoute,

@@ -1,0 +1,33 @@
+{
+  "name": "Cardix — Digital Business Cards",
+  "short_name": "Cardix",
+  "description": "Design, share and scan premium digital business cards. QR, NFC, AI OCR, analytics.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0512",
+  "theme_color": "#7c34ff",
+  "categories": ["business", "productivity", "utilities"],
+  "lang": "en",
+  "dir": "auto",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    { "name": "New Card", "url": "/dashboard", "short_name": "New" },
+    { "name": "Scan", "url": "/scan", "short_name": "Scan" },
+    { "name": "Vault", "url": "/vault", "short_name": "Vault" }
+  ]
+}
