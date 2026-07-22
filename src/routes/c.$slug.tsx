@@ -721,64 +721,78 @@ function CardPoster({
       style={{
         width: 1080,
         minHeight: 1920,
-        padding: 80,
+        padding: 72,
         boxSizing: "border-box",
         background: `
-          radial-gradient(circle at 85% 8%, ${accent}55, transparent 45%),
-          radial-gradient(circle at 15% 95%, ${accent}44, transparent 50%),
-          linear-gradient(180deg, #12101a 0%, #08070d 100%)
+          radial-gradient(ellipse at 100% 0%, ${accent}88, transparent 40%),
+          radial-gradient(ellipse at 0% 40%, ${accent}55, transparent 45%),
+          radial-gradient(ellipse at 50% 100%, ${accent}66, transparent 50%),
+          linear-gradient(135deg, #1a0b2e 0%, #0a0514 50%, #050208 100%)
         `,
         color: "#ffffff",
         fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans Arabic', sans-serif",
         display: "flex",
         flexDirection: "column",
-        gap: 56,
+        gap: 44,
         position: "relative",
         overflow: "hidden",
       }}
     >
-      {/* Verified badge top corner */}
-      <div style={{ position: "absolute", top: 44, insetInlineEnd: 44, display: "flex", alignItems: "center", gap: 10, padding: "10px 20px", borderRadius: 999, background: "rgba(255,255,255,0.08)", border: `1px solid ${accent}66`, backdropFilter: "blur(20px)" }}>
-        <span style={{ width: 10, height: 10, borderRadius: 999, background: accent, boxShadow: `0 0 12px ${accent}` }} />
-        <span style={{ fontSize: 15, fontWeight: 600, letterSpacing: "0.05em" }}>Verified</span>
+      {/* Decorative grid mesh */}
+      <div style={{ position: "absolute", inset: 0, opacity: 0.15, backgroundImage: `linear-gradient(${accent}22 1px, transparent 1px), linear-gradient(90deg, ${accent}22 1px, transparent 1px)`, backgroundSize: "60px 60px", maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)" }} />
+      {/* Glow orbs */}
+      <div style={{ position: "absolute", top: -120, insetInlineEnd: -120, width: 500, height: 500, borderRadius: "50%", background: `radial-gradient(circle, ${accent}66, transparent 65%)`, filter: "blur(40px)" }} />
+      <div style={{ position: "absolute", bottom: -150, insetInlineStart: -150, width: 550, height: 550, borderRadius: "50%", background: `radial-gradient(circle, ${accent}55, transparent 65%)`, filter: "blur(50px)" }} />
+
+      {/* Verified badge */}
+      <div style={{ position: "absolute", top: 44, insetInlineEnd: 44, display: "flex", alignItems: "center", gap: 10, padding: "12px 22px", borderRadius: 999, background: `linear-gradient(135deg, ${accent}44, ${accent}11)`, border: `1px solid ${accent}88`, boxShadow: `0 0 30px ${accent}55` }}>
+        <span style={{ width: 10, height: 10, borderRadius: 999, background: accent, boxShadow: `0 0 16px ${accent}` }} />
+        <span style={{ fontSize: 15, fontWeight: 700, letterSpacing: "0.1em" }}>VERIFIED</span>
       </div>
 
       {/* Header: identity + avatar */}
-      <div style={{ display: "flex", alignItems: "center", gap: 36, marginTop: 40, position: "relative" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 40, marginTop: 60, position: "relative" }}>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 60, fontWeight: 800, lineHeight: 1.05, letterSpacing: "-0.02em" }}>{card.name}</div>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "6px 14px", borderRadius: 999, background: `${accent}22`, border: `1px solid ${accent}55`, marginBottom: 18 }}>
+            <span style={{ width: 6, height: 6, borderRadius: 999, background: accent }} />
+            <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.2em", color: accent }}>DIGITAL CARD</span>
+          </div>
+          <div style={{ fontSize: 64, fontWeight: 800, lineHeight: 1.02, letterSpacing: "-0.03em", background: `linear-gradient(135deg, #ffffff 0%, ${accent}dd 100%)`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>{card.name}</div>
           {(card.title || card.company) && (
-            <div style={{ marginTop: 14, fontSize: 26, opacity: 0.72, fontWeight: 500 }}>
+            <div style={{ marginTop: 16, fontSize: 26, opacity: 0.85, fontWeight: 500 }}>
               {[card.company, card.title].filter(Boolean).join(" · ")}
             </div>
           )}
           {card.bio && (
-            <div style={{ marginTop: 22, fontSize: 20, lineHeight: 1.65, opacity: 0.62, maxWidth: 560 }}>
+            <div style={{ marginTop: 20, fontSize: 19, lineHeight: 1.6, opacity: 0.65, maxWidth: 560 }}>
               {card.bio}
             </div>
           )}
         </div>
         {card.avatar_url && (
-          <div style={{ width: 220, height: 220, borderRadius: 40, overflow: "hidden", flexShrink: 0, border: `2px solid ${accent}88`, boxShadow: `0 20px 60px -20px ${accent}, 0 0 0 8px rgba(255,255,255,0.03)` }}>
-            <img src={card.avatar_url} alt="" crossOrigin="anonymous" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+          <div style={{ position: "relative", flexShrink: 0 }}>
+            <div style={{ position: "absolute", inset: -20, borderRadius: "50%", background: `conic-gradient(from 0deg, ${accent}, transparent, ${accent}, transparent, ${accent})`, filter: "blur(20px)", opacity: 0.7 }} />
+            <div style={{ position: "relative", width: 240, height: 240, borderRadius: 48, overflow: "hidden", border: `3px solid ${accent}`, boxShadow: `0 25px 80px -20px ${accent}, 0 0 0 10px rgba(255,255,255,0.04), inset 0 0 40px rgba(0,0,0,0.4)` }}>
+              <img src={card.avatar_url} alt="" crossOrigin="anonymous" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            </div>
           </div>
         )}
       </div>
 
-      {/* Contact info rows — full width pills */}
+      {/* Contact info rows */}
       {infoRows.length > 0 && (
-        <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: 16 }}>
+        <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: 14 }}>
           {infoRows.map((a) => {
             const Icon = a.icon;
             return (
-              <div key={a.id} style={{ display: "flex", alignItems: "center", gap: 22, padding: "22px 28px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 24, position: "relative", overflow: "hidden" }}>
-                <span style={{ position: "absolute", insetInlineEnd: 0, top: 12, bottom: 12, width: 4, borderRadius: 4, background: accent, boxShadow: `0 0 20px ${accent}` }} />
-                <span style={{ width: 60, height: 60, display: "grid", placeItems: "center", borderRadius: 18, background: `${accent}22`, color: accent, flexShrink: 0, border: `1px solid ${accent}44` }}>
-                  <Icon style={{ width: 26, height: 26 }} strokeWidth={2} />
+              <div key={a.id} style={{ display: "flex", alignItems: "center", gap: 22, padding: "20px 26px", background: `linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))`, border: `1px solid ${accent}33`, borderRadius: 22, position: "relative", overflow: "hidden", boxShadow: `inset 0 1px 0 rgba(255,255,255,0.05)` }}>
+                <div style={{ position: "absolute", insetInlineStart: 0, top: 0, bottom: 0, width: 3, background: `linear-gradient(180deg, transparent, ${accent}, transparent)` }} />
+                <span style={{ width: 58, height: 58, display: "grid", placeItems: "center", borderRadius: 16, background: `linear-gradient(135deg, ${accent}, ${accent}88)`, color: accentText, flexShrink: 0, boxShadow: `0 10px 30px -8px ${accent}, inset 0 1px 0 rgba(255,255,255,0.3)` }}>
+                  <Icon style={{ width: 26, height: 26 }} strokeWidth={2.2} />
                 </span>
                 <div style={{ minWidth: 0, flex: 1 }}>
-                  <div style={{ fontSize: 14, opacity: 0.55, letterSpacing: "0.08em", fontWeight: 500 }}>{a.label}</div>
-                  <div dir="ltr" style={{ fontSize: 24, fontWeight: 600, marginTop: 4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", textAlign: isRtl ? "right" : "left" }}>{a.value}</div>
+                  <div style={{ fontSize: 13, opacity: 0.5, letterSpacing: "0.15em", fontWeight: 600, textTransform: "uppercase" }}>{a.label}</div>
+                  <div dir="ltr" style={{ fontSize: 24, fontWeight: 700, marginTop: 4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", textAlign: isRtl ? "right" : "left" }}>{a.value}</div>
                 </div>
               </div>
             );
@@ -786,44 +800,61 @@ function CardPoster({
         </div>
       )}
 
-      {/* Big QR with logo in center */}
-      <div style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 20 }}>
-        <div style={{ position: "relative", background: "#fff", padding: 24, borderRadius: 32, boxShadow: `0 30px 80px -20px ${accent}88, 0 0 0 1px ${accent}44` }}>
-          {qrDataUrl && <img src={qrDataUrl} alt="" style={{ width: 360, height: 360, display: "block" }} />}
-          <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 80, height: 80, borderRadius: 20, background: "#12101a", display: "grid", placeItems: "center", border: "4px solid #fff" }}>
-            <img src={logoUrl} alt="" crossOrigin="anonymous" style={{ width: 44, height: 44 }} />
+      {/* Socials — accent colored chips with usernames */}
+      {socialEntries.length > 0 && (
+        <div style={{ position: "relative" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18, justifyContent: "center" }}>
+            <span style={{ height: 1, flex: 1, background: `linear-gradient(90deg, transparent, ${accent}66)` }} />
+            <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.35em", color: accent }}>FOLLOW ME</span>
+            <span style={{ height: 1, flex: 1, background: `linear-gradient(90deg, ${accent}66, transparent)` }} />
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
+            {socialEntries.map(([id, val]) => {
+              const meta = SOCIALS_BY_ID[id];
+              if (!meta) return null;
+              const handle = /^https?:\/\//i.test(val) ? val.replace(/^https?:\/\//, "").replace(/\/$/, "").split("/").pop() || val : val.replace(/^@/, "");
+              return (
+                <div key={id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 20px 10px 10px", background: `linear-gradient(135deg, ${accent}33, ${accent}11)`, borderRadius: 999, border: `1px solid ${accent}55`, boxShadow: `0 4px 20px -6px ${accent}66` }}>
+                  <span style={{ width: 40, height: 40, display: "grid", placeItems: "center", borderRadius: 999, background: `linear-gradient(135deg, ${accent}, ${accent}bb)`, color: accentText, boxShadow: `inset 0 1px 0 rgba(255,255,255,0.3)` }}>
+                    <meta.Icon className="h-5 w-5" />
+                  </span>
+                  <span dir="ltr" style={{ fontSize: 20, fontWeight: 700, color: "#fff", paddingInlineEnd: 4 }}>@{handle}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Big QR */}
+      <div style={{ position: "relative", display: "flex", justifyContent: "center", marginTop: "auto" }}>
+        <div style={{ position: "relative" }}>
+          <div style={{ position: "absolute", inset: -30, borderRadius: 44, background: `linear-gradient(135deg, ${accent}, transparent, ${accent})`, filter: "blur(30px)", opacity: 0.8 }} />
+          <div style={{ position: "relative", background: "#fff", padding: 22, borderRadius: 36, boxShadow: `0 40px 100px -20px ${accent}, 0 0 0 1px ${accent}88` }}>
+            {qrDataUrl && <img src={qrDataUrl} alt="" style={{ width: 340, height: 340, display: "block" }} />}
+            <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 78, height: 78, borderRadius: 20, background: "linear-gradient(135deg, #1a0b2e, #0a0514)", display: "grid", placeItems: "center", border: "5px solid #fff", boxShadow: `0 8px 20px ${accent}88` }}>
+              <img src={logoUrl} alt="" crossOrigin="anonymous" style={{ width: 42, height: 42 }} />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Socials — circular icons only */}
-      {socialEntries.length > 0 && (
-        <div style={{ position: "relative", marginTop: "auto", display: "flex", flexWrap: "wrap", gap: 20, justifyContent: "center", padding: "28px 32px", background: "rgba(255,255,255,0.04)", borderRadius: 32, border: "1px solid rgba(255,255,255,0.06)" }}>
-          {socialEntries.map(([id]) => {
-            const meta = SOCIALS_BY_ID[id];
-            if (!meta) return null;
-            return (
-              <span key={id} style={{ width: 72, height: 72, display: "grid", placeItems: "center", borderRadius: 999, background: meta.color, color: "#fff", boxShadow: `0 8px 24px -8px ${meta.color}` }}>
-                <meta.Icon className="h-8 w-8" />
-              </span>
-            );
-          })}
-        </div>
-      )}
-
       {/* Footer brand */}
-      <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 8 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <img src={logoUrl} alt="" crossOrigin="anonymous" style={{ width: 32, height: 32 }} />
-          <span style={{ fontSize: 18, fontWeight: 700, letterSpacing: "0.35em", color: accent }}>CARDIX</span>
-        </div>
-        <div dir="ltr" style={{ fontSize: 16, opacity: 0.5, fontWeight: 500 }}>
+      <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 4 }}>
+        <div dir="ltr" style={{ fontSize: 15, opacity: 0.45, fontWeight: 500, maxWidth: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
           {publicUrl.replace(/^https?:\/\//, "")}
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <span style={{ fontSize: 18, fontWeight: 800, letterSpacing: "0.4em", background: `linear-gradient(135deg, #fff, ${accent})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>CARDIX</span>
+          <div style={{ width: 40, height: 40, borderRadius: 12, background: `linear-gradient(135deg, ${accent}, ${accent}88)`, display: "grid", placeItems: "center", boxShadow: `0 8px 24px -6px ${accent}` }}>
+            <img src={logoUrl} alt="" crossOrigin="anonymous" style={{ width: 24, height: 24 }} />
+          </div>
         </div>
       </div>
     </div>
   );
 }
+
 
 
 function SectionLabel({
