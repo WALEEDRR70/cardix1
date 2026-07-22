@@ -456,7 +456,7 @@ function PublicCard() {
             {/* Action grid */}
             {actions.length > 0 && (
               <section className="w-full max-w-md animate-fade-in">
-                <div className="grid grid-cols-3 gap-2.5">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   {actions.map((a) => (
                     <ActionTile key={a.id} accent={accent} {...a} />
                   ))}
