@@ -687,7 +687,133 @@ function PublicCard() {
 
 
 
+      {/* Off-screen poster used for image download */}
+      <div style={{ position: "fixed", left: "-100000px", top: 0, pointerEvents: "none", opacity: 0 }} aria-hidden>
+        <CardPoster card={card} accent={accent} accentText={accentText} qrDataUrl={posterQr} publicUrl={publicUrl} socialEntries={socialEntries} logoUrl={logoAsset.url} posterRef={posterRef} actions={actions} />
+      </div>
+
       {isAuthed && <MobileBottomNav accent={accent} />}
+    </div>
+  );
+}
+
+function CardPoster({
+  card, accent, accentText, qrDataUrl, publicUrl, socialEntries, logoUrl, posterRef, actions,
+}: {
+  card: CardRow;
+  accent: string;
+  accentText: string;
+  qrDataUrl: string;
+  publicUrl: string;
+  socialEntries: [string, string][];
+  logoUrl: string;
+  posterRef: React.RefObject<HTMLDivElement | null>;
+  actions: { id: string; label: string; value?: string; icon: typeof Phone }[];
+}) {
+  const infoRows = actions.filter((a) => a.id !== "save" && a.value);
+  return (
+    <div
+      ref={posterRef}
+      style={{
+        width: 1080,
+        minHeight: 1920,
+        padding: 72,
+        boxSizing: "border-box",
+        background: `linear-gradient(160deg, #0b0b10 0%, #050505 60%), radial-gradient(circle at 20% 0%, ${accent}44, transparent 60%)`,
+        color: "#ffffff",
+        fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+        display: "flex",
+        flexDirection: "column",
+        gap: 48,
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <div style={{ position: "absolute", inset: 0, background: `radial-gradient(circle at 80% 10%, ${accent}55, transparent 55%), radial-gradient(circle at 10% 90%, ${accent}33, transparent 60%)`, pointerEvents: "none" }} />
+
+      {/* Header */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", position: "relative" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          <img src={logoUrl} alt="" style={{ width: 36, height: 36 }} crossOrigin="anonymous" />
+          <span style={{ fontSize: 20, fontWeight: 700, letterSpacing: "0.4em", color: accent }}>CARDIX</span>
+        </div>
+        <span style={{ fontSize: 16, opacity: 0.6, letterSpacing: "0.3em", textTransform: "uppercase" }}>Digital Business Card</span>
+      </div>
+
+      {/* Card visual */}
+      <div style={{ position: "relative", display: "flex", justifyContent: "center" }}>
+        <div style={{ width: 900 }}>
+          <CardPreview card={card} size="xl" />
+        </div>
+      </div>
+
+      {/* Identity */}
+      <div style={{ position: "relative", textAlign: "center" }}>
+        <div style={{ fontSize: 56, fontWeight: 700, letterSpacing: "-0.02em" }}>{card.name}</div>
+        {(card.title || card.company) && (
+          <div style={{ marginTop: 10, fontSize: 24, opacity: 0.75 }}>
+            {[card.title, card.company].filter(Boolean).join(" · ")}
+          </div>
+        )}
+      </div>
+
+      {/* Contact info rows */}
+      {infoRows.length > 0 && (
+        <div style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          {infoRows.map((a) => {
+            const Icon = a.icon;
+            return (
+              <div key={a.id} style={{ display: "flex", alignItems: "center", gap: 16, padding: "18px 22px", background: "rgba(255,255,255,0.06)", border: `1px solid ${accent}44`, borderRadius: 20 }}>
+                <span style={{ width: 52, height: 52, display: "grid", placeItems: "center", borderRadius: 14, background: `linear-gradient(135deg, ${accent}, ${accent}aa)`, color: accentText, flexShrink: 0 }}>
+                  <Icon style={{ width: 24, height: 24 }} />
+                </span>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: 12, opacity: 0.55, letterSpacing: "0.2em", textTransform: "uppercase" }}>{a.label}</div>
+                  <div dir="ltr" style={{ fontSize: 22, fontWeight: 600, marginTop: 4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{a.value}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Socials with usernames */}
+      {socialEntries.length > 0 && (
+        <div style={{ position: "relative" }}>
+          <div style={{ fontSize: 14, letterSpacing: "0.3em", textTransform: "uppercase", opacity: 0.6, marginBottom: 20, textAlign: "center" }}>
+            Follow
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 14, justifyContent: "center" }}>
+            {socialEntries.map(([id, val]) => {
+              const meta = SOCIALS_BY_ID[id];
+              if (!meta) return null;
+              const handle = /^https?:\/\//i.test(val) ? val.replace(/^https?:\/\//, "").replace(/\/$/, "") : val.replace(/^@/, "");
+              return (
+                <div key={id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 20px 12px 12px", background: "rgba(255,255,255,0.08)", borderRadius: 999, border: "1px solid rgba(255,255,255,0.08)" }}>
+                  <span style={{ width: 36, height: 36, display: "grid", placeItems: "center", borderRadius: 999, background: meta.color, color: "#fff" }}>
+                    <meta.Icon className="h-4 w-4" />
+                  </span>
+                  <span style={{ fontSize: 20, fontWeight: 600 }}>@{handle}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* QR + URL */}
+      <div style={{ position: "relative", marginTop: "auto", display: "flex", alignItems: "center", gap: 28, padding: 28, background: "rgba(255,255,255,0.06)", border: `1px solid ${accent}55`, borderRadius: 28 }}>
+        <div style={{ background: "#fff", padding: 14, borderRadius: 20 }}>
+          {qrDataUrl && <img src={qrDataUrl} alt="" style={{ width: 220, height: 220, display: "block" }} />}
+        </div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: 14, letterSpacing: "0.3em", textTransform: "uppercase", opacity: 0.6 }}>Scan to connect</div>
+          <div dir="ltr" style={{ fontSize: 22, fontWeight: 600, marginTop: 8, wordBreak: "break-all" }}>{publicUrl}</div>
+          <div style={{ marginTop: 18, display: "inline-block", padding: "10px 22px", borderRadius: 999, background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, color: accentText, fontWeight: 700, letterSpacing: "0.15em", fontSize: 14 }}>
+            POWERED BY CARDIX
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
