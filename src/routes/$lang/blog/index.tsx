@@ -96,6 +96,6 @@ function BlogIndex() {
           })}
         </div>
       </section>
-    </div>
+    </MarketingLayout>
   );
 }
