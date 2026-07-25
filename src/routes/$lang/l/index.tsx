@@ -75,6 +75,6 @@ function HubPage() {
           );
         })}
       </section>
-    </div>
+    </MarketingLayout>
   );
 }
