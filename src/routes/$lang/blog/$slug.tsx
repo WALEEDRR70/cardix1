@@ -135,6 +135,6 @@ function BlogPostPage() {
           </div>
         </section>
       )}
-    </div>
+    </MarketingLayout>
   );
 }
