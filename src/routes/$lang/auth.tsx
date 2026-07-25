@@ -12,10 +12,10 @@ import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 export const Route = createFileRoute("/$lang/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — Cardix" },
-      { name: "description", content: "Sign in to Cardix to create and manage your premium digital business cards." },
-      { property: "og:title", content: "Sign in — Cardix" },
-      { property: "og:description", content: "Sign in to Cardix to create and manage your premium digital business cards." },
+      { title: "Sign in — Cardixn" },
+      { name: "description", content: "Sign in to Cardixn to create and manage your premium digital business cards." },
+      { property: "og:title", content: "Sign in — Cardixn" },
+      { property: "og:description", content: "Sign in to Cardixn to create and manage your premium digital business cards." },
     ],
   }),
   component: AuthPage,

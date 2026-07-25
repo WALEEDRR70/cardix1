@@ -6,7 +6,7 @@ import { DICTIONARIES, type UIDict } from "@/i18n/dictionaries";
 // Base English dictionary — canonical source of every UI key.
 // All other locales override keys via src/i18n/dictionaries.ts; missing keys fall back here.
 const en: UIDict = {
-  brand: "Cardix",
+  brand: "Cardixn",
   tagline: "Your card. Your identity.",
   subtagline: "Premium digital business cards. Share with a tap, a scan, or a link.",
   getStarted: "Get started",
@@ -120,7 +120,7 @@ const en: UIDict = {
   nfcStep3Title: "Wait for the vibration",
   nfcStep3Desc: "A short buzz means the card was received. Then pull them apart.",
   nfcAutoOpenTitle: "Opens the card automatically",
-  nfcAutoOpenDesc: "The receiving phone unlocks straight to your Cardix page — no app install, no extra taps.",
+  nfcAutoOpenDesc: "The receiving phone unlocks straight to your Cardixn page — no app install, no extra taps.",
   nfcLinkLabel: "Link the phone will open",
   nfcStopNow: "Stop broadcasting now",
   nfcHideGuide: "Hide guide",
@@ -142,10 +142,10 @@ const en: UIDict = {
   deleteConfirmDesc: "This will permanently remove the card from your vault. This action can't be undone.",
   deleted: "Deleted",
   scanQr: "Scan QR",
-  scanQrCardix: "Scan Cardix QR",
+  scanQrCardixn: "Scan Cardixn QR",
   scanPaper: "Scan paper card",
-  pointAtQr: "Point the camera at a Cardix QR code.",
-  invalidQr: "This QR is not a Cardix card.",
+  pointAtQr: "Point the camera at a Cardixn QR code.",
+  invalidQr: "This QR is not a Cardixn card.",
   alreadySaved: "This card is already in your vault.",
   ownCard: "This is your own card.",
   changeLanguage: "Change language",

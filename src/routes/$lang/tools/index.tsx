@@ -11,7 +11,7 @@ export const Route = createFileRoute("/$lang/tools/")({
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}/tools`;
     const isAr = lang === "ar";
-    const title = isAr ? "أدوات مجانية للمحترفين — QR وvCard وتوقيع البريد | Cardix" : "Free Professional Tools — QR, vCard & Email Signature | Cardix";
+    const title = isAr ? "أدوات مجانية للمحترفين — QR وvCard وتوقيع البريد | Cardixn" : "Free Professional Tools — QR, vCard & Email Signature | Cardixn";
     const description = isAr
       ? "مجموعة أدوات مجانية للمحترفين: منشئ QR، منشئ vCard، منشئ توقيع البريد الإلكتروني. بدون تسجيل، بدون علامات مائية."
       : "Free professional toolkit: QR generator, vCard downloader, email signature builder. No signup, no watermarks, unlimited use.";
@@ -44,7 +44,7 @@ function ToolsHub() {
       <section className="relative overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.18),transparent_60%)]" />
         <div className="relative mx-auto max-w-5xl px-6 py-20 md:py-28">
-          <span className="text-xs uppercase tracking-widest text-primary/80">Cardix · {isAr ? "أدوات" : "Tools"}</span>
+          <span className="text-xs uppercase tracking-widest text-primary/80">Cardixn · {isAr ? "أدوات" : "Tools"}</span>
           <h1 className="mt-4 text-4xl md:text-6xl font-bold leading-tight tracking-tight bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-transparent">
             {isAr ? "أدوات مجانية للمحترفين" : "Free tools for professionals"}
           </h1>

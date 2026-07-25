@@ -14,9 +14,9 @@ import { CardPreview } from "@/components/CardPreview";
 export const Route = createFileRoute("/$lang/_authenticated/vault")({
   head: () => ({
     meta: [
-      { title: "Vault — Cardix" },
-      { name: "description", content: "Every business card you've saved or scanned, safe in your Cardix vault." },
-      { property: "og:title", content: "Vault — Cardix" },
+      { title: "Vault — Cardixn" },
+      { name: "description", content: "Every business card you've saved or scanned, safe in your Cardixn vault." },
+      { property: "og:title", content: "Vault — Cardixn" },
       { property: "og:description", content: "All your saved digital and scanned business cards." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

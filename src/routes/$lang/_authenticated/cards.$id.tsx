@@ -11,7 +11,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 
 export const Route = createFileRoute("/$lang/_authenticated/cards/$id")({
-  head: () => ({ meta: [{ title: "Edit card — Cardix" }] }),
+  head: () => ({ meta: [{ title: "Edit card — Cardixn" }] }),
   component: EditCard,
   errorComponent: () => <NotFoundView />,
   notFoundComponent: () => <NotFoundView />,

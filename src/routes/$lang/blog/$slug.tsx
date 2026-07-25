@@ -45,7 +45,7 @@ export const Route = createFileRoute("/$lang/blog/$slug")({
             headline: c.h1,
             description: c.description,
             author: { "@type": "Organization", name: post.author },
-            publisher: { "@type": "Organization", name: "Cardix" },
+            publisher: { "@type": "Organization", name: "Cardixn" },
             datePublished: post.publishedAt,
             dateModified: post.updatedAt,
             mainEntityOfPage: url,
@@ -83,7 +83,7 @@ function BlogPostPage() {
     <div dir={rtl ? "rtl" : "ltr"} className="min-h-screen bg-background text-foreground">
       <article className="mx-auto max-w-3xl px-6 py-16 md:py-24">
         <Link to="/blog" className="text-xs uppercase tracking-widest text-primary/80 hover:text-primary">
-          ← Cardix · {isAr ? "المدونة" : "Blog"}
+          ← Cardixn · {isAr ? "المدونة" : "Blog"}
         </Link>
         <h1 className="mt-6 text-3xl md:text-5xl font-bold leading-tight tracking-tight bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-transparent">
           {c.h1}

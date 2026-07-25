@@ -9,7 +9,7 @@ export const Route = createFileRoute("/$lang/blog/")({
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}/blog`;
     const isAr = lang === "ar";
-    const title = isAr ? "مدونة Cardix — رؤى البطاقات الرقمية والشبكات المهنية" : "Cardix Blog — Insights on Digital Cards & Modern Networking";
+    const title = isAr ? "مدونة Cardixn — رؤى البطاقات الرقمية والشبكات المهنية" : "Cardixn Blog — Insights on Digital Cards & Modern Networking";
     const description = isAr
       ? "مقالات طويلة وأدلة عملية ودراسات حالة حول البطاقات الرقمية و NFC و QR و OCR والتحول من الورق."
       : "Long-form articles, playbooks and case studies on digital business cards, NFC, QR, AI OCR and the death of paper.";
@@ -32,9 +32,9 @@ export const Route = createFileRoute("/$lang/blog/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Blog",
-          name: "Cardix Blog",
+          name: "Cardixn Blog",
           url,
-          publisher: { "@type": "Organization", name: "Cardix" },
+          publisher: { "@type": "Organization", name: "Cardixn" },
         }),
       }],
     };
@@ -54,14 +54,14 @@ function BlogIndex() {
       <section className="relative overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.18),transparent_60%)]" />
         <div className="relative mx-auto max-w-5xl px-6 py-20 md:py-28">
-          <Link to="/" className="text-xs uppercase tracking-widest text-primary/80 hover:text-primary">Cardix · {isAr ? "المدونة" : "Blog"}</Link>
+          <Link to="/" className="text-xs uppercase tracking-widest text-primary/80 hover:text-primary">Cardixn · {isAr ? "المدونة" : "Blog"}</Link>
           <h1 className="mt-4 text-4xl md:text-6xl font-bold leading-tight tracking-tight bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-transparent">
             {isAr ? "رؤى وأدلة عن البطاقات الرقمية" : "Insights & playbooks for the digital-card era"}
           </h1>
           <p className="mt-4 max-w-3xl text-lg md:text-xl text-muted-foreground">
             {isAr
-              ? "مقالات معمّقة يكتبها فريق Cardix. تحليل الاتجاهات، حالات عملية، وأدلة لتحويل بطاقتك إلى أصل قوي."
-              : "Deeply-researched writing from the Cardix team. Trends, real-world case studies, and no-fluff guides to turn your card into a serious business asset."}
+              ? "مقالات معمّقة يكتبها فريق Cardixn. تحليل الاتجاهات، حالات عملية، وأدلة لتحويل بطاقتك إلى أصل قوي."
+              : "Deeply-researched writing from the Cardixn team. Trends, real-world case studies, and no-fluff guides to turn your card into a serious business asset."}
           </p>
         </div>
       </section>

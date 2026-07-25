@@ -21,7 +21,7 @@ export function ToolShell({
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.18),transparent_60%)]" />
         <div className="relative mx-auto max-w-4xl px-6 py-16 md:py-24">
           <Link to="/tools" className="text-xs uppercase tracking-widest text-primary/80 hover:text-primary">
-            Cardix · {isAr ? "أدوات مجانية" : "Free Tools"}
+            Cardixn · {isAr ? "أدوات مجانية" : "Free Tools"}
           </Link>
           <h1 className="mt-4 text-4xl md:text-5xl font-bold leading-tight tracking-tight bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-transparent">
             {title}

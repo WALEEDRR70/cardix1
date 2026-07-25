@@ -42,7 +42,7 @@ export const Route = createFileRoute("/$lang/")({
             children: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "SoftwareApplication",
-              name: "Cardix",
+              name: "Cardixn",
               applicationCategory: "BusinessApplication",
               operatingSystem: "Web, iOS, Android",
               description: seo.description,
@@ -56,7 +56,7 @@ export const Route = createFileRoute("/$lang/")({
             children: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              name: "Cardix",
+              name: "Cardixn",
               url: SITE_ORIGIN,
               logo: `${SITE_ORIGIN}/favicon.ico`,
               sameAs: [],

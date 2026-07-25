@@ -17,8 +17,8 @@ import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 export const Route = createFileRoute("/$lang/_authenticated/dashboard")({
   head: () => ({
     meta: [
-      { title: "Home — Cardix" },
-      { name: "description", content: "Manage your Cardix digital business cards." },
+      { title: "Home — Cardixn" },
+      { name: "description", content: "Manage your Cardixn digital business cards." },
     ],
   }),
   component: Dashboard,

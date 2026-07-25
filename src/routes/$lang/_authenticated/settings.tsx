@@ -11,8 +11,8 @@ import { useQueryClient } from "@tanstack/react-query";
 export const Route = createFileRoute("/$lang/_authenticated/settings")({
   head: () => ({
     meta: [
-      { title: "Settings — Cardix" },
-      { name: "description", content: "Manage your Cardix account, language, theme, and preferences." },
+      { title: "Settings — Cardixn" },
+      { name: "description", content: "Manage your Cardixn account, language, theme, and preferences." },
     ],
   }),
   component: Settings,
