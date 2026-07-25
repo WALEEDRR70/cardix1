@@ -62,6 +62,6 @@ export function ToolShell({
           </Link>
         </div>
       </section>
-    </div>
+    </MarketingLayout>
   );
 }
