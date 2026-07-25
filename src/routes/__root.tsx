@@ -91,6 +91,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/049009a8-923c-4e49-80ba-2fbfd6bf6cd4/id-preview-f786d2ea--558b49a1-03ea-4b3e-a37c-70942b2a7156.lovable.app-1784658404778.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/049009a8-923c-4e49-80ba-2fbfd6bf6cd4/id-preview-f786d2ea--558b49a1-03ea-4b3e-a37c-70942b2a7156.lovable.app-1784658404778.png" },
     ],
+    scripts: [
+      { src: "https://www.googletagmanager.com/gtag/js?id=G-C4GT9PDMPK", async: true },
+      { children: "window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-C4GT9PDMPK');" },
+    ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", type: "image/svg+xml", href: logoAsset.url },
@@ -103,6 +107,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" },
     ],
+
   }),
   shellComponent: RootShell,
   component: RootComponent,
