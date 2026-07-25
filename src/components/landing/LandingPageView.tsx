@@ -19,7 +19,7 @@ export function LandingPageView({
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.15),transparent_60%)]" />
         <div className="relative mx-auto max-w-5xl px-6 py-20 md:py-28">
           <Link to="/" className="text-xs uppercase tracking-widest text-primary/80 hover:text-primary">
-            Cardix · {catLabel}
+            Cardixn · {catLabel}
           </Link>
           <h1 className="mt-4 text-4xl md:text-6xl font-bold leading-tight tracking-tight bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-transparent">
             {copy.h1}
@@ -31,7 +31,7 @@ export function LandingPageView({
               {copy.ctaButton} <ArrowRight className="size-4" />
             </Link>
             <Link to="/" className="inline-flex items-center gap-2 rounded-full border border-border/60 px-6 py-3 hover:bg-muted/50 transition-colors">
-              {lang === "ar" ? "استكشف Cardix" : "Explore Cardix"}
+              {lang === "ar" ? "استكشف Cardixn" : "Explore Cardixn"}
             </Link>
           </div>
         </div>
@@ -51,7 +51,7 @@ export function LandingPageView({
       <section className="border-y border-border/40 bg-muted/20">
         <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-center mb-12">
-            {lang === "ar" ? "لماذا Cardix" : "Why Cardix"}
+            {lang === "ar" ? "لماذا Cardixn" : "Why Cardixn"}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {copy.features.map((f, i) => (

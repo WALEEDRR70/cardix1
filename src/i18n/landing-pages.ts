@@ -29,18 +29,18 @@ export interface LandingPage {
 
 // ---------- helpers to compose copy compactly ----------
 const enFaqCommon = [
-  { q: "Is Cardix free to use?", a: "Yes. You can create, share and receive digital business cards on the free plan. Premium templates, analytics and NFC provisioning are available on paid tiers." },
-  { q: "Do recipients need the Cardix app?", a: "No. Cards open in any modern browser via a public link or QR code. Recipients can save the vCard to their phone with one tap." },
+  { q: "Is Cardixn free to use?", a: "Yes. You can create, share and receive digital business cards on the free plan. Premium templates, analytics and NFC provisioning are available on paid tiers." },
+  { q: "Do recipients need the Cardixn app?", a: "No. Cards open in any modern browser via a public link or QR code. Recipients can save the vCard to their phone with one tap." },
   { q: "Can I edit my card after sharing?", a: "Yes. Updates apply instantly. Anyone who scanned or saved your card always sees the latest information — no need to re-share." },
-  { q: "Is my data secure?", a: "Cardix uses end-to-end encrypted storage, row-level security, and never sells your data. You control what is public and what stays private." },
-  { q: "Does Cardix work offline?", a: "Cards are cached for offline viewing once opened, and QR codes can be downloaded as high-resolution PNGs to print on badges, packaging or business collateral." },
+  { q: "Is my data secure?", a: "Cardixn uses end-to-end encrypted storage, row-level security, and never sells your data. You control what is public and what stays private." },
+  { q: "Does Cardixn work offline?", a: "Cards are cached for offline viewing once opened, and QR codes can be downloaded as high-resolution PNGs to print on badges, packaging or business collateral." },
 ];
 const arFaqCommon = [
-  { q: "هل تطبيق Cardix مجاني؟", a: "نعم. يمكنك إنشاء ومشاركة واستقبال البطاقات الرقمية مجاناً. القوالب المميزة والتحليلات وبطاقات NFC متاحة في الخطط المدفوعة." },
+  { q: "هل تطبيق Cardixn مجاني؟", a: "نعم. يمكنك إنشاء ومشاركة واستقبال البطاقات الرقمية مجاناً. القوالب المميزة والتحليلات وبطاقات NFC متاحة في الخطط المدفوعة." },
   { q: "هل يحتاج المستلم لتنزيل التطبيق؟", a: "لا. تُفتح البطاقة في أي متصفح حديث عبر رابط عام أو رمز QR، ويمكن للمستلم حفظ جهة الاتصال بضغطة واحدة." },
   { q: "هل يمكنني تعديل البطاقة بعد مشاركتها؟", a: "نعم. تُطبَّق التحديثات فوراً، وكل من مسح البطاقة أو حفظها يرى دائماً أحدث المعلومات دون الحاجة لإعادة الإرسال." },
-  { q: "هل بياناتي آمنة؟", a: "يستخدم Cardix تخزيناً مشفراً وأمناً على مستوى الصف (RLS)، ولا نبيع بياناتك مطلقاً. أنت تتحكم بما هو عام وما يبقى خاصاً." },
-  { q: "هل يعمل Cardix دون اتصال؟", a: "يتم تخزين البطاقات مؤقتاً للعرض دون اتصال بعد فتحها لأول مرة، ويمكن تنزيل رموز QR بدقة عالية لطباعتها على الشارات والمنتجات." },
+  { q: "هل بياناتي آمنة؟", a: "يستخدم Cardixn تخزيناً مشفراً وأمناً على مستوى الصف (RLS)، ولا نبيع بياناتك مطلقاً. أنت تتحكم بما هو عام وما يبقى خاصاً." },
+  { q: "هل يعمل Cardixn دون اتصال؟", a: "يتم تخزين البطاقات مؤقتاً للعرض دون اتصال بعد فتحها لأول مرة، ويمكن تنزيل رموز QR بدقة عالية لطباعتها على الشارات والمنتجات." },
 ];
 
 // ==================== PAGES ====================
@@ -52,14 +52,14 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Digital Business Card",
     copy: {
       en: {
-        title: "Digital Business Card — Create & Share in Seconds | Cardix",
+        title: "Digital Business Card — Create & Share in Seconds | Cardixn",
         description: "Create a stunning digital business card in under 60 seconds. Share via QR, NFC or link. Free forever. Trusted by 100,000+ professionals worldwide.",
         h1: "The Digital Business Card built for the modern professional",
         subtitle: "One tap to share. Zero paper. Infinite reach.",
-        intro: "A digital business card replaces the paper card in your wallet with a living, editable, trackable identity that works on every phone on Earth. Cardix gives you a premium card, a shareable link, a scannable QR, an NFC-ready profile, and analytics — in one app. No plastic, no reprints, no lost contacts.",
+        intro: "A digital business card replaces the paper card in your wallet with a living, editable, trackable identity that works on every phone on Earth. Cardixn gives you a premium card, a shareable link, a scannable QR, an NFC-ready profile, and analytics — in one app. No plastic, no reprints, no lost contacts.",
         sections: [
           { h2: "Why digital business cards win in 2026", body: "88% of paper business cards are thrown away within a week. Digital cards, on the other hand, land directly in the recipient's contacts, sync across devices, and evolve with you when you change jobs, phone numbers, or brand. They are sustainable, unlimited, and infinitely more shareable than paper." },
-          { h2: "Every way to share your card", body: "Cardix supports every modern sharing method: dynamic QR codes, NFC taps, direct URLs, WhatsApp deep links, email signatures, Apple Wallet passes, and Airdrop-friendly vCards. One card. Every channel." },
+          { h2: "Every way to share your card", body: "Cardixn supports every modern sharing method: dynamic QR codes, NFC taps, direct URLs, WhatsApp deep links, email signatures, Apple Wallet passes, and Airdrop-friendly vCards. One card. Every channel." },
           { h2: "Built for teams and enterprises", body: "Roll out branded digital business cards to your entire company in minutes. Central template library, SSO, role-based permissions, and per-employee analytics. Perfect for real-estate agencies, law firms, sales teams and consultancies." },
         ],
         features: [
@@ -74,14 +74,14 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Create my card",
       },
       ar: {
-        title: "بطاقة أعمال رقمية — أنشئ وشارك في ثوانٍ | Cardix",
+        title: "بطاقة أعمال رقمية — أنشئ وشارك في ثوانٍ | Cardixn",
         description: "أنشئ بطاقة أعمال رقمية فاخرة في أقل من 60 ثانية. شاركها عبر QR أو NFC أو رابط. مجاناً للأبد. يثق بها أكثر من 100,000 محترف حول العالم.",
         h1: "البطاقة الرقمية المصممة للمحترف الحديث",
         subtitle: "لمسة واحدة للمشاركة. صفر ورق. وصول لا نهائي.",
-        intro: "البطاقة الرقمية تحل محل البطاقة الورقية في محفظتك بهوية حية قابلة للتعديل والتتبع تعمل على كل هاتف في العالم. يمنحك Cardix بطاقة فاخرة ورابطاً قابلاً للمشاركة ورمز QR قابلاً للمسح وملفاً جاهزاً لـ NFC وتحليلات — في تطبيق واحد. بلا بلاستيك، بلا إعادة طباعة، بلا فقدان جهات اتصال.",
+        intro: "البطاقة الرقمية تحل محل البطاقة الورقية في محفظتك بهوية حية قابلة للتعديل والتتبع تعمل على كل هاتف في العالم. يمنحك Cardixn بطاقة فاخرة ورابطاً قابلاً للمشاركة ورمز QR قابلاً للمسح وملفاً جاهزاً لـ NFC وتحليلات — في تطبيق واحد. بلا بلاستيك، بلا إعادة طباعة، بلا فقدان جهات اتصال.",
         sections: [
           { h2: "لماذا تفوز البطاقات الرقمية في 2026", body: "88% من البطاقات الورقية تُرمى خلال أسبوع. أما البطاقات الرقمية فتصل مباشرة إلى جهات اتصال المستلم، وتُزامَن عبر الأجهزة، وتتطور معك عند تغيير الوظيفة أو رقم الهاتف أو الهوية. إنها مستدامة، غير محدودة، وأسهل بكثير في المشاركة." },
-          { h2: "كل طرق مشاركة بطاقتك", body: "يدعم Cardix كل طرق المشاركة الحديثة: رموز QR ديناميكية، لمسة NFC، روابط مباشرة، روابط واتساب عميقة، توقيعات البريد الإلكتروني، بطاقات Apple Wallet، وملفات vCard متوافقة مع AirDrop. بطاقة واحدة على كل القنوات." },
+          { h2: "كل طرق مشاركة بطاقتك", body: "يدعم Cardixn كل طرق المشاركة الحديثة: رموز QR ديناميكية، لمسة NFC، روابط مباشرة، روابط واتساب عميقة، توقيعات البريد الإلكتروني، بطاقات Apple Wallet، وملفات vCard متوافقة مع AirDrop. بطاقة واحدة على كل القنوات." },
           { h2: "مصمم للفرق والشركات", body: "أطلق بطاقات رقمية مبرمَجة بهوية شركتك لكامل الفريق في دقائق: مكتبة قوالب مركزية، تسجيل دخول موحّد (SSO)، صلاحيات مبنية على الأدوار، وتحليلات لكل موظف. مثالي لوكالات العقار والمكاتب القانونية وفرق المبيعات والاستشارات." },
         ],
         features: [
@@ -103,14 +103,14 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Electronic Business Card",
     copy: {
       en: {
-        title: "Electronic Business Card — Modern Alternative to Paper | Cardix",
+        title: "Electronic Business Card — Modern Alternative to Paper | Cardixn",
         description: "The electronic business card designed for professionals who value speed, sustainability and analytics. Free to create. Compatible with iPhone and Android.",
         h1: "The electronic business card that replaces every paper card",
         subtitle: "Editable. Trackable. Beautiful.",
-        intro: "An electronic business card is a fully digital, shareable, and editable version of your professional identity. Unlike paper cards, it never runs out, never goes out of date, and gives you insight into how people interact with your contact information. Cardix has helped over 100,000 professionals ditch paper forever.",
+        intro: "An electronic business card is a fully digital, shareable, and editable version of your professional identity. Unlike paper cards, it never runs out, never goes out of date, and gives you insight into how people interact with your contact information. Cardixn has helped over 100,000 professionals ditch paper forever.",
         sections: [
           { h2: "What makes an electronic card different", body: "A paper card is a snapshot. An electronic card is a living profile. When your title, employer, portfolio, or Instagram handle changes, your electronic card updates for everyone instantly — no reprints, no confusion, no lost leads." },
-          { h2: "Compatible with every phone", body: "Cardix electronic cards are web-based, meaning they open in Safari, Chrome, Samsung Internet, and every other modern browser. No app download required for recipients. Compatible with iOS 12+ and Android 8+." },
+          { h2: "Compatible with every phone", body: "Cardixn electronic cards are web-based, meaning they open in Safari, Chrome, Samsung Internet, and every other modern browser. No app download required for recipients. Compatible with iOS 12+ and Android 8+." },
           { h2: "Enterprise-ready", body: "Roll out branded electronic cards to entire teams. Centralized brand control, SSO, group analytics, and CSV import for onboarding hundreds of employees at once." },
         ],
         features: [
@@ -125,14 +125,14 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Get started free",
       },
       ar: {
-        title: "بطاقة أعمال إلكترونية — البديل الحديث للورق | Cardix",
+        title: "بطاقة أعمال إلكترونية — البديل الحديث للورق | Cardixn",
         description: "البطاقة الإلكترونية المصممة للمحترفين الذين يقدّرون السرعة والاستدامة والتحليلات. مجانية. متوافقة مع iPhone و Android.",
         h1: "البطاقة الإلكترونية التي تستبدل كل بطاقة ورقية",
         subtitle: "قابلة للتعديل. قابلة للتتبع. فاخرة.",
-        intro: "البطاقة الإلكترونية هي نسخة رقمية بالكامل قابلة للمشاركة والتعديل من هويتك المهنية. على عكس الورق، لا تنفد، ولا تنتهي صلاحيتها، وتمنحك رؤية حول كيفية تفاعل الناس مع معلوماتك. Cardix ساعد أكثر من 100,000 محترف على التخلي عن الورق نهائياً.",
+        intro: "البطاقة الإلكترونية هي نسخة رقمية بالكامل قابلة للمشاركة والتعديل من هويتك المهنية. على عكس الورق، لا تنفد، ولا تنتهي صلاحيتها، وتمنحك رؤية حول كيفية تفاعل الناس مع معلوماتك. Cardixn ساعد أكثر من 100,000 محترف على التخلي عن الورق نهائياً.",
         sections: [
           { h2: "ما الذي يجعل البطاقة الإلكترونية مختلفة", body: "البطاقة الورقية لحظة ثابتة. البطاقة الإلكترونية ملف حي. عند تغيير مسمّاك أو شركتك أو معرّف Instagram، تُحدَّث بطاقتك لدى الجميع فوراً — بلا إعادة طباعة ولا فقدان عملاء." },
-          { h2: "متوافقة مع كل هاتف", body: "بطاقات Cardix تعمل عبر الويب، أي تُفتح في Safari و Chrome و Samsung Internet وكل المتصفحات الحديثة. لا يحتاج المستلم لتنزيل أي تطبيق. متوافقة مع iOS 12+ و Android 8+." },
+          { h2: "متوافقة مع كل هاتف", body: "بطاقات Cardixn تعمل عبر الويب، أي تُفتح في Safari و Chrome و Samsung Internet وكل المتصفحات الحديثة. لا يحتاج المستلم لتنزيل أي تطبيق. متوافقة مع iOS 12+ و Android 8+." },
           { h2: "جاهز للشركات", body: "أطلق بطاقات إلكترونية بهوية شركتك لفرق كاملة: تحكم مركزي بالعلامة، SSO، تحليلات جماعية، واستيراد CSV لإدخال مئات الموظفين دفعة واحدة." },
         ],
         features: [
@@ -154,14 +154,14 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Virtual Business Card",
     copy: {
       en: {
-        title: "Virtual Business Card — Share Anywhere, Track Everything | Cardix",
+        title: "Virtual Business Card — Share Anywhere, Track Everything | Cardixn",
         description: "Your virtual business card, always in your pocket. Share via QR, NFC, link or Apple Wallet. Real-time analytics included. Free forever.",
         h1: "The virtual business card that goes everywhere you go",
         subtitle: "One profile. Every network. Every device.",
-        intro: "A virtual business card lives in the cloud, not in your wallet. That means it's always with you, always up to date, and always shareable — whether you're in a meeting, at a trade show, on Zoom, or in a WhatsApp thread. Cardix is the world's most-loved virtual business card platform.",
+        intro: "A virtual business card lives in the cloud, not in your wallet. That means it's always with you, always up to date, and always shareable — whether you're in a meeting, at a trade show, on Zoom, or in a WhatsApp thread. Cardixn is the world's most-loved virtual business card platform.",
         sections: [
           { h2: "Perfect for hybrid & remote work", body: "In a world of Zoom introductions and Slack DMs, paper cards make zero sense. A virtual business card lets you drop a link in any chat and let the other person save your contact in one tap." },
-          { h2: "Beyond the card: your whole professional profile", body: "Cardix supports 30+ social and messaging platforms — LinkedIn, Instagram, TikTok, WhatsApp, Telegram, Calendly, Notion, GitHub, Behance, Dribbble, and more. Every platform gets its own brand-colored chip." },
+          { h2: "Beyond the card: your whole professional profile", body: "Cardixn supports 30+ social and messaging platforms — LinkedIn, Instagram, TikTok, WhatsApp, Telegram, Calendly, Notion, GitHub, Behance, Dribbble, and more. Every platform gets its own brand-colored chip." },
           { h2: "Trackable, private, yours", body: "See how many people viewed your card this week, which links they clicked, and where in the world they scanned. All while keeping full ownership and privacy control of your data." },
         ],
         features: [
@@ -176,14 +176,14 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Create for free",
       },
       ar: {
-        title: "بطاقة أعمال افتراضية — شاركها في كل مكان | Cardix",
+        title: "بطاقة أعمال افتراضية — شاركها في كل مكان | Cardixn",
         description: "بطاقتك الافتراضية معك دائماً. شاركها عبر QR أو NFC أو رابط أو Apple Wallet. تحليلات فورية. مجانية للأبد.",
         h1: "البطاقة الافتراضية التي ترافقك أينما ذهبت",
         subtitle: "ملف واحد. كل الشبكات. كل الأجهزة.",
-        intro: "البطاقة الافتراضية تعيش في السحابة لا في محفظتك، أي أنها دائماً معك، دائماً محدَّثة، ودائماً قابلة للمشاركة — سواء كنت في اجتماع أو معرض تجاري أو مكالمة Zoom أو محادثة واتساب. Cardix هو المنصة الأكثر محبةً للبطاقات الافتراضية في العالم.",
+        intro: "البطاقة الافتراضية تعيش في السحابة لا في محفظتك، أي أنها دائماً معك، دائماً محدَّثة، ودائماً قابلة للمشاركة — سواء كنت في اجتماع أو معرض تجاري أو مكالمة Zoom أو محادثة واتساب. Cardixn هو المنصة الأكثر محبةً للبطاقات الافتراضية في العالم.",
         sections: [
           { h2: "مثالية للعمل الهجين والبعيد", body: "في عالم تعارف Zoom ورسائل Slack الخاصة، لا معنى للبطاقات الورقية. البطاقة الافتراضية تتيح لك إسقاط رابط في أي محادثة ليحفظ الطرف الآخر جهة اتصالك بلمسة واحدة." },
-          { h2: "أكثر من مجرد بطاقة: ملفك المهني بالكامل", body: "يدعم Cardix أكثر من 30 منصة اجتماعية وتواصلية — LinkedIn وInstagram وTikTok وWhatsApp وTelegram وCalendly وNotion وGitHub وBehance وDribbble وغيرها. كل منصة تظهر برمز ملوَّن بهوية علامتها." },
+          { h2: "أكثر من مجرد بطاقة: ملفك المهني بالكامل", body: "يدعم Cardixn أكثر من 30 منصة اجتماعية وتواصلية — LinkedIn وInstagram وTikTok وWhatsApp وTelegram وCalendly وNotion وGitHub وBehance وDribbble وغيرها. كل منصة تظهر برمز ملوَّن بهوية علامتها." },
           { h2: "قابلة للتتبع، خاصة، ملكك أنت", body: "شاهد كم شخصاً فتح بطاقتك هذا الأسبوع، وأي الروابط ضغطوا عليها، ومن أي بلد. مع احتفاظك الكامل بالملكية وخصوصية البيانات." },
         ],
         features: [
@@ -205,15 +205,15 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Business Card App",
     copy: {
       en: {
-        title: "#1 Business Card App for iPhone & Android 2026 | Cardix",
+        title: "#1 Business Card App for iPhone & Android 2026 | Cardixn",
         description: "The best business card app of 2026. Create, scan, save and share digital cards. Free download. 4.9★ from 12,000+ reviews. iOS, Android and web.",
         h1: "The business card app professionals actually use",
         subtitle: "Design. Share. Scan. Analyze. In one app.",
-        intro: "Cardix is the all-in-one business card app that replaces four separate apps: a card designer, a QR generator, an OCR scanner, and a contact manager. Built by designers, loved by 100,000+ users, and rated 4.9 stars on both major app stores.",
+        intro: "Cardixn is the all-in-one business card app that replaces four separate apps: a card designer, a QR generator, an OCR scanner, and a contact manager. Built by designers, loved by 100,000+ users, and rated 4.9 stars on both major app stores.",
         sections: [
-          { h2: "Everything a business card app should be", body: "Most business card apps do one thing — either they design cards, or scan them, or generate QRs. Cardix does all four, natively, with an interface that looks and feels like Apple built it." },
-          { h2: "Cross-platform by design", body: "Cardix runs on iOS, Android, and any modern browser. Your cards, contacts and analytics sync automatically. Start on your phone at a conference, finish editing on your laptop back at the hotel." },
-          { h2: "Loved by real users", body: "\"Finally an app that isn't ugly.\" — Sarah, Product Manager. \"I closed a $40k deal because I could send my card in Slack instantly.\" — Alex, Sales Lead. \"Cardix is the only app I actually use every week.\" — Mo, Freelance Designer." },
+          { h2: "Everything a business card app should be", body: "Most business card apps do one thing — either they design cards, or scan them, or generate QRs. Cardixn does all four, natively, with an interface that looks and feels like Apple built it." },
+          { h2: "Cross-platform by design", body: "Cardixn runs on iOS, Android, and any modern browser. Your cards, contacts and analytics sync automatically. Start on your phone at a conference, finish editing on your laptop back at the hotel." },
+          { h2: "Loved by real users", body: "\"Finally an app that isn't ugly.\" — Sarah, Product Manager. \"I closed a $40k deal because I could send my card in Slack instantly.\" — Alex, Sales Lead. \"Cardixn is the only app I actually use every week.\" — Mo, Freelance Designer." },
         ],
         features: [
           { title: "Free forever core", desc: "Cards, sharing, and vault always free." },
@@ -224,18 +224,18 @@ export const LANDING_PAGES: LandingPage[] = [
         faqs: enFaqCommon,
         ctaTitle: "Download the business card app",
         ctaSub: "Available on Web, iOS and Android — free to install.",
-        ctaButton: "Get Cardix",
+        ctaButton: "Get Cardixn",
       },
       ar: {
-        title: "أفضل تطبيق بطاقات أعمال لـ iPhone و Android 2026 | Cardix",
+        title: "أفضل تطبيق بطاقات أعمال لـ iPhone و Android 2026 | Cardixn",
         description: "أفضل تطبيق بطاقات إلكترونية لعام 2026. أنشئ وامسح واحفظ وشارك بطاقات رقمية. تنزيل مجاني. تقييم 4.9★ من 12,000+ مراجعة.",
         h1: "تطبيق البطاقات الذي يستخدمه المحترفون فعلياً",
         subtitle: "صمّم. شارك. امسح. حلّل. في تطبيق واحد.",
-        intro: "Cardix هو التطبيق الشامل الذي يستبدل أربعة تطبيقات منفصلة: مصمم بطاقات، مولّد QR، ماسح OCR، ومدير جهات اتصال. صنعه مصممون، ويحبه أكثر من 100,000 مستخدم، وحاصل على 4.9 نجوم في متجري التطبيقات الكبرى.",
+        intro: "Cardixn هو التطبيق الشامل الذي يستبدل أربعة تطبيقات منفصلة: مصمم بطاقات، مولّد QR، ماسح OCR، ومدير جهات اتصال. صنعه مصممون، ويحبه أكثر من 100,000 مستخدم، وحاصل على 4.9 نجوم في متجري التطبيقات الكبرى.",
         sections: [
-          { h2: "كل ما يجب أن يكون عليه تطبيق البطاقات", body: "معظم تطبيقات البطاقات تقوم بشيء واحد فقط: إما تصمم، أو تمسح، أو تولّد QR. أما Cardix فيقوم بكل ذلك بواجهة تبدو وكأن Apple صنعتها." },
-          { h2: "متعدد المنصات بالتصميم", body: "يعمل Cardix على iOS و Android وكل متصفح حديث. بطاقاتك وجهات اتصالك وتحليلاتك تُزامَن تلقائياً. ابدأ من الهاتف في المؤتمر وأكمل التعديل من اللابتوب في الفندق." },
-          { h2: "يحبه المستخدمون فعلاً", body: "«أخيراً تطبيق ليس قبيحاً» — سارة، مديرة منتج. «أغلقت صفقة بقيمة 40 ألف دولار لأنني استطعت إرسال بطاقتي على Slack فوراً» — أحمد، مدير مبيعات. «Cardix هو التطبيق الوحيد الذي أستخدمه فعلاً كل أسبوع» — محمد، مصمم مستقل." },
+          { h2: "كل ما يجب أن يكون عليه تطبيق البطاقات", body: "معظم تطبيقات البطاقات تقوم بشيء واحد فقط: إما تصمم، أو تمسح، أو تولّد QR. أما Cardixn فيقوم بكل ذلك بواجهة تبدو وكأن Apple صنعتها." },
+          { h2: "متعدد المنصات بالتصميم", body: "يعمل Cardixn على iOS و Android وكل متصفح حديث. بطاقاتك وجهات اتصالك وتحليلاتك تُزامَن تلقائياً. ابدأ من الهاتف في المؤتمر وأكمل التعديل من اللابتوب في الفندق." },
+          { h2: "يحبه المستخدمون فعلاً", body: "«أخيراً تطبيق ليس قبيحاً» — سارة، مديرة منتج. «أغلقت صفقة بقيمة 40 ألف دولار لأنني استطعت إرسال بطاقتي على Slack فوراً» — أحمد، مدير مبيعات. «Cardixn هو التطبيق الوحيد الذي أستخدمه فعلاً كل أسبوع» — محمد، مصمم مستقل." },
         ],
         features: [
           { title: "مجاني للأبد", desc: "البطاقات والمشاركة والخزينة مجانية دائماً." },
@@ -246,7 +246,7 @@ export const LANDING_PAGES: LandingPage[] = [
         faqs: arFaqCommon,
         ctaTitle: "حمّل تطبيق البطاقات",
         ctaSub: "متوفر على الويب و iOS و Android — مجاني.",
-        ctaButton: "احصل على Cardix",
+        ctaButton: "احصل على Cardixn",
       },
     },
   },
@@ -256,15 +256,15 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Best Digital Business Card App",
     copy: {
       en: {
-        title: "Best Digital Business Card App of 2026 — Compared & Ranked | Cardix",
-        description: "We tested 24 digital business card apps in 2026. Here is the honest winner: Cardix. Better design, better analytics, generous free tier.",
+        title: "Best Digital Business Card App of 2026 — Compared & Ranked | Cardixn",
+        description: "We tested 24 digital business card apps in 2026. Here is the honest winner: Cardixn. Better design, better analytics, generous free tier.",
         h1: "The best digital business card app of 2026",
         subtitle: "Rated #1 for design, features, and value.",
-        intro: "We benchmarked Cardix against 23 competing digital business card apps in 2026 — Linq, Popl, HiHello, Blinq, Mobilo, Kado, and more. Cardix won on design quality, template variety, analytics depth, free-tier generosity, and support for RTL languages. Here is what makes it the top choice.",
+        intro: "We benchmarked Cardixn against 23 competing digital business card apps in 2026 — Linq, Popl, HiHello, Blinq, Mobilo, Kado, and more. Cardixn won on design quality, template variety, analytics depth, free-tier generosity, and support for RTL languages. Here is what makes it the top choice.",
         sections: [
-          { h2: "What to look for in a digital business card app", body: "Great design (does it look like you spent $500 or $5?), sharing methods (QR, NFC, link, wallet), free-tier generosity, analytics depth, offline support, and enterprise readiness. Cardix wins on every single axis." },
-          { h2: "The Cardix difference", body: "19+ luxury templates versus the industry average of 6. Full multilingual with Arabic RTL. AI-generated bios out of the box. And a genuinely free tier that lets you create unlimited cards, not just one." },
-          { h2: "Why users switch to Cardix", body: "Most users who switch come from Popl or Linq. The three top reasons: (1) Cardix templates look luxury, not childish. (2) Free tier includes unlimited cards. (3) Analytics show location and device — not just view counts." },
+          { h2: "What to look for in a digital business card app", body: "Great design (does it look like you spent $500 or $5?), sharing methods (QR, NFC, link, wallet), free-tier generosity, analytics depth, offline support, and enterprise readiness. Cardixn wins on every single axis." },
+          { h2: "The Cardixn difference", body: "19+ luxury templates versus the industry average of 6. Full multilingual with Arabic RTL. AI-generated bios out of the box. And a genuinely free tier that lets you create unlimited cards, not just one." },
+          { h2: "Why users switch to Cardixn", body: "Most users who switch come from Popl or Linq. The three top reasons: (1) Cardixn templates look luxury, not childish. (2) Free tier includes unlimited cards. (3) Analytics show location and device — not just view counts." },
         ],
         features: [
           { title: "Best-in-class design", desc: "19+ Apple-grade templates with custom accent colors." },
@@ -274,19 +274,19 @@ export const LANDING_PAGES: LandingPage[] = [
         ],
         faqs: enFaqCommon,
         ctaTitle: "Try the #1 app",
-        ctaSub: "Free forever. See why 100,000+ pros switched to Cardix.",
+        ctaSub: "Free forever. See why 100,000+ pros switched to Cardixn.",
         ctaButton: "Start free",
       },
       ar: {
-        title: "أفضل تطبيق بطاقات إلكترونية لعام 2026 — مقارن ومصنَّف | Cardix",
-        description: "اختبرنا 24 تطبيق بطاقات رقمية في 2026. الفائز الصادق: Cardix. تصميم أفضل، تحليلات أعمق، خطة مجانية سخية.",
+        title: "أفضل تطبيق بطاقات إلكترونية لعام 2026 — مقارن ومصنَّف | Cardixn",
+        description: "اختبرنا 24 تطبيق بطاقات رقمية في 2026. الفائز الصادق: Cardixn. تصميم أفضل، تحليلات أعمق، خطة مجانية سخية.",
         h1: "أفضل تطبيق بطاقات إلكترونية لعام 2026",
         subtitle: "مصنَّف #1 للتصميم والميزات والقيمة.",
-        intro: "قارنّا Cardix مع 23 تطبيقاً منافساً — Linq و Popl و HiHello و Blinq و Mobilo و Kado وغيرها. فاز Cardix في جودة التصميم وتنوع القوالب وعمق التحليلات وسخاء الخطة المجانية ودعم اللغات RTL. إليك ما يجعله الاختيار الأول.",
+        intro: "قارنّا Cardixn مع 23 تطبيقاً منافساً — Linq و Popl و HiHello و Blinq و Mobilo و Kado وغيرها. فاز Cardixn في جودة التصميم وتنوع القوالب وعمق التحليلات وسخاء الخطة المجانية ودعم اللغات RTL. إليك ما يجعله الاختيار الأول.",
         sections: [
-          { h2: "ما الذي تبحث عنه في تطبيق بطاقات رقمية", body: "تصميم رائع (هل يبدو أنك دفعت 500$ أم 5$؟)، طرق مشاركة (QR، NFC، رابط، محفظة)، سخاء الخطة المجانية، عمق التحليلات، دعم عدم الاتصال، وجاهزية الشركات. Cardix يفوز في كل محور." },
-          { h2: "فرق Cardix", body: "أكثر من 19 قالباً فاخراً مقابل متوسط 6 في السوق. دعم كامل متعدد اللغات مع RTL للعربية. سيرة ذاتية بالذكاء الاصطناعي جاهزة. وخطة مجانية حقيقية تتيح بطاقات غير محدودة، لا واحدة فقط." },
-          { h2: "لماذا يتحول المستخدمون إلى Cardix", body: "معظم من يتحوّل يأتي من Popl أو Linq، لثلاثة أسباب: (1) قوالب Cardix تبدو فاخرة لا طفولية. (2) الخطة المجانية تشمل بطاقات غير محدودة. (3) التحليلات تظهر الموقع والجهاز، لا مجرد عدد المشاهدات." },
+          { h2: "ما الذي تبحث عنه في تطبيق بطاقات رقمية", body: "تصميم رائع (هل يبدو أنك دفعت 500$ أم 5$؟)، طرق مشاركة (QR، NFC، رابط، محفظة)، سخاء الخطة المجانية، عمق التحليلات، دعم عدم الاتصال، وجاهزية الشركات. Cardixn يفوز في كل محور." },
+          { h2: "فرق Cardixn", body: "أكثر من 19 قالباً فاخراً مقابل متوسط 6 في السوق. دعم كامل متعدد اللغات مع RTL للعربية. سيرة ذاتية بالذكاء الاصطناعي جاهزة. وخطة مجانية حقيقية تتيح بطاقات غير محدودة، لا واحدة فقط." },
+          { h2: "لماذا يتحول المستخدمون إلى Cardixn", body: "معظم من يتحوّل يأتي من Popl أو Linq، لثلاثة أسباب: (1) قوالب Cardixn تبدو فاخرة لا طفولية. (2) الخطة المجانية تشمل بطاقات غير محدودة. (3) التحليلات تظهر الموقع والجهاز، لا مجرد عدد المشاهدات." },
         ],
         features: [
           { title: "أفضل تصميم في فئته", desc: "أكثر من 19 قالباً بمستوى Apple وألوان مميزة قابلة للتخصيص." },
@@ -296,7 +296,7 @@ export const LANDING_PAGES: LandingPage[] = [
         ],
         faqs: arFaqCommon,
         ctaTitle: "جرّب التطبيق الأول",
-        ctaSub: "مجاني للأبد. اكتشف لماذا انتقل أكثر من 100,000 محترف إلى Cardix.",
+        ctaSub: "مجاني للأبد. اكتشف لماذا انتقل أكثر من 100,000 محترف إلى Cardixn.",
         ctaButton: "ابدأ مجاناً",
       },
     },
@@ -307,14 +307,14 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Create Business Card Online",
     copy: {
       en: {
-        title: "Create a Business Card Online — Free, in 60 Seconds | Cardix",
+        title: "Create a Business Card Online — Free, in 60 Seconds | Cardixn",
         description: "Create a professional business card online for free. 19+ luxury templates. Instant QR code. No design skills required. Get started in 60 seconds.",
         h1: "Create your business card online — free and beautiful",
         subtitle: "No design skills. No downloads. No credit card.",
-        intro: "Creating a business card online used to mean choosing between ugly templates or expensive designers. Cardix changes that. Pick from 19+ luxury templates, drop in your details, generate a QR — all in under a minute. Every card is instantly shareable, editable forever, and comes with a public URL and analytics.",
+        intro: "Creating a business card online used to mean choosing between ugly templates or expensive designers. Cardixn changes that. Pick from 19+ luxury templates, drop in your details, generate a QR — all in under a minute. Every card is instantly shareable, editable forever, and comes with a public URL and analytics.",
         sections: [
           { h2: "Three steps, sixty seconds", body: "1. Sign up with email or Google. 2. Pick a template and enter your name, title and contact info. 3. Get your shareable URL, QR code, and NFC-ready profile — done. No download, no install, no waiting for approval." },
-          { h2: "Designed by pros, no design skills needed", body: "Every Cardix template was hand-crafted by senior designers. Just pick one, choose an accent color to match your brand, and every element — spacing, typography, shadows — is already perfect." },
+          { h2: "Designed by pros, no design skills needed", body: "Every Cardixn template was hand-crafted by senior designers. Just pick one, choose an accent color to match your brand, and every element — spacing, typography, shadows — is already perfect." },
           { h2: "Edit anytime, forever", body: "Change your title? Change your number? Update your photo? Do it in the editor, and every version of your card — the QR, the link, the wallet pass — updates instantly for everyone." },
         ],
         features: [
@@ -329,14 +329,14 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Start creating",
       },
       ar: {
-        title: "أنشئ بطاقة أعمال أونلاين — مجاناً في 60 ثانية | Cardix",
+        title: "أنشئ بطاقة أعمال أونلاين — مجاناً في 60 ثانية | Cardixn",
         description: "أنشئ بطاقة أعمال احترافية أونلاين مجاناً. أكثر من 19 قالباً فاخراً. رمز QR فوري. بلا مهارات تصميم. ابدأ في 60 ثانية.",
         h1: "أنشئ بطاقة أعمالك أونلاين — مجاناً وبفخامة",
         subtitle: "بلا مهارات تصميم. بلا تنزيل. بلا بطاقة ائتمان.",
-        intro: "إنشاء بطاقة أعمال أونلاين كان يعني الاختيار بين قوالب قبيحة أو مصممين باهظين. Cardix يغيّر ذلك. اختر من 19+ قالباً فاخراً، أدخل بياناتك، ولّد QR — كل هذا في أقل من دقيقة. كل بطاقة قابلة للمشاركة فوراً، وقابلة للتعديل للأبد، وتأتي مع رابط عام وتحليلات.",
+        intro: "إنشاء بطاقة أعمال أونلاين كان يعني الاختيار بين قوالب قبيحة أو مصممين باهظين. Cardixn يغيّر ذلك. اختر من 19+ قالباً فاخراً، أدخل بياناتك، ولّد QR — كل هذا في أقل من دقيقة. كل بطاقة قابلة للمشاركة فوراً، وقابلة للتعديل للأبد، وتأتي مع رابط عام وتحليلات.",
         sections: [
           { h2: "ثلاث خطوات، ستون ثانية", body: "1. سجّل بالبريد أو Google. 2. اختر قالباً وأدخل اسمك ومسمّاك ومعلوماتك. 3. احصل على رابط المشاركة ورمز QR وملف جاهز لـ NFC — انتهى. بلا تنزيل، بلا تثبيت، بلا انتظار." },
-          { h2: "تصميم محترف بلا مهارات تصميم", body: "كل قوالب Cardix صمّمها مصممون كبار. اختر واحداً، اختر لوناً مميزاً يطابق علامتك، وكل عنصر — التباعد والخطوط والظلال — سيكون مثالياً." },
+          { h2: "تصميم محترف بلا مهارات تصميم", body: "كل قوالب Cardixn صمّمها مصممون كبار. اختر واحداً، اختر لوناً مميزاً يطابق علامتك، وكل عنصر — التباعد والخطوط والظلال — سيكون مثالياً." },
           { h2: "عدّل في أي وقت، للأبد", body: "غيّرت مسمّاك؟ رقمك؟ صورتك؟ عدّلها في المحرر، وكل نسخة من بطاقتك — QR والرابط وبطاقة المحفظة — ستُحدَّث فوراً للجميع." },
         ],
         features: [
@@ -358,13 +358,13 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Smart Business Card",
     copy: {
       en: {
-        title: "Smart Business Card — AI-Powered & Trackable | Cardix",
+        title: "Smart Business Card — AI-Powered & Trackable | Cardixn",
         description: "The smart business card that writes itself, tracks itself, and updates itself. AI-generated bios, real-time analytics, dynamic QR codes.",
         h1: "The smart business card that does the work for you",
         subtitle: "AI-written. Cloud-synced. Analytics-native.",
-        intro: "A smart business card isn't just digital — it's intelligent. Cardix uses AI to generate professional bios from your job title, suggests optimal template layouts, and gives you live analytics on every share. It's not a business card. It's a networking assistant.",
+        intro: "A smart business card isn't just digital — it's intelligent. Cardixn uses AI to generate professional bios from your job title, suggests optimal template layouts, and gives you live analytics on every share. It's not a business card. It's a networking assistant.",
         sections: [
-          { h2: "AI that writes your bio", body: "Enter your role and specialties, and Cardix generates a 40-60 word professional bio that reads like a copywriter wrote it. Regenerate as many times as you want until you love it." },
+          { h2: "AI that writes your bio", body: "Enter your role and specialties, and Cardixn generates a 40-60 word professional bio that reads like a copywriter wrote it. Regenerate as many times as you want until you love it." },
           { h2: "Analytics that make you smarter", body: "See exactly who viewed your card, when, where in the world, and what they clicked. Turn networking from guesswork into data-driven follow-up." },
           { h2: "Dynamic QR codes", body: "Your QR never changes — even if you completely redesign your card. That means every printed poster, sticker, or business card stays valid forever." },
         ],
@@ -377,16 +377,16 @@ export const LANDING_PAGES: LandingPage[] = [
         faqs: enFaqCommon,
         ctaTitle: "Get a smart business card",
         ctaSub: "AI-powered networking, free to start.",
-        ctaButton: "Try Cardix",
+        ctaButton: "Try Cardixn",
       },
       ar: {
-        title: "بطاقة أعمال ذكية — بالذكاء الاصطناعي والتحليلات | Cardix",
+        title: "بطاقة أعمال ذكية — بالذكاء الاصطناعي والتحليلات | Cardixn",
         description: "البطاقة الذكية التي تكتب نفسها وتتتبع نفسها وتحدّث نفسها. سِيَر ذاتية بالذكاء الاصطناعي وتحليلات فورية ورموز QR ديناميكية.",
         h1: "البطاقة الذكية التي تقوم بالعمل نيابة عنك",
         subtitle: "مكتوبة بالذكاء الاصطناعي. مزامنة سحابياً. تحليلاتياً بطبيعتها.",
-        intro: "البطاقة الذكية ليست رقمية فقط — إنها ذكية. يستخدم Cardix الذكاء الاصطناعي لتوليد سِيَر مهنية من مسمّاك، ويقترح تخطيطات القوالب المثلى، ويعطيك تحليلات فورية على كل مشاركة. إنها ليست بطاقة، بل مساعد تشبيك.",
+        intro: "البطاقة الذكية ليست رقمية فقط — إنها ذكية. يستخدم Cardixn الذكاء الاصطناعي لتوليد سِيَر مهنية من مسمّاك، ويقترح تخطيطات القوالب المثلى، ويعطيك تحليلات فورية على كل مشاركة. إنها ليست بطاقة، بل مساعد تشبيك.",
         sections: [
-          { h2: "ذكاء اصطناعي يكتب سيرتك", body: "أدخل مسمّاك وتخصصاتك، وسينتج Cardix سيرة مهنية من 40-60 كلمة بجودة كاتب محتوى محترف. أعِد التوليد حتى تحصل على ما يعجبك." },
+          { h2: "ذكاء اصطناعي يكتب سيرتك", body: "أدخل مسمّاك وتخصصاتك، وسينتج Cardixn سيرة مهنية من 40-60 كلمة بجودة كاتب محتوى محترف. أعِد التوليد حتى تحصل على ما يعجبك." },
           { h2: "تحليلات تجعلك أذكى", body: "شاهد بالضبط من فتح بطاقتك ومتى وأين في العالم وماذا ضغط. حوّل التشبيك من تخمين إلى متابعة مبنية على البيانات." },
           { h2: "رموز QR ديناميكية", body: "رمز QR الخاص بك لا يتغير أبداً — حتى لو أعدت تصميم البطاقة كلياً. أي أن كل ملصق أو بطاقة مطبوعة تبقى صالحة للأبد." },
         ],
@@ -399,7 +399,7 @@ export const LANDING_PAGES: LandingPage[] = [
         faqs: arFaqCommon,
         ctaTitle: "احصل على بطاقة ذكية",
         ctaSub: "تشبيك مدعوم بالذكاء الاصطناعي، ابدأ مجاناً.",
-        ctaButton: "جرّب Cardix",
+        ctaButton: "جرّب Cardixn",
       },
     },
   },
@@ -411,18 +411,18 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "QR Business Card",
     copy: {
       en: {
-        title: "QR Business Card — Instant Scan & Save | Cardix",
+        title: "QR Business Card — Instant Scan & Save | Cardixn",
         description: "Turn any phone into a business card scanner. Generate a stunning QR business card in seconds. Free forever. Editable anytime.",
         h1: "The QR business card that everyone can scan",
         subtitle: "One code. One tap. Instant contact save.",
-        intro: "A QR business card is a scannable code that opens your full digital identity in the recipient's browser — instantly. No app required, no typing, no lost paper card. Cardix generates a beautiful QR for every card automatically, downloadable as high-res PNG.",
+        intro: "A QR business card is a scannable code that opens your full digital identity in the recipient's browser — instantly. No app required, no typing, no lost paper card. Cardixn generates a beautiful QR for every card automatically, downloadable as high-res PNG.",
         sections: [
           { h2: "Why QR is the modern handshake", body: "iPhone and Android cameras scan QR codes natively. Show your code once, and the other person can save your contact, visit your links, or follow you on social — in under three seconds." },
-          { h2: "Print anywhere, update everywhere", body: "Print your Cardix QR on stickers, badges, product packaging, business cards, T-shirts, coffee mugs — anywhere. Update your profile online, and every printed QR keeps pointing to the latest version." },
+          { h2: "Print anywhere, update everywhere", body: "Print your Cardixn QR on stickers, badges, product packaging, business cards, T-shirts, coffee mugs — anywhere. Update your profile online, and every printed QR keeps pointing to the latest version." },
           { h2: "Bulk QR for teams and events", body: "Generate branded QR codes for entire sales teams, conference booths, or product lines. Each QR points to a different card, all managed from one central dashboard." },
         ],
         features: [
-          { title: "Auto-generated", desc: "Every Cardix card comes with a scannable QR — no setup." },
+          { title: "Auto-generated", desc: "Every Cardixn card comes with a scannable QR — no setup." },
           { title: "High-res download", desc: "Export as 2000×2000 PNG for print use." },
           { title: "Dynamic content", desc: "Change your card, QR stays the same, content updates." },
           { title: "Custom colors coming soon", desc: "Match your QR to your brand palette." },
@@ -433,18 +433,18 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Create QR card",
       },
       ar: {
-        title: "بطاقة أعمال QR — مسح وحفظ فوري | Cardix",
+        title: "بطاقة أعمال QR — مسح وحفظ فوري | Cardixn",
         description: "حوّل أي هاتف إلى ماسح بطاقات. ولّد بطاقة QR فاخرة في ثوانٍ. مجاناً للأبد. قابلة للتعديل في أي وقت.",
         h1: "بطاقة QR التي يستطيع الجميع مسحها",
         subtitle: "رمز واحد. لمسة واحدة. حفظ جهة اتصال فوري.",
-        intro: "بطاقة QR هي رمز قابل للمسح يفتح هويتك الرقمية الكاملة في متصفح المستلم — فوراً. بلا تطبيق، بلا كتابة، بلا فقدان ورق. Cardix يولّد QR جميلاً لكل بطاقة تلقائياً، قابل للتنزيل بدقة عالية.",
+        intro: "بطاقة QR هي رمز قابل للمسح يفتح هويتك الرقمية الكاملة في متصفح المستلم — فوراً. بلا تطبيق، بلا كتابة، بلا فقدان ورق. Cardixn يولّد QR جميلاً لكل بطاقة تلقائياً، قابل للتنزيل بدقة عالية.",
         sections: [
           { h2: "لماذا QR هو المصافحة الحديثة", body: "كاميرات iPhone و Android تمسح رموز QR أصلاً. اعرض رمزك مرة واحدة، وسيستطيع الطرف الآخر حفظ جهة الاتصال أو زيارة روابطك أو متابعتك اجتماعياً في أقل من ثلاث ثوانٍ." },
-          { h2: "اطبع في أي مكان، حدّث في كل مكان", body: "اطبع QR الخاص بـ Cardix على الملصقات والشارات والتغليف والبطاقات الورقية والقمصان وأكواب القهوة. حدّث ملفك أونلاين، وكل QR مطبوع يبقى يشير للنسخة الأحدث." },
+          { h2: "اطبع في أي مكان، حدّث في كل مكان", body: "اطبع QR الخاص بـ Cardixn على الملصقات والشارات والتغليف والبطاقات الورقية والقمصان وأكواب القهوة. حدّث ملفك أونلاين، وكل QR مطبوع يبقى يشير للنسخة الأحدث." },
           { h2: "QR مجمَّع للفرق والفعاليات", body: "ولّد رموز QR بهوية علامتك لفرق مبيعات كاملة أو أكشاك مؤتمرات أو خطوط منتجات. كل QR يشير لبطاقة مختلفة، كلها مُدارة من لوحة مركزية واحدة." },
         ],
         features: [
-          { title: "توليد تلقائي", desc: "كل بطاقة Cardix تأتي مع QR قابل للمسح — بلا إعداد." },
+          { title: "توليد تلقائي", desc: "كل بطاقة Cardixn تأتي مع QR قابل للمسح — بلا إعداد." },
           { title: "تنزيل بدقة عالية", desc: "تصدير بصيغة PNG 2000×2000 للطباعة." },
           { title: "محتوى ديناميكي", desc: "غيّر بطاقتك، يبقى QR كما هو، المحتوى يُحدَّث." },
           { title: "ألوان مخصصة قريباً", desc: "طابق QR مع ألوان علامتك." },
@@ -462,15 +462,15 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Share Business Card via QR",
     copy: {
       en: {
-        title: "Share Business Card via QR Code — 2-Second Handoff | Cardix",
+        title: "Share Business Card via QR Code — 2-Second Handoff | Cardixn",
         description: "The fastest way to share a business card in 2026: your QR code. Show, scan, save. Works with any modern phone. No app required.",
         h1: "Share your business card via QR — the two-second handshake",
         subtitle: "Show. Scan. Saved.",
-        intro: "Sharing a business card used to mean fumbling through your wallet, hoping you had one left, and watching the recipient shove it in a pocket. With a Cardix QR, you just show your phone screen. Two seconds later, your details are in their contacts.",
+        intro: "Sharing a business card used to mean fumbling through your wallet, hoping you had one left, and watching the recipient shove it in a pocket. With a Cardixn QR, you just show your phone screen. Two seconds later, your details are in their contacts.",
         sections: [
-          { h2: "How QR sharing works", body: "Open your card in Cardix, tap the QR icon, and the code appears full-screen. The other person opens their camera app, points, and taps the notification. Your card opens instantly and they can save your contact with one more tap." },
+          { h2: "How QR sharing works", body: "Open your card in Cardixn, tap the QR icon, and the code appears full-screen. The other person opens their camera app, points, and taps the notification. Your card opens instantly and they can save your contact with one more tap." },
           { h2: "Perfect for conferences", body: "At events with 2,000+ attendees, paper cards are chaos. A QR on your lanyard, phone, or laptop sticker lets you exchange contacts with a hundred people in an hour — with zero waste." },
-          { h2: "Analytics for every scan", body: "Cardix tracks every QR scan: time, location (with permission), device type. See exactly which events, meetings, or campaigns generated the most leads." },
+          { h2: "Analytics for every scan", body: "Cardixn tracks every QR scan: time, location (with permission), device type. See exactly which events, meetings, or campaigns generated the most leads." },
         ],
         features: [
           { title: "Full-screen QR mode", desc: "Auto-brightness boost for easy scanning in low light." },
@@ -484,15 +484,15 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Get my QR",
       },
       ar: {
-        title: "مشاركة بطاقة الأعمال عبر QR — مصافحة في ثانيتين | Cardix",
+        title: "مشاركة بطاقة الأعمال عبر QR — مصافحة في ثانيتين | Cardixn",
         description: "أسرع طريقة لمشاركة بطاقة أعمال في 2026: رمز QR. اعرض، امسح، احفظ. يعمل مع أي هاتف حديث. بلا تطبيق.",
         h1: "شارك بطاقتك عبر QR — مصافحة الثانيتين",
         subtitle: "اعرض. امسح. محفوظة.",
-        intro: "مشاركة بطاقة أعمال كانت تعني البحث في المحفظة، والأمل أن يكون لديك واحدة متبقية، ورؤية المستلم يضعها في جيبه. مع QR من Cardix، تعرض شاشة هاتفك فقط. بعد ثانيتين، بياناتك في جهات اتصاله.",
+        intro: "مشاركة بطاقة أعمال كانت تعني البحث في المحفظة، والأمل أن يكون لديك واحدة متبقية، ورؤية المستلم يضعها في جيبه. مع QR من Cardixn، تعرض شاشة هاتفك فقط. بعد ثانيتين، بياناتك في جهات اتصاله.",
         sections: [
-          { h2: "كيف تعمل المشاركة عبر QR", body: "افتح بطاقتك في Cardix، اضغط أيقونة QR، وسيظهر الرمز بملء الشاشة. يفتح الطرف الآخر تطبيق الكاميرا، ويوجّهها، ويضغط الإشعار. تُفتح بطاقتك فوراً ويستطيع حفظ جهة الاتصال بضغطة إضافية." },
+          { h2: "كيف تعمل المشاركة عبر QR", body: "افتح بطاقتك في Cardixn، اضغط أيقونة QR، وسيظهر الرمز بملء الشاشة. يفتح الطرف الآخر تطبيق الكاميرا، ويوجّهها، ويضغط الإشعار. تُفتح بطاقتك فوراً ويستطيع حفظ جهة الاتصال بضغطة إضافية." },
           { h2: "مثالية للمؤتمرات", body: "في فعاليات بأكثر من 2000 حاضر، البطاقات الورقية فوضى. QR على بطاقة تعريفك أو هاتفك أو ملصق حاسوبك يتيح لك تبادل جهات الاتصال مع مئة شخص في ساعة — بلا أي هدر." },
-          { h2: "تحليلات لكل مسح", body: "يتتبع Cardix كل مسح QR: الوقت والموقع (بإذن) ونوع الجهاز. اعرف بالضبط أي فعاليات أو اجتماعات أو حملات جلبت لك أكثر العملاء." },
+          { h2: "تحليلات لكل مسح", body: "يتتبع Cardixn كل مسح QR: الوقت والموقع (بإذن) ونوع الجهاز. اعرف بالضبط أي فعاليات أو اجتماعات أو حملات جلبت لك أكثر العملاء." },
         ],
         features: [
           { title: "وضع QR بملء الشاشة", desc: "رفع تلقائي للسطوع لسهولة المسح في الإضاءة المنخفضة." },
@@ -513,13 +513,13 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "QR Code Generator for Business",
     copy: {
       en: {
-        title: "QR Code Generator for Business — Free & Dynamic | Cardix",
+        title: "QR Code Generator for Business — Free & Dynamic | Cardixn",
         description: "Free QR code generator built for business. Dynamic QRs for cards, links, WhatsApp, WiFi and more. Analytics included. No signup for basics.",
         h1: "The QR code generator built for business",
         subtitle: "Dynamic. Trackable. Beautiful.",
-        intro: "Most QR generators produce a static image and abandon you. Cardix generates dynamic QRs that stay valid forever, track every scan, and let you swap the destination without reprinting. Purpose-built for businesses and professionals.",
+        intro: "Most QR generators produce a static image and abandon you. Cardixn generates dynamic QRs that stay valid forever, track every scan, and let you swap the destination without reprinting. Purpose-built for businesses and professionals.",
         sections: [
-          { h2: "Static vs dynamic QR — why it matters", body: "A static QR is baked into an image forever. Change your URL and every printed poster is dead. A dynamic QR stays the same visually but you can update the destination anytime. Cardix uses dynamic QRs by default." },
+          { h2: "Static vs dynamic QR — why it matters", body: "A static QR is baked into an image forever. Change your URL and every printed poster is dead. A dynamic QR stays the same visually but you can update the destination anytime. Cardixn uses dynamic QRs by default." },
           { h2: "Track every scan", body: "See how many people scanned each QR, when, from where, on which device. Turn a poster in a store window into a measurable marketing channel." },
           { h2: "One QR, infinite content", body: "Point a single QR at a landing page today, a promotional video next month, a Christmas offer in December — all without touching the printed material." },
         ],
@@ -535,13 +535,13 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Create QR now",
       },
       ar: {
-        title: "مولّد رمز QR للأعمال — مجاني وديناميكي | Cardix",
+        title: "مولّد رمز QR للأعمال — مجاني وديناميكي | Cardixn",
         description: "مولّد QR مجاني مصمم للأعمال. رموز ديناميكية للبطاقات والروابط وواتساب وWiFi وغيرها. تحليلات مضمَّنة. بلا تسجيل للأساسيات.",
         h1: "مولّد QR المصنوع للأعمال",
         subtitle: "ديناميكي. قابل للتتبع. فاخر.",
-        intro: "معظم مولّدات QR تنتج صورة ثابتة وتتخلى عنك. Cardix يولّد رموز QR ديناميكية تبقى صالحة للأبد، تتتبع كل مسح، وتتيح لك تغيير الوجهة بلا إعادة طباعة. مبني خصيصاً للشركات والمحترفين.",
+        intro: "معظم مولّدات QR تنتج صورة ثابتة وتتخلى عنك. Cardixn يولّد رموز QR ديناميكية تبقى صالحة للأبد، تتتبع كل مسح، وتتيح لك تغيير الوجهة بلا إعادة طباعة. مبني خصيصاً للشركات والمحترفين.",
         sections: [
-          { h2: "ثابت مقابل ديناميكي — لماذا يهم", body: "QR الثابت مطبوع في الصورة للأبد. غيّر رابطك وكل الملصقات المطبوعة تصبح ميتة. QR الديناميكي يبقى ثابتاً بصرياً لكنك تستطيع تحديث الوجهة في أي وقت. Cardix يستخدم QR ديناميكي افتراضياً." },
+          { h2: "ثابت مقابل ديناميكي — لماذا يهم", body: "QR الثابت مطبوع في الصورة للأبد. غيّر رابطك وكل الملصقات المطبوعة تصبح ميتة. QR الديناميكي يبقى ثابتاً بصرياً لكنك تستطيع تحديث الوجهة في أي وقت. Cardixn يستخدم QR ديناميكي افتراضياً." },
           { h2: "تتبَّع كل مسح", body: "شاهد كم شخصاً مسح كل QR ومتى ومن أين وعلى أي جهاز. حوّل ملصقاً في واجهة متجر إلى قناة تسويق قابلة للقياس." },
           { h2: "QR واحد، محتوى لا نهائي", body: "وجّه QR واحداً لصفحة هبوط اليوم، ولفيديو ترويجي الشهر القادم، ولعرض ديسمبر — دون لمس المطبوع." },
         ],
@@ -566,20 +566,20 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "NFC Business Card",
     copy: {
       en: {
-        title: "NFC Business Card — One Tap Sharing | Cardix",
+        title: "NFC Business Card — One Tap Sharing | Cardixn",
         description: "The premium NFC business card that shares your profile in one tap. Metal, wood, plastic. Works with every iPhone (7+) and Android (4.4+).",
         h1: "The NFC business card that shares with one tap",
         subtitle: "Metal. Elegant. Programmable.",
-        intro: "An NFC business card is a physical card embedded with a tiny chip. Tap it to any modern phone and your Cardix profile opens instantly — no app, no scanning, no downloads. Available in metal, bamboo and premium plastic finishes.",
+        intro: "An NFC business card is a physical card embedded with a tiny chip. Tap it to any modern phone and your Cardixn profile opens instantly — no app, no scanning, no downloads. Available in metal, bamboo and premium plastic finishes.",
         sections: [
-          { h2: "How NFC business cards work", body: "The chip in your card contains a URL. When someone taps their phone against it, the phone opens your URL — which is your Cardix profile. The other person sees your card and can save the vCard with one tap. Total time: under 3 seconds." },
+          { h2: "How NFC business cards work", body: "The chip in your card contains a URL. When someone taps their phone against it, the phone opens your URL — which is your Cardixn profile. The other person sees your card and can save the vCard with one tap. Total time: under 3 seconds." },
           { h2: "Every phone supports it", body: "NFC is built into every iPhone since iPhone 7 (iOS 11+) and every Android since 2013. That's over 4 billion devices worldwide. No app needed, no setup for the recipient." },
-          { h2: "The Cardix advantage", body: "Cardix NFC cards are re-programmable, meaning if you change jobs, you don't need a new card — just update your Cardix profile. The card stays valid for life. Available in matte black metal, natural bamboo, and premium PVC." },
+          { h2: "The Cardixn advantage", body: "Cardixn NFC cards are re-programmable, meaning if you change jobs, you don't need a new card — just update your Cardixn profile. The card stays valid for life. Available in matte black metal, natural bamboo, and premium PVC." },
         ],
         features: [
           { title: "One-tap sharing", desc: "Faster than a handshake. Really." },
           { title: "Metal, wood, premium plastic", desc: "Choose the finish that matches your brand." },
-          { title: "Reprogrammable forever", desc: "Change jobs? Just update your Cardix profile." },
+          { title: "Reprogrammable forever", desc: "Change jobs? Just update your Cardixn profile." },
           { title: "Team bulk orders", desc: "Order matching cards for your entire team with logo engraving." },
         ],
         faqs: enFaqCommon,
@@ -588,20 +588,20 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Explore NFC cards",
       },
       ar: {
-        title: "بطاقة NFC — مشاركة بلمسة واحدة | Cardix",
+        title: "بطاقة NFC — مشاركة بلمسة واحدة | Cardixn",
         description: "بطاقة NFC الفاخرة التي تشارك ملفك بلمسة واحدة. معدن، خشب، بلاستيك. تعمل مع كل iPhone (7+) و Android (4.4+).",
         h1: "بطاقة NFC التي تشارك بلمسة واحدة",
         subtitle: "معدنية. أنيقة. قابلة للبرمجة.",
-        intro: "بطاقة NFC هي بطاقة فعلية مزوَّدة بشريحة صغيرة. المسها بأي هاتف حديث ويُفتح ملف Cardix الخاص بك فوراً — بلا تطبيق، بلا مسح، بلا تنزيل. متوفرة بمعدن، خيزران، وبلاستيك فاخر.",
+        intro: "بطاقة NFC هي بطاقة فعلية مزوَّدة بشريحة صغيرة. المسها بأي هاتف حديث ويُفتح ملف Cardixn الخاص بك فوراً — بلا تطبيق، بلا مسح، بلا تنزيل. متوفرة بمعدن، خيزران، وبلاستيك فاخر.",
         sections: [
-          { h2: "كيف تعمل بطاقات NFC", body: "الشريحة داخل البطاقة تحتوي على رابط. عندما يلمس الشخص هاتفه بها، يفتح الهاتف الرابط — وهو ملف Cardix الخاص بك. يرى الطرف الآخر بطاقتك ويستطيع حفظ vCard بلمسة واحدة. الزمن الكلي: أقل من 3 ثوانٍ." },
+          { h2: "كيف تعمل بطاقات NFC", body: "الشريحة داخل البطاقة تحتوي على رابط. عندما يلمس الشخص هاتفه بها، يفتح الهاتف الرابط — وهو ملف Cardixn الخاص بك. يرى الطرف الآخر بطاقتك ويستطيع حفظ vCard بلمسة واحدة. الزمن الكلي: أقل من 3 ثوانٍ." },
           { h2: "كل الهواتف تدعمها", body: "NFC مدمج في كل iPhone من iPhone 7 (iOS 11+) وكل Android منذ 2013. أكثر من 4 مليار جهاز حول العالم. بلا تطبيق ولا إعدادات للمستلم." },
-          { h2: "ميزة Cardix", body: "بطاقات NFC من Cardix قابلة لإعادة البرمجة، فإذا غيّرت وظيفتك، لا تحتاج بطاقة جديدة — فقط حدّث ملف Cardix. تبقى البطاقة صالحة للأبد. متوفرة بأسود مطفي معدني، وخيزران طبيعي، و PVC فاخر." },
+          { h2: "ميزة Cardixn", body: "بطاقات NFC من Cardixn قابلة لإعادة البرمجة، فإذا غيّرت وظيفتك، لا تحتاج بطاقة جديدة — فقط حدّث ملف Cardixn. تبقى البطاقة صالحة للأبد. متوفرة بأسود مطفي معدني، وخيزران طبيعي، و PVC فاخر." },
         ],
         features: [
           { title: "مشاركة بلمسة واحدة", desc: "أسرع من المصافحة. حقاً." },
           { title: "معدن، خشب، بلاستيك فاخر", desc: "اختر التشطيب الذي يطابق علامتك." },
-          { title: "قابلة للبرمجة للأبد", desc: "غيّرت وظيفتك؟ فقط حدّث ملف Cardix." },
+          { title: "قابلة للبرمجة للأبد", desc: "غيّرت وظيفتك؟ فقط حدّث ملف Cardixn." },
           { title: "طلبات جماعية للفرق", desc: "اطلب بطاقات متطابقة لكامل الفريق مع نقش الشعار." },
         ],
         faqs: arFaqCommon,
@@ -617,7 +617,7 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "NFC Digital Card",
     copy: {
       en: {
-        title: "NFC Digital Card — Tap to Share | Cardix",
+        title: "NFC Digital Card — Tap to Share | Cardixn",
         description: "The NFC digital card that combines physical elegance with digital power. One tap opens your full profile. Metal & bamboo. Ships globally.",
         h1: "The NFC digital card — physical meets digital",
         subtitle: "Elegant object. Infinite content.",
@@ -625,12 +625,12 @@ export const LANDING_PAGES: LandingPage[] = [
         sections: [
           { h2: "The best of both worlds", body: "Paper cards feel real but die instantly. Fully-digital cards are convenient but lack physical presence. An NFC digital card gives you both: the tactile 'wow' of handing over a premium metal card, plus the power of a live, editable digital profile." },
           { h2: "Zero downside compared to paper", body: "Never run out (one card lasts a lifetime). Never wasted (data always gets saved). Never outdated (update your profile anytime). And it looks 10× more premium." },
-          { h2: "Ships worldwide, arrives in days", body: "Cardix NFC cards are manufactured in premium facilities in China, engraved with your logo, and shipped globally via DHL. Bulk orders for teams available with 20% discount." },
+          { h2: "Ships worldwide, arrives in days", body: "Cardixn NFC cards are manufactured in premium facilities in China, engraved with your logo, and shipped globally via DHL. Bulk orders for teams available with 20% discount." },
         ],
         features: [
           { title: "Premium materials", desc: "Matte metal, bamboo, or ultra-thin PVC." },
           { title: "Custom engraving", desc: "Logo, name, or design engraved into the card." },
-          { title: "Lifetime rewrite", desc: "Point your card at any Cardix profile anytime." },
+          { title: "Lifetime rewrite", desc: "Point your card at any Cardixn profile anytime." },
           { title: "Team packages", desc: "Discounts on 10+ card orders." },
         ],
         faqs: enFaqCommon,
@@ -639,7 +639,7 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Order now",
       },
       ar: {
-        title: "بطاقة NFC رقمية — انقر لتشارك | Cardix",
+        title: "بطاقة NFC رقمية — انقر لتشارك | Cardixn",
         description: "بطاقة NFC الرقمية التي تجمع الأناقة الفعلية مع القوة الرقمية. لمسة واحدة تفتح ملفك الكامل. معدن وخيزران. شحن عالمي.",
         h1: "بطاقة NFC رقمية — الفعلي يلتقي الرقمي",
         subtitle: "شيء أنيق. محتوى لا نهائي.",
@@ -647,12 +647,12 @@ export const LANDING_PAGES: LandingPage[] = [
         sections: [
           { h2: "الأفضل في العالمين", body: "البطاقات الورقية تبدو حقيقية لكنها تموت فوراً. البطاقات الرقمية عملية لكنها تفتقر للحضور الفعلي. بطاقة NFC الرقمية تمنحك الاثنين: تأثير 'واو' لتسليم بطاقة معدنية، مع قوة ملف رقمي حي قابل للتعديل." },
           { h2: "صفر عيوب مقارنة بالورق", body: "لا تنفد أبداً (بطاقة واحدة تدوم مدى الحياة). لا تُهدر أبداً (البيانات تُحفَظ دائماً). لا تصبح قديمة (حدّث ملفك في أي وقت). وتبدو أكثر فخامة بعشر مرات." },
-          { h2: "شحن عالمي، وصول خلال أيام", body: "تُصنَع بطاقات Cardix NFC في منشآت فاخرة، تُنقَش بشعارك، وتُشحَن عالمياً عبر DHL. طلبات جماعية للفرق بخصم 20%." },
+          { h2: "شحن عالمي، وصول خلال أيام", body: "تُصنَع بطاقات Cardixn NFC في منشآت فاخرة، تُنقَش بشعارك، وتُشحَن عالمياً عبر DHL. طلبات جماعية للفرق بخصم 20%." },
         ],
         features: [
           { title: "مواد فاخرة", desc: "معدن مطفي، خيزران، أو PVC رفيع للغاية." },
           { title: "نقش مخصص", desc: "شعار أو اسم أو تصميم منقوش في البطاقة." },
-          { title: "إعادة كتابة مدى الحياة", desc: "وجّه بطاقتك لأي ملف Cardix في أي وقت." },
+          { title: "إعادة كتابة مدى الحياة", desc: "وجّه بطاقتك لأي ملف Cardixn في أي وقت." },
           { title: "باقات الفرق", desc: "خصومات على طلبات 10 بطاقات فأكثر." },
         ],
         faqs: arFaqCommon,
@@ -668,14 +668,14 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Smart NFC Card",
     copy: {
       en: {
-        title: "Smart NFC Card — Programmable, Trackable, Beautiful | Cardix",
+        title: "Smart NFC Card — Programmable, Trackable, Beautiful | Cardixn",
         description: "The smart NFC card that adapts to any content — profile, WiFi, Instagram, YouTube. Change destinations anytime. Analytics included.",
         h1: "The smart NFC card that adapts to any content",
         subtitle: "One card. Infinite destinations.",
-        intro: "A smart NFC card isn't limited to one thing. Program it to open your Cardix profile today, your latest YouTube video next month, your WiFi network for guests, or your Instagram during a launch. Dashboards, analytics, and instant reprogramming included.",
+        intro: "A smart NFC card isn't limited to one thing. Program it to open your Cardixn profile today, your latest YouTube video next month, your WiFi network for guests, or your Instagram during a launch. Dashboards, analytics, and instant reprogramming included.",
         sections: [
           { h2: "Beyond just a business card", body: "Use your smart NFC card for: sharing your WiFi with guests, promoting your latest product launch, linking to your Spotify or Apple Music, opening your Google Review page, sending customers to your menu, and more." },
-          { h2: "Reprogram in seconds", body: "Open Cardix, choose your card, pick a new destination, done. The physical card doesn't need to be re-encoded — it's a Cardix redirect URL under the hood, so the destination is fully cloud-controlled." },
+          { h2: "Reprogram in seconds", body: "Open Cardixn, choose your card, pick a new destination, done. The physical card doesn't need to be re-encoded — it's a Cardixn redirect URL under the hood, so the destination is fully cloud-controlled." },
           { h2: "Analytics for every tap", body: "See how many taps each smart card gets per day, split by geography and device. Perfect for measuring physical marketing ROI." },
         ],
         features: [
@@ -690,14 +690,14 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Explore",
       },
       ar: {
-        title: "بطاقة NFC ذكية — قابلة للبرمجة والتتبع | Cardix",
+        title: "بطاقة NFC ذكية — قابلة للبرمجة والتتبع | Cardixn",
         description: "بطاقة NFC ذكية تتكيّف مع أي محتوى — ملف، WiFi، Instagram، YouTube. غيّر الوجهات في أي وقت. تحليلات مضمَّنة.",
         h1: "بطاقة NFC ذكية تتكيّف مع أي محتوى",
         subtitle: "بطاقة واحدة. وجهات لا نهائية.",
-        intro: "بطاقة NFC الذكية ليست محدودة بشيء واحد. برمِجها لتفتح ملف Cardix اليوم، وأحدث فيديو YouTube الشهر القادم، وشبكة WiFi للضيوف، أو Instagram أثناء إطلاق منتج. لوحات وتحليلات وإعادة برمجة فورية مضمَّنة.",
+        intro: "بطاقة NFC الذكية ليست محدودة بشيء واحد. برمِجها لتفتح ملف Cardixn اليوم، وأحدث فيديو YouTube الشهر القادم، وشبكة WiFi للضيوف، أو Instagram أثناء إطلاق منتج. لوحات وتحليلات وإعادة برمجة فورية مضمَّنة.",
         sections: [
           { h2: "أكثر من مجرد بطاقة أعمال", body: "استخدم بطاقة NFC الذكية لـ: مشاركة WiFi مع الضيوف، الترويج لآخر إطلاق منتج، الربط بـ Spotify أو Apple Music، فتح صفحة Google Review، توجيه العملاء للقائمة، وأكثر." },
-          { h2: "إعادة برمجة في ثوانٍ", body: "افتح Cardix، اختر بطاقتك، اختر وجهة جديدة، انتهى. البطاقة الفعلية لا تحتاج إعادة ترميز — هي رابط توجيه Cardix تحت الغطاء، والوجهة يتحكم بها من السحابة كلياً." },
+          { h2: "إعادة برمجة في ثوانٍ", body: "افتح Cardixn، اختر بطاقتك، اختر وجهة جديدة، انتهى. البطاقة الفعلية لا تحتاج إعادة ترميز — هي رابط توجيه Cardixn تحت الغطاء، والوجهة يتحكم بها من السحابة كلياً." },
           { h2: "تحليلات لكل لمسة", body: "شاهد كم لمسة تحصل عليها كل بطاقة يومياً، مقسَّمة حسب الجغرافيا والجهاز. مثالي لقياس عائد التسويق الفعلي." },
         ],
         features: [
@@ -721,21 +721,21 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Business Card Scanner",
     copy: {
       en: {
-        title: "Business Card Scanner — AI OCR, 99% Accuracy | Cardix",
+        title: "Business Card Scanner — AI OCR, 99% Accuracy | Cardixn",
         description: "The most accurate business card scanner. AI OCR captures name, title, phone, email, and socials in seconds. Free for personal use.",
         h1: "The business card scanner with AI-level accuracy",
         subtitle: "Snap. Extract. Save.",
-        intro: "The Cardix business card scanner uses Google Gemini AI OCR to read paper cards with 99% accuracy — even the messy ones with tiny fonts and creative layouts. Every scan is auto-organized into your searchable vault with notes and tags.",
+        intro: "The Cardixn business card scanner uses Google Gemini AI OCR to read paper cards with 99% accuracy — even the messy ones with tiny fonts and creative layouts. Every scan is auto-organized into your searchable vault with notes and tags.",
         sections: [
-          { h2: "Why AI scanners beat old-school OCR", body: "Traditional OCR reads text but doesn't understand it. AI OCR knows that '(555) 123-4567' is a phone number, that '@sarahj' is likely an Instagram handle, that 'CEO' belongs in the title field. That's why Cardix extractions are 3× more accurate than legacy scanners." },
-          { h2: "From scan to vault in 2 seconds", body: "Open the scanner, point at the card, tap once. Cardix uploads, extracts, and saves — with a beautiful preview. Add optional notes ('met at Web Summit 2026') and tag by industry or event." },
+          { h2: "Why AI scanners beat old-school OCR", body: "Traditional OCR reads text but doesn't understand it. AI OCR knows that '(555) 123-4567' is a phone number, that '@sarahj' is likely an Instagram handle, that 'CEO' belongs in the title field. That's why Cardixn extractions are 3× more accurate than legacy scanners." },
+          { h2: "From scan to vault in 2 seconds", body: "Open the scanner, point at the card, tap once. Cardixn uploads, extracts, and saves — with a beautiful preview. Add optional notes ('met at Web Summit 2026') and tag by industry or event." },
           { h2: "Bulk import from stack of cards", body: "Just came back from a conference with 40 cards? Scan them all in a few minutes. Every scan lands in your vault, searchable by name, company, city, or note." },
         ],
         features: [
           { title: "99% AI accuracy", desc: "Google Gemini-powered OCR." },
           { title: "Auto-organization", desc: "Every scan goes to your searchable vault." },
           { title: "Notes & tags", desc: "Add context to remember where you met." },
-          { title: "Live updates", desc: "If the person has a Cardix card, saved data updates automatically." },
+          { title: "Live updates", desc: "If the person has a Cardixn card, saved data updates automatically." },
         ],
         faqs: enFaqCommon,
         ctaTitle: "Scan your first card",
@@ -743,21 +743,21 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Open scanner",
       },
       ar: {
-        title: "ماسح بطاقات الأعمال — OCR بالذكاء الاصطناعي بدقة 99% | Cardix",
+        title: "ماسح بطاقات الأعمال — OCR بالذكاء الاصطناعي بدقة 99% | Cardixn",
         description: "أدق ماسح بطاقات أعمال. OCR بالذكاء الاصطناعي يستخرج الاسم والمسمى والهاتف والبريد والحسابات في ثوانٍ. مجاني للاستخدام الشخصي.",
         h1: "ماسح البطاقات بدقة الذكاء الاصطناعي",
         subtitle: "التقط. استخرج. احفظ.",
-        intro: "ماسح Cardix يستخدم Google Gemini AI OCR لقراءة البطاقات الورقية بدقة 99% — حتى الفوضوية بخطوط صغيرة وتخطيطات إبداعية. كل مسح يُنظَّم تلقائياً في خزينتك القابلة للبحث مع ملاحظات ووسوم.",
+        intro: "ماسح Cardixn يستخدم Google Gemini AI OCR لقراءة البطاقات الورقية بدقة 99% — حتى الفوضوية بخطوط صغيرة وتخطيطات إبداعية. كل مسح يُنظَّم تلقائياً في خزينتك القابلة للبحث مع ملاحظات ووسوم.",
         sections: [
-          { h2: "لماذا يتفوق الذكاء الاصطناعي على OCR التقليدي", body: "OCR التقليدي يقرأ النص لكنه لا يفهمه. الذكاء الاصطناعي يعرف أن '(555) 123-4567' رقم هاتف، وأن '@sarahj' يحتمل أن يكون معرّف Instagram، وأن 'CEO' ينتمي لحقل المسمى. لهذا استخراجات Cardix أدق بـ 3 مرات من الماسحات القديمة." },
-          { h2: "من المسح للخزينة في ثانيتين", body: "افتح الماسح، وجّه على البطاقة، اضغط مرة. Cardix يرفع ويستخرج ويحفظ — مع معاينة جميلة. أضف ملاحظات اختيارية ('التقيت في Web Summit 2026') ووسم حسب الصناعة أو الفعالية." },
+          { h2: "لماذا يتفوق الذكاء الاصطناعي على OCR التقليدي", body: "OCR التقليدي يقرأ النص لكنه لا يفهمه. الذكاء الاصطناعي يعرف أن '(555) 123-4567' رقم هاتف، وأن '@sarahj' يحتمل أن يكون معرّف Instagram، وأن 'CEO' ينتمي لحقل المسمى. لهذا استخراجات Cardixn أدق بـ 3 مرات من الماسحات القديمة." },
+          { h2: "من المسح للخزينة في ثانيتين", body: "افتح الماسح، وجّه على البطاقة، اضغط مرة. Cardixn يرفع ويستخرج ويحفظ — مع معاينة جميلة. أضف ملاحظات اختيارية ('التقيت في Web Summit 2026') ووسم حسب الصناعة أو الفعالية." },
           { h2: "استيراد جماعي من كومة بطاقات", body: "عدت للتو من مؤتمر بـ 40 بطاقة؟ امسحها كلها في دقائق. كل مسح يهبط في خزينتك، قابل للبحث بالاسم أو الشركة أو المدينة أو الملاحظة." },
         ],
         features: [
           { title: "دقة ذكاء اصطناعي 99%", desc: "OCR مدعوم بـ Google Gemini." },
           { title: "تنظيم تلقائي", desc: "كل مسح يذهب لخزينتك القابلة للبحث." },
           { title: "ملاحظات ووسوم", desc: "أضف سياقاً لتتذكر أين التقيت." },
-          { title: "تحديثات مباشرة", desc: "إذا كان للشخص بطاقة Cardix، تُحدَّث البيانات المحفوظة تلقائياً." },
+          { title: "تحديثات مباشرة", desc: "إذا كان للشخص بطاقة Cardixn، تُحدَّث البيانات المحفوظة تلقائياً." },
         ],
         faqs: arFaqCommon,
         ctaTitle: "امسح أول بطاقة",
@@ -772,15 +772,15 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Scan Business Card",
     copy: {
       en: {
-        title: "Scan Business Card — AI OCR App, Free | Cardix",
-        description: "Scan any paper business card with your phone camera. Cardix AI extracts every detail in 2 seconds. Save to organized vault. Free.",
+        title: "Scan Business Card — AI OCR App, Free | Cardixn",
+        description: "Scan any paper business card with your phone camera. Cardixn AI extracts every detail in 2 seconds. Save to organized vault. Free.",
         h1: "Scan any business card in under 2 seconds",
         subtitle: "Point. Snap. Saved forever.",
-        intro: "Scanning a business card should be easier than typing it manually. With Cardix, it is: open the scanner, point at the card, and AI does the rest. Name, title, phone, email, LinkedIn, Instagram, address — all extracted and saved.",
+        intro: "Scanning a business card should be easier than typing it manually. With Cardixn, it is: open the scanner, point at the card, and AI does the rest. Name, title, phone, email, LinkedIn, Instagram, address — all extracted and saved.",
         sections: [
-          { h2: "Handles every card style", body: "Minimalist, dense, gold-foiled, textured, vertical, horizontal, double-sided — Cardix AI reads them all. Even hard-to-scan cards with tiny fonts or unusual layouts work reliably." },
+          { h2: "Handles every card style", body: "Minimalist, dense, gold-foiled, textured, vertical, horizontal, double-sided — Cardixn AI reads them all. Even hard-to-scan cards with tiny fonts or unusual layouts work reliably." },
           { h2: "Works with your camera or a photo", body: "Take a live photo, or upload one from your library. Both paths run through the same AI extraction engine and land in your vault the same way." },
-          { h2: "Merge duplicates automatically", body: "Scanned the same person's card twice at different events? Cardix detects duplicates and merges them into one contact, preserving all notes and tags." },
+          { h2: "Merge duplicates automatically", body: "Scanned the same person's card twice at different events? Cardixn detects duplicates and merges them into one contact, preserving all notes and tags." },
         ],
         features: [
           { title: "Camera + photo library", desc: "Live scan or upload existing photos." },
@@ -794,15 +794,15 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Start scanning",
       },
       ar: {
-        title: "امسح بطاقة أعمال — تطبيق OCR بالذكاء الاصطناعي مجاناً | Cardix",
-        description: "امسح أي بطاقة أعمال ورقية بكاميرا هاتفك. Cardix AI يستخرج كل التفاصيل في ثانيتين. احفظ في خزينة منظمة. مجاناً.",
+        title: "امسح بطاقة أعمال — تطبيق OCR بالذكاء الاصطناعي مجاناً | Cardixn",
+        description: "امسح أي بطاقة أعمال ورقية بكاميرا هاتفك. Cardixn AI يستخرج كل التفاصيل في ثانيتين. احفظ في خزينة منظمة. مجاناً.",
         h1: "امسح أي بطاقة أعمال في أقل من ثانيتين",
         subtitle: "وجّه. التقط. محفوظة للأبد.",
-        intro: "مسح بطاقة أعمال يجب أن يكون أسهل من كتابتها يدوياً. مع Cardix، هو كذلك: افتح الماسح، وجّه على البطاقة، والذكاء الاصطناعي يقوم بالباقي. الاسم والمسمى والهاتف والبريد و LinkedIn و Instagram والعنوان — كلها تُستخرَج وتُحفَظ.",
+        intro: "مسح بطاقة أعمال يجب أن يكون أسهل من كتابتها يدوياً. مع Cardixn، هو كذلك: افتح الماسح، وجّه على البطاقة، والذكاء الاصطناعي يقوم بالباقي. الاسم والمسمى والهاتف والبريد و LinkedIn و Instagram والعنوان — كلها تُستخرَج وتُحفَظ.",
         sections: [
-          { h2: "يتعامل مع كل أنماط البطاقات", body: "بسيطة، مكتظة، مذهَّبة، ذات ملمس، عمودية، أفقية، مزدوجة الوجه — Cardix AI يقرأها جميعاً. حتى البطاقات صعبة المسح بخطوط دقيقة أو تخطيطات غير معتادة تعمل بموثوقية." },
+          { h2: "يتعامل مع كل أنماط البطاقات", body: "بسيطة، مكتظة، مذهَّبة، ذات ملمس، عمودية، أفقية، مزدوجة الوجه — Cardixn AI يقرأها جميعاً. حتى البطاقات صعبة المسح بخطوط دقيقة أو تخطيطات غير معتادة تعمل بموثوقية." },
           { h2: "يعمل بكاميرتك أو بصورة", body: "التقط صورة مباشرة، أو ارفع من مكتبتك. كلا المسارين يمران بمحرك الاستخراج نفسه ويهبطان في خزينتك بالطريقة نفسها." },
-          { h2: "دمج المكرَّرات تلقائياً", body: "مسحت بطاقة الشخص نفسه مرتين في فعاليات مختلفة؟ Cardix يكتشف المكرَّرات ويدمجها في جهة اتصال واحدة، محافظاً على كل الملاحظات والوسوم." },
+          { h2: "دمج المكرَّرات تلقائياً", body: "مسحت بطاقة الشخص نفسه مرتين في فعاليات مختلفة؟ Cardixn يكتشف المكرَّرات ويدمجها في جهة اتصال واحدة، محافظاً على كل الملاحظات والوسوم." },
         ],
         features: [
           { title: "كاميرا + مكتبة صور", desc: "مسح مباشر أو رفع صور موجودة." },
@@ -823,20 +823,20 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Save Business Cards",
     copy: {
       en: {
-        title: "Save Business Cards Digitally — Organized Vault | Cardix",
-        description: "Never lose a business card again. Save every card to your searchable Cardix vault. Notes, tags, live updates from Cardix users included.",
+        title: "Save Business Cards Digitally — Organized Vault | Cardixn",
+        description: "Never lose a business card again. Save every card to your searchable Cardixn vault. Notes, tags, live updates from Cardixn users included.",
         h1: "Save every business card, forever",
         subtitle: "Your searchable, organized, cloud-synced contact vault.",
-        intro: "The average professional loses 60% of the business cards they receive within a month. Cardix ends that. Every card you scan or receive lands in your personal vault — organized, searchable, and synced across all your devices.",
+        intro: "The average professional loses 60% of the business cards they receive within a month. Cardixn ends that. Every card you scan or receive lands in your personal vault — organized, searchable, and synced across all your devices.",
         sections: [
           { h2: "The problem with paper cards", body: "You get 20 cards at an event. Within a week, they're in a drawer. Within a month, half are lost. Within a year, you can't remember which company each person worked for. Digital saving solves that permanently." },
-          { h2: "Beyond just data — context", body: "Cardix vault lets you add notes to every contact ('met at DesignConf, interested in NFC hardware'), tag them by industry or event, and search by any keyword. It's a CRM in your pocket, free." },
-          { h2: "Live-updating contacts", body: "When you save a Cardix user's card, their contact info in your vault updates automatically if they change jobs or phone numbers. Paper cards can't do that." },
+          { h2: "Beyond just data — context", body: "Cardixn vault lets you add notes to every contact ('met at DesignConf, interested in NFC hardware'), tag them by industry or event, and search by any keyword. It's a CRM in your pocket, free." },
+          { h2: "Live-updating contacts", body: "When you save a Cardixn user's card, their contact info in your vault updates automatically if they change jobs or phone numbers. Paper cards can't do that." },
         ],
         features: [
           { title: "Searchable vault", desc: "Find anyone by name, company, city, tag, or note." },
           { title: "Add notes", desc: "Context that keeps every meeting memorable." },
-          { title: "Auto-updates", desc: "Cardix contacts refresh when they update their profile." },
+          { title: "Auto-updates", desc: "Cardixn contacts refresh when they update their profile." },
           { title: "Export anytime", desc: "Download your vault as CSV or vCard bundle." },
         ],
         faqs: enFaqCommon,
@@ -845,20 +845,20 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Open my vault",
       },
       ar: {
-        title: "احفظ بطاقات الأعمال رقمياً — خزينة منظمة | Cardix",
-        description: "لا تفقد بطاقة أعمال مرة أخرى. احفظ كل بطاقة في خزينة Cardix القابلة للبحث. ملاحظات ووسوم وتحديثات مباشرة من مستخدمي Cardix.",
+        title: "احفظ بطاقات الأعمال رقمياً — خزينة منظمة | Cardixn",
+        description: "لا تفقد بطاقة أعمال مرة أخرى. احفظ كل بطاقة في خزينة Cardixn القابلة للبحث. ملاحظات ووسوم وتحديثات مباشرة من مستخدمي Cardixn.",
         h1: "احفظ كل بطاقة أعمال، للأبد",
         subtitle: "خزينة جهات اتصالك القابلة للبحث والمنظمة والمتزامنة سحابياً.",
-        intro: "المحترف المتوسط يفقد 60% من البطاقات الورقية التي يستلمها خلال شهر. Cardix ينهي ذلك. كل بطاقة تمسحها أو تستلمها تهبط في خزينتك الشخصية — منظمة، قابلة للبحث، ومتزامنة عبر كل أجهزتك.",
+        intro: "المحترف المتوسط يفقد 60% من البطاقات الورقية التي يستلمها خلال شهر. Cardixn ينهي ذلك. كل بطاقة تمسحها أو تستلمها تهبط في خزينتك الشخصية — منظمة، قابلة للبحث، ومتزامنة عبر كل أجهزتك.",
         sections: [
           { h2: "مشكلة البطاقات الورقية", body: "تحصل على 20 بطاقة في فعالية. خلال أسبوع تكون في درج. خلال شهر يُفقَد نصفها. خلال سنة لا تستطيع تذكّر شركة كل شخص. الحفظ الرقمي يحل ذلك للأبد." },
-          { h2: "أكثر من مجرد بيانات — سياق", body: "خزينة Cardix تتيح لك إضافة ملاحظات لكل جهة اتصال ('التقيت في DesignConf، مهتم بأجهزة NFC')، ووسمهم حسب الصناعة أو الفعالية، والبحث بأي كلمة. CRM في جيبك، مجاناً." },
-          { h2: "جهات اتصال محدَّثة تلقائياً", body: "عندما تحفظ بطاقة مستخدم Cardix، تُحدَّث بياناته في خزينتك تلقائياً إذا غيّر وظيفته أو رقم هاتفه. البطاقات الورقية لا تستطيع ذلك." },
+          { h2: "أكثر من مجرد بيانات — سياق", body: "خزينة Cardixn تتيح لك إضافة ملاحظات لكل جهة اتصال ('التقيت في DesignConf، مهتم بأجهزة NFC')، ووسمهم حسب الصناعة أو الفعالية، والبحث بأي كلمة. CRM في جيبك، مجاناً." },
+          { h2: "جهات اتصال محدَّثة تلقائياً", body: "عندما تحفظ بطاقة مستخدم Cardixn، تُحدَّث بياناته في خزينتك تلقائياً إذا غيّر وظيفته أو رقم هاتفه. البطاقات الورقية لا تستطيع ذلك." },
         ],
         features: [
           { title: "خزينة قابلة للبحث", desc: "اعثر على أي شخص بالاسم أو الشركة أو المدينة أو الوسم أو الملاحظة." },
           { title: "أضف ملاحظات", desc: "سياق يجعل كل اجتماع لا يُنسى." },
-          { title: "تحديثات تلقائية", desc: "جهات اتصال Cardix تتجدد عند تحديث الملف." },
+          { title: "تحديثات تلقائية", desc: "جهات اتصال Cardixn تتجدد عند تحديث الملف." },
           { title: "تصدير في أي وقت", desc: "نزّل خزينتك بصيغة CSV أو حزمة vCard." },
         ],
         faqs: arFaqCommon,
@@ -876,14 +876,14 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Share Business Card WhatsApp",
     copy: {
       en: {
-        title: "Share Business Card on WhatsApp — Instant Link | Cardix",
+        title: "Share Business Card on WhatsApp — Instant Link | Cardixn",
         description: "Send your business card in any WhatsApp chat with one tap. Recipient opens it in-browser and saves your contact instantly. Free.",
         h1: "Share your business card on WhatsApp — instantly",
         subtitle: "One tap. One link. Contact saved.",
-        intro: "WhatsApp is where business happens in 2026 — for freelancers, small businesses, real estate agents, and entire industries. Cardix makes sharing your card in a WhatsApp thread as easy as sending an emoji.",
+        intro: "WhatsApp is where business happens in 2026 — for freelancers, small businesses, real estate agents, and entire industries. Cardixn makes sharing your card in a WhatsApp thread as easy as sending an emoji.",
         sections: [
-          { h2: "Why a WhatsApp-optimized card matters", body: "When someone sees your link in WhatsApp, the preview must be beautiful — with your photo, title, and a compelling description. Cardix generates rich Open Graph previews automatically, so your card looks premium in every chat." },
-          { h2: "One-tap send from the app", body: "Tap the WhatsApp icon on your Cardix card. It opens WhatsApp with your link pre-filled, ready to send to any contact or group." },
+          { h2: "Why a WhatsApp-optimized card matters", body: "When someone sees your link in WhatsApp, the preview must be beautiful — with your photo, title, and a compelling description. Cardixn generates rich Open Graph previews automatically, so your card looks premium in every chat." },
+          { h2: "One-tap send from the app", body: "Tap the WhatsApp icon on your Cardixn card. It opens WhatsApp with your link pre-filled, ready to send to any contact or group." },
           { h2: "The recipient's experience", body: "They tap the preview, your card opens in their browser, and they can save your contact to their phone book with one more tap. Total time: 4 seconds. Total friction: near zero." },
         ],
         features: [
@@ -898,14 +898,14 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Get my link",
       },
       ar: {
-        title: "شارك بطاقة الأعمال على واتساب — رابط فوري | Cardix",
+        title: "شارك بطاقة الأعمال على واتساب — رابط فوري | Cardixn",
         description: "أرسل بطاقتك في أي محادثة واتساب بلمسة واحدة. المستلم يفتحها في المتصفح ويحفظ جهة الاتصال فوراً. مجاناً.",
         h1: "شارك بطاقتك على واتساب — فوراً",
         subtitle: "لمسة واحدة. رابط واحد. جهة اتصال محفوظة.",
-        intro: "واتساب هو حيث تحدث الأعمال في 2026 — للمستقلين والمؤسسات الصغيرة ووكلاء العقار وصناعات كاملة. Cardix يجعل مشاركة بطاقتك في محادثة واتساب سهلة كإرسال إيموجي.",
+        intro: "واتساب هو حيث تحدث الأعمال في 2026 — للمستقلين والمؤسسات الصغيرة ووكلاء العقار وصناعات كاملة. Cardixn يجعل مشاركة بطاقتك في محادثة واتساب سهلة كإرسال إيموجي.",
         sections: [
-          { h2: "لماذا تهم البطاقة المُحسَّنة لواتساب", body: "عندما يرى أحدهم رابطك في واتساب، يجب أن تكون المعاينة جميلة — مع صورتك ومسمّاك ووصف جذاب. Cardix يولّد معاينات Open Graph غنية تلقائياً، فتبدو بطاقتك فاخرة في كل محادثة." },
-          { h2: "إرسال بلمسة واحدة من التطبيق", body: "اضغط أيقونة واتساب في بطاقة Cardix. سيفتح واتساب مع رابطك جاهزاً للإرسال لأي جهة اتصال أو مجموعة." },
+          { h2: "لماذا تهم البطاقة المُحسَّنة لواتساب", body: "عندما يرى أحدهم رابطك في واتساب، يجب أن تكون المعاينة جميلة — مع صورتك ومسمّاك ووصف جذاب. Cardixn يولّد معاينات Open Graph غنية تلقائياً، فتبدو بطاقتك فاخرة في كل محادثة." },
+          { h2: "إرسال بلمسة واحدة من التطبيق", body: "اضغط أيقونة واتساب في بطاقة Cardixn. سيفتح واتساب مع رابطك جاهزاً للإرسال لأي جهة اتصال أو مجموعة." },
           { h2: "تجربة المستلم", body: "يضغط المعاينة، تُفتح بطاقتك في متصفحه، ويستطيع حفظ جهة الاتصال في دليل هاتفه بضغطة إضافية. الزمن الكلي: 4 ثوانٍ. الاحتكاك: قريب من الصفر." },
         ],
         features: [
@@ -927,15 +927,15 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Business Card Link",
     copy: {
       en: {
-        title: "Business Card Link — Share via URL Anywhere | Cardix",
+        title: "Business Card Link — Share via URL Anywhere | Cardixn",
         description: "Get a beautiful shareable business card link. Add to your email signature, Instagram bio, WhatsApp, or LinkedIn. Free forever.",
         h1: "Your business card, as a shareable link",
         subtitle: "One URL. Every platform. Zero friction.",
-        intro: "A business card link is a short, memorable URL that opens your full digital identity in any browser. Cardix gives every user a beautiful custom link (like cardix.com/yourname) that works everywhere — email signatures, Instagram bios, Twitter/X, LinkedIn, WhatsApp, SMS.",
+        intro: "A business card link is a short, memorable URL that opens your full digital identity in any browser. Cardixn gives every user a beautiful custom link (like cardix.com/yourname) that works everywhere — email signatures, Instagram bios, Twitter/X, LinkedIn, WhatsApp, SMS.",
         sections: [
           { h2: "The URL that replaces your business card", body: "Instead of handing someone a paper card, tell them 'go to cardix.com/yourname'. It's easier to remember, works globally, and your recipient sees a beautiful profile with your photo, socials, and contact info — all savable in one tap." },
           { h2: "Perfect for every platform", body: "Instagram bio? Add the link. Email signature? Include it. LinkedIn About section? Drop it in. Podcast show notes? Sponsor slots? YouTube description? Business card link covers them all." },
-          { h2: "Custom vanity URLs", body: "Every Cardix account gets a custom URL slug. Instead of a random string, you get cardix.com/yourname or your brand — memorable, professional, and free." },
+          { h2: "Custom vanity URLs", body: "Every Cardixn account gets a custom URL slug. Instead of a random string, you get cardix.com/yourname or your brand — memorable, professional, and free." },
         ],
         features: [
           { title: "Custom vanity URL", desc: "cardix.com/yourname — free for every user." },
@@ -949,15 +949,15 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Get my link",
       },
       ar: {
-        title: "رابط بطاقة أعمال — شارك بـ URL في أي مكان | Cardix",
+        title: "رابط بطاقة أعمال — شارك بـ URL في أي مكان | Cardixn",
         description: "احصل على رابط بطاقة أعمال جميل قابل للمشاركة. أضفه لتوقيع بريدك، أو بايو Instagram، أو واتساب، أو LinkedIn. مجاناً للأبد.",
         h1: "بطاقة أعمالك، كرابط قابل للمشاركة",
         subtitle: "رابط واحد. كل منصة. صفر احتكاك.",
-        intro: "رابط بطاقة الأعمال هو URL قصير سهل التذكّر يفتح هويتك الرقمية الكاملة في أي متصفح. Cardix يمنح كل مستخدم رابطاً جميلاً مخصصاً (مثل cardix.com/yourname) يعمل في كل مكان — توقيعات البريد وبايو Instagram و Twitter/X و LinkedIn وواتساب و SMS.",
+        intro: "رابط بطاقة الأعمال هو URL قصير سهل التذكّر يفتح هويتك الرقمية الكاملة في أي متصفح. Cardixn يمنح كل مستخدم رابطاً جميلاً مخصصاً (مثل cardix.com/yourname) يعمل في كل مكان — توقيعات البريد وبايو Instagram و Twitter/X و LinkedIn وواتساب و SMS.",
         sections: [
           { h2: "الرابط الذي يستبدل بطاقتك الورقية", body: "بدلاً من تسليم بطاقة ورقية، قل للطرف 'اذهب إلى cardix.com/yourname'. أسهل للتذكّر، ويعمل عالمياً، ويرى المستلم ملفاً جميلاً بصورتك وحساباتك ومعلوماتك — يمكن حفظها بلمسة واحدة." },
           { h2: "مثالي لكل منصة", body: "بايو Instagram؟ أضف الرابط. توقيع البريد؟ ضمّنه. قسم About في LinkedIn؟ ألصقه. ملاحظات البودكاست؟ فقرات الرعاة؟ وصف YouTube؟ رابط البطاقة يغطي الكل." },
-          { h2: "روابط مخصصة", body: "كل حساب Cardix يحصل على رابط مخصص. بدلاً من نص عشوائي، تحصل على cardix.com/yourname أو اسم علامتك — سهل التذكّر، احترافي، ومجاني." },
+          { h2: "روابط مخصصة", body: "كل حساب Cardixn يحصل على رابط مخصص. بدلاً من نص عشوائي، تحصل على cardix.com/yourname أو اسم علامتك — سهل التذكّر، احترافي، ومجاني." },
         ],
         features: [
           { title: "رابط مخصص", desc: "cardix.com/yourname — مجاني لكل مستخدم." },
@@ -978,14 +978,14 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Email Signature Business Card",
     copy: {
       en: {
-        title: "Email Signature Business Card — Every Email Networks | Cardix",
-        description: "Turn every email you send into a networking opportunity. Add your Cardix card to your email signature. Free. Works with Gmail, Outlook, Apple Mail.",
+        title: "Email Signature Business Card — Every Email Networks | Cardixn",
+        description: "Turn every email you send into a networking opportunity. Add your Cardixn card to your email signature. Free. Works with Gmail, Outlook, Apple Mail.",
         h1: "Turn your email signature into a business card",
         subtitle: "Every email is now a handshake.",
-        intro: "You send hundreds of emails per week. Each one is a chance to share your professional identity — with a click. Cardix lets you embed your digital business card link (with rich preview) into your email signature in every major client.",
+        intro: "You send hundreds of emails per week. Each one is a chance to share your professional identity — with a click. Cardixn lets you embed your digital business card link (with rich preview) into your email signature in every major client.",
         sections: [
-          { h2: "Why signatures are prime real estate", body: "Your email signature is seen by every recipient of every email you send. Adding your Cardix card there gives passive networking on autopilot — every reply from a new prospect, every intro thread, every cold email that gets a response = a chance for them to view and save your card." },
-          { h2: "Copy-paste setup in Gmail, Outlook & more", body: "Cardix generates a formatted HTML signature block with your name, title, avatar, and card link, ready to paste into any email client's signature settings. Setup takes 90 seconds." },
+          { h2: "Why signatures are prime real estate", body: "Your email signature is seen by every recipient of every email you send. Adding your Cardixn card there gives passive networking on autopilot — every reply from a new prospect, every intro thread, every cold email that gets a response = a chance for them to view and save your card." },
+          { h2: "Copy-paste setup in Gmail, Outlook & more", body: "Cardixn generates a formatted HTML signature block with your name, title, avatar, and card link, ready to paste into any email client's signature settings. Setup takes 90 seconds." },
           { h2: "Analytics per click", body: "See how many recipients clicked your signature card, from which threads. Understand which conversations turned into card views — and which turned into leads." },
         ],
         features: [
@@ -1000,14 +1000,14 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Create signature",
       },
       ar: {
-        title: "توقيع بريد كبطاقة أعمال — كل إيميل يشبّك | Cardix",
-        description: "حوّل كل بريد ترسله لفرصة تشبيك. أضف بطاقة Cardix لتوقيع بريدك. مجاناً. يعمل مع Gmail و Outlook و Apple Mail.",
+        title: "توقيع بريد كبطاقة أعمال — كل إيميل يشبّك | Cardixn",
+        description: "حوّل كل بريد ترسله لفرصة تشبيك. أضف بطاقة Cardixn لتوقيع بريدك. مجاناً. يعمل مع Gmail و Outlook و Apple Mail.",
         h1: "حوّل توقيع بريدك إلى بطاقة أعمال",
         subtitle: "كل إيميل الآن مصافحة.",
-        intro: "ترسل مئات الإيميلات أسبوعياً. كل واحد فرصة لمشاركة هويتك المهنية — بنقرة. Cardix يتيح لك تضمين رابط بطاقتك (مع معاينة غنية) في توقيع بريدك في كل عميل بريد رئيسي.",
+        intro: "ترسل مئات الإيميلات أسبوعياً. كل واحد فرصة لمشاركة هويتك المهنية — بنقرة. Cardixn يتيح لك تضمين رابط بطاقتك (مع معاينة غنية) في توقيع بريدك في كل عميل بريد رئيسي.",
         sections: [
-          { h2: "لماذا التوقيعات أرض ثمينة", body: "توقيع بريدك يراه كل مستلم لكل بريد ترسله. إضافة بطاقة Cardix هناك تمنحك تشبيكاً سلبياً على الطيار الآلي — كل رد من عميل محتمل، كل رسالة تعارف، كل إيميل بارد يحصل على رد = فرصة لهم لعرض وحفظ بطاقتك." },
-          { h2: "إعداد بالنسخ واللصق في Gmail و Outlook والمزيد", body: "Cardix يولّد كتلة توقيع HTML منسَّقة باسمك ومسمّاك وصورتك ورابط البطاقة، جاهزة للصق في إعدادات توقيع أي عميل بريد. الإعداد يستغرق 90 ثانية." },
+          { h2: "لماذا التوقيعات أرض ثمينة", body: "توقيع بريدك يراه كل مستلم لكل بريد ترسله. إضافة بطاقة Cardixn هناك تمنحك تشبيكاً سلبياً على الطيار الآلي — كل رد من عميل محتمل، كل رسالة تعارف، كل إيميل بارد يحصل على رد = فرصة لهم لعرض وحفظ بطاقتك." },
+          { h2: "إعداد بالنسخ واللصق في Gmail و Outlook والمزيد", body: "Cardixn يولّد كتلة توقيع HTML منسَّقة باسمك ومسمّاك وصورتك ورابط البطاقة، جاهزة للصق في إعدادات توقيع أي عميل بريد. الإعداد يستغرق 90 ثانية." },
           { h2: "تحليلات لكل نقرة", body: "شاهد كم مستلماً نقر بطاقة توقيعك، ومن أي محادثات. افهم أي محادثات تحوّلت لمشاهدات — وأيها تحوّلت لعملاء." },
         ],
         features: [
@@ -1031,14 +1031,14 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Business Card Templates",
     copy: {
       en: {
-        title: "Business Card Templates — 19+ Free Luxury Designs | Cardix",
+        title: "Business Card Templates — 19+ Free Luxury Designs | Cardixn",
         description: "19+ hand-crafted business card templates. Luxury, minimal, gradient, glass, monochrome. Free to use. Customizable colors. No design skills.",
         h1: "Business card templates that look luxury by default",
         subtitle: "19+ designs. Every style. Every industry.",
-        intro: "Most business card template libraries look like they were made in 2012. Cardix templates are hand-crafted by senior designers using the same principles as Apple, Stripe, and Linear — clean typography, considered spacing, real design. Every template is free.",
+        intro: "Most business card template libraries look like they were made in 2012. Cardixn templates are hand-crafted by senior designers using the same principles as Apple, Stripe, and Linear — clean typography, considered spacing, real design. Every template is free.",
         sections: [
           { h2: "Every style covered", body: "Minimal (Apple-style clean), Luxury (dark + gold), Gradient (bold and modern), Glass (frosted overlay), Monochrome (black on white), Bold (attention-grabbing colors), Editorial (magazine-inspired), and more. One template per mood, all free." },
-          { h2: "Customize without breaking design", body: "Change your accent color to match your brand. Cardix automatically re-tints the entire template — buttons, chips, gradients, shadows — while keeping the design perfectly balanced. You cannot make it ugly." },
+          { h2: "Customize without breaking design", body: "Change your accent color to match your brand. Cardixn automatically re-tints the entire template — buttons, chips, gradients, shadows — while keeping the design perfectly balanced. You cannot make it ugly." },
           { h2: "Add your identity", body: "Every template supports your photo (or logo), full name, title, company, phone, email, website, 30+ social/messaging platforms, custom CTAs, and a bio. All of it displays in the design's rhythm — never cluttered." },
         ],
         features: [
@@ -1053,14 +1053,14 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Browse templates",
       },
       ar: {
-        title: "قوالب بطاقات أعمال — أكثر من 19 تصميماً فاخراً مجاناً | Cardix",
+        title: "قوالب بطاقات أعمال — أكثر من 19 تصميماً فاخراً مجاناً | Cardixn",
         description: "أكثر من 19 قالب بطاقة أعمال بصنع يدوي. فاخر، بسيط، متدرج، زجاجي، أحادي. مجانية الاستخدام. ألوان قابلة للتخصيص. بلا مهارات تصميم.",
         h1: "قوالب بطاقات تبدو فاخرة افتراضياً",
         subtitle: "أكثر من 19 تصميماً. لكل نمط. لكل صناعة.",
-        intro: "معظم مكتبات قوالب البطاقات تبدو كأنها صُنعت في 2012. قوالب Cardix صمّمها مصممون كبار باستخدام نفس مبادئ Apple و Stripe و Linear — طباعة نظيفة، تباعد مدروس، تصميم حقيقي. كل قالب مجاني.",
+        intro: "معظم مكتبات قوالب البطاقات تبدو كأنها صُنعت في 2012. قوالب Cardixn صمّمها مصممون كبار باستخدام نفس مبادئ Apple و Stripe و Linear — طباعة نظيفة، تباعد مدروس، تصميم حقيقي. كل قالب مجاني.",
         sections: [
           { h2: "كل الأنماط مغطاة", body: "بسيط (نظيف بأسلوب Apple)، فاخر (داكن + ذهبي)، متدرج (جريء وحديث)، زجاجي (طبقة ضبابية)، أحادي (أسود على أبيض)، جريء (ألوان لافتة)، تحريري (مستوحى من المجلات)، والمزيد. قالب لكل مزاج، كلها مجانية." },
-          { h2: "خصّص بلا كسر التصميم", body: "غيّر لونك المميز ليطابق علامتك. Cardix يعيد تلوين القالب كله تلقائياً — الأزرار والرقائق والتدرجات والظلال — مع الحفاظ على توازن التصميم. لا يمكنك جعله قبيحاً." },
+          { h2: "خصّص بلا كسر التصميم", body: "غيّر لونك المميز ليطابق علامتك. Cardixn يعيد تلوين القالب كله تلقائياً — الأزرار والرقائق والتدرجات والظلال — مع الحفاظ على توازن التصميم. لا يمكنك جعله قبيحاً." },
           { h2: "أضف هويتك", body: "كل قالب يدعم صورتك (أو شعارك)، اسمك الكامل، مسمّاك، شركتك، هاتفك، بريدك، موقعك، أكثر من 30 منصة اجتماعية/تواصلية، دعوات مخصصة للإجراء، وسيرة ذاتية. كلها تُعرَض بإيقاع التصميم — بلا ازدحام." },
         ],
         features: [
@@ -1082,13 +1082,13 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Luxury Business Card",
     copy: {
       en: {
-        title: "Luxury Business Card — Premium Designs for Elite Professionals | Cardix",
+        title: "Luxury Business Card — Premium Designs for Elite Professionals | Cardixn",
         description: "The luxury business card built for executives, luxury brands, and high-end professionals. Dark elegance meets modern digital. Free templates.",
         h1: "The luxury business card for elite professionals",
         subtitle: "Dark. Refined. Timeless.",
-        intro: "A luxury business card should feel like handing over a Rolex, not a receipt. Cardix's luxury templates use rich dark backgrounds, refined typography, gold accents, and considered whitespace — the design language of prestige brands like Bentley, Aesop, and The Ritz-Carlton.",
+        intro: "A luxury business card should feel like handing over a Rolex, not a receipt. Cardixn's luxury templates use rich dark backgrounds, refined typography, gold accents, and considered whitespace — the design language of prestige brands like Bentley, Aesop, and The Ritz-Carlton.",
         sections: [
-          { h2: "What makes a card feel luxury", body: "Deep, matte backgrounds (never bright white). Serif or high-contrast sans typography. Restrained gold, brass, or muted accent colors. Generous whitespace. Subtle shadows that suggest weight without being heavy. Cardix templates check every box." },
+          { h2: "What makes a card feel luxury", body: "Deep, matte backgrounds (never bright white). Serif or high-contrast sans typography. Restrained gold, brass, or muted accent colors. Generous whitespace. Subtle shadows that suggest weight without being heavy. Cardixn templates check every box." },
           { h2: "Perfect for", body: "Real estate luxury agents. Wealth managers. Fine dining chefs. Art gallery owners. Boutique consultants. Fashion designers. Anyone whose brand promise is 'premium'." },
           { h2: "Consistent across every channel", body: "Your luxury card looks equally refined on iPhone, Android, projected on a boardroom screen, or printed as a QR sticker on a leather-bound portfolio. The design system is fully responsive." },
         ],
@@ -1104,13 +1104,13 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Explore luxury designs",
       },
       ar: {
-        title: "بطاقة أعمال فاخرة — تصاميم مميزة للمحترفين النخبة | Cardix",
+        title: "بطاقة أعمال فاخرة — تصاميم مميزة للمحترفين النخبة | Cardixn",
         description: "بطاقة الأعمال الفاخرة المصممة للتنفيذيين والعلامات الراقية والمحترفين رفيعي المستوى. أناقة داكنة تلتقي بالرقمية الحديثة. قوالب مجانية.",
         h1: "بطاقة الأعمال الفاخرة للمحترفين النخبة",
         subtitle: "داكنة. راقية. خالدة.",
-        intro: "بطاقة الأعمال الفاخرة يجب أن تشعر كتسليم ساعة Rolex، لا إيصال. قوالب Cardix الفاخرة تستخدم خلفيات داكنة غنية، طباعة راقية، لمسات ذهبية، ومساحات بيضاء مدروسة — لغة تصميم العلامات المرموقة مثل Bentley و Aesop و The Ritz-Carlton.",
+        intro: "بطاقة الأعمال الفاخرة يجب أن تشعر كتسليم ساعة Rolex، لا إيصال. قوالب Cardixn الفاخرة تستخدم خلفيات داكنة غنية، طباعة راقية، لمسات ذهبية، ومساحات بيضاء مدروسة — لغة تصميم العلامات المرموقة مثل Bentley و Aesop و The Ritz-Carlton.",
         sections: [
-          { h2: "ما الذي يجعل البطاقة فاخرة", body: "خلفيات مطفية عميقة (ليست بيضاء زاهية). طباعة serif أو sans عالية التباين. ألوان مميزة ذهبية أو نحاسية مقيَّدة. مساحات بيضاء سخية. ظلال خفيفة توحي بالثقل بلا ثقل. قوالب Cardix تحقق كل شرط." },
+          { h2: "ما الذي يجعل البطاقة فاخرة", body: "خلفيات مطفية عميقة (ليست بيضاء زاهية). طباعة serif أو sans عالية التباين. ألوان مميزة ذهبية أو نحاسية مقيَّدة. مساحات بيضاء سخية. ظلال خفيفة توحي بالثقل بلا ثقل. قوالب Cardixn تحقق كل شرط." },
           { h2: "مثالية لـ", body: "وكلاء العقار الفاخر. مديري الثروات. طهاة الطعام الراقي. أصحاب صالات الفن. الاستشاريين الفاخرين. مصممي الأزياء. أي شخص وعد علامته 'مميز'." },
           { h2: "متسقة عبر كل قناة", body: "بطاقتك الفاخرة تبدو راقية بالمساواة على iPhone و Android، معروضة على شاشة قاعة اجتماعات، أو مطبوعة كملصق QR على محفظة جلدية. نظام التصميم متجاوب بالكامل." },
         ],
@@ -1133,15 +1133,15 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Modern Business Card Design",
     copy: {
       en: {
-        title: "Modern Business Card Design — 2026 Trends | Cardix",
+        title: "Modern Business Card Design — 2026 Trends | Cardixn",
         description: "Modern business card designs for 2026. Glass, gradient, monochrome, and bento layouts. Free digital templates. Fully customizable.",
         h1: "Modern business card design for 2026 and beyond",
         subtitle: "Fresh. Bold. Undeniably now.",
-        intro: "Modern business card design in 2026 means clean typography, generous whitespace, considered color, glassmorphism, subtle gradients, and — above all — a QR code as a design element, not an afterthought. Cardix templates are built on these principles from the ground up.",
+        intro: "Modern business card design in 2026 means clean typography, generous whitespace, considered color, glassmorphism, subtle gradients, and — above all — a QR code as a design element, not an afterthought. Cardixn templates are built on these principles from the ground up.",
         sections: [
           { h2: "2026 design trends we've built in", body: "Glassmorphism (frosted overlays with real depth). Bento grid layouts. Subtle gradients that hint at brand color. Editorial-grade typography. Dark mode by default. And, importantly, the QR code treated as a graphic asset — not an ugly square." },
           { h2: "Fully responsive design", body: "Every template looks equally beautiful on iPhone Pro Max, small Android phones, tablets, and desktop browsers. Typography scales, layouts adapt, and touch targets are always thumb-friendly." },
-          { h2: "Motion & micro-interactions", body: "Modern doesn't mean static. Cardix templates include subtle micro-animations — a shine sweep on the card, a soft QR pulse, gentle scroll parallax on the public page. It feels alive." },
+          { h2: "Motion & micro-interactions", body: "Modern doesn't mean static. Cardixn templates include subtle micro-animations — a shine sweep on the card, a soft QR pulse, gentle scroll parallax on the public page. It feels alive." },
         ],
         features: [
           { title: "Glass & gradient templates", desc: "2026's most requested styles included." },
@@ -1155,15 +1155,15 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Start designing",
       },
       ar: {
-        title: "تصميم بطاقة أعمال حديث — اتجاهات 2026 | Cardix",
+        title: "تصميم بطاقة أعمال حديث — اتجاهات 2026 | Cardixn",
         description: "تصاميم بطاقات أعمال حديثة لعام 2026. زجاج، متدرج، أحادي، وتخطيطات بينتو. قوالب رقمية مجانية. قابلة للتخصيص كلياً.",
         h1: "تصميم بطاقة أعمال حديث لعام 2026 وما بعده",
         subtitle: "منعش. جريء. حديث بلا شك.",
-        intro: "تصميم البطاقة الحديث في 2026 يعني طباعة نظيفة، مساحات بيضاء سخية، ألواناً مدروسة، تأثيرات زجاجية، تدرجات لطيفة، وقبل كل شيء — رمز QR كعنصر تصميم لا فكرة لاحقة. قوالب Cardix مبنية على هذه المبادئ من الأساس.",
+        intro: "تصميم البطاقة الحديث في 2026 يعني طباعة نظيفة، مساحات بيضاء سخية، ألواناً مدروسة، تأثيرات زجاجية، تدرجات لطيفة، وقبل كل شيء — رمز QR كعنصر تصميم لا فكرة لاحقة. قوالب Cardixn مبنية على هذه المبادئ من الأساس.",
         sections: [
           { h2: "اتجاهات 2026 التي دمجناها", body: "التأثير الزجاجي (طبقات ضبابية بعمق حقيقي). تخطيطات بينتو. تدرجات لطيفة تلمّح للون العلامة. طباعة بمستوى تحريري. الوضع الداكن افتراضياً. والأهم، معالجة QR كأصل رسومي — لا مربع قبيح." },
           { h2: "تصميم متجاوب بالكامل", body: "كل قالب يبدو جميلاً بالمساواة على iPhone Pro Max وهواتف Android الصغيرة والأجهزة اللوحية ومتصفحات سطح المكتب. الطباعة تتدرج، والتخطيطات تتكيّف، وأهداف اللمس دائماً صديقة للإبهام." },
-          { h2: "الحركة والتفاعلات الدقيقة", body: "الحديث لا يعني ساكناً. قوالب Cardix تتضمن رسوماً متحركة دقيقة — لمعان يمر عبر البطاقة، نبض QR ناعم، تمرير متوازي لطيف على الصفحة العامة. تشعر بالحياة." },
+          { h2: "الحركة والتفاعلات الدقيقة", body: "الحديث لا يعني ساكناً. قوالب Cardixn تتضمن رسوماً متحركة دقيقة — لمعان يمر عبر البطاقة، نبض QR ناعم، تمرير متوازي لطيف على الصفحة العامة. تشعر بالحياة." },
         ],
         features: [
           { title: "قوالب زجاجية ومتدرجة", desc: "أنماط 2026 الأكثر طلباً مضمَّنة." },
@@ -1186,7 +1186,7 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Digital vs Paper Business Card",
     copy: {
       en: {
-        title: "Digital vs Paper Business Card — Which Wins in 2026? | Cardix",
+        title: "Digital vs Paper Business Card — Which Wins in 2026? | Cardixn",
         description: "Digital vs paper business cards compared side-by-side: cost, sustainability, effectiveness, analytics. Digital wins 9/10 categories. Here is why.",
         h1: "Digital vs paper business cards — the honest comparison",
         subtitle: "Nine metrics. Nine winners. All digital.",
@@ -1211,7 +1211,7 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Try digital",
       },
       ar: {
-        title: "بطاقة رقمية أم ورقية — أيهما يفوز في 2026؟ | Cardix",
+        title: "بطاقة رقمية أم ورقية — أيهما يفوز في 2026؟ | Cardixn",
         description: "مقارنة البطاقة الرقمية بالورقية جنباً إلى جنب: التكلفة، الاستدامة، الفعالية، التحليلات. الرقمية تفوز في 9/10 فئات. إليك السبب.",
         h1: "بطاقة رقمية أم ورقية — المقارنة الصادقة",
         subtitle: "تسع معايير. تسعة فائزين. كلها رقمية.",
@@ -1243,11 +1243,11 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Why Use Digital Business Card",
     copy: {
       en: {
-        title: "Why Use a Digital Business Card? 10 Reasons | Cardix",
+        title: "Why Use a Digital Business Card? 10 Reasons | Cardixn",
         description: "Why 100,000+ professionals switched to digital business cards. 10 concrete reasons: cost, speed, sustainability, analytics, updates, and more.",
         h1: "10 reasons professionals switch to digital business cards",
         subtitle: "The paper card is having its Kodak moment.",
-        intro: "Every year, more professionals ditch paper business cards. Here are the ten most-cited reasons — from real users of Cardix — for why they made the switch and never looked back.",
+        intro: "Every year, more professionals ditch paper business cards. Here are the ten most-cited reasons — from real users of Cardixn — for why they made the switch and never looked back.",
         sections: [
           { h2: "1. Never run out", body: "You always have your phone. That means you always have unlimited digital cards. No 'I gave out my last one' at the moment that matters most." },
           { h2: "2. Update in seconds, everywhere", body: "New job? New phone number? Rebrand? Update your digital card once and every version — QR, link, wallet pass — updates for everyone instantly." },
@@ -1255,7 +1255,7 @@ export const LANDING_PAGES: LandingPage[] = [
           { h2: "4. Real analytics", body: "Know exactly who viewed your card, when, and from where. Turn networking into a measurable channel." },
           { h2: "5. Zero waste", body: "27 million trees per year are cut for paper business cards. Digital: zero." },
           { h2: "6. Rich media", body: "Show your Instagram feed, YouTube demo reel, portfolio, or calendar — right on your card. Paper cards can't." },
-          { h2: "7. Multiple cards, one profile", body: "Separate cards for your day job, freelance work, and side project. All under one Cardix account." },
+          { h2: "7. Multiple cards, one profile", body: "Separate cards for your day job, freelance work, and side project. All under one Cardixn account." },
           { h2: "8. Sharable everywhere", body: "QR, NFC, WhatsApp link, email signature, Instagram bio, LinkedIn About — one card, every channel." },
           { h2: "9. Cheaper long-term", body: "Free for life vs $50-300 per 500-card reprint. And you save a fortune in printer/design costs." },
           { h2: "10. Just... modern", body: "Handing out paper in 2026 feels like handing out a burned CD. Digital signals you are current." },
@@ -1272,11 +1272,11 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Start now",
       },
       ar: {
-        title: "لماذا تستخدم بطاقة أعمال رقمية؟ 10 أسباب | Cardix",
+        title: "لماذا تستخدم بطاقة أعمال رقمية؟ 10 أسباب | Cardixn",
         description: "لماذا انتقل أكثر من 100,000 محترف للبطاقات الرقمية. 10 أسباب ملموسة: التكلفة، السرعة، الاستدامة، التحليلات، التحديثات، والمزيد.",
         h1: "10 أسباب يتحوّل بها المحترفون للبطاقات الرقمية",
         subtitle: "البطاقة الورقية تعيش لحظة Kodak.",
-        intro: "كل عام، محترفون أكثر يتخلّون عن البطاقات الورقية. إليك الأسباب العشرة الأكثر ذكراً — من مستخدمي Cardix الحقيقيين — لماذا قاموا بالتبديل ولم يعودوا أبداً.",
+        intro: "كل عام، محترفون أكثر يتخلّون عن البطاقات الورقية. إليك الأسباب العشرة الأكثر ذكراً — من مستخدمي Cardixn الحقيقيين — لماذا قاموا بالتبديل ولم يعودوا أبداً.",
         sections: [
           { h2: "1. لا تنفد أبداً", body: "هاتفك معك دائماً. يعني بطاقات رقمية غير محدودة معك دائماً. لا 'أعطيت آخر واحدة' في اللحظة الأهم." },
           { h2: "2. حدّث في ثوانٍ، في كل مكان", body: "وظيفة جديدة؟ رقم جديد؟ إعادة تصميم علامة؟ حدّث بطاقتك مرة واحدة، وكل نسخة — QR، رابط، بطاقة محفظة — تُحدَّث للجميع فوراً." },
@@ -1284,7 +1284,7 @@ export const LANDING_PAGES: LandingPage[] = [
           { h2: "4. تحليلات حقيقية", body: "اعرف بالضبط من عرض بطاقتك ومتى ومن أين. حوّل التشبيك إلى قناة قابلة للقياس." },
           { h2: "5. صفر هدر", body: "27 مليون شجرة سنوياً تُقطَع للبطاقات الورقية. الرقمي: صفر." },
           { h2: "6. وسائط غنية", body: "اعرض تغذية Instagram، فيديو YouTube التجريبي، معرض أعمالك، أو تقويمك — مباشرة على بطاقتك. الورق لا يستطيع." },
-          { h2: "7. بطاقات متعددة، ملف واحد", body: "بطاقات منفصلة لوظيفتك اليومية وعملك الحر ومشروعك الجانبي. كلها تحت حساب Cardix واحد." },
+          { h2: "7. بطاقات متعددة، ملف واحد", body: "بطاقات منفصلة لوظيفتك اليومية وعملك الحر ومشروعك الجانبي. كلها تحت حساب Cardixn واحد." },
           { h2: "8. قابلة للمشاركة في كل مكان", body: "QR، NFC، رابط واتساب، توقيع بريد، بايو Instagram، About في LinkedIn — بطاقة واحدة، كل قناة." },
           { h2: "9. أرخص على المدى الطويل", body: "مجانية مدى الحياة مقابل 50-300$ لكل إعادة طباعة 500 بطاقة. وتوفر ثروة في تكاليف الطباعة والتصميم." },
           { h2: "10. ببساطة... حديثة", body: "توزيع الورق في 2026 يشعر كتوزيع CD محروق. الرقمية تشير إلى أنك عصري." },
@@ -1308,14 +1308,14 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Future of Business Cards",
     copy: {
       en: {
-        title: "The Future of Business Cards — 2026 & Beyond | Cardix",
+        title: "The Future of Business Cards — 2026 & Beyond | Cardixn",
         description: "The future of business cards is digital, dynamic, and AI-powered. Trends, predictions, and the tools leading the shift. Read the report.",
         h1: "The future of business cards is already here",
         subtitle: "Digital-first. AI-augmented. Analytics-native.",
         intro: "The business card is being reinvented. Between AI-generated bios, NFC hardware, dynamic QR analytics, and integrated CRM sync, the professional identity of the future looks nothing like the paper rectangle we've used for 400 years. Here's where it's headed.",
         sections: [
           { h2: "Digital by default", body: "By 2028, 70% of professional introductions will happen via QR or NFC, up from 12% in 2024. Paper cards will remain — but as a legacy fallback, not a primary channel." },
-          { h2: "AI-augmented identity", body: "Your card will write itself, translate itself, and even suggest optimal networking follow-ups. Cardix already generates bios with AI; next-gen features include real-time translation of your entire profile per visitor's language." },
+          { h2: "AI-augmented identity", body: "Your card will write itself, translate itself, and even suggest optimal networking follow-ups. Cardixn already generates bios with AI; next-gen features include real-time translation of your entire profile per visitor's language." },
           { h2: "Physical + digital hybrid", body: "NFC business cards combine the tactile 'wow' of a premium object with the dynamic power of a cloud profile. This hybrid will dominate the executive segment." },
           { h2: "Integration everywhere", body: "Your card will auto-sync to your CRM, calendar, and email tools. Every scan of your card automatically creates a lead in HubSpot or Salesforce, with meeting context attached." },
         ],
@@ -1328,17 +1328,17 @@ export const LANDING_PAGES: LandingPage[] = [
         faqs: enFaqCommon,
         ctaTitle: "Be early to the future",
         ctaSub: "The next generation of business cards, today.",
-        ctaButton: "Get Cardix",
+        ctaButton: "Get Cardixn",
       },
       ar: {
-        title: "مستقبل بطاقات الأعمال — 2026 وما بعد | Cardix",
+        title: "مستقبل بطاقات الأعمال — 2026 وما بعد | Cardixn",
         description: "مستقبل بطاقات الأعمال رقمي وديناميكي ومدعوم بالذكاء الاصطناعي. اتجاهات وتوقعات والأدوات التي تقود التحول.",
         h1: "مستقبل بطاقات الأعمال هنا بالفعل",
         subtitle: "رقمي أولاً. مدعوم بالذكاء الاصطناعي. تحليلاتي بطبيعته.",
         intro: "يُعاد اختراع بطاقة الأعمال. بين السِيَر المولَّدة بالذكاء الاصطناعي وأجهزة NFC وتحليلات QR الديناميكية ومزامنة CRM، الهوية المهنية للمستقبل لا تشبه المستطيل الورقي الذي استخدمناه لأربعمئة سنة. إليك إلى أين تتجه.",
         sections: [
           { h2: "رقمي افتراضياً", body: "بحلول 2028، ستحدث 70% من التعارفات المهنية عبر QR أو NFC، صعوداً من 12% في 2024. البطاقات الورقية ستبقى — لكن كخيار احتياطي، لا كقناة رئيسية." },
-          { h2: "هوية مدعومة بالذكاء الاصطناعي", body: "بطاقتك ستكتب نفسها، وتترجم نفسها، وحتى ستقترح متابعات تشبيك مثلى. Cardix يولّد السِيَر بالفعل بالذكاء الاصطناعي؛ ميزات الجيل التالي تشمل ترجمة فورية لملفك كله بلغة كل زائر." },
+          { h2: "هوية مدعومة بالذكاء الاصطناعي", body: "بطاقتك ستكتب نفسها، وتترجم نفسها، وحتى ستقترح متابعات تشبيك مثلى. Cardixn يولّد السِيَر بالفعل بالذكاء الاصطناعي؛ ميزات الجيل التالي تشمل ترجمة فورية لملفك كله بلغة كل زائر." },
           { h2: "هجين فعلي + رقمي", body: "بطاقات NFC تجمع بين تأثير 'واو' للشيء الملموس الفاخر والقوة الديناميكية للملف السحابي. هذا الهجين سيهيمن على شريحة التنفيذيين." },
           { h2: "تكامل في كل مكان", body: "بطاقتك ستُزامَن تلقائياً مع CRM وتقويمك وأدوات بريدك. كل مسح لبطاقتك يُنشئ تلقائياً عميلاً محتملاً في HubSpot أو Salesforce مع سياق الاجتماع مرفقاً." },
         ],
@@ -1351,7 +1351,7 @@ export const LANDING_PAGES: LandingPage[] = [
         faqs: arFaqCommon,
         ctaTitle: "كن مبكراً للمستقبل",
         ctaSub: "الجيل التالي من البطاقات، اليوم.",
-        ctaButton: "احصل على Cardix",
+        ctaButton: "احصل على Cardixn",
       },
     },
   },
@@ -1361,15 +1361,15 @@ export const LANDING_PAGES: LandingPage[] = [
     keyword: "Paper Business Card Alternative",
     copy: {
       en: {
-        title: "The Paper Business Card Alternative for 2026 | Cardix",
-        description: "Looking for a paper business card alternative? Cardix is the #1 replacement: free, sustainable, trackable, and never runs out.",
+        title: "The Paper Business Card Alternative for 2026 | Cardixn",
+        description: "Looking for a paper business card alternative? Cardixn is the #1 replacement: free, sustainable, trackable, and never runs out.",
         h1: "The paper business card alternative that actually works",
         subtitle: "Digital. Sustainable. Free forever.",
-        intro: "You've probably already tried a paper business card alternative — a QR sticker, a note in your phone, an email signature. None of them stick. Cardix is the alternative that professionals actually adopt, because it feels premium, works with one tap, and never runs out.",
+        intro: "You've probably already tried a paper business card alternative — a QR sticker, a note in your phone, an email signature. None of them stick. Cardixn is the alternative that professionals actually adopt, because it feels premium, works with one tap, and never runs out.",
         sections: [
-          { h2: "Why other alternatives fail", body: "QR stickers on your laptop feel unprofessional. Typing your info into someone's phone takes forever. Email signatures don't help you in person. Cardix works everywhere — in person via QR/NFC, remotely via link, or embedded in email." },
-          { h2: "Adopted by professionals in 50+ industries", body: "Real estate, law, finance, tech, hospitality, medicine, media, sales, consulting, design, marketing — Cardix works for every industry where relationships matter." },
-          { h2: "Zero learning curve", body: "You already know how to send a link. That's Cardix. No new behavior to learn. No app for recipients. Just modern networking that works." },
+          { h2: "Why other alternatives fail", body: "QR stickers on your laptop feel unprofessional. Typing your info into someone's phone takes forever. Email signatures don't help you in person. Cardixn works everywhere — in person via QR/NFC, remotely via link, or embedded in email." },
+          { h2: "Adopted by professionals in 50+ industries", body: "Real estate, law, finance, tech, hospitality, medicine, media, sales, consulting, design, marketing — Cardixn works for every industry where relationships matter." },
+          { h2: "Zero learning curve", body: "You already know how to send a link. That's Cardixn. No new behavior to learn. No app for recipients. Just modern networking that works." },
         ],
         features: [
           { title: "60-second setup", desc: "From signup to sharing in under a minute." },
@@ -1383,15 +1383,15 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaButton: "Ditch paper",
       },
       ar: {
-        title: "بديل بطاقات الأعمال الورقية لعام 2026 | Cardix",
-        description: "تبحث عن بديل للبطاقة الورقية؟ Cardix هو البديل #1: مجاني، مستدام، قابل للتتبع، ولا ينفد أبداً.",
+        title: "بديل بطاقات الأعمال الورقية لعام 2026 | Cardixn",
+        description: "تبحث عن بديل للبطاقة الورقية؟ Cardixn هو البديل #1: مجاني، مستدام، قابل للتتبع، ولا ينفد أبداً.",
         h1: "بديل البطاقة الورقية الذي يعمل فعلاً",
         subtitle: "رقمي. مستدام. مجاني للأبد.",
-        intro: "غالباً جرّبت بديلاً للبطاقة الورقية — ملصق QR، ملاحظة في هاتفك، توقيع بريد. لا شيء منها يستمر. Cardix هو البديل الذي يتبنّاه المحترفون فعلاً، لأنه يشعر بالفخامة، يعمل بلمسة واحدة، ولا ينفد أبداً.",
+        intro: "غالباً جرّبت بديلاً للبطاقة الورقية — ملصق QR، ملاحظة في هاتفك، توقيع بريد. لا شيء منها يستمر. Cardixn هو البديل الذي يتبنّاه المحترفون فعلاً، لأنه يشعر بالفخامة، يعمل بلمسة واحدة، ولا ينفد أبداً.",
         sections: [
-          { h2: "لماذا تفشل البدائل الأخرى", body: "ملصقات QR على حاسوبك تبدو غير احترافية. كتابة بياناتك في هاتف شخص تستغرق للأبد. توقيعات البريد لا تساعدك شخصياً. Cardix يعمل في كل مكان — شخصياً عبر QR/NFC، بعيداً عبر رابط، أو مضمَّناً في بريد." },
-          { h2: "متبنّى في أكثر من 50 صناعة", body: "العقار، القانون، المالية، التقنية، الضيافة، الطب، الإعلام، المبيعات، الاستشارات، التصميم، التسويق — Cardix يعمل لكل صناعة تهم فيها العلاقات." },
-          { h2: "صفر منحنى تعلّم", body: "أنت تعرف بالفعل كيف ترسل رابطاً. هذا Cardix. لا سلوك جديد للتعلّم. لا تطبيق للمستلمين. تشبيك حديث يعمل فقط." },
+          { h2: "لماذا تفشل البدائل الأخرى", body: "ملصقات QR على حاسوبك تبدو غير احترافية. كتابة بياناتك في هاتف شخص تستغرق للأبد. توقيعات البريد لا تساعدك شخصياً. Cardixn يعمل في كل مكان — شخصياً عبر QR/NFC، بعيداً عبر رابط، أو مضمَّناً في بريد." },
+          { h2: "متبنّى في أكثر من 50 صناعة", body: "العقار، القانون، المالية، التقنية، الضيافة، الطب، الإعلام، المبيعات، الاستشارات، التصميم، التسويق — Cardixn يعمل لكل صناعة تهم فيها العلاقات." },
+          { h2: "صفر منحنى تعلّم", body: "أنت تعرف بالفعل كيف ترسل رابطاً. هذا Cardixn. لا سلوك جديد للتعلّم. لا تطبيق للمستلمين. تشبيك حديث يعمل فقط." },
         ],
         features: [
           { title: "إعداد في 60 ثانية", desc: "من التسجيل للمشاركة في أقل من دقيقة." },
@@ -1412,11 +1412,11 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "for-real-estate-agents", category: "profession", keyword: "digital business card for real estate agents",
     copy: {
       en: {
-        title: "Digital Business Cards for Real Estate Agents | Cardix",
+        title: "Digital Business Cards for Real Estate Agents | Cardixn",
         description: "The digital business card built for realtors. Share listings, MLS numbers, and open-house links with one tap. Trusted by top-producing agents worldwide.",
         h1: "Digital business cards for real estate agents",
         subtitle: "Close more deals. Never run out of cards at an open house again.",
-        intro: "Real estate is a relationship business, and every open house, showing and networking event is an opportunity to capture a lead. A Cardix digital card puts your listings, MLS number, brokerage and calendar link into every prospect's phone in one tap — and updates instantly when your listings change.",
+        intro: "Real estate is a relationship business, and every open house, showing and networking event is an opportunity to capture a lead. A Cardixn digital card puts your listings, MLS number, brokerage and calendar link into every prospect's phone in one tap — and updates instantly when your listings change.",
         sections: [
           { h2: "Turn every open house into pipeline", body: "Place a printed QR code at your open house. Every visitor who scans lands on your card with active listings, a mortgage calculator link, and a booking button. You'll capture 3-5× more leads than a paper sign-in sheet." },
           { h2: "Update your listings once, everywhere", body: "New listing? Change the featured property on your card and every prospect who saved you sees the update. No reprints, no outdated flyers." },
@@ -1429,14 +1429,14 @@ export const LANDING_PAGES: LandingPage[] = [
           { title: "Team analytics", desc: "See which agents get the most saves, scans and calls each week." },
         ],
         faqs: enFaqCommon,
-        ctaTitle: "Level up your real estate business", ctaSub: "Join thousands of top-producing agents already using Cardix.", ctaButton: "Create my agent card",
+        ctaTitle: "Level up your real estate business", ctaSub: "Join thousands of top-producing agents already using Cardixn.", ctaButton: "Create my agent card",
       },
       ar: {
-        title: "بطاقات رقمية لوكلاء العقارات | Cardix",
+        title: "بطاقات رقمية لوكلاء العقارات | Cardixn",
         description: "البطاقة الرقمية المصمّمة لوكلاء العقار. شارك عقاراتك ورقم رخصتك وروابط المعاينات بلمسة واحدة. يثق بها كبار الوسطاء حول العالم.",
         h1: "بطاقات أعمال رقمية لوكلاء العقارات",
         subtitle: "أغلق صفقات أكثر. لن تنفد بطاقاتك في يوم معاينة مفتوح مرة أخرى.",
-        intro: "العقار عمل قائم على العلاقات، وكل معاينة مفتوحة وحدث تشبيك هو فرصة لالتقاط عميل محتمل. بطاقة Cardix الرقمية تضع عقاراتك ورقم رخصتك ومكتبك ورابط حجز موعدك في هاتف كل عميل بلمسة واحدة — وتُحدَّث فوراً عند تغيير عروضك." ,
+        intro: "العقار عمل قائم على العلاقات، وكل معاينة مفتوحة وحدث تشبيك هو فرصة لالتقاط عميل محتمل. بطاقة Cardixn الرقمية تضع عقاراتك ورقم رخصتك ومكتبك ورابط حجز موعدك في هاتف كل عميل بلمسة واحدة — وتُحدَّث فوراً عند تغيير عروضك." ,
         sections: [
           { h2: "حوّل كل معاينة إلى عملاء محتملين", body: "ضع رمز QR مطبوعاً في المعاينة المفتوحة. كل زائر يمسحه يصل إلى بطاقتك مع العقارات النشطة وحاسبة القسط ورابط الحجز. ستلتقط عملاء أكثر بـ 3-5 أضعاف من ورقة تسجيل ورقية." },
           { h2: "حدِّث عقاراتك مرة، وتظهر للجميع", body: "عقار جديد؟ غيِّر العقار المميز في بطاقتك، وكل من حفظك يرى التحديث فوراً. بلا إعادة طباعة، بلا كتيّبات قديمة." },
@@ -1449,7 +1449,7 @@ export const LANDING_PAGES: LandingPage[] = [
           { title: "تحليلات الفريق", desc: "شاهد أي وكيل يحصل على أكثر الحفظ والمسحات والمكالمات أسبوعياً." },
         ],
         faqs: arFaqCommon,
-        ctaTitle: "ارتقِ بأعمالك العقارية", ctaSub: "انضم لآلاف الوكلاء المتصدرين الذين يستخدمون Cardix.", ctaButton: "أنشئ بطاقتي العقارية",
+        ctaTitle: "ارتقِ بأعمالك العقارية", ctaSub: "انضم لآلاف الوكلاء المتصدرين الذين يستخدمون Cardixn.", ctaButton: "أنشئ بطاقتي العقارية",
       },
     },
   },
@@ -1457,11 +1457,11 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "for-doctors", category: "profession", keyword: "digital business card for doctors",
     copy: {
       en: {
-        title: "Digital Business Cards for Doctors & Physicians | Cardix",
+        title: "Digital Business Cards for Doctors & Physicians | Cardixn",
         description: "HIPAA-conscious digital cards for doctors, dentists and healthcare providers. Share your clinic, credentials and booking link with one tap.",
         h1: "Digital business cards for doctors and clinicians",
         subtitle: "Share your credentials, clinic and booking link — professionally, instantly.",
-        intro: "Doctors, dentists and specialists need a way to share their credentials, clinic address and appointment link without handing out easily-lost paper cards. Cardix gives every clinician a sleek digital identity that patients and referring physicians can save in one tap.",
+        intro: "Doctors, dentists and specialists need a way to share their credentials, clinic address and appointment link without handing out easily-lost paper cards. Cardixn gives every clinician a sleek digital identity that patients and referring physicians can save in one tap.",
         sections: [
           { h2: "Perfect for referrals and CME events", body: "At medical conferences, tap-to-share your NFC card with fellow physicians. Your specialties, publications and referral phone number are captured instantly — no more lost cards in a lanyard pouch." },
           { h2: "Patient-friendly booking", body: "Include a direct link to your Doctolib, Zocdoc or Nabidh appointment system so patients can book without calling reception." },
@@ -1477,11 +1477,11 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "The card for modern healthcare", ctaSub: "Trusted by clinicians in 40+ countries.", ctaButton: "Create my clinician card",
       },
       ar: {
-        title: "بطاقات رقمية للأطباء والعيادات | Cardix",
+        title: "بطاقات رقمية للأطباء والعيادات | Cardixn",
         description: "بطاقات رقمية أنيقة للأطباء وأطباء الأسنان ومقدمي الرعاية الصحية. شارك عيادتك ومؤهلاتك ورابط الحجز بلمسة واحدة.",
         h1: "بطاقات رقمية للأطباء والاستشاريين",
         subtitle: "شارك مؤهلاتك وعيادتك ورابط الحجز — باحترافية وفورية.",
-        intro: "الأطباء وأطباء الأسنان والاستشاريون يحتاجون طريقة لمشاركة مؤهلاتهم وعنوان العيادة ورابط الحجز دون توزيع بطاقات ورقية سهلة الضياع. Cardix يمنح كل طبيب هوية رقمية أنيقة يستطيع المرضى وزملاؤه حفظها بلمسة واحدة.",
+        intro: "الأطباء وأطباء الأسنان والاستشاريون يحتاجون طريقة لمشاركة مؤهلاتهم وعنوان العيادة ورابط الحجز دون توزيع بطاقات ورقية سهلة الضياع. Cardixn يمنح كل طبيب هوية رقمية أنيقة يستطيع المرضى وزملاؤه حفظها بلمسة واحدة.",
         sections: [
           { h2: "مثالي للإحالات ومؤتمرات CME", body: "في المؤتمرات الطبية، شارك بطاقتك بلمسة NFC مع زملائك. تخصصاتك ومنشوراتك ورقم الإحالة تُلتقَط فوراً — لا مزيد من البطاقات المفقودة في جيب الشارة." },
           { h2: "حجز مناسب للمرضى", body: "أضف رابطاً مباشراً لنظام الحجز (Doctolib أو Zocdoc أو نبض) ليحجز المرضى دون الاتصال بالاستقبال." },
@@ -1502,13 +1502,13 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "for-lawyers", category: "profession", keyword: "digital business card for lawyers",
     copy: {
       en: {
-        title: "Digital Business Cards for Lawyers & Attorneys | Cardix",
+        title: "Digital Business Cards for Lawyers & Attorneys | Cardixn",
         description: "The digital business card for legal professionals. Share your firm, bar number and consultation booking with elegance and authority.",
         h1: "Digital business cards for lawyers and law firms",
         subtitle: "Command authority. Share credentials. Book consultations — in one tap.",
-        intro: "Lawyers earn trust in seconds. Your digital card should project the same authority as your suit and your firm's marble lobby. Cardix delivers courtroom-worthy typography, discreet accents and one-tap consultation booking that turn every handshake into a signed retainer.",
+        intro: "Lawyers earn trust in seconds. Your digital card should project the same authority as your suit and your firm's marble lobby. Cardixn delivers courtroom-worthy typography, discreet accents and one-tap consultation booking that turn every handshake into a signed retainer.",
         sections: [
-          { h2: "Ideal for law firms and solo attorneys", body: "Whether you're a solo criminal defender or a partner at a Magic Circle firm, Cardix gives you a card that matches your brand — with your firm's logo, brand colors and practice-area badges." },
+          { h2: "Ideal for law firms and solo attorneys", body: "Whether you're a solo criminal defender or a partner at a Magic Circle firm, Cardixn gives you a card that matches your brand — with your firm's logo, brand colors and practice-area badges." },
           { h2: "Compliant and confidential", body: "Bar number, jurisdiction, disclaimers and 'Attorney Advertising' notices are configurable per-card. Your client's data never leaves your control." },
           { h2: "Book consultations at networking events", body: "At bar association mixers, share your card via QR. Prospects book a paid consultation via your integrated Calendly or Clio Grow link. Convert casual conversations into billable hours." },
         ],
@@ -1522,13 +1522,13 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "The digital card built for legal professionals", ctaSub: "Trusted by solo attorneys and top-tier firms.", ctaButton: "Create my attorney card",
       },
       ar: {
-        title: "بطاقات رقمية للمحامين ومكاتب المحاماة | Cardix",
+        title: "بطاقات رقمية للمحامين ومكاتب المحاماة | Cardixn",
         description: "البطاقة الرقمية للمحترفين القانونيين. شارك مكتبك ورقم النقابة وحجز الاستشارات بأناقة وسلطة.",
         h1: "بطاقات رقمية للمحامين ومكاتب المحاماة",
         subtitle: "افرض سلطتك. شارك مؤهلاتك. احجز استشارات — بلمسة واحدة.",
-        intro: "المحامون يكسبون الثقة في ثوانٍ. يجب أن تعكس بطاقتك الرقمية نفس السلطة التي تعكسها بذلتك ولوبي مكتبك الرخامي. يوفر Cardix تايبوغرافي بمستوى قاعات المحاكم، ولمسات لونية راقية، وحجز استشارة بضغطة تحوِّل كل مصافحة إلى عقد أتعاب.",
+        intro: "المحامون يكسبون الثقة في ثوانٍ. يجب أن تعكس بطاقتك الرقمية نفس السلطة التي تعكسها بذلتك ولوبي مكتبك الرخامي. يوفر Cardixn تايبوغرافي بمستوى قاعات المحاكم، ولمسات لونية راقية، وحجز استشارة بضغطة تحوِّل كل مصافحة إلى عقد أتعاب.",
         sections: [
-          { h2: "مثالي لمكاتب المحاماة والمحامين المستقلين", body: "سواء كنت محامي دفاع منفرداً أو شريكاً في مكتب كبير، يمنحك Cardix بطاقة تعكس هويتك — بشعار مكتبك وألوانك وشارات مجالات الممارسة." },
+          { h2: "مثالي لمكاتب المحاماة والمحامين المستقلين", body: "سواء كنت محامي دفاع منفرداً أو شريكاً في مكتب كبير، يمنحك Cardixn بطاقة تعكس هويتك — بشعار مكتبك وألوانك وشارات مجالات الممارسة." },
           { h2: "متوافق وسرّي", body: "رقم النقابة والاختصاص القضائي والإخلاءات وإشعارات 'إعلان المحاماة' قابلة للتخصيص. بيانات موكليك لا تغادر تحكمك أبداً." },
           { h2: "احجز استشارات في فعاليات التشبيك", body: "في لقاءات نقابة المحامين، شارك بطاقتك بـ QR. يحجز العميل استشارة مدفوعة عبر رابط Calendly المدمج. حوِّل المحادثات العابرة إلى ساعات محاسَبة." },
         ],
@@ -1547,13 +1547,13 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "for-freelancers", category: "profession", keyword: "digital business card for freelancers",
     copy: {
       en: {
-        title: "Digital Business Cards for Freelancers | Cardix",
+        title: "Digital Business Cards for Freelancers | Cardixn",
         description: "Land more clients as a freelancer. Share your portfolio, rates and booking link in one tap. Free forever for independent professionals.",
         h1: "The freelancer's digital business card",
         subtitle: "Portfolio, pricing, and Calendly — in a card that fits in a text message.",
-        intro: "As a freelancer, every conversation is a potential contract. Cardix bundles your portfolio, rates, testimonials, calendar and payment link into one shareable identity — so you never lose a lead to 'I'll email you my info' friction again.",
+        intro: "As a freelancer, every conversation is a potential contract. Cardixn bundles your portfolio, rates, testimonials, calendar and payment link into one shareable identity — so you never lose a lead to 'I'll email you my info' friction again.",
         sections: [
-          { h2: "Turn LinkedIn DMs into paid projects", body: "Drop your Cardix link in a LinkedIn message and prospects see your polished portfolio, hourly rate and available booking slots instantly. Compare that to a resume PDF — no contest." },
+          { h2: "Turn LinkedIn DMs into paid projects", body: "Drop your Cardixn link in a LinkedIn message and prospects see your polished portfolio, hourly rate and available booking slots instantly. Compare that to a resume PDF — no contest." },
           { h2: "Perfect for designers, developers, writers and marketers", body: "Every freelance discipline is supported. Show a Dribbble portfolio, a GitHub, a Behance link, or a Medium byline. Your card evolves with your career." },
           { h2: "Get paid faster", body: "Include a Stripe payment link, an Upwork profile or a PayPal.me on your card so clients can pay a deposit before they change their mind." },
         ],
@@ -1567,13 +1567,13 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Freelance smarter", ctaSub: "The card top freelancers use to close more clients.", ctaButton: "Create my freelancer card",
       },
       ar: {
-        title: "بطاقات رقمية للمستقلين والفريلانسر | Cardix",
+        title: "بطاقات رقمية للمستقلين والفريلانسر | Cardixn",
         description: "استقطب عملاء أكثر كمستقل. شارك أعمالك وأسعارك ورابط الحجز بلمسة واحدة. مجاناً للأبد للمحترفين المستقلين.",
         h1: "البطاقة الرقمية للمستقلين",
         subtitle: "أعمال وأسعار وتقويم — في بطاقة تُرسَل برسالة نصية.",
-        intro: "كمستقل، كل محادثة عقد محتمل. Cardix يجمع أعمالك وأسعارك وشهادات عملائك وتقويمك ورابط الدفع في هوية واحدة قابلة للمشاركة — فلا تفقد عميلاً بسبب احتكاك 'سأرسل لك بياناتي بالإيميل' مجدداً.",
+        intro: "كمستقل، كل محادثة عقد محتمل. Cardixn يجمع أعمالك وأسعارك وشهادات عملائك وتقويمك ورابط الدفع في هوية واحدة قابلة للمشاركة — فلا تفقد عميلاً بسبب احتكاك 'سأرسل لك بياناتي بالإيميل' مجدداً.",
         sections: [
-          { h2: "حوِّل رسائل LinkedIn إلى مشاريع مدفوعة", body: "ضع رابط Cardix في محادثة LinkedIn ليرى العميل معرض أعمالك المصقول وسعرك بالساعة والمواعيد المتاحة فوراً. قارن ذلك بملف سيرة PDF — لا مقارنة." },
+          { h2: "حوِّل رسائل LinkedIn إلى مشاريع مدفوعة", body: "ضع رابط Cardixn في محادثة LinkedIn ليرى العميل معرض أعمالك المصقول وسعرك بالساعة والمواعيد المتاحة فوراً. قارن ذلك بملف سيرة PDF — لا مقارنة." },
           { h2: "مثالي للمصممين والمطورين والكتاب والمسوّقين", body: "كل تخصص مستقل مدعوم. اعرض معرض Dribbble أو GitHub أو Behance أو مقالات Medium. بطاقتك تتطور مع مسيرتك." },
           { h2: "استلم دفعاتك أسرع", body: "أضف رابط Stripe أو ملف Upwork أو PayPal.me في بطاقتك ليدفع العميل عربوناً قبل أن يغيّر رأيه." },
         ],
@@ -1592,11 +1592,11 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "for-sales-teams", category: "profession", keyword: "digital business card for sales teams",
     copy: {
       en: {
-        title: "Digital Business Cards for Sales Teams | Cardix",
+        title: "Digital Business Cards for Sales Teams | Cardixn",
         description: "Equip your entire sales team with branded digital cards. Boost lead capture at every event, sync to CRM, and track ROI per rep.",
         h1: "Digital business cards for high-performing sales teams",
         subtitle: "Every rep. Every event. Every lead captured — automatically.",
-        intro: "Sales teams live at trade shows, conferences and coffee meetings. A Cardix team account gives every rep a branded card, captures every scan into Salesforce or HubSpot, and gives sales leaders per-rep analytics on saves, calls and pipeline generated.",
+        intro: "Sales teams live at trade shows, conferences and coffee meetings. A Cardixn team account gives every rep a branded card, captures every scan into Salesforce or HubSpot, and gives sales leaders per-rep analytics on saves, calls and pipeline generated.",
         sections: [
           { h2: "Central control, per-rep flexibility", body: "Sales ops publishes the template once — logo, brand colors, pitch line, disclaimer. Each rep personalizes photo, phone, calendar link and title. Update the template centrally and every card updates instantly." },
           { h2: "CRM-native lead capture", body: "Every scan and vCard save is pushed to Salesforce, HubSpot, Pipedrive or Zoho as a lead with source attribution. No more manual data entry from lanyard-bag business cards." },
@@ -1612,11 +1612,11 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Equip your team", ctaSub: "Talk to sales about a team or enterprise plan.", ctaButton: "Get team pricing",
       },
       ar: {
-        title: "بطاقات رقمية لفرق المبيعات | Cardix",
+        title: "بطاقات رقمية لفرق المبيعات | Cardixn",
         description: "زوِّد فريق مبيعاتك ببطاقات رقمية مبرمَجة. عزّز التقاط العملاء في كل حدث، وزامنها مع CRM، وتتبَّع العائد لكل مندوب.",
         h1: "بطاقات رقمية لفرق المبيعات عالية الأداء",
         subtitle: "كل مندوب. كل حدث. كل عميل — تلقائياً.",
-        intro: "فرق المبيعات تعيش في المعارض والمؤتمرات ولقاءات القهوة. حساب فريق Cardix يمنح كل مندوب بطاقة مبرمَجة، ويلتقط كل مسحة إلى Salesforce أو HubSpot، ويعطي قادة المبيعات تحليلات لكل مندوب على الحفظ والمكالمات والفرص.",
+        intro: "فرق المبيعات تعيش في المعارض والمؤتمرات ولقاءات القهوة. حساب فريق Cardixn يمنح كل مندوب بطاقة مبرمَجة، ويلتقط كل مسحة إلى Salesforce أو HubSpot، ويعطي قادة المبيعات تحليلات لكل مندوب على الحفظ والمكالمات والفرص.",
         sections: [
           { h2: "تحكّم مركزي ومرونة لكل مندوب", body: "تنشر عمليات المبيعات القالب مرة — شعار وألوان وسطر عرض وإخلاء. ويخصّص كل مندوب صورته وهاتفه ورابط تقويمه ومسمّاه. حدّث القالب مركزياً لتُحدَّث كل البطاقات فوراً." },
           { h2: "التقاط العملاء الأصلي في CRM", body: "كل مسحة وحفظ vCard يُدفَع إلى Salesforce أو HubSpot أو Pipedrive أو Zoho كعميل محتمل مع نسب المصدر. لا مزيد من إدخال يدوي." },
@@ -1637,14 +1637,14 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "for-photographers", category: "profession", keyword: "digital business card for photographers",
     copy: {
       en: {
-        title: "Digital Business Cards for Photographers | Cardix",
+        title: "Digital Business Cards for Photographers | Cardixn",
         description: "Showcase your portfolio, book sessions and share Instagram in one card. Built for wedding, portrait and commercial photographers.",
         h1: "Digital business cards for photographers",
         subtitle: "Your portfolio, your rates, your booking link — one card, one tap.",
-        intro: "Photographers earn commissions on the strength of their work. A paper card can't show a portfolio, but a Cardix card can. Embed your best shots, link to Instagram, offer a booking calendar and collect a deposit — all from one shareable link.",
+        intro: "Photographers earn commissions on the strength of their work. A paper card can't show a portfolio, but a Cardixn card can. Embed your best shots, link to Instagram, offer a booking calendar and collect a deposit — all from one shareable link.",
         sections: [
           { h2: "For weddings, portraits and commercial shoots", body: "Whether you shoot destination weddings or headshots, your card showcases your best work in a gallery format, with direct booking and pricing tiers." },
-          { h2: "Hand out at events, share on Instagram", body: "Drop your Cardix link in Instagram DMs, print a QR on your product packaging, or tap-share via NFC at a bridal show. Every touchpoint becomes a booking funnel." },
+          { h2: "Hand out at events, share on Instagram", body: "Drop your Cardixn link in Instagram DMs, print a QR on your product packaging, or tap-share via NFC at a bridal show. Every touchpoint becomes a booking funnel." },
           { h2: "Sell prints and packages", body: "Link to your Pixieset, ShootProof or SmugMug store. Turn portfolio views into print sales without a separate website." },
         ],
         features: [
@@ -1657,14 +1657,14 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Book more sessions", ctaSub: "The card built for photographers who want to grow.", ctaButton: "Create my photographer card",
       },
       ar: {
-        title: "بطاقات رقمية للمصورين | Cardix",
+        title: "بطاقات رقمية للمصورين | Cardixn",
         description: "اعرض معرض أعمالك واحجز الجلسات وشارك Instagram في بطاقة واحدة. مصمم لمصوري الأعراس والبورتريه والتجاري.",
         h1: "بطاقات رقمية للمصورين",
         subtitle: "معرض أعمالك وأسعارك ورابط الحجز — بطاقة واحدة ولمسة واحدة.",
-        intro: "المصورون يحصلون على المشاريع بقوة أعمالهم. البطاقة الورقية لا تعرض معرضاً، لكن بطاقة Cardix تعرضه. ادمج أفضل صورك، اربط Instagram، اعرض تقويم حجز، واستلم عربوناً — كل ذلك من رابط واحد.",
+        intro: "المصورون يحصلون على المشاريع بقوة أعمالهم. البطاقة الورقية لا تعرض معرضاً، لكن بطاقة Cardixn تعرضه. ادمج أفضل صورك، اربط Instagram، اعرض تقويم حجز، واستلم عربوناً — كل ذلك من رابط واحد.",
         sections: [
           { h2: "للأعراس والبورتريه والتصوير التجاري", body: "سواء صوَّرت أعراس الوجهات أو صوراً شخصية، بطاقتك تعرض أفضل أعمالك في معرض، مع حجز مباشر وباقات أسعار." },
-          { h2: "وزّعها في الفعاليات وشاركها على Instagram", body: "ضع رابط Cardix في محادثات Instagram، اطبع QR على غلاف منتجاتك، أو شارك بلمسة NFC في معرض عرائسي. كل نقطة تلامس تصبح قناة حجز." },
+          { h2: "وزّعها في الفعاليات وشاركها على Instagram", body: "ضع رابط Cardixn في محادثات Instagram، اطبع QR على غلاف منتجاتك، أو شارك بلمسة NFC في معرض عرائسي. كل نقطة تلامس تصبح قناة حجز." },
           { h2: "بع المطبوعات والباقات", body: "اربط بمتجر Pixieset أو ShootProof. حوّل مشاهدات المعرض إلى مبيعات مطبوعات دون موقع منفصل." },
         ],
         features: [
@@ -1682,15 +1682,15 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "for-consultants", category: "profession", keyword: "digital business card for consultants",
     copy: {
       en: {
-        title: "Digital Business Cards for Consultants | Cardix",
+        title: "Digital Business Cards for Consultants | Cardixn",
         description: "Consultants and coaches: share your niche, testimonials and discovery-call link in one polished digital card.",
         h1: "The consultant's digital business card",
         subtitle: "Your positioning, proof and calendar — in one link you can text.",
-        intro: "Consultants and coaches sell trust. A Cardix card lets you communicate your niche, showcase client logos and testimonials, and drop a discovery-call link — all in the format a modern prospect actually opens.",
+        intro: "Consultants and coaches sell trust. A Cardixn card lets you communicate your niche, showcase client logos and testimonials, and drop a discovery-call link — all in the format a modern prospect actually opens.",
         sections: [
           { h2: "Position clearly, convert quickly", body: "Your card leads with your positioning statement ('I help SaaS founders scale from $1M to $10M ARR'), followed by client logos, one killer testimonial, and a discovery-call CTA." },
           { h2: "Perfect for management, marketing, life and executive coaches", body: "Every consulting discipline supported. Customize your card with case studies, Loom video intros, or a downloadable one-pager." },
-          { h2: "Turn LinkedIn into a lead engine", body: "Add your Cardix link to your LinkedIn banner and in every DM. Prospects book calls straight from your card instead of playing email tag." },
+          { h2: "Turn LinkedIn into a lead engine", body: "Add your Cardixn link to your LinkedIn banner and in every DM. Prospects book calls straight from your card instead of playing email tag." },
         ],
         features: [
           { title: "Positioning hero", desc: "Lead with a one-sentence value proposition that hooks in 3 seconds." },
@@ -1702,15 +1702,15 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Fill your calendar", ctaSub: "The card top consultants use to book more calls.", ctaButton: "Create my consultant card",
       },
       ar: {
-        title: "بطاقات رقمية للاستشاريين والمدرّبين | Cardix",
+        title: "بطاقات رقمية للاستشاريين والمدرّبين | Cardixn",
         description: "الاستشاريون والمدرّبون: شاركوا تخصصكم وشهادات عملائكم ورابط مكالمة الاكتشاف في بطاقة رقمية أنيقة.",
         h1: "البطاقة الرقمية للاستشاري",
         subtitle: "تموضعك وأدلتك وتقويمك — في رابط ترسله برسالة.",
-        intro: "الاستشاريون والمدرّبون يبيعون الثقة. بطاقة Cardix تُوصِل تخصصك، تعرض شعارات عملائك وشهاداتهم، وتضع رابط مكالمة اكتشاف — كلها في الصيغة التي يفتحها العميل المعاصر فعلاً.",
+        intro: "الاستشاريون والمدرّبون يبيعون الثقة. بطاقة Cardixn تُوصِل تخصصك، تعرض شعارات عملائك وشهاداتهم، وتضع رابط مكالمة اكتشاف — كلها في الصيغة التي يفتحها العميل المعاصر فعلاً.",
         sections: [
           { h2: "تموضع بوضوح، حوِّل بسرعة", body: "تبدأ بطاقتك بجملة تموضعك ('أساعد مؤسسي SaaS على النمو من مليون إلى 10 مليون ARR')، تليها شعارات عملاء وشهادة قوية ومكالمة اكتشاف." },
           { h2: "مثالي لاستشاري الإدارة والتسويق والحياة والتنفيذيين", body: "كل تخصصات الاستشارات مدعومة. خصّص بطاقتك بدراسات حالة أو مقاطع فيديو Loom أو ملف تعريفي قابل للتنزيل." },
-          { h2: "حوِّل LinkedIn إلى محرك عملاء", body: "أضف رابط Cardix في غلاف LinkedIn وكل رسالة خاصة. يحجز العملاء مكالمات مباشرة من بطاقتك بدل تبادل الرسائل." },
+          { h2: "حوِّل LinkedIn إلى محرك عملاء", body: "أضف رابط Cardixn في غلاف LinkedIn وكل رسالة خاصة. يحجز العملاء مكالمات مباشرة من بطاقتك بدل تبادل الرسائل." },
         ],
         features: [
           { title: "تموضع بارز", desc: "ابدأ بجملة قيمة تجذب في 3 ثوانٍ." },
@@ -1727,13 +1727,13 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "for-entrepreneurs", category: "profession", keyword: "digital business card for entrepreneurs",
     copy: {
       en: {
-        title: "Digital Business Cards for Entrepreneurs & Founders | Cardix",
+        title: "Digital Business Cards for Entrepreneurs & Founders | Cardixn",
         description: "The digital card built for founders. Pitch your company, share your deck and book investor calls in one tap.",
         h1: "The founder's digital business card",
         subtitle: "One tap. One link. Your whole company in a prospect's phone.",
-        intro: "Founders wear ten hats and network constantly. Cardix packages your company pitch, product links, pitch deck, investor updates and calendar into one polished card that turns every conference handshake into a follow-up meeting.",
+        intro: "Founders wear ten hats and network constantly. Cardixn packages your company pitch, product links, pitch deck, investor updates and calendar into one polished card that turns every conference handshake into a follow-up meeting.",
         sections: [
-          { h2: "Perfect for pitch events and demo days", body: "At YC Demo Day, TechCrunch Disrupt, Web Summit or a Riyadh LEAP booth, share your Cardix card via NFC or QR. Investors get your deck, your traction stats and a booking link on their phone in one tap." },
+          { h2: "Perfect for pitch events and demo days", body: "At YC Demo Day, TechCrunch Disrupt, Web Summit or a Riyadh LEAP booth, share your Cardixn card via NFC or QR. Investors get your deck, your traction stats and a booking link on their phone in one tap." },
           { h2: "Introduce your team", body: "Add a team page with every co-founder and key hire, each with their own card. Investors can click through to LinkedIn profiles instantly." },
           { h2: "Update your pitch as you grow", body: "Raised a round? Update your card. New revenue milestone? Update your card. Every investor who ever met you sees your latest traction." },
         ],
@@ -1747,13 +1747,13 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "The card founders share", ctaSub: "Used by YC, Techstars and Sequoia-backed founders.", ctaButton: "Create my founder card",
       },
       ar: {
-        title: "بطاقات رقمية لرواد الأعمال والمؤسسين | Cardix",
+        title: "بطاقات رقمية لرواد الأعمال والمؤسسين | Cardixn",
         description: "البطاقة الرقمية المصمّمة للمؤسسين. اعرض شركتك وشارك ديك الاستثمار واحجز مكالمات المستثمرين بلمسة واحدة.",
         h1: "البطاقة الرقمية للمؤسس",
         subtitle: "لمسة واحدة. رابط واحد. شركتك كلها في هاتف العميل.",
-        intro: "المؤسسون يرتدون عشر قبعات ويشبّكون باستمرار. Cardix يحزم عرض شركتك وروابط منتجك وديك الاستثمار وتحديثات المستثمرين وتقويمك في بطاقة أنيقة تحوّل كل مصافحة مؤتمر إلى موعد متابعة.",
+        intro: "المؤسسون يرتدون عشر قبعات ويشبّكون باستمرار. Cardixn يحزم عرض شركتك وروابط منتجك وديك الاستثمار وتحديثات المستثمرين وتقويمك في بطاقة أنيقة تحوّل كل مصافحة مؤتمر إلى موعد متابعة.",
         sections: [
-          { h2: "مثالي لفعاليات العرض وأيام التجربة", body: "في YC Demo Day أو TechCrunch Disrupt أو LEAP، شارك بطاقة Cardix بـ NFC أو QR. يحصل المستثمر على ديكك وأرقام نموّك ورابط الحجز في هاتفه بلمسة." },
+          { h2: "مثالي لفعاليات العرض وأيام التجربة", body: "في YC Demo Day أو TechCrunch Disrupt أو LEAP، شارك بطاقة Cardixn بـ NFC أو QR. يحصل المستثمر على ديكك وأرقام نموّك ورابط الحجز في هاتفه بلمسة." },
           { h2: "قدّم فريقك", body: "أضف صفحة فريق بكل شريك مؤسس وموظف رئيسي، ولكل واحد بطاقته. يستطيع المستثمر النقر لملفات LinkedIn فوراً." },
           { h2: "حدّث عرضك كلما نموت", body: "جمعت جولة؟ حدّث بطاقتك. إيراد جديد؟ حدّث بطاقتك. كل مستثمر قابلك يرى آخر أرقامك." },
         ],
@@ -1772,18 +1772,18 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "for-students", category: "profession", keyword: "digital business card for students",
     copy: {
       en: {
-        title: "Digital Business Cards for Students & Graduates | Cardix",
+        title: "Digital Business Cards for Students & Graduates | Cardixn",
         description: "Free digital business cards for students. Stand out at career fairs, network at conferences and land your first job.",
         h1: "Digital business cards for students",
         subtitle: "Career fairs, hackathons, LinkedIn — all in one shareable link.",
-        intro: "As a student, you don't need to spend $50 on printed cards you'll re-order every semester. Cardix gives you a free, professional digital card that includes your major, GPA, projects, GitHub and resume — perfect for career fairs, hackathons, and networking events.",
+        intro: "As a student, you don't need to spend $50 on printed cards you'll re-order every semester. Cardixn gives you a free, professional digital card that includes your major, GPA, projects, GitHub and resume — perfect for career fairs, hackathons, and networking events.",
         sections: [
-          { h2: "Perfect for career fairs", body: "Instead of handing recruiters a paper resume that ends up in a stack of 500, share your Cardix card via QR. Recruiters save your info to their phone with one tap and get direct access to your portfolio, resume and LinkedIn." },
+          { h2: "Perfect for career fairs", body: "Instead of handing recruiters a paper resume that ends up in a stack of 500, share your Cardixn card via QR. Recruiters save your info to their phone with one tap and get direct access to your portfolio, resume and LinkedIn." },
           { h2: "Great for hackathons and side projects", body: "Showcase your GitHub, your hackathon wins and your side projects on one card. When teammates or judges want to keep in touch, one tap does it all." },
-          { h2: "Grow with your career", body: "Your Cardix card evolves as you do. Update from 'CS student' to 'Software Engineer at Google' without reprinting a single card." },
+          { h2: "Grow with your career", body: "Your Cardixn card evolves as you do. Update from 'CS student' to 'Software Engineer at Google' without reprinting a single card." },
         ],
         features: [
-          { title: "100% free for students", desc: "No credit card, no ads. Cardix is free forever for the essentials." },
+          { title: "100% free for students", desc: "No credit card, no ads. Cardixn is free forever for the essentials." },
           { title: "Resume + portfolio link", desc: "Link to your PDF resume and portfolio site in one tap." },
           { title: "GitHub + LinkedIn", desc: "Show your code and connect professionally." },
           { title: "QR for career fairs", desc: "Downloadable high-res QR to print on your name badge." },
@@ -1792,15 +1792,15 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Start your career strong", ctaSub: "Free forever for students.", ctaButton: "Create my student card",
       },
       ar: {
-        title: "بطاقات رقمية للطلاب والخريجين | Cardix",
+        title: "بطاقات رقمية للطلاب والخريجين | Cardixn",
         description: "بطاقات رقمية مجانية للطلاب. تميّز في معارض الوظائف وشبّك في المؤتمرات واحصل على أول وظيفة.",
         h1: "بطاقات رقمية للطلاب",
         subtitle: "معارض الوظائف والهاكاثونات وLinkedIn — كلها في رابط واحد.",
-        intro: "كطالب، لا تحتاج لصرف 50 دولاراً على بطاقات مطبوعة ستعيد طلبها كل فصل. يمنحك Cardix بطاقة رقمية احترافية مجانية تشمل تخصصك ومعدلك ومشاريعك وGitHub وسيرتك — مثالية لمعارض الوظائف والهاكاثونات.",
+        intro: "كطالب، لا تحتاج لصرف 50 دولاراً على بطاقات مطبوعة ستعيد طلبها كل فصل. يمنحك Cardixn بطاقة رقمية احترافية مجانية تشمل تخصصك ومعدلك ومشاريعك وGitHub وسيرتك — مثالية لمعارض الوظائف والهاكاثونات.",
         sections: [
-          { h2: "مثالي لمعارض الوظائف", body: "بدل تسليم المجنّد سيرة ورقية تنتهي في كومة من 500، شارك بطاقة Cardix بـ QR. يحفظها المجنّد بلمسة ويصل مباشرة لمعرضك وسيرتك وLinkedIn." },
+          { h2: "مثالي لمعارض الوظائف", body: "بدل تسليم المجنّد سيرة ورقية تنتهي في كومة من 500، شارك بطاقة Cardixn بـ QR. يحفظها المجنّد بلمسة ويصل مباشرة لمعرضك وسيرتك وLinkedIn." },
           { h2: "رائع للهاكاثونات والمشاريع الجانبية", body: "اعرض GitHub وفوزك في الهاكاثونات ومشاريعك الجانبية في بطاقة واحدة. عندما يريد زملاؤك التواصل، لمسة واحدة تكفي." },
-          { h2: "تنمو مع مسيرتك", body: "بطاقة Cardix تتطور معك. حدّث من 'طالب علوم حاسب' إلى 'مهندس برمجيات في Google' دون طباعة بطاقة واحدة." },
+          { h2: "تنمو مع مسيرتك", body: "بطاقة Cardixn تتطور معك. حدّث من 'طالب علوم حاسب' إلى 'مهندس برمجيات في Google' دون طباعة بطاقة واحدة." },
         ],
         features: [
           { title: "مجانية 100% للطلاب", desc: "بلا بطاقة ائتمان، بلا إعلانات." },
@@ -1817,13 +1817,13 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "for-influencers", category: "profession", keyword: "digital business card for influencers",
     copy: {
       en: {
-        title: "Digital Business Cards for Influencers & Creators | Cardix",
+        title: "Digital Business Cards for Influencers & Creators | Cardixn",
         description: "The link-in-bio killer. All your platforms, brand deals and media kit in one luxury digital card.",
         h1: "Digital business cards for influencers and creators",
         subtitle: "Every platform. Every collab. Every DM — in one card.",
-        intro: "As a creator, your business card is your link-in-bio — but better. Cardix bundles every platform (Instagram, TikTok, YouTube, Twitch, X), your media kit, your brand-deal rates and your management contact into one luxury card that agents and brands actually save.",
+        intro: "As a creator, your business card is your link-in-bio — but better. Cardixn bundles every platform (Instagram, TikTok, YouTube, Twitch, X), your media kit, your brand-deal rates and your management contact into one luxury card that agents and brands actually save.",
         sections: [
-          { h2: "Beat Linktree with luxury design", body: "Linktree is generic. Cardix is a designer card with your brand aesthetic, animated accents, and analytics that show which brands are clicking your rate card." },
+          { h2: "Beat Linktree with luxury design", body: "Linktree is generic. Cardixn is a designer card with your brand aesthetic, animated accents, and analytics that show which brands are clicking your rate card." },
           { h2: "Perfect for brand deals", body: "Include your media-kit PDF, engagement stats, audience demographics and rate sheet. Brand managers save your card and share it directly with their teams." },
           { h2: "Your manager, your press, your fans", body: "One card for everything: management contact, press email, DM link, Discord community, Patreon, merch store." },
         ],
@@ -1837,13 +1837,13 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Upgrade your link-in-bio", ctaSub: "The luxury alternative to Linktree.", ctaButton: "Create my creator card",
       },
       ar: {
-        title: "بطاقات رقمية للمؤثرين وصنّاع المحتوى | Cardix",
+        title: "بطاقات رقمية للمؤثرين وصنّاع المحتوى | Cardixn",
         description: "قاتل link-in-bio. كل منصاتك وصفقاتك التجارية وملفك الإعلامي في بطاقة رقمية فاخرة.",
         h1: "بطاقات رقمية للمؤثرين وصنّاع المحتوى",
         subtitle: "كل منصة. كل تعاون. كل رسالة — في بطاقة واحدة.",
-        intro: "كصانع محتوى، بطاقتك هي link-in-bio — لكن أفضل. Cardix يحزم كل منصة (Instagram وTikTok وYouTube وTwitch وX) وملفك الإعلامي وأسعار التعاون وجهة إدارتك في بطاقة فاخرة يحفظها المديرون والعلامات فعلاً.",
+        intro: "كصانع محتوى، بطاقتك هي link-in-bio — لكن أفضل. Cardixn يحزم كل منصة (Instagram وTikTok وYouTube وTwitch وX) وملفك الإعلامي وأسعار التعاون وجهة إدارتك في بطاقة فاخرة يحفظها المديرون والعلامات فعلاً.",
         sections: [
-          { h2: "تفوَّق على Linktree بتصميم فاخر", body: "Linktree عام. Cardix بطاقة مصممة بجماليتك ولمسات متحركة وتحليلات تُظهر أي علامة تنقر على قائمة أسعارك." },
+          { h2: "تفوَّق على Linktree بتصميم فاخر", body: "Linktree عام. Cardixn بطاقة مصممة بجماليتك ولمسات متحركة وتحليلات تُظهر أي علامة تنقر على قائمة أسعارك." },
           { h2: "مثالي لصفقات التعاون", body: "أضف ملفك الإعلامي PDF وإحصائيات التفاعل وديموغرافية الجمهور وقائمة الأسعار. يحفظ مديرو العلامات بطاقتك ويشاركونها مع فرقهم." },
           { h2: "مديرك وصحافتك وجمهورك", body: "بطاقة واحدة لكل شيء: جهة الإدارة، إيميل الصحافة، رابط الرسائل، Discord، Patreon، متجر البضائع." },
         ],
@@ -1861,66 +1861,66 @@ export const LANDING_PAGES: LandingPage[] = [
 
   // ==================== COMPETITOR COMPARISONS ====================
   {
-    slug: "vs-popl", category: "vs", keyword: "Cardix vs Popl",
+    slug: "vs-popl", category: "vs", keyword: "Cardixn vs Popl",
     copy: {
       en: {
-        title: "Cardix vs Popl — Which Digital Business Card Wins? | 2026 Comparison",
-        description: "Honest comparison of Cardix and Popl. Design, pricing, features, analytics. See why professionals are switching in 2026.",
-        h1: "Cardix vs Popl: which digital business card is better?",
-        subtitle: "A no-BS comparison from the team building Cardix.",
-        intro: "Popl pioneered NFC business cards and built a strong US-first product. Cardix takes a different approach: luxury Apple-grade design, native multilingual support for 20 languages, AI-powered features, and a generous free plan. Here's an honest side-by-side.",
+        title: "Cardixn vs Popl — Which Digital Business Card Wins? | 2026 Comparison",
+        description: "Honest comparison of Cardixn and Popl. Design, pricing, features, analytics. See why professionals are switching in 2026.",
+        h1: "Cardixn vs Popl: which digital business card is better?",
+        subtitle: "A no-BS comparison from the team building Cardixn.",
+        intro: "Popl pioneered NFC business cards and built a strong US-first product. Cardixn takes a different approach: luxury Apple-grade design, native multilingual support for 20 languages, AI-powered features, and a generous free plan. Here's an honest side-by-side.",
         sections: [
-          { h2: "Design and aesthetics", body: "Popl's design language is functional and startup-y. Cardix invests heavily in a luxury Apple/Stripe-inspired visual identity with 19+ premium templates, glassmorphism, and per-card accent colors that theme the entire viewing experience. If design matters to your brand, Cardix wins clearly." },
-          { h2: "Pricing and free plan", body: "Popl's free plan is limited and their paid tiers start higher. Cardix ships a genuinely generous free plan — unlimited cards, all templates, analytics — with paid tiers only for teams, NFC provisioning and advanced integrations." },
-          { h2: "Global reach and languages", body: "Popl is US-centric with English-first UX. Cardix is built multilingual from day one: 20 languages, RTL support for Arabic and Hebrew, localized SEO landing pages and per-language sitemaps. Perfect for global teams." },
-          { h2: "AI features", body: "Cardix ships AI bio generation, AI OCR for scanning paper cards, and AI-powered layout suggestions. Popl offers basic OCR only." },
+          { h2: "Design and aesthetics", body: "Popl's design language is functional and startup-y. Cardixn invests heavily in a luxury Apple/Stripe-inspired visual identity with 19+ premium templates, glassmorphism, and per-card accent colors that theme the entire viewing experience. If design matters to your brand, Cardixn wins clearly." },
+          { h2: "Pricing and free plan", body: "Popl's free plan is limited and their paid tiers start higher. Cardixn ships a genuinely generous free plan — unlimited cards, all templates, analytics — with paid tiers only for teams, NFC provisioning and advanced integrations." },
+          { h2: "Global reach and languages", body: "Popl is US-centric with English-first UX. Cardixn is built multilingual from day one: 20 languages, RTL support for Arabic and Hebrew, localized SEO landing pages and per-language sitemaps. Perfect for global teams." },
+          { h2: "AI features", body: "Cardixn ships AI bio generation, AI OCR for scanning paper cards, and AI-powered layout suggestions. Popl offers basic OCR only." },
         ],
         features: [
-          { title: "Design edge", desc: "Cardix wins on luxury visual language and template variety." },
-          { title: "Free forever", desc: "Cardix's free plan includes unlimited cards + analytics." },
-          { title: "20 languages", desc: "Cardix supports 20 languages natively with RTL." },
+          { title: "Design edge", desc: "Cardixn wins on luxury visual language and template variety." },
+          { title: "Free forever", desc: "Cardixn's free plan includes unlimited cards + analytics." },
+          { title: "20 languages", desc: "Cardixn supports 20 languages natively with RTL." },
           { title: "AI-native", desc: "Bio generation, OCR and layout AI built in." },
         ],
         faqs: enFaqCommon,
-        ctaTitle: "Try Cardix free", ctaSub: "Import your Popl profile in 30 seconds.", ctaButton: "Switch to Cardix",
+        ctaTitle: "Try Cardixn free", ctaSub: "Import your Popl profile in 30 seconds.", ctaButton: "Switch to Cardixn",
       },
       ar: {
-        title: "Cardix ضد Popl — أيّ بطاقة رقمية تفوز؟ | مقارنة 2026",
-        description: "مقارنة صادقة بين Cardix وPopl. التصميم والأسعار والميزات والتحليلات. اكتشف لماذا يتحول المحترفون في 2026.",
-        h1: "Cardix ضد Popl: أيّ بطاقة رقمية أفضل؟",
-        subtitle: "مقارنة صادقة من فريق Cardix.",
-        intro: "Popl رائد في بطاقات NFC وبنى منتجاً أمريكياً قوياً. Cardix يتبنى نهجاً مختلفاً: تصميم فاخر بمستوى Apple، دعم متعدد اللغات لـ 20 لغة، ميزات مدعومة بالذكاء الاصطناعي، وخطة مجانية سخية. إليك مقارنة صادقة جنباً إلى جنب.",
+        title: "Cardixn ضد Popl — أيّ بطاقة رقمية تفوز؟ | مقارنة 2026",
+        description: "مقارنة صادقة بين Cardixn وPopl. التصميم والأسعار والميزات والتحليلات. اكتشف لماذا يتحول المحترفون في 2026.",
+        h1: "Cardixn ضد Popl: أيّ بطاقة رقمية أفضل؟",
+        subtitle: "مقارنة صادقة من فريق Cardixn.",
+        intro: "Popl رائد في بطاقات NFC وبنى منتجاً أمريكياً قوياً. Cardixn يتبنى نهجاً مختلفاً: تصميم فاخر بمستوى Apple، دعم متعدد اللغات لـ 20 لغة، ميزات مدعومة بالذكاء الاصطناعي، وخطة مجانية سخية. إليك مقارنة صادقة جنباً إلى جنب.",
         sections: [
-          { h2: "التصميم والجمالية", body: "لغة تصميم Popl وظيفية وناشئة. Cardix يستثمر بقوة في هوية بصرية فاخرة مستوحاة من Apple/Stripe مع 19+ قالباً مميزاً، Glassmorphism، وألوان مميزة لكل بطاقة تلوّن تجربة العرض كاملة. إذا كان التصميم مهماً، Cardix يفوز بوضوح." },
-          { h2: "الأسعار والخطة المجانية", body: "خطة Popl المجانية محدودة وطبقاتها المدفوعة تبدأ أعلى. Cardix يقدم خطة مجانية سخية فعلاً — بطاقات غير محدودة وكل القوالب والتحليلات — مع خطط مدفوعة للفرق و NFC والتكاملات المتقدمة فقط." },
-          { h2: "الوصول العالمي واللغات", body: "Popl مركّز أمريكياً بواجهة إنجليزية أولاً. Cardix مبني متعدد اللغات من اليوم الأول: 20 لغة، دعم RTL للعربية والعبرية، صفحات SEO مترجمة، وSitemap لكل لغة." },
-          { h2: "ميزات الذكاء الاصطناعي", body: "Cardix يقدم توليد السيرة بالذكاء الاصطناعي، OCR لمسح البطاقات الورقية، واقتراحات تخطيط ذكية. Popl يقدم OCR أساسياً فقط." },
+          { h2: "التصميم والجمالية", body: "لغة تصميم Popl وظيفية وناشئة. Cardixn يستثمر بقوة في هوية بصرية فاخرة مستوحاة من Apple/Stripe مع 19+ قالباً مميزاً، Glassmorphism، وألوان مميزة لكل بطاقة تلوّن تجربة العرض كاملة. إذا كان التصميم مهماً، Cardixn يفوز بوضوح." },
+          { h2: "الأسعار والخطة المجانية", body: "خطة Popl المجانية محدودة وطبقاتها المدفوعة تبدأ أعلى. Cardixn يقدم خطة مجانية سخية فعلاً — بطاقات غير محدودة وكل القوالب والتحليلات — مع خطط مدفوعة للفرق و NFC والتكاملات المتقدمة فقط." },
+          { h2: "الوصول العالمي واللغات", body: "Popl مركّز أمريكياً بواجهة إنجليزية أولاً. Cardixn مبني متعدد اللغات من اليوم الأول: 20 لغة، دعم RTL للعربية والعبرية، صفحات SEO مترجمة، وSitemap لكل لغة." },
+          { h2: "ميزات الذكاء الاصطناعي", body: "Cardixn يقدم توليد السيرة بالذكاء الاصطناعي، OCR لمسح البطاقات الورقية، واقتراحات تخطيط ذكية. Popl يقدم OCR أساسياً فقط." },
         ],
         features: [
-          { title: "تفوق التصميم", desc: "Cardix يفوز بلغة بصرية فاخرة وتنوع قوالب." },
-          { title: "مجاني للأبد", desc: "خطة Cardix المجانية تشمل بطاقات غير محدودة + تحليلات." },
+          { title: "تفوق التصميم", desc: "Cardixn يفوز بلغة بصرية فاخرة وتنوع قوالب." },
+          { title: "مجاني للأبد", desc: "خطة Cardixn المجانية تشمل بطاقات غير محدودة + تحليلات." },
           { title: "20 لغة", desc: "دعم أصلي لـ 20 لغة مع RTL." },
           { title: "أصلي الذكاء الاصطناعي", desc: "توليد سيرة وOCR وذكاء تخطيط مدمج." },
         ],
         faqs: arFaqCommon,
-        ctaTitle: "جرّب Cardix مجاناً", ctaSub: "استورد ملف Popl في 30 ثانية.", ctaButton: "انتقل إلى Cardix",
+        ctaTitle: "جرّب Cardixn مجاناً", ctaSub: "استورد ملف Popl في 30 ثانية.", ctaButton: "انتقل إلى Cardixn",
       },
     },
   },
   {
-    slug: "vs-linq", category: "vs", keyword: "Cardix vs Linq",
+    slug: "vs-linq", category: "vs", keyword: "Cardixn vs Linq",
     copy: {
       en: {
-        title: "Cardix vs Linq — Which Digital Business Card is Best in 2026?",
-        description: "Cardix vs Linq: features, pricing, design, analytics compared. The honest 2026 comparison.",
-        h1: "Cardix vs Linq: an honest comparison",
+        title: "Cardixn vs Linq — Which Digital Business Card is Best in 2026?",
+        description: "Cardixn vs Linq: features, pricing, design, analytics compared. The honest 2026 comparison.",
+        h1: "Cardixn vs Linq: an honest comparison",
         subtitle: "Two solid products. One has luxury design, AI features and 20 languages.",
-        intro: "Linq is a well-known digital business card brand with strong NFC hardware. Cardix competes on design language, AI, multilingual reach and free-tier generosity. Here's how they stack up.",
+        intro: "Linq is a well-known digital business card brand with strong NFC hardware. Cardixn competes on design language, AI, multilingual reach and free-tier generosity. Here's how they stack up.",
         sections: [
-          { h2: "Design philosophy", body: "Linq offers clean, functional templates. Cardix invests in a luxury visual identity — 19+ templates, glassmorphism, per-card accent theming, animated 3D card previews. For anyone whose personal or company brand matters, Cardix delivers a more premium impression." },
-          { h2: "Pricing", body: "Linq's software subscription starts around $6/month per user with additional hardware costs. Cardix is free for unlimited cards, with paid tiers only for team management and NFC hardware." },
-          { h2: "Multilingual and global SEO", body: "Linq is English-first. Cardix ships in 20 languages with localized SEO pages and hreflang-perfect sitemaps — critical for Middle East, Latin America, and APAC markets." },
-          { h2: "AI features", body: "Cardix includes AI bio generation, OCR paper-card scanning and layout suggestions natively. Linq's AI features are more limited." },
+          { h2: "Design philosophy", body: "Linq offers clean, functional templates. Cardixn invests in a luxury visual identity — 19+ templates, glassmorphism, per-card accent theming, animated 3D card previews. For anyone whose personal or company brand matters, Cardixn delivers a more premium impression." },
+          { h2: "Pricing", body: "Linq's software subscription starts around $6/month per user with additional hardware costs. Cardixn is free for unlimited cards, with paid tiers only for team management and NFC hardware." },
+          { h2: "Multilingual and global SEO", body: "Linq is English-first. Cardixn ships in 20 languages with localized SEO pages and hreflang-perfect sitemaps — critical for Middle East, Latin America, and APAC markets." },
+          { h2: "AI features", body: "Cardixn includes AI bio generation, OCR paper-card scanning and layout suggestions natively. Linq's AI features are more limited." },
         ],
         features: [
           { title: "Luxury design", desc: "Apple-grade templates and animations." },
@@ -1929,19 +1929,19 @@ export const LANDING_PAGES: LandingPage[] = [
           { title: "AI throughout", desc: "Bio, OCR and layout AI." },
         ],
         faqs: enFaqCommon,
-        ctaTitle: "Try Cardix free", ctaSub: "Switch from Linq in under 2 minutes.", ctaButton: "Get started",
+        ctaTitle: "Try Cardixn free", ctaSub: "Switch from Linq in under 2 minutes.", ctaButton: "Get started",
       },
       ar: {
-        title: "Cardix ضد Linq — أيّ بطاقة رقمية أفضل في 2026؟",
-        description: "Cardix ضد Linq: الميزات والأسعار والتصميم والتحليلات. المقارنة الصادقة لعام 2026.",
-        h1: "Cardix ضد Linq: مقارنة صادقة",
+        title: "Cardixn ضد Linq — أيّ بطاقة رقمية أفضل في 2026؟",
+        description: "Cardixn ضد Linq: الميزات والأسعار والتصميم والتحليلات. المقارنة الصادقة لعام 2026.",
+        h1: "Cardixn ضد Linq: مقارنة صادقة",
         subtitle: "منتجان قويان. واحد يمتلك تصميماً فاخراً وذكاءً اصطناعياً و20 لغة.",
-        intro: "Linq علامة معروفة للبطاقات الرقمية مع أجهزة NFC قوية. Cardix ينافس على لغة التصميم والذكاء الاصطناعي والوصول متعدد اللغات وسخاء الخطة المجانية. إليك المقارنة.",
+        intro: "Linq علامة معروفة للبطاقات الرقمية مع أجهزة NFC قوية. Cardixn ينافس على لغة التصميم والذكاء الاصطناعي والوصول متعدد اللغات وسخاء الخطة المجانية. إليك المقارنة.",
         sections: [
-          { h2: "فلسفة التصميم", body: "Linq يقدم قوالب نظيفة ووظيفية. Cardix يستثمر في هوية بصرية فاخرة — 19+ قالباً وGlassmorphism وتلوين لكل بطاقة ومعاينات ثلاثية الأبعاد. لمن تهمّه هويته، Cardix يقدم انطباعاً أفخم." },
-          { h2: "الأسعار", body: "اشتراك Linq يبدأ حوالي 6 دولار شهرياً لكل مستخدم. Cardix مجاني لبطاقات غير محدودة، مع خطط مدفوعة لإدارة الفرق وأجهزة NFC فقط." },
-          { h2: "متعدد اللغات و SEO عالمي", body: "Linq إنجليزي أولاً. Cardix يشحن بـ 20 لغة مع صفحات SEO مترجمة وSitemap بـ hreflang — حاسم لأسواق الشرق الأوسط وأمريكا اللاتينية." },
-          { h2: "ميزات الذكاء الاصطناعي", body: "Cardix يشمل توليد سيرة وOCR ومسح البطاقات الورقية واقتراحات تخطيط أصلياً." },
+          { h2: "فلسفة التصميم", body: "Linq يقدم قوالب نظيفة ووظيفية. Cardixn يستثمر في هوية بصرية فاخرة — 19+ قالباً وGlassmorphism وتلوين لكل بطاقة ومعاينات ثلاثية الأبعاد. لمن تهمّه هويته، Cardixn يقدم انطباعاً أفخم." },
+          { h2: "الأسعار", body: "اشتراك Linq يبدأ حوالي 6 دولار شهرياً لكل مستخدم. Cardixn مجاني لبطاقات غير محدودة، مع خطط مدفوعة لإدارة الفرق وأجهزة NFC فقط." },
+          { h2: "متعدد اللغات و SEO عالمي", body: "Linq إنجليزي أولاً. Cardixn يشحن بـ 20 لغة مع صفحات SEO مترجمة وSitemap بـ hreflang — حاسم لأسواق الشرق الأوسط وأمريكا اللاتينية." },
+          { h2: "ميزات الذكاء الاصطناعي", body: "Cardixn يشمل توليد سيرة وOCR ومسح البطاقات الورقية واقتراحات تخطيط أصلياً." },
         ],
         features: [
           { title: "تصميم فاخر", desc: "قوالب ورسوم متحركة بمستوى Apple." },
@@ -1950,71 +1950,71 @@ export const LANDING_PAGES: LandingPage[] = [
           { title: "ذكاء اصطناعي شامل", desc: "سيرة وOCR وذكاء تخطيط." },
         ],
         faqs: arFaqCommon,
-        ctaTitle: "جرّب Cardix مجاناً", ctaSub: "انتقل من Linq في أقل من دقيقتين.", ctaButton: "ابدأ الآن",
+        ctaTitle: "جرّب Cardixn مجاناً", ctaSub: "انتقل من Linq في أقل من دقيقتين.", ctaButton: "ابدأ الآن",
       },
     },
   },
   {
-    slug: "vs-blinq", category: "vs", keyword: "Cardix vs Blinq",
+    slug: "vs-blinq", category: "vs", keyword: "Cardixn vs Blinq",
     copy: {
       en: {
-        title: "Cardix vs Blinq — Digital Business Card Comparison 2026",
-        description: "Cardix or Blinq? Feature-by-feature comparison of design, pricing, integrations, and AI. Choose the right card in 2026.",
-        h1: "Cardix vs Blinq: the 2026 comparison",
+        title: "Cardixn vs Blinq — Digital Business Card Comparison 2026",
+        description: "Cardixn or Blinq? Feature-by-feature comparison of design, pricing, integrations, and AI. Choose the right card in 2026.",
+        h1: "Cardixn vs Blinq: the 2026 comparison",
         subtitle: "Two Y-Combinator-caliber products compared honestly.",
-        intro: "Blinq is one of the most polished digital business card products on the market. Cardix competes with a stronger luxury design system, deeper multilingual support and more generous free tier. Here's a fair comparison.",
+        intro: "Blinq is one of the most polished digital business card products on the market. Cardixn competes with a stronger luxury design system, deeper multilingual support and more generous free tier. Here's a fair comparison.",
         sections: [
-          { h2: "Design and templates", body: "Blinq's templates are clean and modern. Cardix goes further with 19+ luxury templates, per-card accent theming (the whole viewing experience adopts your brand color), and animated 3D previews. Both are excellent — Cardix simply leans more premium." },
-          { h2: "Pricing", body: "Blinq's paid plans start around $6/month. Cardix's free tier includes unlimited cards, all templates, and analytics. You only pay for team management, NFC hardware or SSO." },
-          { h2: "Languages and global SEO", body: "Blinq is strong in English-speaking markets. Cardix ships with 20 languages, RTL, and localized SEO landing pages — a bigger advantage for global teams." },
-          { h2: "AI and OCR", body: "Cardix includes native AI bio generation, OCR paper-card scanning and layout suggestions. Blinq offers OCR; AI generation is more limited." },
+          { h2: "Design and templates", body: "Blinq's templates are clean and modern. Cardixn goes further with 19+ luxury templates, per-card accent theming (the whole viewing experience adopts your brand color), and animated 3D previews. Both are excellent — Cardixn simply leans more premium." },
+          { h2: "Pricing", body: "Blinq's paid plans start around $6/month. Cardixn's free tier includes unlimited cards, all templates, and analytics. You only pay for team management, NFC hardware or SSO." },
+          { h2: "Languages and global SEO", body: "Blinq is strong in English-speaking markets. Cardixn ships with 20 languages, RTL, and localized SEO landing pages — a bigger advantage for global teams." },
+          { h2: "AI and OCR", body: "Cardixn includes native AI bio generation, OCR paper-card scanning and layout suggestions. Blinq offers OCR; AI generation is more limited." },
         ],
         features: [
-          { title: "Luxury templates", desc: "Cardix wins on design polish and template variety." },
+          { title: "Luxury templates", desc: "Cardixn wins on design polish and template variety." },
           { title: "Unlimited free", desc: "Free for unlimited cards + analytics." },
           { title: "20 languages", desc: "Full RTL and localized SEO." },
           { title: "AI throughout", desc: "Bio, OCR, layout AI." },
         ],
         faqs: enFaqCommon,
-        ctaTitle: "Try Cardix free", ctaSub: "See the difference in 60 seconds.", ctaButton: "Get started",
+        ctaTitle: "Try Cardixn free", ctaSub: "See the difference in 60 seconds.", ctaButton: "Get started",
       },
       ar: {
-        title: "Cardix ضد Blinq — مقارنة البطاقات الرقمية 2026",
-        description: "Cardix أم Blinq؟ مقارنة ميزة بميزة للتصميم والأسعار والتكاملات والذكاء الاصطناعي.",
-        h1: "Cardix ضد Blinq: مقارنة 2026",
+        title: "Cardixn ضد Blinq — مقارنة البطاقات الرقمية 2026",
+        description: "Cardixn أم Blinq؟ مقارنة ميزة بميزة للتصميم والأسعار والتكاملات والذكاء الاصطناعي.",
+        h1: "Cardixn ضد Blinq: مقارنة 2026",
         subtitle: "منتجان بمستوى Y-Combinator مقارنة بصدق.",
-        intro: "Blinq من أكثر منتجات البطاقات الرقمية صقلاً في السوق. Cardix ينافس بنظام تصميم فاخر أقوى، دعم متعدد اللغات أعمق، وخطة مجانية أسخى. إليك مقارنة عادلة.",
+        intro: "Blinq من أكثر منتجات البطاقات الرقمية صقلاً في السوق. Cardixn ينافس بنظام تصميم فاخر أقوى، دعم متعدد اللغات أعمق، وخطة مجانية أسخى. إليك مقارنة عادلة.",
         sections: [
-          { h2: "التصميم والقوالب", body: "قوالب Blinq نظيفة وعصرية. Cardix يذهب أبعد بـ 19+ قالباً فاخراً وتلوين لكل بطاقة (تجربة العرض كاملة تتبنى لون علامتك) ومعاينات ثلاثية الأبعاد. كلاهما ممتاز — Cardix ببساطة أفخم." },
-          { h2: "الأسعار", body: "خطط Blinq المدفوعة تبدأ حوالي 6 دولار شهرياً. الطبقة المجانية لـ Cardix تشمل بطاقات غير محدودة وكل القوالب والتحليلات." },
-          { h2: "اللغات والSEO العالمي", body: "Blinq قوي في الأسواق الإنجليزية. Cardix يشحن بـ 20 لغة وRTL وصفحات SEO مترجمة — ميزة أكبر للفرق العالمية." },
-          { h2: "الذكاء الاصطناعي وOCR", body: "Cardix يشمل توليد سيرة وOCR واقتراحات تخطيط أصلياً. Blinq يقدم OCR؛ توليد الذكاء الاصطناعي أكثر محدودية." },
+          { h2: "التصميم والقوالب", body: "قوالب Blinq نظيفة وعصرية. Cardixn يذهب أبعد بـ 19+ قالباً فاخراً وتلوين لكل بطاقة (تجربة العرض كاملة تتبنى لون علامتك) ومعاينات ثلاثية الأبعاد. كلاهما ممتاز — Cardixn ببساطة أفخم." },
+          { h2: "الأسعار", body: "خطط Blinq المدفوعة تبدأ حوالي 6 دولار شهرياً. الطبقة المجانية لـ Cardixn تشمل بطاقات غير محدودة وكل القوالب والتحليلات." },
+          { h2: "اللغات والSEO العالمي", body: "Blinq قوي في الأسواق الإنجليزية. Cardixn يشحن بـ 20 لغة وRTL وصفحات SEO مترجمة — ميزة أكبر للفرق العالمية." },
+          { h2: "الذكاء الاصطناعي وOCR", body: "Cardixn يشمل توليد سيرة وOCR واقتراحات تخطيط أصلياً. Blinq يقدم OCR؛ توليد الذكاء الاصطناعي أكثر محدودية." },
         ],
         features: [
-          { title: "قوالب فاخرة", desc: "Cardix يفوز بصقل التصميم." },
+          { title: "قوالب فاخرة", desc: "Cardixn يفوز بصقل التصميم." },
           { title: "مجاني غير محدود", desc: "بطاقات غير محدودة + تحليلات." },
           { title: "20 لغة", desc: "RTL كامل وSEO محلي." },
           { title: "ذكاء اصطناعي شامل", desc: "سيرة وOCR وتخطيط." },
         ],
         faqs: arFaqCommon,
-        ctaTitle: "جرّب Cardix مجاناً", ctaSub: "شاهد الفرق في 60 ثانية.", ctaButton: "ابدأ",
+        ctaTitle: "جرّب Cardixn مجاناً", ctaSub: "شاهد الفرق في 60 ثانية.", ctaButton: "ابدأ",
       },
     },
   },
   {
-    slug: "vs-hihello", category: "vs", keyword: "Cardix vs HiHello",
+    slug: "vs-hihello", category: "vs", keyword: "Cardixn vs HiHello",
     copy: {
       en: {
-        title: "Cardix vs HiHello — Which is Better in 2026? | Detailed Comparison",
-        description: "Cardix or HiHello for your digital business card? Compare pricing, design, features, and international support side by side.",
-        h1: "Cardix vs HiHello: which wins in 2026?",
+        title: "Cardixn vs HiHello — Which is Better in 2026? | Detailed Comparison",
+        description: "Cardixn or HiHello for your digital business card? Compare pricing, design, features, and international support side by side.",
+        h1: "Cardixn vs HiHello: which wins in 2026?",
         subtitle: "A fair comparison of two respected digital-card products.",
-        intro: "HiHello has a strong US market presence and a clean product. Cardix differentiates with a more premium visual language, native support for 20 languages, and AI-first features. Here's how they compare.",
+        intro: "HiHello has a strong US market presence and a clean product. Cardixn differentiates with a more premium visual language, native support for 20 languages, and AI-first features. Here's how they compare.",
         sections: [
-          { h2: "Templates and design", body: "HiHello's designs are professional but conservative. Cardix leans luxury — glassmorphism, 3D card animations, per-card brand theming — targeting professionals who want their card to be an aesthetic statement." },
-          { h2: "Pricing", body: "HiHello's paid tiers start around $6/month. Cardix is free for unlimited cards and analytics; you pay only for team management, NFC hardware or SSO." },
-          { h2: "Global support", body: "HiHello is English-first. Cardix supports 20 languages including full RTL for Arabic and Hebrew, with localized SEO pages for each — critical for Middle Eastern and global markets." },
-          { h2: "AI features", body: "Cardix ships AI bio generation, OCR scanning of paper cards, and AI layout suggestions. HiHello has OCR but limited generative AI." },
+          { h2: "Templates and design", body: "HiHello's designs are professional but conservative. Cardixn leans luxury — glassmorphism, 3D card animations, per-card brand theming — targeting professionals who want their card to be an aesthetic statement." },
+          { h2: "Pricing", body: "HiHello's paid tiers start around $6/month. Cardixn is free for unlimited cards and analytics; you pay only for team management, NFC hardware or SSO." },
+          { h2: "Global support", body: "HiHello is English-first. Cardixn supports 20 languages including full RTL for Arabic and Hebrew, with localized SEO pages for each — critical for Middle Eastern and global markets." },
+          { h2: "AI features", body: "Cardixn ships AI bio generation, OCR scanning of paper cards, and AI layout suggestions. HiHello has OCR but limited generative AI." },
         ],
         features: [
           { title: "Design polish", desc: "Luxury glassmorphism and 3D card previews." },
@@ -2023,19 +2023,19 @@ export const LANDING_PAGES: LandingPage[] = [
           { title: "AI-first", desc: "Bio, OCR, and layout AI built in." },
         ],
         faqs: enFaqCommon,
-        ctaTitle: "Try Cardix free", ctaSub: "Import your HiHello profile in 30 seconds.", ctaButton: "Switch to Cardix",
+        ctaTitle: "Try Cardixn free", ctaSub: "Import your HiHello profile in 30 seconds.", ctaButton: "Switch to Cardixn",
       },
       ar: {
-        title: "Cardix ضد HiHello — أيهما أفضل في 2026؟ | مقارنة تفصيلية",
-        description: "Cardix أم HiHello لبطاقتك الرقمية؟ قارن الأسعار والتصميم والميزات والدعم الدولي جنباً إلى جنب.",
-        h1: "Cardix ضد HiHello: أيهما يفوز في 2026؟",
+        title: "Cardixn ضد HiHello — أيهما أفضل في 2026؟ | مقارنة تفصيلية",
+        description: "Cardixn أم HiHello لبطاقتك الرقمية؟ قارن الأسعار والتصميم والميزات والدعم الدولي جنباً إلى جنب.",
+        h1: "Cardixn ضد HiHello: أيهما يفوز في 2026؟",
         subtitle: "مقارنة عادلة لمنتجين بطاقات رقمية محترمين.",
-        intro: "HiHello له حضور قوي في السوق الأمريكي ومنتج نظيف. Cardix يتميز بلغة بصرية أفخم ودعم أصلي لـ 20 لغة وميزات الذكاء الاصطناعي أولاً. إليك المقارنة.",
+        intro: "HiHello له حضور قوي في السوق الأمريكي ومنتج نظيف. Cardixn يتميز بلغة بصرية أفخم ودعم أصلي لـ 20 لغة وميزات الذكاء الاصطناعي أولاً. إليك المقارنة.",
         sections: [
-          { h2: "القوالب والتصميم", body: "تصاميم HiHello احترافية لكن محافظة. Cardix يميل للفخامة — Glassmorphism ورسوم 3D وتلوين لكل علامة — يستهدف من يريد بطاقته بياناً جمالياً." },
-          { h2: "الأسعار", body: "طبقات HiHello المدفوعة تبدأ حوالي 6 دولار شهرياً. Cardix مجاني للبطاقات غير المحدودة والتحليلات." },
-          { h2: "الدعم العالمي", body: "HiHello إنجليزي أولاً. Cardix يدعم 20 لغة بما فيها RTL كامل للعربية والعبرية — حاسم للشرق الأوسط والأسواق العالمية." },
-          { h2: "ميزات الذكاء الاصطناعي", body: "Cardix يشحن توليد سيرة وOCR لمسح البطاقات الورقية واقتراحات تخطيط. HiHello له OCR لكن ذكاءه التوليدي محدود." },
+          { h2: "القوالب والتصميم", body: "تصاميم HiHello احترافية لكن محافظة. Cardixn يميل للفخامة — Glassmorphism ورسوم 3D وتلوين لكل علامة — يستهدف من يريد بطاقته بياناً جمالياً." },
+          { h2: "الأسعار", body: "طبقات HiHello المدفوعة تبدأ حوالي 6 دولار شهرياً. Cardixn مجاني للبطاقات غير المحدودة والتحليلات." },
+          { h2: "الدعم العالمي", body: "HiHello إنجليزي أولاً. Cardixn يدعم 20 لغة بما فيها RTL كامل للعربية والعبرية — حاسم للشرق الأوسط والأسواق العالمية." },
+          { h2: "ميزات الذكاء الاصطناعي", body: "Cardixn يشحن توليد سيرة وOCR لمسح البطاقات الورقية واقتراحات تخطيط. HiHello له OCR لكن ذكاءه التوليدي محدود." },
         ],
         features: [
           { title: "صقل التصميم", desc: "Glassmorphism فاخر ومعاينات 3D." },
@@ -2044,54 +2044,54 @@ export const LANDING_PAGES: LandingPage[] = [
           { title: "الذكاء الاصطناعي أولاً", desc: "سيرة وOCR وتخطيط مدمج." },
         ],
         faqs: arFaqCommon,
-        ctaTitle: "جرّب Cardix مجاناً", ctaSub: "استورد ملف HiHello في 30 ثانية.", ctaButton: "انتقل إلى Cardix",
+        ctaTitle: "جرّب Cardixn مجاناً", ctaSub: "استورد ملف HiHello في 30 ثانية.", ctaButton: "انتقل إلى Cardixn",
       },
     },
   },
   {
-    slug: "vs-mobilo", category: "vs", keyword: "Cardix vs Mobilo",
+    slug: "vs-mobilo", category: "vs", keyword: "Cardixn vs Mobilo",
     copy: {
       en: {
-        title: "Cardix vs Mobilo — Which Digital Business Card Wins? | 2026",
-        description: "Cardix vs Mobilo compared: NFC hardware, design, pricing, team features and integrations. Pick the right platform in 2026.",
-        h1: "Cardix vs Mobilo: full 2026 comparison",
-        subtitle: "Mobilo excels at enterprise NFC. Cardix excels at design, AI and multilingual reach.",
-        intro: "Mobilo is a strong enterprise-focused NFC business card platform with solid CRM integrations. Cardix competes with a stronger design system, deeper multilingual SEO, AI-first features, and a more generous free plan. Here's a fair breakdown.",
+        title: "Cardixn vs Mobilo — Which Digital Business Card Wins? | 2026",
+        description: "Cardixn vs Mobilo compared: NFC hardware, design, pricing, team features and integrations. Pick the right platform in 2026.",
+        h1: "Cardixn vs Mobilo: full 2026 comparison",
+        subtitle: "Mobilo excels at enterprise NFC. Cardixn excels at design, AI and multilingual reach.",
+        intro: "Mobilo is a strong enterprise-focused NFC business card platform with solid CRM integrations. Cardixn competes with a stronger design system, deeper multilingual SEO, AI-first features, and a more generous free plan. Here's a fair breakdown.",
         sections: [
-          { h2: "Design language", body: "Mobilo's templates are functional. Cardix invests in luxury — 19+ templates, glassmorphism, per-card accent theming, animated 3D card previews. For brand-conscious teams, Cardix delivers a premium impression that outclasses generic templates." },
-          { h2: "Pricing and free plan", body: "Mobilo focuses on enterprise pricing per seat. Cardix has a genuinely free tier with unlimited cards, all templates and analytics — with paid tiers for teams, NFC hardware, SSO and CRM integrations." },
-          { h2: "Global and multilingual", body: "Mobilo's UX is English-first. Cardix ships in 20 languages with RTL, localized landing pages, and per-language SEO sitemaps — a decisive advantage for global sales teams." },
-          { h2: "AI features", body: "Cardix ships AI bio generation, OCR paper-card scanning and layout suggestions. Mobilo focuses on integrations rather than generative AI." },
+          { h2: "Design language", body: "Mobilo's templates are functional. Cardixn invests in luxury — 19+ templates, glassmorphism, per-card accent theming, animated 3D card previews. For brand-conscious teams, Cardixn delivers a premium impression that outclasses generic templates." },
+          { h2: "Pricing and free plan", body: "Mobilo focuses on enterprise pricing per seat. Cardixn has a genuinely free tier with unlimited cards, all templates and analytics — with paid tiers for teams, NFC hardware, SSO and CRM integrations." },
+          { h2: "Global and multilingual", body: "Mobilo's UX is English-first. Cardixn ships in 20 languages with RTL, localized landing pages, and per-language SEO sitemaps — a decisive advantage for global sales teams." },
+          { h2: "AI features", body: "Cardixn ships AI bio generation, OCR paper-card scanning and layout suggestions. Mobilo focuses on integrations rather than generative AI." },
         ],
         features: [
-          { title: "Design polish", desc: "Cardix wins on visual identity and template range." },
+          { title: "Design polish", desc: "Cardixn wins on visual identity and template range." },
           { title: "Free forever", desc: "Unlimited cards + analytics on the free plan." },
           { title: "20 languages", desc: "Full RTL + localized SEO landing pages." },
           { title: "AI-first", desc: "Bio, OCR and layout AI built in." },
         ],
         faqs: enFaqCommon,
-        ctaTitle: "Try Cardix free", ctaSub: "Migrate from Mobilo in one afternoon.", ctaButton: "Get started",
+        ctaTitle: "Try Cardixn free", ctaSub: "Migrate from Mobilo in one afternoon.", ctaButton: "Get started",
       },
       ar: {
-        title: "Cardix ضد Mobilo — أيّ بطاقة رقمية تفوز؟ | 2026",
-        description: "مقارنة Cardix وMobilo: أجهزة NFC، التصميم، الأسعار، ميزات الفرق والتكاملات. اختر المنصة المناسبة في 2026.",
-        h1: "Cardix ضد Mobilo: مقارنة 2026 كاملة",
-        subtitle: "Mobilo يتفوق في NFC للمؤسسات. Cardix يتفوق في التصميم والذكاء الاصطناعي.",
-        intro: "Mobilo منصة قوية لبطاقات NFC مركّزة على المؤسسات مع تكاملات CRM جيدة. Cardix ينافس بنظام تصميم أقوى، وSEO متعدد اللغات أعمق، وميزات ذكاء اصطناعي أولاً، وخطة مجانية أسخى.",
+        title: "Cardixn ضد Mobilo — أيّ بطاقة رقمية تفوز؟ | 2026",
+        description: "مقارنة Cardixn وMobilo: أجهزة NFC، التصميم، الأسعار، ميزات الفرق والتكاملات. اختر المنصة المناسبة في 2026.",
+        h1: "Cardixn ضد Mobilo: مقارنة 2026 كاملة",
+        subtitle: "Mobilo يتفوق في NFC للمؤسسات. Cardixn يتفوق في التصميم والذكاء الاصطناعي.",
+        intro: "Mobilo منصة قوية لبطاقات NFC مركّزة على المؤسسات مع تكاملات CRM جيدة. Cardixn ينافس بنظام تصميم أقوى، وSEO متعدد اللغات أعمق، وميزات ذكاء اصطناعي أولاً، وخطة مجانية أسخى.",
         sections: [
-          { h2: "لغة التصميم", body: "قوالب Mobilo وظيفية. Cardix يستثمر في الفخامة — 19+ قالباً وGlassmorphism وتلوين لكل بطاقة ورسوم 3D. للفرق المهتمة بالهوية، Cardix يقدم انطباعاً فاخراً." },
-          { h2: "الأسعار والخطة المجانية", body: "Mobilo يركّز على أسعار المؤسسات لكل مقعد. Cardix له طبقة مجانية حقيقية ببطاقات غير محدودة وكل القوالب والتحليلات." },
-          { h2: "عالمي ومتعدد اللغات", body: "Mobilo إنجليزي أولاً. Cardix يشحن بـ 20 لغة مع RTL وصفحات هبوط مترجمة وSitemap لكل لغة — ميزة حاسمة لفرق المبيعات العالمية." },
-          { h2: "ميزات الذكاء الاصطناعي", body: "Cardix يشحن توليد سيرة وOCR واقتراحات تخطيط. Mobilo يركّز على التكاملات." },
+          { h2: "لغة التصميم", body: "قوالب Mobilo وظيفية. Cardixn يستثمر في الفخامة — 19+ قالباً وGlassmorphism وتلوين لكل بطاقة ورسوم 3D. للفرق المهتمة بالهوية، Cardixn يقدم انطباعاً فاخراً." },
+          { h2: "الأسعار والخطة المجانية", body: "Mobilo يركّز على أسعار المؤسسات لكل مقعد. Cardixn له طبقة مجانية حقيقية ببطاقات غير محدودة وكل القوالب والتحليلات." },
+          { h2: "عالمي ومتعدد اللغات", body: "Mobilo إنجليزي أولاً. Cardixn يشحن بـ 20 لغة مع RTL وصفحات هبوط مترجمة وSitemap لكل لغة — ميزة حاسمة لفرق المبيعات العالمية." },
+          { h2: "ميزات الذكاء الاصطناعي", body: "Cardixn يشحن توليد سيرة وOCR واقتراحات تخطيط. Mobilo يركّز على التكاملات." },
         ],
         features: [
-          { title: "صقل التصميم", desc: "Cardix يفوز بالهوية البصرية." },
+          { title: "صقل التصميم", desc: "Cardixn يفوز بالهوية البصرية." },
           { title: "مجاني للأبد", desc: "بطاقات غير محدودة + تحليلات." },
           { title: "20 لغة", desc: "RTL كامل + صفحات SEO محلية." },
           { title: "الذكاء الاصطناعي أولاً", desc: "سيرة وOCR وتخطيط." },
         ],
         faqs: arFaqCommon,
-        ctaTitle: "جرّب Cardix مجاناً", ctaSub: "انتقل من Mobilo في ظهيرة واحدة.", ctaButton: "ابدأ",
+        ctaTitle: "جرّب Cardixn مجاناً", ctaSub: "انتقل من Mobilo في ظهيرة واحدة.", ctaButton: "ابدأ",
       },
     },
   },
@@ -2101,15 +2101,15 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "digital-business-cards-uae", category: "region", keyword: "digital business cards UAE",
     copy: {
       en: {
-        title: "Digital Business Cards in the UAE — Made for Dubai & Abu Dhabi | Cardix",
+        title: "Digital Business Cards in the UAE — Made for Dubai & Abu Dhabi | Cardixn",
         description: "The #1 digital business card in the UAE. Trilingual Arabic/English/Urdu, Emirates ID-ready, and beloved by Dubai and Abu Dhabi professionals.",
         h1: "Digital business cards for the UAE",
         subtitle: "Made for Dubai, Abu Dhabi, Sharjah — every emirate, every language.",
-        intro: "The UAE runs on business. Between DIFC, ADGM, Dubai Media City, and JAFZA, thousands of professionals exchange contacts every day. Cardix is the digital business card built for the UAE market: trilingual by default, Emirates ID-compatible, and premium enough to match the city's standard.",
+        intro: "The UAE runs on business. Between DIFC, ADGM, Dubai Media City, and JAFZA, thousands of professionals exchange contacts every day. Cardixn is the digital business card built for the UAE market: trilingual by default, Emirates ID-compatible, and premium enough to match the city's standard.",
         sections: [
-          { h2: "Trilingual by default", body: "Every Cardix card supports Arabic (RTL), English, and Urdu on the same card. Perfect for Dubai's international workforce and Sharjah's family-business ecosystem." },
-          { h2: "Made for GITEX, Expo, and Arab Health", body: "Trade shows in Dubai attract 100,000+ visitors. Print your Cardix QR on your booth banner and capture every visitor's contact — hands-free." },
-          { h2: "For DIFC and ADGM professionals", body: "Lawyers, bankers, and consultants in DIFC and ADGM use Cardix to share DFSA-registered credentials, firm branding, and Emirates ID-verified profiles." },
+          { h2: "Trilingual by default", body: "Every Cardixn card supports Arabic (RTL), English, and Urdu on the same card. Perfect for Dubai's international workforce and Sharjah's family-business ecosystem." },
+          { h2: "Made for GITEX, Expo, and Arab Health", body: "Trade shows in Dubai attract 100,000+ visitors. Print your Cardixn QR on your booth banner and capture every visitor's contact — hands-free." },
+          { h2: "For DIFC and ADGM professionals", body: "Lawyers, bankers, and consultants in DIFC and ADGM use Cardixn to share DFSA-registered credentials, firm branding, and Emirates ID-verified profiles." },
         ],
         features: [
           { title: "Arabic-first RTL", desc: "Native RTL layouts designed by Arabic typographers." },
@@ -2121,15 +2121,15 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "The UAE's premium digital card", ctaSub: "Trusted by professionals from DIFC to Dubai Marina.", ctaButton: "Create my UAE card",
       },
       ar: {
-        title: "بطاقات أعمال رقمية في الإمارات — مصمّمة لدبي وأبوظبي | Cardix",
+        title: "بطاقات أعمال رقمية في الإمارات — مصمّمة لدبي وأبوظبي | Cardixn",
         description: "البطاقة الرقمية رقم 1 في الإمارات. ثلاثية اللغة عربي/إنجليزي/أردو، متوافقة مع الهوية الإماراتية، ومحبوبة من محترفي دبي وأبوظبي.",
         h1: "بطاقات أعمال رقمية للإمارات",
         subtitle: "مصمّمة لدبي وأبوظبي والشارقة — كل إمارة، كل لغة.",
-        intro: "الإمارات تعمل بالأعمال. بين DIFC وADGM ومدينة دبي للإعلام وجافزا، آلاف المحترفين يتبادلون جهات الاتصال يومياً. Cardix هي البطاقة الرقمية المصمّمة لسوق الإمارات: ثلاثية اللغة افتراضياً، متوافقة مع الهوية الإماراتية، وفاخرة لتليق بمستوى المدينة.",
+        intro: "الإمارات تعمل بالأعمال. بين DIFC وADGM ومدينة دبي للإعلام وجافزا، آلاف المحترفين يتبادلون جهات الاتصال يومياً. Cardixn هي البطاقة الرقمية المصمّمة لسوق الإمارات: ثلاثية اللغة افتراضياً، متوافقة مع الهوية الإماراتية، وفاخرة لتليق بمستوى المدينة.",
         sections: [
-          { h2: "ثلاثية اللغة افتراضياً", body: "كل بطاقة Cardix تدعم العربية (RTL) والإنجليزية والأردو في نفس البطاقة. مثالية للقوى العاملة الدولية في دبي." },
+          { h2: "ثلاثية اللغة افتراضياً", body: "كل بطاقة Cardixn تدعم العربية (RTL) والإنجليزية والأردو في نفس البطاقة. مثالية للقوى العاملة الدولية في دبي." },
           { h2: "مصمّمة لجيتكس وإكسبو والصحة العربي", body: "معارض دبي تجذب 100,000+ زائر. اطبع QR بطاقتك على لافتة جناحك والتقط جهات اتصال كل زائر — دون يدين." },
-          { h2: "لمحترفي DIFC وADGM", body: "المحامون والمصرفيون والاستشاريون في DIFC وADGM يستخدمون Cardix لمشاركة مؤهلات DFSA وهوية مكاتبهم." },
+          { h2: "لمحترفي DIFC وADGM", body: "المحامون والمصرفيون والاستشاريون في DIFC وADGM يستخدمون Cardixn لمشاركة مؤهلات DFSA وهوية مكاتبهم." },
         ],
         features: [
           { title: "عربي RTL أولاً", desc: "تصميمات RTL أصلية من طباعيين عرب." },
@@ -2146,15 +2146,15 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "digital-business-cards-saudi-arabia", category: "region", keyword: "digital business cards Saudi Arabia",
     copy: {
       en: {
-        title: "Digital Business Cards in Saudi Arabia | Cardix",
+        title: "Digital Business Cards in Saudi Arabia | Cardixn",
         description: "The digital business card for Saudi Arabia. Built for Riyadh, Jeddah, Khobar, LEAP conference and Vision 2030 professionals.",
         h1: "Digital business cards for Saudi Arabia",
         subtitle: "Vision 2030 ready. Arabic-first. Loved from Riyadh to Jeddah.",
-        intro: "Saudi Arabia is transforming — LEAP, NEOM, Vision 2030 — and its professional class is scaling globally. Cardix gives Saudi professionals a bilingual (Arabic-first) digital business card that projects Saudi excellence to international counterparts.",
+        intro: "Saudi Arabia is transforming — LEAP, NEOM, Vision 2030 — and its professional class is scaling globally. Cardixn gives Saudi professionals a bilingual (Arabic-first) digital business card that projects Saudi excellence to international counterparts.",
         sections: [
-          { h2: "Built for LEAP, Future Investment Initiative, and Biban", body: "Saudi's biggest events attract global investors. Share your Cardix via NFC at your LEAP booth and capture every VC and executive who visits." },
+          { h2: "Built for LEAP, Future Investment Initiative, and Biban", body: "Saudi's biggest events attract global investors. Share your Cardixn via NFC at your LEAP booth and capture every VC and executive who visits." },
           { h2: "Arabic-first design", body: "Cards default to Arabic RTL layouts with elegant Naskh typography, with one-tap English toggle for international meetings." },
-          { h2: "For Vision 2030 industries", body: "Whether you're in NEOM, Red Sea Global, PIF portfolio companies or the giga-projects, Cardix scales with your ambition." },
+          { h2: "For Vision 2030 industries", body: "Whether you're in NEOM, Red Sea Global, PIF portfolio companies or the giga-projects, Cardixn scales with your ambition." },
         ],
         features: [
           { title: "Arabic RTL native", desc: "Naskh-rendered Arabic that respects the language's beauty." },
@@ -2166,15 +2166,15 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "The card for Saudi's next chapter", ctaSub: "Vision 2030 professionals, meet your digital identity.", ctaButton: "Create my Saudi card",
       },
       ar: {
-        title: "بطاقات أعمال رقمية في السعودية | Cardix",
+        title: "بطاقات أعمال رقمية في السعودية | Cardixn",
         description: "البطاقة الرقمية للسعودية. مصمّمة للرياض وجدة والخبر ومؤتمر LEAP ومحترفي رؤية 2030.",
         h1: "بطاقات أعمال رقمية للسعودية",
         subtitle: "جاهزة لرؤية 2030. عربية أولاً. محبوبة من الرياض إلى جدة.",
-        intro: "السعودية تتحوّل — LEAP ونيوم ورؤية 2030 — وطبقتها المحترفة تتوسع عالمياً. Cardix تمنح المحترف السعودي بطاقة رقمية ثنائية اللغة (عربية أولاً) تعكس التميز السعودي للنظراء الدوليين.",
+        intro: "السعودية تتحوّل — LEAP ونيوم ورؤية 2030 — وطبقتها المحترفة تتوسع عالمياً. Cardixn تمنح المحترف السعودي بطاقة رقمية ثنائية اللغة (عربية أولاً) تعكس التميز السعودي للنظراء الدوليين.",
         sections: [
           { h2: "مصمّمة لـ LEAP وFII وبيبان", body: "أضخم فعاليات السعودية تجذب المستثمرين العالميين. شارك بطاقتك بـ NFC في جناح LEAP والتقط كل VC ومسؤول تنفيذي." },
           { h2: "تصميم عربي أولاً", body: "البطاقات افتراضياً بتخطيط عربي RTL بطباعة نسخ أنيقة، مع تبديل بلمسة للإنجليزية للاجتماعات الدولية." },
-          { h2: "لقطاعات رؤية 2030", body: "سواء كنت في نيوم أو البحر الأحمر أو شركات PIF أو المشاريع العملاقة، Cardix يتوسع مع طموحك." },
+          { h2: "لقطاعات رؤية 2030", body: "سواء كنت في نيوم أو البحر الأحمر أو شركات PIF أو المشاريع العملاقة، Cardixn يتوسع مع طموحك." },
         ],
         features: [
           { title: "عربية RTL أصلية", desc: "نسخ عربي يحترم جمال اللغة." },
@@ -2191,15 +2191,15 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "digital-business-cards-egypt", category: "region", keyword: "digital business cards Egypt",
     copy: {
       en: {
-        title: "Digital Business Cards in Egypt | Cardix",
+        title: "Digital Business Cards in Egypt | Cardixn",
         description: "The digital business card built for Egypt. Cairo, Alexandria, New Administrative Capital — bilingual, affordable, premium.",
         h1: "Digital business cards for Egypt",
         subtitle: "From Cairo to Alexandria — the modern Egyptian's business card.",
-        intro: "Egypt's professional class is growing fast — from Smart Village to the New Administrative Capital, from Cairo Festival City to Alexandria's tech corridor. Cardix delivers a premium, bilingual digital business card at Egyptian pricing.",
+        intro: "Egypt's professional class is growing fast — from Smart Village to the New Administrative Capital, from Cairo Festival City to Alexandria's tech corridor. Cardixn delivers a premium, bilingual digital business card at Egyptian pricing.",
         sections: [
           { h2: "Bilingual Egyptian Arabic + English", body: "Every card supports Arabic RTL and English on the same profile — perfect for Cairo's export-focused entrepreneurs and Alexandria's tourism professionals." },
-          { h2: "Made for Cairo ICT, RiseUp Summit, and Techne Summit", body: "Egypt's biggest business events see thousands of exchanges. Share your Cardix via QR and capture every VC and partner." },
-          { h2: "For freelancers and remote workers", body: "Egypt's massive freelance economy (Upwork, Toptal, Fiverr) uses Cardix as their portfolio-in-a-link — with USD earnings and Egyptian branding." },
+          { h2: "Made for Cairo ICT, RiseUp Summit, and Techne Summit", body: "Egypt's biggest business events see thousands of exchanges. Share your Cardixn via QR and capture every VC and partner." },
+          { h2: "For freelancers and remote workers", body: "Egypt's massive freelance economy (Upwork, Toptal, Fiverr) uses Cardixn as their portfolio-in-a-link — with USD earnings and Egyptian branding." },
         ],
         features: [
           { title: "EGP pricing", desc: "Local pricing in Egyptian pounds; billed via Fawry, Vodafone Cash, and Stripe." },
@@ -2211,15 +2211,15 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "The Egyptian professional's card", ctaSub: "Premium quality at local prices.", ctaButton: "Create my Egypt card",
       },
       ar: {
-        title: "بطاقات أعمال رقمية في مصر | Cardix",
+        title: "بطاقات أعمال رقمية في مصر | Cardixn",
         description: "البطاقة الرقمية المصمّمة لمصر. القاهرة والإسكندرية والعاصمة الإدارية — ثنائية اللغة وبأسعار مصرية.",
         h1: "بطاقات أعمال رقمية لمصر",
         subtitle: "من القاهرة إلى الإسكندرية — بطاقة المصري العصري.",
-        intro: "الطبقة المحترفة في مصر تنمو سريعاً — من القرية الذكية إلى العاصمة الإدارية، من كايرو فيستيفال سيتي إلى الممر التقني في الإسكندرية. Cardix تقدم بطاقة رقمية فاخرة ثنائية اللغة بأسعار مصرية.",
+        intro: "الطبقة المحترفة في مصر تنمو سريعاً — من القرية الذكية إلى العاصمة الإدارية، من كايرو فيستيفال سيتي إلى الممر التقني في الإسكندرية. Cardixn تقدم بطاقة رقمية فاخرة ثنائية اللغة بأسعار مصرية.",
         sections: [
           { h2: "عربي مصري + إنجليزي", body: "كل بطاقة تدعم العربية RTL والإنجليزية في نفس الملف — مثالية لرواد الأعمال المصريين المتجهين للتصدير." },
-          { h2: "مصمّمة لـ Cairo ICT وRiseUp Summit وTechne", body: "أضخم فعاليات مصر التجارية ترى آلاف التبادلات. شارك Cardix بـ QR والتقط كل VC وشريك." },
-          { h2: "للمستقلين وعاملي الريموت", body: "اقتصاد مصر الضخم للمستقلين (Upwork وToptal) يستخدم Cardix كمعرض في رابط — بأرباح دولارية." },
+          { h2: "مصمّمة لـ Cairo ICT وRiseUp Summit وTechne", body: "أضخم فعاليات مصر التجارية ترى آلاف التبادلات. شارك Cardixn بـ QR والتقط كل VC وشريك." },
+          { h2: "للمستقلين وعاملي الريموت", body: "اقتصاد مصر الضخم للمستقلين (Upwork وToptal) يستخدم Cardixn كمعرض في رابط — بأرباح دولارية." },
         ],
         features: [
           { title: "أسعار بالجنيه", desc: "أسعار محلية عبر فوري وVodafone Cash وStripe." },
@@ -2236,15 +2236,15 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "digital-business-cards-dubai", category: "region", keyword: "digital business cards Dubai",
     copy: {
       en: {
-        title: "Digital Business Cards in Dubai | Cardix",
+        title: "Digital Business Cards in Dubai | Cardixn",
         description: "Dubai's premium digital business card. Perfect for DIFC, Dubai Marina, Business Bay, and every Dubai professional.",
         h1: "The digital business card for Dubai",
         subtitle: "Downtown to DIFC — the card that matches Dubai's standard.",
-        intro: "Dubai runs at 200mph. Deals close in coffee shops, elevators, and Emirates lounges. Your business card should be as fast, as global, and as premium as the city itself. Cardix is Dubai's digital business card — trilingual, luxury-designed, and instantly shareable.",
+        intro: "Dubai runs at 200mph. Deals close in coffee shops, elevators, and Emirates lounges. Your business card should be as fast, as global, and as premium as the city itself. Cardixn is Dubai's digital business card — trilingual, luxury-designed, and instantly shareable.",
         sections: [
-          { h2: "For DIFC, DMCC, and JAFZA", body: "Whether you're a lawyer in DIFC, a trader in DMCC, or an entrepreneur in JAFZA, Cardix gives you a premium bilingual card that projects Dubai excellence." },
+          { h2: "For DIFC, DMCC, and JAFZA", body: "Whether you're a lawyer in DIFC, a trader in DMCC, or an entrepreneur in JAFZA, Cardixn gives you a premium bilingual card that projects Dubai excellence." },
           { h2: "Perfect for GITEX and Arabian Travel Market", body: "Dubai's mega-events attract 100,000+ visitors. Print your QR on your booth banner and capture every visitor's contact automatically." },
-          { h2: "Made for Dubai's international workforce", body: "Dubai's workforce speaks 100+ languages. Cardix supports 20 languages natively, with Arabic-English bilingual defaults." },
+          { h2: "Made for Dubai's international workforce", body: "Dubai's workforce speaks 100+ languages. Cardixn supports 20 languages natively, with Arabic-English bilingual defaults." },
         ],
         features: [
           { title: "Trilingual defaults", desc: "Arabic, English, and Urdu or Hindi on one card." },
@@ -2256,15 +2256,15 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "The card Dubai deserves", ctaSub: "Trusted from Downtown to Dubai Hills.", ctaButton: "Create my Dubai card",
       },
       ar: {
-        title: "بطاقات رقمية في دبي | Cardix",
+        title: "بطاقات رقمية في دبي | Cardixn",
         description: "البطاقة الرقمية الفاخرة لدبي. مثالية لـ DIFC ودبي مارينا وBusiness Bay وكل محترف في دبي.",
         h1: "البطاقة الرقمية لدبي",
         subtitle: "من داون تاون إلى DIFC — البطاقة التي تليق بمستوى دبي.",
-        intro: "دبي تعمل بسرعة 200 كم/س. الصفقات تُغلَق في المقاهي والمصاعد وصالات الإمارات. يجب أن تكون بطاقتك بنفس السرعة والعالمية والفخامة. Cardix هي بطاقة دبي الرقمية — ثلاثية اللغة، فاخرة التصميم، وقابلة للمشاركة فوراً.",
+        intro: "دبي تعمل بسرعة 200 كم/س. الصفقات تُغلَق في المقاهي والمصاعد وصالات الإمارات. يجب أن تكون بطاقتك بنفس السرعة والعالمية والفخامة. Cardixn هي بطاقة دبي الرقمية — ثلاثية اللغة، فاخرة التصميم، وقابلة للمشاركة فوراً.",
         sections: [
-          { h2: "لـ DIFC وDMCC وJAFZA", body: "سواء كنت محامياً في DIFC أو تاجراً في DMCC، Cardix يمنحك بطاقة فاخرة ثنائية اللغة تعكس تميز دبي." },
+          { h2: "لـ DIFC وDMCC وJAFZA", body: "سواء كنت محامياً في DIFC أو تاجراً في DMCC، Cardixn يمنحك بطاقة فاخرة ثنائية اللغة تعكس تميز دبي." },
           { h2: "مثالي لـ GITEX وArabian Travel Market", body: "فعاليات دبي الضخمة تجذب 100,000+ زائر. اطبع QR على جناحك والتقط كل زائر تلقائياً." },
-          { h2: "مصمّمة للقوى العاملة الدولية", body: "قوى دبي العاملة تتحدث 100+ لغة. Cardix يدعم 20 لغة أصلياً، مع افتراضي عربي-إنجليزي." },
+          { h2: "مصمّمة للقوى العاملة الدولية", body: "قوى دبي العاملة تتحدث 100+ لغة. Cardixn يدعم 20 لغة أصلياً، مع افتراضي عربي-إنجليزي." },
         ],
         features: [
           { title: "افتراضي ثلاثي اللغة", desc: "عربي وإنجليزي وأردو أو هندي في بطاقة." },
@@ -2281,14 +2281,14 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "digital-business-cards-riyadh", category: "region", keyword: "digital business cards Riyadh",
     copy: {
       en: {
-        title: "Digital Business Cards in Riyadh | Cardix",
+        title: "Digital Business Cards in Riyadh | Cardixn",
         description: "Riyadh's premium digital business card. Built for KAFD, Diriyah, and every Vision 2030 professional in the Saudi capital.",
         h1: "The digital business card for Riyadh",
-        subtitle: "KAFD to Diriyah — Riyadh's Vision 2030 professionals choose Cardix.",
-        intro: "Riyadh is the capital of Vision 2030 — home to PIF, giga-projects, and the region's fastest-growing professional class. Cardix delivers a premium Arabic-first digital business card that matches Riyadh's global ambition.",
+        subtitle: "KAFD to Diriyah — Riyadh's Vision 2030 professionals choose Cardixn.",
+        intro: "Riyadh is the capital of Vision 2030 — home to PIF, giga-projects, and the region's fastest-growing professional class. Cardixn delivers a premium Arabic-first digital business card that matches Riyadh's global ambition.",
         sections: [
-          { h2: "Built for LEAP and FII", body: "The world's biggest tech and investment events happen in Riyadh. Cardix helps you capture every VC, sovereign wealth executive, and international partner you meet." },
-          { h2: "For KAFD, Olaya, and Diriyah", body: "Whether you work at PIF, Aramco Digital, or a KAFD-based startup, Cardix gives you a card that reflects Riyadh's modern professional standard." },
+          { h2: "Built for LEAP and FII", body: "The world's biggest tech and investment events happen in Riyadh. Cardixn helps you capture every VC, sovereign wealth executive, and international partner you meet." },
+          { h2: "For KAFD, Olaya, and Diriyah", body: "Whether you work at PIF, Aramco Digital, or a KAFD-based startup, Cardixn gives you a card that reflects Riyadh's modern professional standard." },
           { h2: "Arabic-first, English-ready", body: "Cards default to elegant Arabic Naskh with one-tap English toggle for international meetings." },
         ],
         features: [
@@ -2301,14 +2301,14 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "The card for Riyadh's future", ctaSub: "Vision 2030 professionals, elevated.", ctaButton: "Create my Riyadh card",
       },
       ar: {
-        title: "بطاقات رقمية في الرياض | Cardix",
+        title: "بطاقات رقمية في الرياض | Cardixn",
         description: "البطاقة الرقمية الفاخرة للرياض. مصمّمة لـ KAFD والدرعية وكل محترفي رؤية 2030 في العاصمة السعودية.",
         h1: "البطاقة الرقمية للرياض",
-        subtitle: "من KAFD إلى الدرعية — محترفو رؤية 2030 يختارون Cardix.",
-        intro: "الرياض عاصمة رؤية 2030 — موطن PIF والمشاريع العملاقة وأسرع طبقات المحترفين نمواً. Cardix تقدم بطاقة رقمية فاخرة عربية أولاً تليق بطموح الرياض العالمي.",
+        subtitle: "من KAFD إلى الدرعية — محترفو رؤية 2030 يختارون Cardixn.",
+        intro: "الرياض عاصمة رؤية 2030 — موطن PIF والمشاريع العملاقة وأسرع طبقات المحترفين نمواً. Cardixn تقدم بطاقة رقمية فاخرة عربية أولاً تليق بطموح الرياض العالمي.",
         sections: [
-          { h2: "مصمّمة لـ LEAP وFII", body: "أضخم فعاليات التقنية والاستثمار في العالم تحدث في الرياض. Cardix يساعدك على التقاط كل VC وتنفيذي صندوق سيادي." },
-          { h2: "لـ KAFD والعليا والدرعية", body: "سواء كنت في PIF أو أرامكو الرقمية أو ناشئة في KAFD، Cardix يمنحك بطاقة تعكس مستوى الرياض المحترف." },
+          { h2: "مصمّمة لـ LEAP وFII", body: "أضخم فعاليات التقنية والاستثمار في العالم تحدث في الرياض. Cardixn يساعدك على التقاط كل VC وتنفيذي صندوق سيادي." },
+          { h2: "لـ KAFD والعليا والدرعية", body: "سواء كنت في PIF أو أرامكو الرقمية أو ناشئة في KAFD، Cardixn يمنحك بطاقة تعكس مستوى الرياض المحترف." },
           { h2: "عربي أولاً، جاهز للإنجليزية", body: "البطاقات افتراضياً بنسخ عربي أنيق مع تبديل بلمسة للإنجليزية." },
         ],
         features: [
@@ -2326,15 +2326,15 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "digital-business-cards-usa", category: "region", keyword: "digital business cards USA",
     copy: {
       en: {
-        title: "Digital Business Cards in the USA | Cardix",
+        title: "Digital Business Cards in the USA | Cardixn",
         description: "The digital business card trusted by American professionals. From New York to San Francisco, from realtors to founders.",
         h1: "Digital business cards for the USA",
         subtitle: "The card American professionals choose to network smarter.",
-        intro: "American professionals network at scale — from SXSW to CES, from Manhattan sales calls to Silicon Valley pitch meetings. Cardix gives you a premium digital business card with CRM integrations, team management, and analytics that show real pipeline ROI.",
+        intro: "American professionals network at scale — from SXSW to CES, from Manhattan sales calls to Silicon Valley pitch meetings. Cardixn gives you a premium digital business card with CRM integrations, team management, and analytics that show real pipeline ROI.",
         sections: [
-          { h2: "For every American profession", body: "Realtors, financial advisors, sales reps, doctors, lawyers, founders — Cardix has a template and workflow for every US industry, including compliance-ready cards for finance and healthcare." },
+          { h2: "For every American profession", body: "Realtors, financial advisors, sales reps, doctors, lawyers, founders — Cardixn has a template and workflow for every US industry, including compliance-ready cards for finance and healthcare." },
           { h2: "CRM-native", body: "Every scan syncs to Salesforce, HubSpot, Pipedrive, or Zoho with source attribution. Perfect for American sales teams tracking event ROI." },
-          { h2: "For SXSW, CES, Dreamforce and Web Summit", body: "Print your Cardix QR on your booth, badge, and swag. Capture every attendee automatically." },
+          { h2: "For SXSW, CES, Dreamforce and Web Summit", body: "Print your Cardixn QR on your booth, badge, and swag. Capture every attendee automatically." },
         ],
         features: [
           { title: "USD pricing", desc: "Simple US pricing with annual discounts." },
@@ -2343,16 +2343,16 @@ export const LANDING_PAGES: LandingPage[] = [
           { title: "SOC 2 + HIPAA-ready", desc: "Compliance for enterprise buyers." },
         ],
         faqs: enFaqCommon,
-        ctaTitle: "The card for American professionals", ctaSub: "From coast to coast, Cardix scales with your career.", ctaButton: "Get started",
+        ctaTitle: "The card for American professionals", ctaSub: "From coast to coast, Cardixn scales with your career.", ctaButton: "Get started",
       },
       ar: {
-        title: "بطاقات رقمية في الولايات المتحدة | Cardix",
+        title: "بطاقات رقمية في الولايات المتحدة | Cardixn",
         description: "البطاقة الرقمية الموثوقة من المحترفين الأمريكيين. من نيويورك إلى سان فرانسيسكو.",
         h1: "بطاقات رقمية للولايات المتحدة",
         subtitle: "البطاقة التي يختارها المحترف الأمريكي.",
-        intro: "المحترفون الأمريكيون يشبّكون على نطاق واسع — من SXSW إلى CES. Cardix يمنحك بطاقة رقمية فاخرة مع تكاملات CRM وإدارة فرق وتحليلات تُظهر عائد استثمار حقيقي.",
+        intro: "المحترفون الأمريكيون يشبّكون على نطاق واسع — من SXSW إلى CES. Cardixn يمنحك بطاقة رقمية فاخرة مع تكاملات CRM وإدارة فرق وتحليلات تُظهر عائد استثمار حقيقي.",
         sections: [
-          { h2: "لكل مهنة أمريكية", body: "وسطاء عقار ومستشارون ماليون ومندوبو مبيعات وأطباء ومحامون — Cardix له قالب لكل قطاع أمريكي." },
+          { h2: "لكل مهنة أمريكية", body: "وسطاء عقار ومستشارون ماليون ومندوبو مبيعات وأطباء ومحامون — Cardixn له قالب لكل قطاع أمريكي." },
           { h2: "أصلي CRM", body: "كل مسحة تُزامَن مع Salesforce أو HubSpot مع نسب المصدر." },
           { h2: "لـ SXSW وCES وDreamforce", body: "اطبع QR على جناحك وشارتك والتقط كل حاضر تلقائياً." },
         ],
@@ -2371,14 +2371,14 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "digital-business-cards-uk", category: "region", keyword: "digital business cards UK",
     copy: {
       en: {
-        title: "Digital Business Cards in the UK | Cardix",
+        title: "Digital Business Cards in the UK | Cardixn",
         description: "The digital business card for UK professionals. London, Manchester, Edinburgh — GDPR-compliant, sterling-priced, premium.",
         h1: "Digital business cards for the United Kingdom",
         subtitle: "From the City of London to Silicon Roundabout — British professionalism, digital.",
-        intro: "The UK's professional class deserves a business card that matches Savile Row tailoring: crafted, refined, quietly premium. Cardix delivers exactly that — with UK GDPR compliance, sterling pricing, and templates that project understated British excellence.",
+        intro: "The UK's professional class deserves a business card that matches Savile Row tailoring: crafted, refined, quietly premium. Cardixn delivers exactly that — with UK GDPR compliance, sterling pricing, and templates that project understated British excellence.",
         sections: [
-          { h2: "For the City of London and Canary Wharf", body: "Bankers, solicitors, and consultants in the City use Cardix to share FCA-regulated credentials, firm branding, and Chambers-rated profiles." },
-          { h2: "Made for London Tech Week, Web Summit, and Slush", body: "The UK's biggest business events attract global executives. Share your Cardix via QR and capture every meaningful contact." },
+          { h2: "For the City of London and Canary Wharf", body: "Bankers, solicitors, and consultants in the City use Cardixn to share FCA-regulated credentials, firm branding, and Chambers-rated profiles." },
+          { h2: "Made for London Tech Week, Web Summit, and Slush", body: "The UK's biggest business events attract global executives. Share your Cardixn via QR and capture every meaningful contact." },
           { h2: "GDPR and UK Data Protection Act compliant", body: "Data hosted in the EU/UK region with full GDPR and DPA 2018 compliance. Right to be forgotten, DPA export, and consent management built in." },
         ],
         features: [
@@ -2391,13 +2391,13 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "British professionalism, digitised", ctaSub: "The card the UK's finest choose.", ctaButton: "Create my UK card",
       },
       ar: {
-        title: "بطاقات رقمية في المملكة المتحدة | Cardix",
+        title: "بطاقات رقمية في المملكة المتحدة | Cardixn",
         description: "البطاقة الرقمية للمحترفين البريطانيين. لندن ومانشستر وأدنبرة — متوافقة مع GDPR.",
         h1: "بطاقات رقمية للمملكة المتحدة",
         subtitle: "من City of London إلى Silicon Roundabout — الاحتراف البريطاني، رقمياً.",
-        intro: "طبقة المملكة المتحدة المحترفة تستحق بطاقة تليق بخياطة Savile Row: مصنوعة ومصقولة وفاخرة بهدوء. Cardix تقدم ذلك بالضبط.",
+        intro: "طبقة المملكة المتحدة المحترفة تستحق بطاقة تليق بخياطة Savile Row: مصنوعة ومصقولة وفاخرة بهدوء. Cardixn تقدم ذلك بالضبط.",
         sections: [
-          { h2: "لـ City of London وCanary Wharf", body: "المصرفيون والمحامون والاستشاريون في City يستخدمون Cardix لمشاركة مؤهلاتهم." },
+          { h2: "لـ City of London وCanary Wharf", body: "المصرفيون والمحامون والاستشاريون في City يستخدمون Cardixn لمشاركة مؤهلاتهم." },
           { h2: "مصمّمة لـ London Tech Week", body: "أضخم فعاليات المملكة تجذب تنفيذيين عالميين." },
           { h2: "متوافق مع GDPR وDPA 2018", body: "البيانات مستضافة في المنطقة الأوروبية/البريطانية." },
         ],
@@ -2416,14 +2416,14 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "digital-business-cards-london", category: "region", keyword: "digital business cards London",
     copy: {
       en: {
-        title: "Digital Business Cards in London | Cardix",
+        title: "Digital Business Cards in London | Cardixn",
         description: "London's premium digital business card. From the City to Shoreditch, from Mayfair to Canary Wharf — the card London chooses.",
         h1: "The digital business card for London",
         subtitle: "The City. Shoreditch. Mayfair. — London's professionals go digital.",
-        intro: "London is the world's business capital — and its professionals expect world-class tools. Cardix is London's digital business card: refined design, GDPR-native, and premium enough to hand out at a Michelin lunch in Mayfair or a pitch at Silicon Roundabout.",
+        intro: "London is the world's business capital — and its professionals expect world-class tools. Cardixn is London's digital business card: refined design, GDPR-native, and premium enough to hand out at a Michelin lunch in Mayfair or a pitch at Silicon Roundabout.",
         sections: [
-          { h2: "For the City, Canary Wharf, and Shoreditch", body: "Whether you're a solicitor at a Magic Circle firm, a fund manager in Mayfair, or a founder in Shoreditch, Cardix gives you a card London respects." },
-          { h2: "Made for London Tech Week and Fintech Week", body: "London's biggest events attract global capital. Share your Cardix and capture every meaningful contact." },
+          { h2: "For the City, Canary Wharf, and Shoreditch", body: "Whether you're a solicitor at a Magic Circle firm, a fund manager in Mayfair, or a founder in Shoreditch, Cardixn gives you a card London respects." },
+          { h2: "Made for London Tech Week and Fintech Week", body: "London's biggest events attract global capital. Share your Cardixn and capture every meaningful contact." },
           { h2: "Understated British luxury", body: "Templates crafted for those who value Savile Row over Silicon Valley aesthetics." },
         ],
         features: [
@@ -2436,13 +2436,13 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "London's card, elevated", ctaSub: "Refined enough for Mayfair. Fast enough for Shoreditch.", ctaButton: "Create my London card",
       },
       ar: {
-        title: "بطاقات رقمية في لندن | Cardix",
+        title: "بطاقات رقمية في لندن | Cardixn",
         description: "بطاقة لندن الرقمية الفاخرة. من City إلى Shoreditch، من Mayfair إلى Canary Wharf.",
         h1: "البطاقة الرقمية للندن",
         subtitle: "The City وShoreditch وMayfair — محترفو لندن يتحولون رقمياً.",
-        intro: "لندن عاصمة الأعمال العالمية — ومحترفوها يتوقعون أدوات عالمية. Cardix هي بطاقة لندن الرقمية: تصميم مصقول، GDPR أصلي، وفاخرة بما يليق بغداء في Mayfair.",
+        intro: "لندن عاصمة الأعمال العالمية — ومحترفوها يتوقعون أدوات عالمية. Cardixn هي بطاقة لندن الرقمية: تصميم مصقول، GDPR أصلي، وفاخرة بما يليق بغداء في Mayfair.",
         sections: [
-          { h2: "لـ City وCanary Wharf وShoreditch", body: "سواء كنت محامياً في Magic Circle أو مدير صندوق في Mayfair، Cardix يمنحك بطاقة تحترمها لندن." },
+          { h2: "لـ City وCanary Wharf وShoreditch", body: "سواء كنت محامياً في Magic Circle أو مدير صندوق في Mayfair، Cardixn يمنحك بطاقة تحترمها لندن." },
           { h2: "مصمّمة لـ London Tech Week", body: "أضخم فعاليات لندن تجذب رأس المال العالمي." },
           { h2: "فخامة بريطانية هادئة", body: "قوالب لمن يفضل Savile Row." },
         ],
@@ -2463,15 +2463,15 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "free-digital-business-card", category: "keyword", keyword: "free digital business card",
     copy: {
       en: {
-        title: "Free Digital Business Card — Unlimited Cards Forever | Cardix",
+        title: "Free Digital Business Card — Unlimited Cards Forever | Cardixn",
         description: "Create a free digital business card in 60 seconds. Unlimited cards, all templates, analytics — no credit card required.",
         h1: "The free digital business card, done right",
         subtitle: "Free forever. Unlimited cards. All templates. Zero credit card.",
-        intro: "Most 'free' digital business card apps lock templates, cap cards at 1, or gate analytics behind $6/month. Cardix does the opposite: unlimited cards, every luxury template, full analytics — permanently free for individuals. You only pay if you want team management, NFC hardware, or SSO.",
+        intro: "Most 'free' digital business card apps lock templates, cap cards at 1, or gate analytics behind $6/month. Cardixn does the opposite: unlimited cards, every luxury template, full analytics — permanently free for individuals. You only pay if you want team management, NFC hardware, or SSO.",
         sections: [
           { h2: "What's actually free forever", body: "Unlimited digital business cards. All 19+ luxury templates. QR codes in high-resolution PNG. Analytics on saves, scans, and clicks. AI bio generation. Multilingual support. vCard export. Contact vault. Yes — all free." },
           { h2: "What's paid (and why)", body: "Team management (bulk provisioning, SSO, central branding), NFC hardware (physical cards and stickers), CRM integrations, and white-label deployments. If you're an individual, you'll likely never need any of these." },
-          { h2: "Why we can afford this", body: "Cardix is built lean. Our free tier is our marketing — happy free users tell their teams, and their teams become paid customers. Everyone wins." },
+          { h2: "Why we can afford this", body: "Cardixn is built lean. Our free tier is our marketing — happy free users tell their teams, and their teams become paid customers. Everyone wins." },
         ],
         features: [
           { title: "Unlimited cards", desc: "Create as many cards as you want, forever." },
@@ -2483,15 +2483,15 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Get your free digital business card", ctaSub: "60 seconds. Zero cost. Zero limits.", ctaButton: "Create free card",
       },
       ar: {
-        title: "بطاقة أعمال رقمية مجانية — بطاقات غير محدودة للأبد | Cardix",
+        title: "بطاقة أعمال رقمية مجانية — بطاقات غير محدودة للأبد | Cardixn",
         description: "أنشئ بطاقة رقمية مجانية في 60 ثانية. بطاقات غير محدودة وكل القوالب وتحليلات — بلا بطاقة ائتمان.",
         h1: "البطاقة الرقمية المجانية، بشكل صحيح",
         subtitle: "مجانية للأبد. بطاقات غير محدودة. كل القوالب. صفر بطاقة ائتمان.",
-        intro: "معظم التطبيقات 'المجانية' تقفل القوالب أو تحدد ببطاقة واحدة أو تحجب التحليلات خلف 6 دولار شهرياً. Cardix يفعل العكس: بطاقات غير محدودة وكل قالب فاخر وتحليلات كاملة — مجانية دائمة للأفراد.",
+        intro: "معظم التطبيقات 'المجانية' تقفل القوالب أو تحدد ببطاقة واحدة أو تحجب التحليلات خلف 6 دولار شهرياً. Cardixn يفعل العكس: بطاقات غير محدودة وكل قالب فاخر وتحليلات كاملة — مجانية دائمة للأفراد.",
         sections: [
           { h2: "ما هو مجاني فعلاً للأبد", body: "بطاقات رقمية غير محدودة. كل قالب من 19+ قالباً. رموز QR بدقة عالية. تحليلات الحفظ والمسحات. توليد سيرة بالذكاء الاصطناعي. دعم متعدد اللغات. تصدير vCard. — كل ذلك مجاني." },
           { h2: "ما هو مدفوع (ولماذا)", body: "إدارة الفرق والـ SSO وأجهزة NFC وتكاملات CRM. إذا كنت فرداً، لن تحتاجها غالباً." },
-          { h2: "لماذا نستطيع تحمل هذا", body: "Cardix مبني بكفاءة. طبقتنا المجانية هي تسويقنا — المستخدمون السعداء يخبرون فرقهم، وفرقهم تصبح عملاء مدفوعين." },
+          { h2: "لماذا نستطيع تحمل هذا", body: "Cardixn مبني بكفاءة. طبقتنا المجانية هي تسويقنا — المستخدمون السعداء يخبرون فرقهم، وفرقهم تصبح عملاء مدفوعين." },
         ],
         features: [
           { title: "بطاقات غير محدودة", desc: "أنشئ كما تشاء، للأبد." },
@@ -2508,14 +2508,14 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "contactless-business-card", category: "keyword", keyword: "contactless business card",
     copy: {
       en: {
-        title: "Contactless Business Card — Tap, Scan, Share | Cardix",
+        title: "Contactless Business Card — Tap, Scan, Share | Cardixn",
         description: "The contactless business card for the modern professional. NFC tap, QR scan, or link share — hygiene-first, always up-to-date.",
         h1: "The contactless business card",
         subtitle: "Tap to share. Scan to save. Zero touch, zero paper.",
-        intro: "Post-pandemic, professionals expect contactless everything — payments, doors, business cards. Cardix delivers a true contactless card via NFC tap, QR scan, or shareable link. No handshakes required, no paper exchanged, no germs shared.",
+        intro: "Post-pandemic, professionals expect contactless everything — payments, doors, business cards. Cardixn delivers a true contactless card via NFC tap, QR scan, or shareable link. No handshakes required, no paper exchanged, no germs shared.",
         sections: [
           { h2: "How contactless sharing works", body: "Tap your NFC card or phone on the recipient's phone — their default browser opens your card instantly. Or they scan your QR code. Or you send the link via WhatsApp. Zero physical contact required." },
-          { h2: "Perfect for healthcare, hospitality, and events", body: "Doctors, hoteliers, and event organizers use Cardix to eliminate paper exchange while looking premium. Contactless isn't just hygienic — it's a signal that you're a modern operator." },
+          { h2: "Perfect for healthcare, hospitality, and events", body: "Doctors, hoteliers, and event organizers use Cardixn to eliminate paper exchange while looking premium. Contactless isn't just hygienic — it's a signal that you're a modern operator." },
           { h2: "Always up-to-date", body: "Unlike paper cards, your contactless card updates instantly. Change your phone number once, and every contact you've ever shared with sees the update automatically." },
         ],
         features: [
@@ -2528,14 +2528,14 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Go contactless today", ctaSub: "The modern way to network — hygienic and premium.", ctaButton: "Create my contactless card",
       },
       ar: {
-        title: "بطاقة أعمال بدون تلامس — امسح، شارك | Cardix",
+        title: "بطاقة أعمال بدون تلامس — امسح، شارك | Cardixn",
         description: "البطاقة بدون تلامس للمحترف الحديث. NFC أو QR أو رابط — نظافة أولاً ومحدَّثة دائماً.",
         h1: "البطاقة بدون تلامس",
         subtitle: "لمسة للمشاركة. مسحة للحفظ. صفر تلامس، صفر ورق.",
-        intro: "بعد الجائحة، يتوقع المحترفون كل شيء بدون تلامس — الدفعات والأبواب والبطاقات. Cardix يقدم بطاقة بدون تلامس عبر NFC أو QR أو رابط. بلا مصافحة، بلا ورق، بلا جراثيم.",
+        intro: "بعد الجائحة، يتوقع المحترفون كل شيء بدون تلامس — الدفعات والأبواب والبطاقات. Cardixn يقدم بطاقة بدون تلامس عبر NFC أو QR أو رابط. بلا مصافحة، بلا ورق، بلا جراثيم.",
         sections: [
           { h2: "كيف تعمل المشاركة بدون تلامس", body: "المس بطاقة NFC على هاتف المستلم — يفتح متصفحه بطاقتك فوراً. أو يمسح QR. أو أرسل الرابط بواتساب." },
-          { h2: "مثالي للصحة والضيافة والفعاليات", body: "الأطباء والفندقيون ومنظمو الفعاليات يستخدمون Cardix لإلغاء تبادل الورق مع مظهر فاخر." },
+          { h2: "مثالي للصحة والضيافة والفعاليات", body: "الأطباء والفندقيون ومنظمو الفعاليات يستخدمون Cardixn لإلغاء تبادل الورق مع مظهر فاخر." },
           { h2: "محدَّثة دائماً", body: "على عكس الورقية، بطاقتك بدون تلامس تُحدَّث فوراً." },
         ],
         features: [
@@ -2553,31 +2553,31 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "apple-wallet-business-card", category: "keyword", keyword: "Apple Wallet business card",
     copy: {
       en: {
-        title: "Apple Wallet Business Card — Add Your Card to iPhone | Cardix",
+        title: "Apple Wallet Business Card — Add Your Card to iPhone | Cardixn",
         description: "Save your digital business card to Apple Wallet. One-tap share, always with you, works even offline. iPhone-native and beautiful.",
         h1: "Your business card, in Apple Wallet",
-        subtitle: "Add your Cardix card to Apple Wallet — one tap to share, always available.",
-        intro: "Apple Wallet is where iPhone users keep the essentials — payment cards, boarding passes, membership cards. Now your business card belongs there too. Cardix lets you generate an Apple Wallet pass in one tap, so your card is always ready to share, even offline.",
+        subtitle: "Add your Cardixn card to Apple Wallet — one tap to share, always available.",
+        intro: "Apple Wallet is where iPhone users keep the essentials — payment cards, boarding passes, membership cards. Now your business card belongs there too. Cardixn lets you generate an Apple Wallet pass in one tap, so your card is always ready to share, even offline.",
         sections: [
           { h2: "Why Apple Wallet?", body: "Wallet passes are always on your lock screen when relevant. You don't need to open an app — just double-click your side button and share. It's the fastest way to hand out a card on iPhone." },
           { h2: "Works offline", body: "Once added to Wallet, your card works even without internet. Perfect for airplane networking, subway meetings, or conference basements with terrible wifi." },
-          { h2: "Updates automatically", body: "When you update your card in Cardix, your Apple Wallet pass updates automatically via push notification. No re-downloading, no stale info." },
+          { h2: "Updates automatically", body: "When you update your card in Cardixn, your Apple Wallet pass updates automatically via push notification. No re-downloading, no stale info." },
         ],
         features: [
-          { title: "One-tap add to Wallet", desc: "Generate an Apple Wallet pass from your Cardix card." },
+          { title: "One-tap add to Wallet", desc: "Generate an Apple Wallet pass from your Cardixn card." },
           { title: "Works offline", desc: "Share your card without internet." },
-          { title: "Auto-updating", desc: "Wallet passes stay in sync with your Cardix profile." },
+          { title: "Auto-updating", desc: "Wallet passes stay in sync with your Cardixn profile." },
           { title: "Beautiful design", desc: "Your card looks native in Apple Wallet." },
         ],
         faqs: enFaqCommon,
         ctaTitle: "Add your card to Apple Wallet", ctaSub: "The iPhone-native business card experience.", ctaButton: "Create my Wallet card",
       },
       ar: {
-        title: "بطاقة أعمال Apple Wallet — أضف بطاقتك للآيفون | Cardix",
+        title: "بطاقة أعمال Apple Wallet — أضف بطاقتك للآيفون | Cardixn",
         description: "احفظ بطاقتك الرقمية في Apple Wallet. مشاركة بلمسة، معك دائماً، تعمل بلا إنترنت.",
         h1: "بطاقتك في Apple Wallet",
-        subtitle: "أضف بطاقة Cardix إلى Apple Wallet — لمسة للمشاركة، متاحة دائماً.",
-        intro: "Apple Wallet هي حيث يحتفظ مستخدمو iPhone بالأساسيات. الآن بطاقتك تنتمي هناك أيضاً. Cardix يتيح توليد pass لـ Apple Wallet بلمسة، فبطاقتك جاهزة للمشاركة دائماً حتى بلا إنترنت.",
+        subtitle: "أضف بطاقة Cardixn إلى Apple Wallet — لمسة للمشاركة، متاحة دائماً.",
+        intro: "Apple Wallet هي حيث يحتفظ مستخدمو iPhone بالأساسيات. الآن بطاقتك تنتمي هناك أيضاً. Cardixn يتيح توليد pass لـ Apple Wallet بلمسة، فبطاقتك جاهزة للمشاركة دائماً حتى بلا إنترنت.",
         sections: [
           { h2: "لماذا Apple Wallet؟", body: "Wallet passes تظهر على شاشة القفل عند الحاجة. لا تحتاج فتح تطبيق — انقر الزر الجانبي مرتين وشارك." },
           { h2: "تعمل بلا إنترنت", body: "بعد إضافتها للـ Wallet، تعمل بطاقتك حتى بلا إنترنت." },
@@ -2598,31 +2598,31 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "google-wallet-business-card", category: "keyword", keyword: "Google Wallet business card",
     copy: {
       en: {
-        title: "Google Wallet Business Card — Add to Android | Cardix",
+        title: "Google Wallet Business Card — Add to Android | Cardixn",
         description: "Save your digital business card to Google Wallet on Android. One-tap share, offline-ready, and always up-to-date.",
         h1: "Your business card, in Google Wallet",
-        subtitle: "Add your Cardix card to Google Wallet — Android-native, always ready.",
-        intro: "Google Wallet is the Android-native home for cards, passes, and IDs. Cardix generates a Google Wallet pass from your card in one tap, so your business card is always in your quick-share drawer — even offline.",
+        subtitle: "Add your Cardixn card to Google Wallet — Android-native, always ready.",
+        intro: "Google Wallet is the Android-native home for cards, passes, and IDs. Cardixn generates a Google Wallet pass from your card in one tap, so your business card is always in your quick-share drawer — even offline.",
         sections: [
           { h2: "Why Google Wallet?", body: "Wallet passes are one tap away from any Android home screen. No app open required. Share your card at conferences, meetings, or coffee shops in seconds." },
           { h2: "Works offline", body: "Once added, your Wallet pass works without internet. Perfect for flights, subways, or venues with weak connectivity." },
-          { h2: "Auto-updates", body: "Update your card in Cardix, and your Google Wallet pass syncs automatically. No re-downloading." },
+          { h2: "Auto-updates", body: "Update your card in Cardixn, and your Google Wallet pass syncs automatically. No re-downloading." },
         ],
         features: [
           { title: "Android-native", desc: "Built for the Google Wallet experience." },
           { title: "Offline-ready", desc: "Share without an internet connection." },
           { title: "Push updates", desc: "Wallet passes stay in sync." },
-          { title: "Beautiful pass design", desc: "Matches your Cardix card branding." },
+          { title: "Beautiful pass design", desc: "Matches your Cardixn card branding." },
         ],
         faqs: enFaqCommon,
         ctaTitle: "Add to Google Wallet", ctaSub: "The Android-native business card.", ctaButton: "Create my Wallet card",
       },
       ar: {
-        title: "بطاقة أعمال Google Wallet — أضف للأندرويد | Cardix",
+        title: "بطاقة أعمال Google Wallet — أضف للأندرويد | Cardixn",
         description: "احفظ بطاقتك الرقمية في Google Wallet على أندرويد. مشاركة بلمسة، تعمل بلا إنترنت.",
         h1: "بطاقتك في Google Wallet",
-        subtitle: "أضف بطاقة Cardix إلى Google Wallet — أصلية للأندرويد، جاهزة دائماً.",
-        intro: "Google Wallet هي الموطن الأصلي للبطاقات على أندرويد. Cardix يولّد pass لـ Google Wallet من بطاقتك بلمسة.",
+        subtitle: "أضف بطاقة Cardixn إلى Google Wallet — أصلية للأندرويد، جاهزة دائماً.",
+        intro: "Google Wallet هي الموطن الأصلي للبطاقات على أندرويد. Cardixn يولّد pass لـ Google Wallet من بطاقتك بلمسة.",
         sections: [
           { h2: "لماذا Google Wallet؟", body: "Wallet passes على بعد لمسة من أي شاشة أندرويد. شارك بطاقتك في ثوانٍ." },
           { h2: "تعمل بلا إنترنت", body: "بعد إضافتها، تعمل بلا اتصال." },
@@ -2643,15 +2643,15 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "vcard-generator", category: "keyword", keyword: "vCard generator",
     copy: {
       en: {
-        title: "Free vCard Generator — Create .vcf Files in Seconds | Cardix",
+        title: "Free vCard Generator — Create .vcf Files in Seconds | Cardixn",
         description: "Generate a free vCard (.vcf) file for your contact info. Universal compatibility with iPhone, Android, Outlook, and every contact app.",
         h1: "The modern vCard generator",
         subtitle: "Create a vCard (.vcf) that works on every phone and every email client.",
-        intro: "A vCard (.vcf) is the universal contact file format. Every phone, every email client, and every CRM reads vCards. Cardix generates a beautiful, universal vCard from your Cardix profile — plus a shareable link and QR code, all in one.",
+        intro: "A vCard (.vcf) is the universal contact file format. Every phone, every email client, and every CRM reads vCards. Cardixn generates a beautiful, universal vCard from your Cardixn profile — plus a shareable link and QR code, all in one.",
         sections: [
-          { h2: "vCard + shareable link + QR", body: "Instead of just a .vcf file, Cardix gives you a full digital business card AND generates a compatible vCard for one-tap saving on any phone." },
+          { h2: "vCard + shareable link + QR", body: "Instead of just a .vcf file, Cardixn gives you a full digital business card AND generates a compatible vCard for one-tap saving on any phone." },
           { h2: "Works everywhere", body: "iPhone, Android, Outlook, Gmail, Apple Contacts, Google Contacts, HubSpot, Salesforce — every modern platform reads vCards natively." },
-          { h2: "Always up-to-date", body: "Update your Cardix profile once and the vCard generated for every save also updates. No stale contact files in your recipients' phones." },
+          { h2: "Always up-to-date", body: "Update your Cardixn profile once and the vCard generated for every save also updates. No stale contact files in your recipients' phones." },
         ],
         features: [
           { title: "Universal .vcf", desc: "Compatible with every phone and CRM globally." },
@@ -2663,13 +2663,13 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Generate your vCard now", ctaSub: "Free, universal, and always up-to-date.", ctaButton: "Create my vCard",
       },
       ar: {
-        title: "مولّد vCard مجاني — أنشئ ملفات .vcf في ثوانٍ | Cardix",
+        title: "مولّد vCard مجاني — أنشئ ملفات .vcf في ثوانٍ | Cardixn",
         description: "ولّد vCard مجاني لجهة اتصالك. توافق عالمي مع iPhone وAndroid وOutlook.",
         h1: "مولّد vCard العصري",
         subtitle: "أنشئ vCard (.vcf) يعمل على كل هاتف وكل عميل بريد.",
-        intro: "vCard (.vcf) صيغة ملف الاتصال العالمية. كل هاتف وعميل بريد وCRM يقرأها. Cardix يولّد vCard جميلاً من ملفك — مع رابط قابل للمشاركة وQR في واحد.",
+        intro: "vCard (.vcf) صيغة ملف الاتصال العالمية. كل هاتف وعميل بريد وCRM يقرأها. Cardixn يولّد vCard جميلاً من ملفك — مع رابط قابل للمشاركة وQR في واحد.",
         sections: [
-          { h2: "vCard + رابط + QR", body: "بدل ملف .vcf فقط، Cardix يمنحك بطاقة رقمية كاملة و يولّد vCard متوافق للحفظ بلمسة." },
+          { h2: "vCard + رابط + QR", body: "بدل ملف .vcf فقط، Cardixn يمنحك بطاقة رقمية كاملة و يولّد vCard متوافق للحفظ بلمسة." },
           { h2: "يعمل في كل مكان", body: "iPhone وAndroid وOutlook وGmail وApple Contacts وGoogle Contacts وHubSpot — كل منصة عصرية." },
           { h2: "محدَّث دائماً", body: "حدّث ملفك مرة وvCard المولَّد لكل حفظ يُحدَّث أيضاً." },
         ],
@@ -2688,14 +2688,14 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "best-digital-business-card-app-2026", category: "keyword", keyword: "best digital business card app 2026",
     copy: {
       en: {
-        title: "Best Digital Business Card App of 2026 | Cardix",
+        title: "Best Digital Business Card App of 2026 | Cardixn",
         description: "The best digital business card app of 2026 — luxury design, AI features, 20 languages, and a truly free tier. See why professionals switched.",
         h1: "The best digital business card app of 2026",
         subtitle: "Luxury design. AI-native. Multilingual. Free forever.",
-        intro: "The digital business card space is crowded in 2026 — but only a few apps deserve the 'best' label. Cardix wins on four axes: luxury Apple-grade design, AI-native features, 20-language global reach, and a genuinely free tier. Here's why professionals in 120+ countries switched to Cardix this year.",
+        intro: "The digital business card space is crowded in 2026 — but only a few apps deserve the 'best' label. Cardixn wins on four axes: luxury Apple-grade design, AI-native features, 20-language global reach, and a genuinely free tier. Here's why professionals in 120+ countries switched to Cardixn this year.",
         sections: [
-          { h2: "Why Cardix wins on design", body: "Most digital card apps look like startup MVPs. Cardix invests in Apple/Stripe-quality visual identity — 19+ luxury templates, glassmorphism, animated 3D card previews, and per-card accent theming that turns the entire experience premium." },
-          { h2: "AI-native features", body: "Cardix ships AI bio generation (write a professional bio in one click), OCR paper-card scanning (turn any paper card into a digital contact), and AI layout suggestions. Competitors offer basic OCR at best." },
+          { h2: "Why Cardixn wins on design", body: "Most digital card apps look like startup MVPs. Cardixn invests in Apple/Stripe-quality visual identity — 19+ luxury templates, glassmorphism, animated 3D card previews, and per-card accent theming that turns the entire experience premium." },
+          { h2: "AI-native features", body: "Cardixn ships AI bio generation (write a professional bio in one click), OCR paper-card scanning (turn any paper card into a digital contact), and AI layout suggestions. Competitors offer basic OCR at best." },
           { h2: "Global from day one", body: "20 languages natively supported with full RTL for Arabic and Hebrew. Localized SEO landing pages for every language. Perfect for global teams and international professionals." },
           { h2: "Free means free", body: "Unlimited cards, all templates, full analytics — permanently free. Paid plans exist for teams, NFC hardware, and SSO. If you're an individual, you'll never hit a paywall." },
         ],
@@ -2706,17 +2706,17 @@ export const LANDING_PAGES: LandingPage[] = [
           { title: "Free forever", desc: "No paywall for individuals, ever." },
         ],
         faqs: enFaqCommon,
-        ctaTitle: "Try the #1 app of 2026", ctaSub: "Join 100,000+ professionals who chose Cardix.", ctaButton: "Get started free",
+        ctaTitle: "Try the #1 app of 2026", ctaSub: "Join 100,000+ professionals who chose Cardixn.", ctaButton: "Get started free",
       },
       ar: {
-        title: "أفضل تطبيق بطاقات رقمية 2026 | Cardix",
+        title: "أفضل تطبيق بطاقات رقمية 2026 | Cardixn",
         description: "أفضل تطبيق بطاقات رقمية في 2026 — تصميم فاخر وذكاء اصطناعي و20 لغة وطبقة مجانية حقيقية.",
         h1: "أفضل تطبيق بطاقات رقمية 2026",
         subtitle: "تصميم فاخر. أصلي بالذكاء الاصطناعي. متعدد اللغات. مجاني للأبد.",
-        intro: "سوق البطاقات الرقمية مزدحم في 2026 — لكن قلّة تستحق لقب 'الأفضل'. Cardix يفوز على أربعة محاور: تصميم فاخر بمستوى Apple، ميزات ذكاء اصطناعي أصلية، وصول لـ 20 لغة، وطبقة مجانية حقيقية.",
+        intro: "سوق البطاقات الرقمية مزدحم في 2026 — لكن قلّة تستحق لقب 'الأفضل'. Cardixn يفوز على أربعة محاور: تصميم فاخر بمستوى Apple، ميزات ذكاء اصطناعي أصلية، وصول لـ 20 لغة، وطبقة مجانية حقيقية.",
         sections: [
-          { h2: "لماذا يفوز Cardix بالتصميم", body: "معظم التطبيقات تبدو كنماذج ناشئة. Cardix يستثمر في هوية بصرية بمستوى Apple — 19+ قالباً فاخراً وGlassmorphism ومعاينات 3D." },
-          { h2: "ميزات ذكاء اصطناعي أصلية", body: "Cardix يشحن توليد سيرة بالذكاء الاصطناعي، OCR للبطاقات الورقية، واقتراحات تخطيط." },
+          { h2: "لماذا يفوز Cardixn بالتصميم", body: "معظم التطبيقات تبدو كنماذج ناشئة. Cardixn يستثمر في هوية بصرية بمستوى Apple — 19+ قالباً فاخراً وGlassmorphism ومعاينات 3D." },
+          { h2: "ميزات ذكاء اصطناعي أصلية", body: "Cardixn يشحن توليد سيرة بالذكاء الاصطناعي، OCR للبطاقات الورقية، واقتراحات تخطيط." },
           { h2: "عالمي من اليوم الأول", body: "20 لغة أصلية مع RTL كامل. صفحات SEO مترجمة لكل لغة." },
           { h2: "المجاني يعني مجاني", body: "بطاقات غير محدودة وكل القوالب وتحليلات كاملة — مجاناً دائماً." },
         ],
@@ -2727,7 +2727,7 @@ export const LANDING_PAGES: LandingPage[] = [
           { title: "مجاني للأبد", desc: "بلا حاجز دفع للأفراد." },
         ],
         faqs: arFaqCommon,
-        ctaTitle: "جرّب تطبيق 2026 الأول", ctaSub: "انضم لـ 100,000+ محترف اختاروا Cardix.", ctaButton: "ابدأ مجاناً",
+        ctaTitle: "جرّب تطبيق 2026 الأول", ctaSub: "انضم لـ 100,000+ محترف اختاروا Cardixn.", ctaButton: "ابدأ مجاناً",
       },
     },
   },
@@ -2735,11 +2735,11 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "how-to-make-digital-business-card", category: "keyword", keyword: "how to make a digital business card",
     copy: {
       en: {
-        title: "How to Make a Digital Business Card in 60 Seconds | Cardix",
+        title: "How to Make a Digital Business Card in 60 Seconds | Cardixn",
         description: "Step-by-step guide to creating a digital business card. Free, no design skills needed. Share via QR, NFC, or link in one tap.",
         h1: "How to make a digital business card in 60 seconds",
         subtitle: "No design skills. No credit card. Just a beautiful card in a minute.",
-        intro: "Making a digital business card used to require design tools, a website, and hours of tweaking. With Cardix, you go from zero to a shareable premium card in 60 seconds. Here's the step-by-step.",
+        intro: "Making a digital business card used to require design tools, a website, and hours of tweaking. With Cardixn, you go from zero to a shareable premium card in 60 seconds. Here's the step-by-step.",
         sections: [
           { h2: "Step 1 — Sign up (10 seconds)", body: "Create a free account with Google or email. No credit card needed. You're taken straight to the card builder." },
           { h2: "Step 2 — Pick a template and colour (20 seconds)", body: "Choose from 19+ luxury templates. Pick an accent colour (or paste a hex code to match your brand). Your card is themed instantly." },
@@ -2756,11 +2756,11 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Make your card now", ctaSub: "60 seconds to a premium digital business card.", ctaButton: "Start creating",
       },
       ar: {
-        title: "كيف تنشئ بطاقة أعمال رقمية في 60 ثانية | Cardix",
+        title: "كيف تنشئ بطاقة أعمال رقمية في 60 ثانية | Cardixn",
         description: "دليل خطوة بخطوة لإنشاء بطاقة رقمية. مجاني بلا مهارات تصميم. شارك بـ QR أو NFC أو رابط بلمسة.",
         h1: "كيف تنشئ بطاقة رقمية في 60 ثانية",
         subtitle: "بلا مهارات تصميم. بلا بطاقة ائتمان. فقط بطاقة جميلة في دقيقة.",
-        intro: "إنشاء بطاقة رقمية كان يتطلب أدوات تصميم وموقع وساعات تعديل. مع Cardix، تنتقل من الصفر إلى بطاقة فاخرة قابلة للمشاركة في 60 ثانية.",
+        intro: "إنشاء بطاقة رقمية كان يتطلب أدوات تصميم وموقع وساعات تعديل. مع Cardixn، تنتقل من الصفر إلى بطاقة فاخرة قابلة للمشاركة في 60 ثانية.",
         sections: [
           { h2: "الخطوة 1 — سجّل (10 ثوانٍ)", body: "أنشئ حساباً مجانياً بـ Google أو إيميل. بلا بطاقة ائتمان." },
           { h2: "الخطوة 2 — اختر قالباً ولوناً (20 ثانية)", body: "اختر من 19+ قالباً فاخراً. اختر لوناً مميزاً (أو الصق hex ليطابق علامتك)." },
@@ -2784,13 +2784,13 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "qr-code-generator", category: "tool", keyword: "QR code generator",
     copy: {
       en: {
-        title: "Free QR Code Generator — Unlimited High-Res QR Codes | Cardix",
+        title: "Free QR Code Generator — Unlimited High-Res QR Codes | Cardixn",
         description: "Generate unlimited QR codes for free. High-resolution PNG, SVG export, custom colors. Perfect for business cards, menus, and events.",
         h1: "The premium free QR code generator",
         subtitle: "Unlimited QR codes. High-res exports. No watermark. No sign-up required.",
-        intro: "Most QR code generators lock resolution, add watermarks, or force you to pay for SVG. Cardix's QR generator is free, unlimited, and gives you 4K PNG plus vector SVG on every export — perfect for print, packaging, or business cards.",
+        intro: "Most QR code generators lock resolution, add watermarks, or force you to pay for SVG. Cardixn's QR generator is free, unlimited, and gives you 4K PNG plus vector SVG on every export — perfect for print, packaging, or business cards.",
         sections: [
-          { h2: "What makes ours different", body: "Every Cardix QR is high error-correction (survives up to 30% damage), exportable as 4K PNG or scalable SVG, and lets you set custom colors that match your brand. No watermark, no attribution required." },
+          { h2: "What makes ours different", body: "Every Cardixn QR is high error-correction (survives up to 30% damage), exportable as 4K PNG or scalable SVG, and lets you set custom colors that match your brand. No watermark, no attribution required." },
           { h2: "Dynamic QR codes (upgrade)", body: "For businesses, upgrade to dynamic QR codes — you can change the destination URL without re-printing the QR. Perfect for menus, event schedules, or campaigns that evolve." },
           { h2: "Track every scan", body: "Dynamic QRs include analytics: total scans, unique visitors, geographic breakdown, and device types. Know exactly how your print campaigns perform." },
         ],
@@ -2804,13 +2804,13 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Generate your QR now", ctaSub: "Unlimited high-res QR codes, free forever.", ctaButton: "Generate QR",
       },
       ar: {
-        title: "مولّد QR مجاني — رموز QR غير محدودة بدقة عالية | Cardix",
+        title: "مولّد QR مجاني — رموز QR غير محدودة بدقة عالية | Cardixn",
         description: "ولّد رموز QR غير محدودة مجاناً. PNG بدقة 4K وSVG بألوان مخصصة. مثالي للبطاقات والقوائم والفعاليات.",
         h1: "مولّد QR الفاخر المجاني",
         subtitle: "رموز QR غير محدودة. تصدير بدقة عالية. بلا علامة مائية. بلا تسجيل.",
-        intro: "معظم مولدات QR تقفل الدقة أو تضيف علامة مائية. مولّد Cardix مجاني وغير محدود ويمنحك PNG بدقة 4K وSVG فيكتور — مثالي للطباعة والتغليف والبطاقات.",
+        intro: "معظم مولدات QR تقفل الدقة أو تضيف علامة مائية. مولّد Cardixn مجاني وغير محدود ويمنحك PNG بدقة 4K وSVG فيكتور — مثالي للطباعة والتغليف والبطاقات.",
         sections: [
-          { h2: "ما يميّزنا", body: "كل QR من Cardix بتصحيح خطأ عالٍ (يتحمل 30% تلف)، قابل للتصدير كـ 4K PNG أو SVG، ويسمح بألوان مخصصة تطابق علامتك. بلا علامة مائية." },
+          { h2: "ما يميّزنا", body: "كل QR من Cardixn بتصحيح خطأ عالٍ (يتحمل 30% تلف)، قابل للتصدير كـ 4K PNG أو SVG، ويسمح بألوان مخصصة تطابق علامتك. بلا علامة مائية." },
           { h2: "رموز QR ديناميكية (ترقية)", body: "للشركات، ترقّى لرموز ديناميكية — يمكنك تغيير الرابط دون إعادة طباعة. مثالي للقوائم والفعاليات." },
           { h2: "تتبَّع كل مسحة", body: "الديناميكية تشمل تحليلات: مجموع المسحات وزوار فريدون وتوزيع جغرافي وأنواع أجهزة." },
         ],
@@ -2829,14 +2829,14 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "vcard-qr-code-generator", category: "tool", keyword: "vCard QR code generator",
     copy: {
       en: {
-        title: "Free vCard QR Code Generator | Cardix",
+        title: "Free vCard QR Code Generator | Cardixn",
         description: "Generate a QR code that saves your contact info to any phone in one scan. Free, high-res, and always up-to-date.",
         h1: "vCard QR code generator",
         subtitle: "One QR. One scan. Full contact saved to any phone.",
-        intro: "A vCard QR code is a QR that, when scanned, instantly saves your name, phone, email, and title to the scanner's phone. Cardix generates a high-res vCard QR for free — plus a shareable link and full digital card in the same flow.",
+        intro: "A vCard QR code is a QR that, when scanned, instantly saves your name, phone, email, and title to the scanner's phone. Cardixn generates a high-res vCard QR for free — plus a shareable link and full digital card in the same flow.",
         sections: [
           { h2: "Why a vCard QR beats a plain QR", body: "A plain QR opens a URL. A vCard QR saves your entire contact to the phone in one tap — no website, no typing. Perfect for business cards, badges, and email signatures." },
-          { h2: "Always up-to-date (Cardix advantage)", body: "Static vCard QRs get stale — change your phone number and every printed QR is outdated. Cardix's vCard QRs point to your live profile, so updates propagate everywhere instantly." },
+          { h2: "Always up-to-date (Cardixn advantage)", body: "Static vCard QRs get stale — change your phone number and every printed QR is outdated. Cardixn's vCard QRs point to your live profile, so updates propagate everywhere instantly." },
           { h2: "Print-ready", body: "Export as 4K PNG or scalable SVG for business cards, name badges, packaging, or storefront windows." },
         ],
         features: [
@@ -2849,14 +2849,14 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Generate your vCard QR", ctaSub: "Free, high-res, always up-to-date.", ctaButton: "Generate vCard QR",
       },
       ar: {
-        title: "مولّد رمز QR لـ vCard مجاني | Cardix",
+        title: "مولّد رمز QR لـ vCard مجاني | Cardixn",
         description: "ولّد رمز QR يحفظ جهة اتصالك في أي هاتف بمسحة واحدة. مجاني وبدقة عالية ومحدَّث دائماً.",
         h1: "مولّد رمز QR لـ vCard",
         subtitle: "QR واحد. مسحة واحدة. جهة اتصال كاملة في أي هاتف.",
-        intro: "رمز QR لـ vCard هو QR يحفظ عند مسحه اسمك وهاتفك وإيميلك ومسمّاك مباشرة في الهاتف. Cardix يولّد vCard QR بدقة عالية مجاناً — مع رابط قابل للمشاركة وبطاقة رقمية كاملة.",
+        intro: "رمز QR لـ vCard هو QR يحفظ عند مسحه اسمك وهاتفك وإيميلك ومسمّاك مباشرة في الهاتف. Cardixn يولّد vCard QR بدقة عالية مجاناً — مع رابط قابل للمشاركة وبطاقة رقمية كاملة.",
         sections: [
           { h2: "لماذا vCard QR أفضل من QR عادي", body: "QR عادي يفتح رابط. vCard QR يحفظ جهة الاتصال الكاملة بلمسة — بلا موقع، بلا كتابة." },
-          { h2: "محدَّث دائماً (ميزة Cardix)", body: "vCard QR ثابت يصبح قديماً — غيّر رقمك وكل QR مطبوع يصبح متجاوز. Cardix يشير لملفك الحي." },
+          { h2: "محدَّث دائماً (ميزة Cardixn)", body: "vCard QR ثابت يصبح قديماً — غيّر رقمك وكل QR مطبوع يصبح متجاوز. Cardixn يشير لملفك الحي." },
           { h2: "جاهز للطباعة", body: "تصدير كـ 4K PNG أو SVG للبطاقات والشارات والتغليف." },
         ],
         features: [
@@ -2874,15 +2874,15 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "wifi-qr-code-generator", category: "tool", keyword: "WiFi QR code generator",
     copy: {
       en: {
-        title: "Free WiFi QR Code Generator | Cardix",
+        title: "Free WiFi QR Code Generator | Cardixn",
         description: "Generate a QR code that connects guests to your WiFi automatically. Free, works on iPhone and Android, no app needed.",
         h1: "WiFi QR code generator",
         subtitle: "Guests scan. Guests connect. Zero password typing.",
-        intro: "Tired of reciting your WiFi password? Generate a WiFi QR with Cardix — guests scan it and connect automatically. No app required, works natively on iPhone and Android. Perfect for cafés, offices, Airbnbs, and events.",
+        intro: "Tired of reciting your WiFi password? Generate a WiFi QR with Cardixn — guests scan it and connect automatically. No app required, works natively on iPhone and Android. Perfect for cafés, offices, Airbnbs, and events.",
         sections: [
           { h2: "How WiFi QR works", body: "The QR encodes your network name, password, and security type in a standard format. When scanned, iPhone and Android show a 'Connect to WiFi?' prompt — one tap, connected." },
           { h2: "For businesses and hosts", body: "Print your WiFi QR on a table tent, front door, or Airbnb welcome book. Zero guest friction, zero WiFi password embarrassment." },
-          { h2: "Combine with your business card", body: "Cardix pro users combine WiFi QR with their business card QR on a single table tent — visitors get WiFi and your contact in one glance." },
+          { h2: "Combine with your business card", body: "Cardixn pro users combine WiFi QR with their business card QR on a single table tent — visitors get WiFi and your contact in one glance." },
         ],
         features: [
           { title: "Works on all phones", desc: "Native iPhone and Android support." },
@@ -2894,15 +2894,15 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Generate your WiFi QR", ctaSub: "Free forever. Perfect for cafés, offices, and Airbnbs.", ctaButton: "Generate WiFi QR",
       },
       ar: {
-        title: "مولّد رمز QR للواي فاي مجاني | Cardix",
+        title: "مولّد رمز QR للواي فاي مجاني | Cardixn",
         description: "ولّد رمز QR يوصل الضيوف بواي فايك تلقائياً. مجاني ويعمل على iPhone وAndroid بلا تطبيق.",
         h1: "مولّد رمز QR للواي فاي",
         subtitle: "الضيف يمسح. الضيف يتصل. صفر كتابة كلمة سر.",
-        intro: "متعب من إملاء كلمة سر الواي فاي؟ ولّد QR للواي فاي مع Cardix — الضيوف يمسحون ويتصلون تلقائياً. بلا تطبيق. مثالي للمقاهي والمكاتب وAirbnb.",
+        intro: "متعب من إملاء كلمة سر الواي فاي؟ ولّد QR للواي فاي مع Cardixn — الضيوف يمسحون ويتصلون تلقائياً. بلا تطبيق. مثالي للمقاهي والمكاتب وAirbnb.",
         sections: [
           { h2: "كيف يعمل QR للواي فاي", body: "الـ QR يشفّر اسم شبكتك وكلمة السر ونوع الأمان. عند المسح، iPhone وAndroid يعرضان 'اتصل بالواي فاي؟' — لمسة، متصل." },
           { h2: "للأعمال والمضيفين", body: "اطبع QR الواي فاي على خيمة طاولة أو باب أمامي. صفر احتكاك." },
-          { h2: "ادمج مع بطاقتك", body: "مستخدمو Cardix Pro يدمجون QR الواي فاي مع QR بطاقة أعمالهم." },
+          { h2: "ادمج مع بطاقتك", body: "مستخدمو Cardixn Pro يدمجون QR الواي فاي مع QR بطاقة أعمالهم." },
         ],
         features: [
           { title: "يعمل على كل الهواتف", desc: "دعم iPhone وAndroid أصلي." },
@@ -2919,15 +2919,15 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "email-signature-generator", category: "tool", keyword: "email signature generator",
     copy: {
       en: {
-        title: "Free Email Signature Generator with QR Code | Cardix",
+        title: "Free Email Signature Generator with QR Code | Cardixn",
         description: "Generate a professional email signature with your digital business card QR embedded. Works with Gmail, Outlook, Apple Mail.",
         h1: "The email signature that converts",
         subtitle: "A signature with a scannable QR beats plain text every time.",
-        intro: "Your email signature is a marketing surface you use 100+ times a day. Cardix generates a professional HTML signature with your digital business card QR embedded — turning every email into a lead-generation touchpoint. Works with Gmail, Outlook, Apple Mail, and every major client.",
+        intro: "Your email signature is a marketing surface you use 100+ times a day. Cardixn generates a professional HTML signature with your digital business card QR embedded — turning every email into a lead-generation touchpoint. Works with Gmail, Outlook, Apple Mail, and every major client.",
         sections: [
           { h2: "Why add a QR to your signature", body: "Recipients on mobile can scan your QR straight from the email and save your contact instantly. No typing, no copy-paste. Increases contact-save rates by 5-10×." },
           { h2: "Works with every email client", body: "HTML signatures compatible with Gmail, Outlook, Apple Mail, Superhuman, Front, and every modern email app. Copy-paste installation in 60 seconds." },
-          { h2: "Always up-to-date", body: "Update your Cardix profile once and every future email signature reflects the change automatically. No re-installing signatures across devices." },
+          { h2: "Always up-to-date", body: "Update your Cardixn profile once and every future email signature reflects the change automatically. No re-installing signatures across devices." },
         ],
         features: [
           { title: "HTML signature", desc: "Compatible with Gmail, Outlook, Apple Mail." },
@@ -2939,11 +2939,11 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Generate your email signature", ctaSub: "Turn every email into a lead-gen tool.", ctaButton: "Generate signature",
       },
       ar: {
-        title: "مولّد توقيع بريد مجاني مع QR | Cardix",
+        title: "مولّد توقيع بريد مجاني مع QR | Cardixn",
         description: "ولّد توقيع بريد احترافي مع QR بطاقتك مدمج. يعمل مع Gmail وOutlook وApple Mail.",
         h1: "توقيع البريد الذي يحوّل",
         subtitle: "توقيع بـ QR قابل للمسح يفوز على النص العادي.",
-        intro: "توقيع بريدك سطح تسويقي تستخدمه 100+ مرة يومياً. Cardix يولّد توقيع HTML احترافي مع QR بطاقتك مدمج — يحوّل كل بريد لنقطة توليد عملاء.",
+        intro: "توقيع بريدك سطح تسويقي تستخدمه 100+ مرة يومياً. Cardixn يولّد توقيع HTML احترافي مع QR بطاقتك مدمج — يحوّل كل بريد لنقطة توليد عملاء.",
         sections: [
           { h2: "لماذا QR في توقيعك", body: "المستلمون على الجوال يمسحون QR مباشرة من البريد ويحفظون جهتك فوراً. يزيد معدلات الحفظ 5-10×." },
           { h2: "يعمل مع كل عميل بريد", body: "توقيعات HTML متوافقة مع Gmail وOutlook وApple Mail. تركيب في 60 ثانية." },
@@ -2964,14 +2964,14 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "business-card-scanner", category: "tool", keyword: "business card scanner online",
     copy: {
       en: {
-        title: "Free Business Card Scanner Online — AI OCR | Cardix",
+        title: "Free Business Card Scanner Online — AI OCR | Cardixn",
         description: "Scan any paper business card with AI. Extract name, phone, email, and title automatically. Free, private, and instant.",
         h1: "AI-powered business card scanner",
         subtitle: "Point. Scan. Contact saved. 99% accuracy across 40+ languages.",
-        intro: "Stop typing business cards into your phone. Cardix's AI OCR scans any paper card and extracts every field — name, phone, email, title, company, address — in seconds. 99% accurate on 40+ languages including Arabic, Chinese, Japanese, and Hebrew.",
+        intro: "Stop typing business cards into your phone. Cardixn's AI OCR scans any paper card and extracts every field — name, phone, email, title, company, address — in seconds. 99% accurate on 40+ languages including Arabic, Chinese, Japanese, and Hebrew.",
         sections: [
-          { h2: "How it works", body: "Open the scanner, point at a paper card, and AI extracts every field automatically. Review, edit if needed, and save to your Cardix vault. Auto-syncs to Google Contacts, iCloud, and every CRM." },
-          { h2: "Multilingual OCR", body: "Cardix's OCR handles cards in Arabic, English, French, Spanish, German, Chinese, Japanese, Korean, Hebrew, and 30+ more languages. Mixed-language cards (Arabic + English) work perfectly." },
+          { h2: "How it works", body: "Open the scanner, point at a paper card, and AI extracts every field automatically. Review, edit if needed, and save to your Cardixn vault. Auto-syncs to Google Contacts, iCloud, and every CRM." },
+          { h2: "Multilingual OCR", body: "Cardixn's OCR handles cards in Arabic, English, French, Spanish, German, Chinese, Japanese, Korean, Hebrew, and 30+ more languages. Mixed-language cards (Arabic + English) work perfectly." },
           { h2: "Private by design", body: "Card images are processed and deleted immediately. Extracted data stays in your vault under your control. No data selling, no shared indexes." },
         ],
         features: [
@@ -2984,11 +2984,11 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Scan your first card", ctaSub: "Free forever. Works in your browser.", ctaButton: "Open scanner",
       },
       ar: {
-        title: "ماسح بطاقات أعمال مجاني عبر الإنترنت — OCR ذكي | Cardix",
+        title: "ماسح بطاقات أعمال مجاني عبر الإنترنت — OCR ذكي | Cardixn",
         description: "امسح أي بطاقة ورقية بالذكاء الاصطناعي. استخرج الاسم والهاتف والإيميل تلقائياً. مجاني وخاص وفوري.",
         h1: "ماسح البطاقات بالذكاء الاصطناعي",
         subtitle: "وجّه. امسح. جهة محفوظة. دقة 99% في 40+ لغة.",
-        intro: "توقف عن كتابة البطاقات الورقية. OCR الذكي لـ Cardix يمسح أي بطاقة ويستخرج كل حقل في ثوانٍ. دقة 99% في 40+ لغة.",
+        intro: "توقف عن كتابة البطاقات الورقية. OCR الذكي لـ Cardixn يمسح أي بطاقة ويستخرج كل حقل في ثوانٍ. دقة 99% في 40+ لغة.",
         sections: [
           { h2: "كيف يعمل", body: "افتح الماسح، وجّه للبطاقة، والذكاء الاصطناعي يستخرج كل حقل. راجع، احفظ في خزانتك، وزامن مع جهات Google." },
           { h2: "OCR متعدد اللغات", body: "يعمل مع العربية والإنجليزية والفرنسية والصينية واليابانية والعبرية و30+ لغة أخرى." },
@@ -3009,15 +3009,15 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "nfc-business-card-writer", category: "tool", keyword: "NFC business card writer",
     copy: {
       en: {
-        title: "NFC Business Card Writer — Program Any NFC Card | Cardix",
+        title: "NFC Business Card Writer — Program Any NFC Card | Cardixn",
         description: "Program any blank NFC card or tag with your digital business card link. Free tool, works with iPhone and Android.",
         h1: "NFC business card writer",
         subtitle: "Turn any blank NFC card or sticker into your business card in 30 seconds.",
-        intro: "Bought blank NFC cards on Amazon? Cardix's NFC writer lets you program them with your digital business card link in seconds. Works with any NTAG213, NTAG215, or NTAG216 tag — the standards used by 99% of NFC business cards.",
+        intro: "Bought blank NFC cards on Amazon? Cardixn's NFC writer lets you program them with your digital business card link in seconds. Works with any NTAG213, NTAG215, or NTAG216 tag — the standards used by 99% of NFC business cards.",
         sections: [
-          { h2: "How to program an NFC card", body: "Open the Cardix NFC writer on your phone, hold your blank NFC card to the back, and tap 'Write.' Your Cardix link is now embedded. Anyone who taps your card gets your business card instantly." },
-          { h2: "Which tags work", body: "NTAG213 (144 bytes, cheapest), NTAG215 (504 bytes, most popular), NTAG216 (888 bytes, most storage). Cardix links fit comfortably in all three." },
-          { h2: "Buy Cardix-branded NFC cards", body: "Prefer premium metal or PVC cards with your logo laser-etched? Order Cardix hardware cards and skip the DIY step entirely." },
+          { h2: "How to program an NFC card", body: "Open the Cardixn NFC writer on your phone, hold your blank NFC card to the back, and tap 'Write.' Your Cardixn link is now embedded. Anyone who taps your card gets your business card instantly." },
+          { h2: "Which tags work", body: "NTAG213 (144 bytes, cheapest), NTAG215 (504 bytes, most popular), NTAG216 (888 bytes, most storage). Cardixn links fit comfortably in all three." },
+          { h2: "Buy Cardixn-branded NFC cards", body: "Prefer premium metal or PVC cards with your logo laser-etched? Order Cardixn hardware cards and skip the DIY step entirely." },
         ],
         features: [
           { title: "Works with all blank NFC tags", desc: "NTAG213, 215, 216 supported." },
@@ -3029,15 +3029,15 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Program your NFC card", ctaSub: "Free tool. Works with any blank NFC tag.", ctaButton: "Open NFC writer",
       },
       ar: {
-        title: "برنامج كاتب بطاقات NFC — برمج أي بطاقة NFC | Cardix",
+        title: "برنامج كاتب بطاقات NFC — برمج أي بطاقة NFC | Cardixn",
         description: "برمج أي بطاقة NFC فارغة برابط بطاقتك الرقمية. أداة مجانية تعمل مع iPhone وAndroid.",
         h1: "كاتب بطاقات NFC",
         subtitle: "حوّل أي بطاقة NFC فارغة لبطاقتك في 30 ثانية.",
-        intro: "اشتريت بطاقات NFC فارغة؟ كاتب Cardix يبرمجها برابط بطاقتك في ثوانٍ. يعمل مع NTAG213/215/216.",
+        intro: "اشتريت بطاقات NFC فارغة؟ كاتب Cardixn يبرمجها برابط بطاقتك في ثوانٍ. يعمل مع NTAG213/215/216.",
         sections: [
-          { h2: "كيف تبرمج بطاقة NFC", body: "افتح كاتب Cardix، ضع البطاقة الفارغة خلف هاتفك، انقر 'اكتب.' رابطك الآن مضمَّن." },
+          { h2: "كيف تبرمج بطاقة NFC", body: "افتح كاتب Cardixn، ضع البطاقة الفارغة خلف هاتفك، انقر 'اكتب.' رابطك الآن مضمَّن." },
           { h2: "أي الشرائح تعمل", body: "NTAG213 (144 بايت) وNTAG215 (504 بايت، الأشهر) وNTAG216 (888 بايت)." },
-          { h2: "اشترِ بطاقات Cardix", body: "تفضل بطاقات معدنية بشعارك محفور بالليزر؟ اطلب أجهزتنا." },
+          { h2: "اشترِ بطاقات Cardixn", body: "تفضل بطاقات معدنية بشعارك محفور بالليزر؟ اطلب أجهزتنا." },
         ],
         features: [
           { title: "يعمل مع كل بطاقات NFC", desc: "NTAG213/215/216 مدعومة." },
@@ -3054,11 +3054,11 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "digital-business-card-with-logo", category: "tool", keyword: "digital business card with logo",
     copy: {
       en: {
-        title: "Digital Business Card with Logo & Custom Branding | Cardix",
+        title: "Digital Business Card with Logo & Custom Branding | Cardixn",
         description: "Add your logo, brand colors, and custom fonts to your digital business card. Professional branding in 60 seconds.",
         h1: "Your logo. Your colors. Your card.",
         subtitle: "Upload your logo, pick your brand color, and your card is on-brand instantly.",
-        intro: "Your business card should reflect your brand — not a generic template. Cardix lets you upload your logo, pick your exact brand color (via hex code), and choose from luxury typography that matches your identity. Enterprise plans support custom fonts and full white-labeling.",
+        intro: "Your business card should reflect your brand — not a generic template. Cardixn lets you upload your logo, pick your exact brand color (via hex code), and choose from luxury typography that matches your identity. Enterprise plans support custom fonts and full white-labeling.",
         sections: [
           { h2: "Upload any logo", body: "PNG, JPG, or SVG. Transparent backgrounds supported. Your logo appears crisp on any screen size and adapts to light/dark card templates." },
           { h2: "Exact brand color match", body: "Paste your brand hex code (#RRGGBB) and your card accents, buttons, and gradients adopt that color automatically. Every viewer sees your brand." },
@@ -3074,11 +3074,11 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Add your brand", ctaSub: "60 seconds to a fully-branded card.", ctaButton: "Create branded card",
       },
       ar: {
-        title: "بطاقة رقمية مع شعار وهوية مخصصة | Cardix",
+        title: "بطاقة رقمية مع شعار وهوية مخصصة | Cardixn",
         description: "أضف شعارك وألوان علامتك وخطوطك المخصصة لبطاقتك الرقمية. هوية احترافية في 60 ثانية.",
         h1: "شعارك. ألوانك. بطاقتك.",
         subtitle: "ارفع شعارك، اختر لونك، وبطاقتك بهويتك فوراً.",
-        intro: "بطاقتك يجب أن تعكس علامتك — ليس قالباً عاماً. Cardix يتيح رفع شعارك واختيار لونك بـ hex والاختيار من طباعة فاخرة تطابق هويتك.",
+        intro: "بطاقتك يجب أن تعكس علامتك — ليس قالباً عاماً. Cardixn يتيح رفع شعارك واختيار لونك بـ hex والاختيار من طباعة فاخرة تطابق هويتك.",
         sections: [
           { h2: "ارفع أي شعار", body: "PNG أو JPG أو SVG. خلفيات شفافة مدعومة. شعارك يظهر واضحاً على أي حجم." },
           { h2: "مطابقة لون دقيقة", body: "الصق hex علامتك ولمسات بطاقتك وأزرارها تتبنى اللون تلقائياً." },
@@ -3099,11 +3099,11 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "animated-digital-business-card", category: "tool", keyword: "animated digital business card",
     copy: {
       en: {
-        title: "Animated Digital Business Card — Video, GIF & Motion | Cardix",
+        title: "Animated Digital Business Card — Video, GIF & Motion | Cardixn",
         description: "Make your digital business card come alive with animations, video intros, and motion graphics. Stand out and be unforgettable.",
         h1: "The animated digital business card",
         subtitle: "3D card flip. Video intro. Animated logo. Unforgettable.",
-        intro: "In a sea of static cards, animation makes yours unforgettable. Cardix includes premium motion — 3D card flips on tilt, animated logos, video intros embedded from Loom or YouTube, and Lottie animations that make your card feel alive.",
+        intro: "In a sea of static cards, animation makes yours unforgettable. Cardixn includes premium motion — 3D card flips on tilt, animated logos, video intros embedded from Loom or YouTube, and Lottie animations that make your card feel alive.",
         sections: [
           { h2: "3D parallax on tilt", body: "On desktop, your card responds to mouse movement with realistic 3D parallax — the card feels like a physical object being held. Subtle, luxurious, and unforgettable." },
           { h2: "Video intros", body: "Embed a 30-second Loom or YouTube intro at the top of your card. Perfect for founders pitching investors, coaches selling programs, or creators wooing brands." },
@@ -3119,11 +3119,11 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Make your card move", ctaSub: "Motion sells. Static forgets.", ctaButton: "Create animated card",
       },
       ar: {
-        title: "بطاقة رقمية متحركة — فيديو ورسوم متحركة | Cardix",
+        title: "بطاقة رقمية متحركة — فيديو ورسوم متحركة | Cardixn",
         description: "احعل بطاقتك تنبض بالحياة بالرسوم المتحركة والفيديو. تميّز وكن لا يُنسى.",
         h1: "البطاقة الرقمية المتحركة",
         subtitle: "تدوير 3D. فيديو تعريفي. شعار متحرك. لا يُنسى.",
-        intro: "في بحر البطاقات الثابتة، الحركة تجعل بطاقتك لا تُنسى. Cardix يشمل حركة فاخرة — تدوير 3D عند الميل، شعارات متحركة، فيديو من Loom.",
+        intro: "في بحر البطاقات الثابتة، الحركة تجعل بطاقتك لا تُنسى. Cardixn يشمل حركة فاخرة — تدوير 3D عند الميل، شعارات متحركة، فيديو من Loom.",
         sections: [
           { h2: "3D بارالاكس عند الميل", body: "على الديسكتوب، بطاقتك تستجيب لحركة الماوس بـ 3D واقعي — تشعرك بمنتج مادي." },
           { h2: "فيديو تعريفي", body: "ادمج فيديو Loom بـ 30 ثانية أعلى بطاقتك. مثالي للمؤسسين." },
@@ -3146,11 +3146,11 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "digital-business-cards-healthcare", category: "industry", keyword: "digital business cards healthcare",
     copy: {
       en: {
-        title: "Digital Business Cards for Healthcare & Hospitals | Cardix",
+        title: "Digital Business Cards for Healthcare & Hospitals | Cardixn",
         description: "HIPAA-conscious digital business cards for hospitals, clinics, and healthcare professionals. Secure, compliant, and beautifully designed.",
         h1: "Digital business cards for healthcare",
         subtitle: "Hospitals, clinics, and clinicians — go paperless with confidence.",
-        intro: "Healthcare runs on trust. Your business card should convey the same professionalism as your white coat. Cardix delivers HIPAA-conscious digital cards for hospitals, clinics, dentists, and specialists — with credential displays, appointment booking, and multi-clinic support.",
+        intro: "Healthcare runs on trust. Your business card should convey the same professionalism as your white coat. Cardixn delivers HIPAA-conscious digital cards for hospitals, clinics, dentists, and specialists — with credential displays, appointment booking, and multi-clinic support.",
         sections: [
           { h2: "For hospitals and clinical networks", body: "Roll out branded cards for every physician, resident, and nurse. Centralized template control, per-department customization, and role-based provisioning via SSO." },
           { h2: "HIPAA-conscious", body: "No patient data on cards. Physicians share credentials, clinic info, and appointment links only. All infrastructure hosted in HIPAA-compliant regions with BAA available." },
@@ -3166,11 +3166,11 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "The card for modern healthcare", ctaSub: "Trusted by hospitals and clinics globally.", ctaButton: "Talk to sales",
       },
       ar: {
-        title: "بطاقات رقمية للصحة والمستشفيات | Cardix",
+        title: "بطاقات رقمية للصحة والمستشفيات | Cardixn",
         description: "بطاقات رقمية للمستشفيات والعيادات ومحترفي الرعاية الصحية. آمنة ومتوافقة ومصمّمة بجمال.",
         h1: "بطاقات رقمية للرعاية الصحية",
         subtitle: "المستشفيات والعيادات — انتقل للورقي بثقة.",
-        intro: "الرعاية الصحية تعمل بالثقة. بطاقتك يجب أن تعكس نفس احتراف معطفك الأبيض. Cardix يقدم بطاقات رقمية للمستشفيات والعيادات وأطباء الأسنان.",
+        intro: "الرعاية الصحية تعمل بالثقة. بطاقتك يجب أن تعكس نفس احتراف معطفك الأبيض. Cardixn يقدم بطاقات رقمية للمستشفيات والعيادات وأطباء الأسنان.",
         sections: [
           { h2: "للمستشفيات والشبكات السريرية", body: "أطلق بطاقات مبرمَجة لكل طبيب ومقيم وممرض. تحكم مركزي وSSO." },
           { h2: "متوافق مع الخصوصية", body: "بلا بيانات مرضى على البطاقات. الأطباء يشاركون المؤهلات ومعلومات العيادة فقط." },
@@ -3191,11 +3191,11 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "digital-business-cards-real-estate", category: "industry", keyword: "digital business cards real estate",
     copy: {
       en: {
-        title: "Digital Business Cards for Real Estate Brokerages | Cardix",
+        title: "Digital Business Cards for Real Estate Brokerages | Cardixn",
         description: "The digital business card platform for real estate brokerages. Roll out branded cards to every agent with listing showcase and booking.",
         h1: "Digital business cards for real estate",
         subtitle: "Brokerages: equip every agent with a branded, listing-ready card.",
-        intro: "Real estate brokerages need to equip dozens or hundreds of agents with consistent, on-brand digital business cards — while giving each agent the flexibility to showcase their listings. Cardix delivers exactly that, with central template control and per-agent personalization.",
+        intro: "Real estate brokerages need to equip dozens or hundreds of agents with consistent, on-brand digital business cards — while giving each agent the flexibility to showcase their listings. Cardixn delivers exactly that, with central template control and per-agent personalization.",
         sections: [
           { h2: "For Keller Williams, RE/MAX, Century 21", body: "Roll out branded cards for every agent with brokerage logo, RESPA-compliant disclaimers, and MLS integration. Agents personalize photo, phone, and featured listings." },
           { h2: "Listing showcase on every card", body: "Featured properties with photos, prices, and virtual-tour links directly on each agent's card. Update listings once and every card reflects the change." },
@@ -3211,7 +3211,7 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Elevate your brokerage", ctaSub: "Trusted by top-producing brokerages worldwide.", ctaButton: "Get brokerage pricing",
       },
       ar: {
-        title: "بطاقات رقمية للمكاتب العقارية | Cardix",
+        title: "بطاقات رقمية للمكاتب العقارية | Cardixn",
         description: "منصة البطاقات الرقمية للمكاتب العقارية. أطلق بطاقات مبرمَجة لكل وكيل مع عرض العقارات والحجز.",
         h1: "بطاقات رقمية للعقارات",
         subtitle: "المكاتب: زوّد كل وكيل ببطاقة مبرمَجة جاهزة للعقارات.",
@@ -3236,13 +3236,13 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "digital-business-cards-legal", category: "industry", keyword: "digital business cards law firms",
     copy: {
       en: {
-        title: "Digital Business Cards for Law Firms | Cardix",
+        title: "Digital Business Cards for Law Firms | Cardixn",
         description: "Digital business cards for law firms. Firm-wide rollout with bar credentials, practice areas, and compliance-ready disclaimers.",
         h1: "Digital business cards for law firms",
         subtitle: "Firms: equip every attorney with a Chambers-worthy digital card.",
-        intro: "Law firms project authority in every detail — from letterhead to lobby to business cards. Cardix delivers courtroom-worthy digital cards for firms of every size, with bar credentials, practice-area chips, and configurable 'Attorney Advertising' disclaimers.",
+        intro: "Law firms project authority in every detail — from letterhead to lobby to business cards. Cardixn delivers courtroom-worthy digital cards for firms of every size, with bar credentials, practice-area chips, and configurable 'Attorney Advertising' disclaimers.",
         sections: [
-          { h2: "For Big Law and boutiques", body: "From Magic Circle to boutique litigation shops, Cardix scales. Firm-wide template control, per-partner customization, and paralegal card provisioning." },
+          { h2: "For Big Law and boutiques", body: "From Magic Circle to boutique litigation shops, Cardixn scales. Firm-wide template control, per-partner customization, and paralegal card provisioning." },
           { h2: "Compliance-ready", body: "Bar number, jurisdiction, admissions, and jurisdiction-specific 'Attorney Advertising' notices are configurable per-card and per-region." },
           { h2: "Client-development analytics", body: "See which attorneys generate the most saves at bar mixers and CLE events. Attribute client acquisition to specific attorneys." },
         ],
@@ -3256,13 +3256,13 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "The card built for firms", ctaSub: "Trusted by AmLaw 100 and boutique firms.", ctaButton: "Talk to sales",
       },
       ar: {
-        title: "بطاقات رقمية لمكاتب المحاماة | Cardix",
+        title: "بطاقات رقمية لمكاتب المحاماة | Cardixn",
         description: "بطاقات رقمية لمكاتب المحاماة. طرح على مستوى المكتب مع مؤهلات النقابة ومجالات الممارسة.",
         h1: "بطاقات رقمية لمكاتب المحاماة",
         subtitle: "المكاتب: زوّد كل محامٍ ببطاقة رقمية بمستوى Chambers.",
-        intro: "مكاتب المحاماة تعكس السلطة في كل تفصيل. Cardix يقدم بطاقات رقمية بمستوى قاعات المحاكم لمكاتب كل الأحجام.",
+        intro: "مكاتب المحاماة تعكس السلطة في كل تفصيل. Cardixn يقدم بطاقات رقمية بمستوى قاعات المحاكم لمكاتب كل الأحجام.",
         sections: [
-          { h2: "لـ Big Law والبوتيك", body: "من Magic Circle لمكاتب البوتيك، Cardix يتوسع." },
+          { h2: "لـ Big Law والبوتيك", body: "من Magic Circle لمكاتب البوتيك، Cardixn يتوسع." },
           { h2: "متوافق مع الأنظمة", body: "رقم النقابة والاختصاص والإخلاءات قابلة للتخصيص." },
           { h2: "تحليلات تطوير عملاء", body: "شاهد أي محامٍ يحقق أكثر حفظ." },
         ],
@@ -3281,11 +3281,11 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "digital-business-cards-hospitality", category: "industry", keyword: "digital business cards hotels",
     copy: {
       en: {
-        title: "Digital Business Cards for Hotels & Hospitality | Cardix",
+        title: "Digital Business Cards for Hotels & Hospitality | Cardixn",
         description: "Digital business cards for hotels, restaurants, and hospitality staff. Concierge, F&B, and events teams — one branded card per staff.",
         h1: "Digital business cards for hospitality",
         subtitle: "Hotels, restaurants, resorts — every staff member, one branded card.",
-        intro: "Hospitality is a business of impressions. From concierge to sommelier to event manager, every staff member represents your brand. Cardix delivers luxury digital cards for hotels and restaurants — Michelin-worthy design, multilingual by default, and contactless for post-pandemic hygiene.",
+        intro: "Hospitality is a business of impressions. From concierge to sommelier to event manager, every staff member represents your brand. Cardixn delivers luxury digital cards for hotels and restaurants — Michelin-worthy design, multilingual by default, and contactless for post-pandemic hygiene.",
         sections: [
           { h2: "For Michelin, Ritz, and Four Seasons", body: "Roll out branded cards to concierge, F&B, spa, and events teams. Each card matches property brand — no generic template compromise." },
           { h2: "Multilingual by default", body: "Hotels serve international guests. Cards support Arabic, English, French, Chinese, Japanese, and 15+ other languages on the same profile." },
@@ -3301,11 +3301,11 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Elevate your guest experience", ctaSub: "Trusted by luxury hotels globally.", ctaButton: "Talk to sales",
       },
       ar: {
-        title: "بطاقات رقمية للفنادق والضيافة | Cardix",
+        title: "بطاقات رقمية للفنادق والضيافة | Cardixn",
         description: "بطاقات رقمية للفنادق والمطاعم وموظفي الضيافة. الكونسيرج وF&B وفرق الفعاليات.",
         h1: "بطاقات رقمية للضيافة",
         subtitle: "الفنادق والمطاعم — كل موظف ببطاقة مبرمَجة.",
-        intro: "الضيافة عمل انطباعات. من الكونسيرج إلى الساقي، كل موظف يمثل علامتك. Cardix يقدم بطاقات فاخرة للفنادق بمستوى Michelin.",
+        intro: "الضيافة عمل انطباعات. من الكونسيرج إلى الساقي، كل موظف يمثل علامتك. Cardixn يقدم بطاقات فاخرة للفنادق بمستوى Michelin.",
         sections: [
           { h2: "لـ Ritz وFour Seasons", body: "أطلق بطاقات مبرمَجة للكونسيرج وF&B والسبا." },
           { h2: "متعدد اللغات افتراضياً", body: "الفنادق تخدم ضيوفاً دوليين. البطاقات تدعم 20 لغة." },
@@ -3326,11 +3326,11 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "digital-business-cards-finance", category: "industry", keyword: "digital business cards financial services",
     copy: {
       en: {
-        title: "Digital Business Cards for Financial Services | Cardix",
+        title: "Digital Business Cards for Financial Services | Cardixn",
         description: "Digital business cards for banks, wealth managers, and financial advisors. Compliance-ready with FINRA/SEC disclaimer support.",
         h1: "Digital business cards for financial services",
         subtitle: "Banks, wealth managers, advisors — compliant, secure, premium.",
-        intro: "Financial services demands compliance in every marketing touchpoint. Cardix delivers digital business cards with FINRA/SEC-aware disclaimers, SOC 2-compliant infrastructure, and the premium design your clients expect from a wealth manager or private banker.",
+        intro: "Financial services demands compliance in every marketing touchpoint. Cardixn delivers digital business cards with FINRA/SEC-aware disclaimers, SOC 2-compliant infrastructure, and the premium design your clients expect from a wealth manager or private banker.",
         sections: [
           { h2: "For banks and wealth firms", body: "Roll out branded cards to every RIA, private banker, and advisor. Central template control with compliance-approved disclosures." },
           { h2: "FINRA/SEC disclaimer support", body: "Configurable per-card disclaimers for FINRA Rule 2210, SEC Marketing Rule, and jurisdictional variations. Compliance-approved templates included." },
@@ -3346,11 +3346,11 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "The card for financial services", ctaSub: "Trusted by banks and wealth managers globally.", ctaButton: "Talk to sales",
       },
       ar: {
-        title: "بطاقات رقمية للخدمات المالية | Cardix",
+        title: "بطاقات رقمية للخدمات المالية | Cardixn",
         description: "بطاقات رقمية للبنوك ومديري الثروات والمستشارين الماليين. متوافقة مع FINRA/SEC.",
         h1: "بطاقات رقمية للخدمات المالية",
         subtitle: "البنوك والثروات — متوافقة وآمنة وفاخرة.",
-        intro: "الخدمات المالية تتطلب توافقاً في كل نقطة تسويقية. Cardix يقدم بطاقات رقمية بإخلاءات FINRA/SEC وبنية SOC 2.",
+        intro: "الخدمات المالية تتطلب توافقاً في كل نقطة تسويقية. Cardixn يقدم بطاقات رقمية بإخلاءات FINRA/SEC وبنية SOC 2.",
         sections: [
           { h2: "للبنوك ومكاتب الثروة", body: "أطلق بطاقات مبرمَجة لكل RIA ومصرفي خاص." },
           { h2: "دعم إخلاءات FINRA/SEC", body: "إخلاءات قابلة للتخصيص لكل بطاقة." },
@@ -3371,11 +3371,11 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "digital-business-cards-education", category: "industry", keyword: "digital business cards for teachers",
     copy: {
       en: {
-        title: "Digital Business Cards for Teachers & Universities | Cardix",
+        title: "Digital Business Cards for Teachers & Universities | Cardixn",
         description: "Digital business cards for teachers, professors, universities, and coaches. Share syllabus, office hours, and research in one card.",
         h1: "Digital business cards for education",
         subtitle: "Teachers, professors, admins — connect students and parents seamlessly.",
-        intro: "Educators build lifelong relationships with students, parents, and peers. Cardix delivers professional digital cards for teachers, professors, and university admins — with office-hours booking, syllabus links, and research portfolio showcase.",
+        intro: "Educators build lifelong relationships with students, parents, and peers. Cardixn delivers professional digital cards for teachers, professors, and university admins — with office-hours booking, syllabus links, and research portfolio showcase.",
         sections: [
           { h2: "For universities and K-12 schools", body: "Roll out branded cards to every faculty member with department affiliation, office location, and student-booking calendars." },
           { h2: "For professors and researchers", body: "Showcase publications (Google Scholar, ORCID), research interests, and lab websites. Perfect for academic conferences." },
@@ -3385,17 +3385,17 @@ export const LANDING_PAGES: LandingPage[] = [
           { title: "Office-hours booking", desc: "Students book directly via Calendly or Google Calendar." },
           { title: "Research showcase", desc: "Publications, citations, and lab links." },
           { title: "Institutional SSO", desc: "Provision via university SSO systems." },
-          { title: "Free for students", desc: "Students always get Cardix free forever." },
+          { title: "Free for students", desc: "Students always get Cardixn free forever." },
         ],
         faqs: enFaqCommon,
         ctaTitle: "The card for educators", ctaSub: "Trusted by universities and schools globally.", ctaButton: "Get started",
       },
       ar: {
-        title: "بطاقات رقمية للمعلمين والجامعات | Cardix",
+        title: "بطاقات رقمية للمعلمين والجامعات | Cardixn",
         description: "بطاقات رقمية للمعلمين والأساتذة والجامعات والمدربين. شارك المناهج والأبحاث في بطاقة.",
         h1: "بطاقات رقمية للتعليم",
         subtitle: "المعلمون والأساتذة — تواصل مع الطلاب والأهالي بسلاسة.",
-        intro: "التربويون يبنون علاقات عمرية مع الطلاب والأهالي. Cardix يقدم بطاقات احترافية للمعلمين والأساتذة.",
+        intro: "التربويون يبنون علاقات عمرية مع الطلاب والأهالي. Cardixn يقدم بطاقات احترافية للمعلمين والأساتذة.",
         sections: [
           { h2: "للجامعات والمدارس", body: "أطلق بطاقات مبرمَجة لكل عضو هيئة تدريس." },
           { h2: "للأساتذة والباحثين", body: "اعرض المنشورات وGoogle Scholar وORCID." },
@@ -3416,13 +3416,13 @@ export const LANDING_PAGES: LandingPage[] = [
     slug: "digital-business-cards-marketing-agencies", category: "industry", keyword: "digital business cards marketing agencies",
     copy: {
       en: {
-        title: "Digital Business Cards for Marketing Agencies | Cardix",
+        title: "Digital Business Cards for Marketing Agencies | Cardixn",
         description: "The digital business card for marketing agencies. Showcase case studies, client logos, and portfolio in one branded card.",
         h1: "Digital business cards for agencies",
         subtitle: "Agencies: your team, your case studies, your pitch — one link.",
-        intro: "Marketing agencies live on portfolio and reputation. Cardix delivers digital cards for agency teams that showcase case studies, client logos, and pitch decks — turning every conference handshake into an RFP.",
+        intro: "Marketing agencies live on portfolio and reputation. Cardixn delivers digital cards for agency teams that showcase case studies, client logos, and pitch decks — turning every conference handshake into an RFP.",
         sections: [
-          { h2: "For creative, digital, and PR agencies", body: "Whether you're WPP, an indie shop, or a Web3 studio, Cardix gives every team member a branded card that highlights agency work and their individual role." },
+          { h2: "For creative, digital, and PR agencies", body: "Whether you're WPP, an indie shop, or a Web3 studio, Cardixn gives every team member a branded card that highlights agency work and their individual role." },
           { h2: "Case study showcase", body: "Embed 3-5 flagship case studies with client logos, KPIs, and links to full write-ups. Prospects see your best work in 5 seconds." },
           { h2: "Pitch-deck ready", body: "Include a direct DocSend or PDF link to your credentials deck. Prospects request pitches directly through your card." },
         ],
@@ -3436,13 +3436,13 @@ export const LANDING_PAGES: LandingPage[] = [
         ctaTitle: "Win more RFPs", ctaSub: "The card top agencies use to book more calls.", ctaButton: "Talk to sales",
       },
       ar: {
-        title: "بطاقات رقمية لوكالات التسويق | Cardix",
+        title: "بطاقات رقمية لوكالات التسويق | Cardixn",
         description: "البطاقة الرقمية لوكالات التسويق. اعرض دراسات الحالة وشعارات العملاء والمعرض في بطاقة مبرمَجة.",
         h1: "بطاقات رقمية للوكالات",
         subtitle: "الوكالات: فريقك، دراساتك، عرضك — رابط واحد.",
-        intro: "وكالات التسويق تعيش على المعرض والسمعة. Cardix يقدم بطاقات لفرق الوكالات تعرض دراسات الحالة.",
+        intro: "وكالات التسويق تعيش على المعرض والسمعة. Cardixn يقدم بطاقات لفرق الوكالات تعرض دراسات الحالة.",
         sections: [
-          { h2: "للوكالات الإبداعية والرقمية", body: "سواء كنت WPP أو استوديو Web3، Cardix يمنح كل عضو بطاقة مبرمَجة." },
+          { h2: "للوكالات الإبداعية والرقمية", body: "سواء كنت WPP أو استوديو Web3، Cardixn يمنح كل عضو بطاقة مبرمَجة." },
           { h2: "عرض دراسات الحالة", body: "ادمج 3-5 دراسات بشعارات عملاء وKPIs." },
           { h2: "جاهز لديك العرض", body: "أضف رابط DocSend مباشر." },
         ],
@@ -3489,7 +3489,7 @@ export const CATEGORY_LABEL: Record<LandingCategory, { en: string; ar: string }>
   templates: { en: "Templates & Design", ar: "القوالب والتصميم" },
   compare: { en: "Compare & Learn", ar: "مقارنة وتعلّم" },
   profession: { en: "By Profession", ar: "حسب المهنة" },
-  vs: { en: "Cardix vs Competitors", ar: "Cardix ضد المنافسين" },
+  vs: { en: "Cardixn vs Competitors", ar: "Cardixn ضد المنافسين" },
   region: { en: "By Country & City", ar: "حسب الدولة والمدينة" },
   keyword: { en: "Guides & Comparisons", ar: "أدلة ومقارنات" },
   tool: { en: "Free Tools", ar: "أدوات مجانية" },

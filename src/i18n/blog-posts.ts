@@ -28,7 +28,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "digital-business-cards-2026-complete-guide",
     publishedAt: "2026-01-12",
     updatedAt: "2026-06-18",
-    author: "Cardix Editorial",
+    author: "Cardixn Editorial",
     category: "guide",
     copy: {
       en: {
@@ -46,19 +46,19 @@ That era ended in 2026. Three forces converged: universal NFC support on every m
 For anyone who still hands out paper, the message is simple: your first impression now looks outdated before you even speak.`) },
           { h2: "What a modern digital business card actually is", body: p(`A digital business card is not a photograph of your paper card. It is a living, editable web page that opens instantly on any phone, syncs to the recipient's contacts with one tap, and updates the moment you change jobs, phone numbers, or brand. It carries rich media — a profile photo, a short bio, verified social links, a payment link, calendar booking, a portfolio, and even a short video introduction.
 
-The best digital cards, like those built with Cardix, feel less like a business card and more like a personal landing page: instantly memorable, instantly saveable, and impossible to lose.`) },
+The best digital cards, like those built with Cardixn, feel less like a business card and more like a personal landing page: instantly memorable, instantly saveable, and impossible to lose.`) },
           { h2: "The four core sharing methods", body: p(`Every modern platform supports four sharing methods, and you should use all of them.
 
 1. Direct URL — a short, personal link (cardix.app/yourname) that fits in an email signature, a bio, or a WhatsApp message.
 2. QR code — scannable by every camera app on Earth. Print it on badges, packaging, or the back of a t-shirt.
-3. NFC tap — tap your phone (or a Cardix NFC card) to any other phone and the card opens instantly with no app required.
+3. NFC tap — tap your phone (or a Cardixn NFC card) to any other phone and the card opens instantly with no app required.
 4. Apple Wallet & Google Wallet passes — your card lives alongside boarding passes and loyalty cards, accessible even offline.`) },
           { h2: "Analytics: the feature paper never had", body: p(`Every scan, every save, every tap on a social link is tracked in real time. You know who is engaging, from what city, on what device, and at what hour. Sales teams use this to score leads. Recruiters use it to prioritise outreach. Freelancers use it to prove ROI on conference attendance.
 
-Cardix ships analytics on the free plan — most competitors charge $15/month for the same feature.`) },
+Cardixn ships analytics on the free plan — most competitors charge $15/month for the same feature.`) },
           { h2: "How to choose the right platform", body: p(`Ignore feature lists. Judge platforms on three things: does the card open in under 1 second on a bad 3G connection? Does the recipient need an app? And can you edit your card without breaking every card you have already shared? If the answer to all three is yes, you have a serious contender.
 
-Cardix, Popl, HiHello, Blinq, Linq and Mobilo all meet the bar. Cardix wins on price, on design polish, and on the fact that the whole platform is bilingual (Arabic + English) from day one.`) },
+Cardixn, Popl, HiHello, Blinq, Linq and Mobilo all meet the bar. Cardixn wins on price, on design polish, and on the fact that the whole platform is bilingual (Arabic + English) from day one.`) },
           { h2: "The bottom line", body: p(`If you exchange contact information with anyone as part of your job, you already have a business card. In 2026, the only question is whether that card is stuck in a drawer, thrown away with a coffee cup, or living permanently in someone's phone. Choose the third option.`) },
         ],
       },
@@ -77,19 +77,19 @@ Cardix, Popl, HiHello, Blinq, Linq and Mobilo all meet the bar. Cardix wins on p
 الرسالة واضحة لمن ما زال يوزع بطاقات ورقية: انطباعك الأول أصبح قديماً قبل أن تنطق حتى.`) },
           { h2: "ما هي البطاقة الرقمية الحديثة فعلاً؟", body: p(`البطاقة الرقمية ليست صورة لبطاقتك الورقية. إنها صفحة ويب حية وقابلة للتعديل، تُفتح فوراً على أي هاتف، وتُحفظ في جهات اتصال المستلم بضغطة واحدة، وتتحدث فوراً عندما تغيّر وظيفتك أو رقم هاتفك أو علامتك التجارية. تحمل صورة ملف شخصي، نبذة قصيرة، روابط تواصل موثقة، رابط دفع، حجز مواعيد، معرض أعمال، وحتى فيديو تعريف قصير.
 
-أفضل البطاقات، مثل تلك المصممة بواسطة Cardix، تبدو أقرب لصفحة هبوط شخصية منها لبطاقة عمل: لا تُنسى، تُحفظ فوراً، ويستحيل فقدانها.`) },
+أفضل البطاقات، مثل تلك المصممة بواسطة Cardixn، تبدو أقرب لصفحة هبوط شخصية منها لبطاقة عمل: لا تُنسى، تُحفظ فوراً، ويستحيل فقدانها.`) },
           { h2: "طرق المشاركة الأربع الأساسية", body: p(`كل منصة حديثة تدعم أربع طرق للمشاركة، ويجب أن تستخدمها جميعاً.
 
 1. رابط مباشر — رابط شخصي قصير (cardix.app/yourname) يناسب توقيع البريد أو البايو أو واتساب.
 2. رمز QR — تقرأه كل كاميرا هاتف. اطبعه على الشارات والعبوات وحتى على القمصان.
-3. لمسة NFC — لمسة واحدة بين هاتفك وبطاقة Cardix تفتح البطاقة بلا تطبيق.
+3. لمسة NFC — لمسة واحدة بين هاتفك وبطاقة Cardixn تفتح البطاقة بلا تطبيق.
 4. Apple Wallet وGoogle Wallet — تعيش بطاقتك بجوار بطاقات الطيران والولاء، متاحة حتى بلا إنترنت.`) },
           { h2: "التحليلات: الميزة التي لم يمتلكها الورق أبداً", body: p(`كل مسح وكل حفظ وكل نقرة على رابط اجتماعي تُسجَّل لحظياً. تعرف من يتفاعل ومن أي مدينة، وعلى أي جهاز، وفي أي ساعة. فرق المبيعات تستخدمها لتقييم العملاء المحتملين، والمسوقون يستخدمونها لإثبات عائد الاستثمار على المؤتمرات.
 
-Cardix يوفر التحليلات مجاناً — بينما يفرض المنافسون 15$ شهرياً على نفس الميزة.`) },
+Cardixn يوفر التحليلات مجاناً — بينما يفرض المنافسون 15$ شهرياً على نفس الميزة.`) },
           { h2: "كيف تختار المنصة المناسبة", body: p(`تجاهل قوائم المزايا. احكم على المنصات بثلاثة أشياء: هل تُفتح البطاقة في أقل من ثانية على شبكة 3G ضعيفة؟ هل يحتاج المستلم لتطبيق؟ وهل يمكنك تعديل البطاقة دون كسر البطاقات التي شاركتها مسبقاً؟ إذا كانت الإجابات نعم، فأنت أمام منافس جاد.
 
-Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن المنصة ثنائية اللغة (عربي/إنجليزي) من اليوم الأول.`) },
+Cardixn يفوز في السعر، وجودة التصميم، وحقيقة أن المنصة ثنائية اللغة (عربي/إنجليزي) من اليوم الأول.`) },
           { h2: "الخلاصة", body: p(`إذا كنت تتبادل بيانات الاتصال في عملك، فأنت تمتلك بالفعل بطاقة عمل. السؤال الوحيد في 2026: هل هي عالقة في درج، ملقاة مع كوب قهوة، أم تعيش بشكل دائم في هاتف شخص ما؟ اختر الخيار الثالث.`) },
         ],
       },
@@ -99,7 +99,7 @@ Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن 
     slug: "nfc-vs-qr-which-is-better",
     publishedAt: "2026-02-04",
     updatedAt: "2026-05-22",
-    author: "Cardix Editorial",
+    author: "Cardixn Editorial",
     category: "compare",
     copy: {
       en: {
@@ -114,7 +114,7 @@ Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن 
           { h2: "Reach: QR wins by a landslide", body: p(`Every smartphone camera on Earth reads QR codes natively. NFC is universal on Android since 2015, but Apple only opened NFC tag reading without an app in iOS 14 (2020). Some older iPhones and some entry-level Androids still require a dedicated app. If you need maximum reach — a poster, a magazine ad, a t-shirt — QR is safer.`) },
           { h2: "User experience: NFC feels magical", body: p(`Nothing beats the theatre of tapping two phones together and watching a card fly open. It is the closest thing modern hardware has to a magic trick. In a sales meeting or a networking dinner, NFC creates a moment of shared amazement that a QR scan simply cannot match. This matters more than the tech press admits.`) },
           { h2: "Cost", body: p(`QR codes are free forever. NFC requires a small piece of hardware — an NFC card, sticker, or ring — that costs $10 to $30 per unit. For a team of 500 sales reps, that is $15,000. For a solo consultant, it is $15. Choose accordingly.`) },
-          { h2: "The Cardix answer", body: p(`Every Cardix card ships with a QR code you can download in high resolution for free. NFC cards can be ordered from the dashboard and provisioned with one tap. You do not have to choose — you get both, and they always point to the same living, editable card.`) },
+          { h2: "The Cardixn answer", body: p(`Every Cardixn card ships with a QR code you can download in high resolution for free. NFC cards can be ordered from the dashboard and provisioned with one tap. You do not have to choose — you get both, and they always point to the same living, editable card.`) },
         ],
       },
       ar: {
@@ -129,7 +129,7 @@ Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن 
           { h2: "الوصول: QR يفوز بفارق كبير", body: p(`كل كاميرا هاتف على الأرض تقرأ QR بشكل أصلي. NFC عالمي على أندرويد منذ 2015، لكن آبل فتحته دون تطبيق فقط في iOS 14 (2020). بعض الأجهزة القديمة قد تحتاج تطبيقاً مخصصاً. إذا كنت تريد أقصى وصول — ملصق، إعلان مجلة، قميص — فـQR أضمن.`) },
           { h2: "تجربة المستخدم: NFC يشبه السحر", body: p(`لا شيء يضاهي متعة لمس هاتفين وفتح البطاقة فوراً. إنها أقرب ما وصلت له الأجهزة الحديثة إلى الخدع السحرية. في اجتماع مبيعات أو عشاء عمل، NFC يخلق لحظة إبهار مشتركة لا يستطيع QR منافستها.`) },
           { h2: "التكلفة", body: p(`رموز QR مجانية للأبد. NFC يحتاج قطعة صغيرة من العتاد — بطاقة أو ملصق أو خاتم — تكلف 10 إلى 30 دولاراً. لفريق من 500 موظف مبيعات، هذا 15,000 دولار. لمستشار فردي، هذا 15 دولاراً فقط.`) },
-          { h2: "إجابة Cardix", body: p(`كل بطاقة Cardix تأتي مع رمز QR يمكنك تنزيله بدقة عالية مجاناً. بطاقات NFC تُطلب من لوحة التحكم وتُبرمَج بلمسة واحدة. لست مضطراً للاختيار — تحصل على الاثنين، وكلاهما يوجّه إلى نفس البطاقة الحية القابلة للتعديل.`) },
+          { h2: "إجابة Cardixn", body: p(`كل بطاقة Cardixn تأتي مع رمز QR يمكنك تنزيله بدقة عالية مجاناً. بطاقات NFC تُطلب من لوحة التحكم وتُبرمَج بلمسة واحدة. لست مضطراً للاختيار — تحصل على الاثنين، وكلاهما يوجّه إلى نفس البطاقة الحية القابلة للتعديل.`) },
         ],
       },
     },
@@ -138,7 +138,7 @@ Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن 
     slug: "real-estate-agents-digital-cards",
     publishedAt: "2026-02-20",
     updatedAt: "2026-06-01",
-    author: "Cardix Editorial",
+    author: "Cardixn Editorial",
     category: "case-study",
     copy: {
       en: {
@@ -150,8 +150,8 @@ Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن 
         tags: ["Real Estate", "Sales", "Case Study"],
         sections: [
           { h2: "The lost-lead problem", body: p(`An open house on a good Saturday brings in 25 to 60 visitors. Every visitor hands the agent a scribbled phone number on a sign-in sheet. By Monday, 40% of those numbers are illegible, wrong, or forgotten. A digital business card, tapped from the agent's phone to the visitor's, guarantees the visitor has the agent's contact — and, more importantly, the agent has proof of the exchange in their analytics dashboard.`) },
-          { h2: "Property links inside your card", body: p(`Cardix lets agents attach a "Featured Listings" section to their card. Every visitor who scans the card sees your three hottest properties, complete with photos, price, and a booking link. Some agents report that 30% of listing views now come from card scans, not from Zillow.`) },
-          { h2: "Bilingual is a superpower", body: p(`In markets like Dubai, Miami, London and Toronto, agents work across cultures every day. Cardix ships bilingual by default — Arabic and English. Your card auto-flips RTL for Arabic-speaking buyers. This alone has closed deals that competing agents lost simply because their card looked broken in Arabic.`) },
+          { h2: "Property links inside your card", body: p(`Cardixn lets agents attach a "Featured Listings" section to their card. Every visitor who scans the card sees your three hottest properties, complete with photos, price, and a booking link. Some agents report that 30% of listing views now come from card scans, not from Zillow.`) },
+          { h2: "Bilingual is a superpower", body: p(`In markets like Dubai, Miami, London and Toronto, agents work across cultures every day. Cardixn ships bilingual by default — Arabic and English. Your card auto-flips RTL for Arabic-speaking buyers. This alone has closed deals that competing agents lost simply because their card looked broken in Arabic.`) },
         ],
       },
       ar: {
@@ -163,8 +163,8 @@ Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن 
         tags: ["عقارات", "مبيعات", "دراسة حالة"],
         sections: [
           { h2: "مشكلة فقدان العملاء المحتملين", body: p(`يوم عرض مفتوح جيد يجلب 25 إلى 60 زائراً. كل زائر يكتب رقم هاتف على ورقة تسجيل. بحلول الاثنين، 40% من هذه الأرقام غير مقروءة أو خاطئة أو منسية. بطاقة رقمية، تُلمَس من هاتف الوكيل إلى الزائر، تضمن حصول الزائر على بيانات الوكيل — والأهم، يحصل الوكيل على إثبات التبادل في لوحة تحليلاته.`) },
-          { h2: "روابط العقارات داخل بطاقتك", body: p(`يتيح Cardix للوكلاء إرفاق قسم "عقارات مميزة" في البطاقة. كل زائر يمسح البطاقة يرى أفضل ثلاث عقارات لديك مع الصور والسعر ورابط الحجز. بعض الوكلاء يذكرون أن 30% من مشاهدات العقارات تأتي الآن من مسح البطاقات.`) },
-          { h2: "ثنائية اللغة قوة خارقة", body: p(`في أسواق مثل دبي وميامي ولندن وتورنتو، يعمل الوكلاء عبر ثقافات مختلفة يومياً. Cardix ثنائي اللغة افتراضياً — عربي وإنجليزي. بطاقتك تنقلب تلقائياً من اليمين لليسار للمشترين العرب. هذا وحده أنقذ صفقات خسرها منافسون لأن بطاقتهم بدت مكسورة بالعربية.`) },
+          { h2: "روابط العقارات داخل بطاقتك", body: p(`يتيح Cardixn للوكلاء إرفاق قسم "عقارات مميزة" في البطاقة. كل زائر يمسح البطاقة يرى أفضل ثلاث عقارات لديك مع الصور والسعر ورابط الحجز. بعض الوكلاء يذكرون أن 30% من مشاهدات العقارات تأتي الآن من مسح البطاقات.`) },
+          { h2: "ثنائية اللغة قوة خارقة", body: p(`في أسواق مثل دبي وميامي ولندن وتورنتو، يعمل الوكلاء عبر ثقافات مختلفة يومياً. Cardixn ثنائي اللغة افتراضياً — عربي وإنجليزي. بطاقتك تنقلب تلقائياً من اليمين لليسار للمشترين العرب. هذا وحده أنقذ صفقات خسرها منافسون لأن بطاقتهم بدت مكسورة بالعربية.`) },
         ],
       },
     },
@@ -173,7 +173,7 @@ Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن 
     slug: "how-to-create-digital-business-card",
     publishedAt: "2026-03-08",
     updatedAt: "2026-06-14",
-    author: "Cardix Editorial",
+    author: "Cardixn Editorial",
     category: "howto",
     copy: {
       en: {
@@ -184,10 +184,10 @@ Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن 
         readTime: "6 min read",
         tags: ["How-to", "Tutorial", "Beginners"],
         sections: [
-          { h2: "Step 1 — Sign up with Google", body: p(`Open cardix1.lovable.app on your phone. Tap "Sign in with Google". Cardix uses managed authentication so you never create a new password. Total time: 4 seconds.`) },
+          { h2: "Step 1 — Sign up with Google", body: p(`Open cardix1.lovable.app on your phone. Tap "Sign in with Google". Cardixn uses managed authentication so you never create a new password. Total time: 4 seconds.`) },
           { h2: "Step 2 — Pick a template", body: p(`You will see 19 luxury templates. Swipe through them. Pick one that matches your industry: minimalist for tech, classical for law, bold for creative. You can change it any time without losing your data.`) },
-          { h2: "Step 3 — Fill in your details", body: p(`Name, title, company, phone, email. Then tap the AI Sparkle button — Cardix's Gemini-powered AI writes you a professional bio in one click. Edit it if you like.`) },
-          { h2: "Step 4 — Upload a photo", body: p(`Tap the avatar circle. Pick a photo. Cardix crops and compresses it automatically for retina-quality display on any screen.`) },
+          { h2: "Step 3 — Fill in your details", body: p(`Name, title, company, phone, email. Then tap the AI Sparkle button — Cardixn's Gemini-powered AI writes you a professional bio in one click. Edit it if you like.`) },
+          { h2: "Step 4 — Upload a photo", body: p(`Tap the avatar circle. Pick a photo. Cardixn crops and compresses it automatically for retina-quality display on any screen.`) },
           { h2: "Step 5 — Add social links", body: p(`Choose from 30+ platforms. Each social icon adopts the platform's official brand color. Instagram is pink, LinkedIn is blue, TikTok is black. Automatic and beautiful.`) },
           { h2: "Step 6 — Share", body: p(`Tap Share. You get a public link, a downloadable QR PNG, and a "Copy link" button. Send it to anyone. Done.`) },
         ],
@@ -200,10 +200,10 @@ Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن 
         readTime: "6 دقائق قراءة",
         tags: ["دليل", "شرح", "مبتدئين"],
         sections: [
-          { h2: "الخطوة 1 — سجّل بحساب Google", body: p(`افتح cardix1.lovable.app على هاتفك. اضغط "تسجيل الدخول بـGoogle". يستخدم Cardix مصادقة مُدارة فلا تحتاج كلمة مرور جديدة. الوقت: 4 ثوانٍ.`) },
+          { h2: "الخطوة 1 — سجّل بحساب Google", body: p(`افتح cardix1.lovable.app على هاتفك. اضغط "تسجيل الدخول بـGoogle". يستخدم Cardixn مصادقة مُدارة فلا تحتاج كلمة مرور جديدة. الوقت: 4 ثوانٍ.`) },
           { h2: "الخطوة 2 — اختر قالباً", body: p(`سترى 19 قالباً فاخراً. مرّر بينها. اختر ما يناسب مجالك: بسيط للتقنية، كلاسيكي للقانون، جريء للإبداعي. يمكنك تغييره لاحقاً دون فقد بياناتك.`) },
           { h2: "الخطوة 3 — املأ بياناتك", body: p(`الاسم، المسمى، الشركة، الهاتف، البريد. ثم اضغط زر السحر الذهبي — الذكاء الاصطناعي من Google Gemini يكتب لك نبذة احترافية بضغطة واحدة.`) },
-          { h2: "الخطوة 4 — ارفع صورة", body: p(`اضغط دائرة الصورة. اختر صورة. يقص Cardix ويضغط الصورة تلقائياً لجودة عرض ريتينا على أي شاشة.`) },
+          { h2: "الخطوة 4 — ارفع صورة", body: p(`اضغط دائرة الصورة. اختر صورة. يقص Cardixn ويضغط الصورة تلقائياً لجودة عرض ريتينا على أي شاشة.`) },
           { h2: "الخطوة 5 — أضف روابط التواصل", body: p(`اختر من أكثر من 30 منصة. كل أيقونة تأخذ لون العلامة الرسمي: إنستغرام وردي، لينكدإن أزرق، تيك توك أسود. تلقائي وجميل.`) },
           { h2: "الخطوة 6 — شارك", body: p(`اضغط مشاركة. تحصل على رابط عام، وصورة QR للتنزيل، وزر نسخ الرابط. أرسله لأي شخص. تم.`) },
         ],
@@ -214,7 +214,7 @@ Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن 
     slug: "digital-cards-for-sales-teams",
     publishedAt: "2026-03-25",
     updatedAt: "2026-06-10",
-    author: "Cardix Editorial",
+    author: "Cardixn Editorial",
     category: "guide",
     copy: {
       en: {
@@ -227,7 +227,7 @@ Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن 
         sections: [
           { h2: "The math no VP of Sales wants to hear", body: p(`A rep who attends four events a month meets an average of 32 new people. Roughly 40% of those exchanges rely on the recipient later finding the paper card, typing the number, and initiating contact — which happens for less than half of them. That is 6 lost warm leads per rep per week. For a 50-rep team, over a year, that is 15,600 lost conversations.`) },
           { h2: "The digital card fix", body: p(`When a rep taps NFC or shows a QR, the contact lands directly in the prospect's phone contacts, the rep gets an event logged in their CRM, and both sides receive a follow-up email within an hour. Nothing is left to memory or luck.`) },
-          { h2: "Team rollout in one afternoon", body: p(`Cardix Teams lets a sales ops manager provision branded cards for 500 reps in one afternoon. Central template, per-rep photo, per-rep phone, unified analytics. Reps get their card on Monday, close more on Tuesday.`) },
+          { h2: "Team rollout in one afternoon", body: p(`Cardixn Teams lets a sales ops manager provision branded cards for 500 reps in one afternoon. Central template, per-rep photo, per-rep phone, unified analytics. Reps get their card on Monday, close more on Tuesday.`) },
         ],
       },
       ar: {
@@ -240,7 +240,7 @@ Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن 
         sections: [
           { h2: "الحسابات التي لا يريد نائب المبيعات سماعها", body: p(`مندوب يحضر 4 فعاليات شهرياً يقابل 32 شخصاً جديداً. 40% من هذه التبادلات تعتمد على أن يجد المستلم البطاقة لاحقاً ويكتب الرقم ويبادر بالتواصل — وهذا يحدث لأقل من نصفهم. هذا يعني 6 عملاء دافئين مفقودين لكل مندوب أسبوعياً. لفريق من 50 مندوباً على مدار سنة، هذا 15,600 محادثة ضائعة.`) },
           { h2: "الحل بالبطاقة الرقمية", body: p(`عندما يلمس المندوب NFC أو يعرض QR، تدخل جهة الاتصال مباشرة في هاتف العميل، ويُسجَّل الحدث في CRM، ويستلم الطرفان بريد متابعة خلال ساعة. لا شيء يُترك للذاكرة أو الحظ.`) },
-          { h2: "نشر للفريق في عصر واحد", body: p(`Cardix Teams يتيح لمدير عمليات المبيعات إعداد بطاقات ذات علامة موحدة لـ500 مندوب في عصر واحد. قالب مركزي، صورة لكل مندوب، رقم لكل مندوب، تحليلات موحدة. المندوبون يحصلون على البطاقة الاثنين، ويُغلقون أكثر الثلاثاء.`) },
+          { h2: "نشر للفريق في عصر واحد", body: p(`Cardixn Teams يتيح لمدير عمليات المبيعات إعداد بطاقات ذات علامة موحدة لـ500 مندوب في عصر واحد. قالب مركزي، صورة لكل مندوب، رقم لكل مندوب، تحليلات موحدة. المندوبون يحصلون على البطاقة الاثنين، ويُغلقون أكثر الثلاثاء.`) },
         ],
       },
     },
@@ -249,33 +249,33 @@ Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن 
     slug: "ai-ocr-scan-paper-cards",
     publishedAt: "2026-04-11",
     updatedAt: "2026-06-20",
-    author: "Cardix Editorial",
+    author: "Cardixn Editorial",
     category: "howto",
     copy: {
       en: {
         title: "AI OCR: Turn Paper Business Cards Into Digital Contacts",
-        description: "Snap a photo of any paper business card and Cardix's AI turns it into a saved contact in 2 seconds. Powered by Gemini 2.5.",
+        description: "Snap a photo of any paper business card and Cardixn's AI turns it into a saved contact in 2 seconds. Powered by Gemini 2.5.",
         h1: "AI OCR: Turn Paper Business Cards Into Digital Contacts in Seconds",
         excerpt: "You cannot control what other people hand you. You can control what happens to those paper cards the second you get them.",
         readTime: "7 min read",
         tags: ["AI", "OCR", "Vault"],
         sections: [
-          { h2: "The AI advantage", body: p(`Old OCR (Optical Character Recognition) was 60% accurate on business cards — usable, barely. Modern multimodal AI, like Gemini 2.5 Flash, is 97% accurate, identifies fields correctly (name vs. company vs. title), and even understands Arabic script and mixed-language cards. Cardix uses Gemini under the hood to give you the same accuracy as an expensive enterprise SDK, on the free plan.`) },
+          { h2: "The AI advantage", body: p(`Old OCR (Optical Character Recognition) was 60% accurate on business cards — usable, barely. Modern multimodal AI, like Gemini 2.5 Flash, is 97% accurate, identifies fields correctly (name vs. company vs. title), and even understands Arabic script and mixed-language cards. Cardixn uses Gemini under the hood to give you the same accuracy as an expensive enterprise SDK, on the free plan.`) },
           { h2: "How to scan", body: p(`Open the app, tap the floating scan button, point your camera at any paper card, hold still for one second. The name, company, title, phone, email, address and website are extracted, verified against known patterns, and previewed for you to accept. Add a personal note ("met at Web Summit"), tap save, done.`) },
-          { h2: "The vault", body: p(`Every scanned card lives in your Cardix Vault, searchable by any field, with notes and timestamps. Combined with digital-card capture from other Cardix users, your vault becomes the single source of truth for every professional relationship you have.`) },
+          { h2: "The vault", body: p(`Every scanned card lives in your Cardixn Vault, searchable by any field, with notes and timestamps. Combined with digital-card capture from other Cardixn users, your vault becomes the single source of truth for every professional relationship you have.`) },
         ],
       },
       ar: {
         title: "OCR بالذكاء الاصطناعي: حوّل البطاقات الورقية إلى جهات اتصال رقمية",
-        description: "التقط صورة لأي بطاقة ورقية ويحوّلها ذكاء Cardix إلى جهة اتصال محفوظة خلال ثانيتين. مدعومة بـGemini 2.5.",
+        description: "التقط صورة لأي بطاقة ورقية ويحوّلها ذكاء Cardixn إلى جهة اتصال محفوظة خلال ثانيتين. مدعومة بـGemini 2.5.",
         h1: "OCR بالذكاء الاصطناعي: حوّل البطاقات الورقية إلى جهات اتصال في ثوانٍ",
         excerpt: "لا يمكنك التحكم بما يعطيه لك الآخرون. لكنك تتحكم بما يحدث لتلك البطاقات الورقية لحظة استلامها.",
         readTime: "7 دقائق قراءة",
         tags: ["ذكاء اصطناعي", "OCR", "المحفظة"],
         sections: [
-          { h2: "ميزة الذكاء الاصطناعي", body: p(`OCR القديم كان دقيقاً بنسبة 60% على البطاقات — بالكاد مفيد. الذكاء الاصطناعي متعدد الوسائط الحديث، مثل Gemini 2.5 Flash، دقيق بنسبة 97%، ويحدد الحقول بشكل صحيح (اسم مقابل شركة مقابل مسمى)، ويفهم النص العربي والبطاقات ثنائية اللغة. Cardix يستخدم Gemini ليقدم لك دقة SDK مؤسسي باهظ، على الخطة المجانية.`) },
+          { h2: "ميزة الذكاء الاصطناعي", body: p(`OCR القديم كان دقيقاً بنسبة 60% على البطاقات — بالكاد مفيد. الذكاء الاصطناعي متعدد الوسائط الحديث، مثل Gemini 2.5 Flash، دقيق بنسبة 97%، ويحدد الحقول بشكل صحيح (اسم مقابل شركة مقابل مسمى)، ويفهم النص العربي والبطاقات ثنائية اللغة. Cardixn يستخدم Gemini ليقدم لك دقة SDK مؤسسي باهظ، على الخطة المجانية.`) },
           { h2: "كيف تمسح", body: p(`افتح التطبيق، اضغط زر المسح العائم، وجّه الكاميرا لأي بطاقة، ثبّت ثانية واحدة. يُستخرج الاسم والشركة والمسمى والهاتف والبريد والعنوان والموقع، ويُتحقق منها ضد أنماط معروفة، وتُعرض عليك للقبول. أضف ملاحظة شخصية ("قابلته في Web Summit")، اضغط حفظ، تم.`) },
-          { h2: "المحفظة", body: p(`كل بطاقة ممسوحة تعيش في محفظة Cardix، قابلة للبحث بأي حقل، مع الملاحظات والتاريخ. مع البطاقات الرقمية المحفوظة من مستخدمين آخرين، تصبح محفظتك المصدر الوحيد للحقيقة لكل علاقة مهنية.`) },
+          { h2: "المحفظة", body: p(`كل بطاقة ممسوحة تعيش في محفظة Cardixn، قابلة للبحث بأي حقل، مع الملاحظات والتاريخ. مع البطاقات الرقمية المحفوظة من مستخدمين آخرين، تصبح محفظتك المصدر الوحيد للحقيقة لكل علاقة مهنية.`) },
         ],
       },
     },
@@ -284,7 +284,7 @@ Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن 
     slug: "designing-luxury-business-card",
     publishedAt: "2026-05-02",
     updatedAt: "2026-06-08",
-    author: "Cardix Editorial",
+    author: "Cardixn Editorial",
     category: "guide",
     copy: {
       en: {
@@ -297,9 +297,9 @@ Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن 
         sections: [
           { h2: "Rule 1 — One typeface, two weights", body: p(`Amateurs mix three fonts. Professionals pick one — usually a modern grotesque like Söhne, Inter or SF Pro — and use only two weights: Regular for body, Semibold for name and headings. That's it. The result feels quiet, confident, expensive.`) },
           { h2: "Rule 2 — Give things air", body: p(`On paper cards, designers cram 12 pieces of information onto a 3.5×2-inch rectangle because the substrate is finite. On digital, you have infinite space — use it. Wide margins. Generous line-height. Sections separated by clear vertical rhythm. Air is what luxury feels like.`) },
-          { h2: "Rule 3 — Colour is a discipline", body: p(`Pick one accent color. Use it three times, not fifteen. Black, white, and one bold accent (Cardix's own signature purple #7C34FF, or your brand color) — that is the entire palette. Everything else is neutral.`) },
-          { h2: "Rule 4 — Retina photography or nothing", body: p(`A blurry profile photo destroys every other design decision. Upload the sharpest, best-lit, highest-resolution portrait you have. Cardix auto-optimises for retina display; it cannot invent detail that is not there.`) },
-          { h2: "Rule 5 — Motion, sparingly", body: p(`Cardix's parallax tilt on desktop is a rare exception to "less is more" — because it is subtle, physics-based, and reserved for the hero card. Motion earns its keep only when it reveals something. Avoid gratuitous fades and bouncing icons.`) },
+          { h2: "Rule 3 — Colour is a discipline", body: p(`Pick one accent color. Use it three times, not fifteen. Black, white, and one bold accent (Cardixn's own signature purple #7C34FF, or your brand color) — that is the entire palette. Everything else is neutral.`) },
+          { h2: "Rule 4 — Retina photography or nothing", body: p(`A blurry profile photo destroys every other design decision. Upload the sharpest, best-lit, highest-resolution portrait you have. Cardixn auto-optimises for retina display; it cannot invent detail that is not there.`) },
+          { h2: "Rule 5 — Motion, sparingly", body: p(`Cardixn's parallax tilt on desktop is a rare exception to "less is more" — because it is subtle, physics-based, and reserved for the hero card. Motion earns its keep only when it reveals something. Avoid gratuitous fades and bouncing icons.`) },
         ],
       },
       ar: {
@@ -312,9 +312,9 @@ Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن 
         sections: [
           { h2: "القاعدة 1 — خط واحد ووزنان", body: p(`الهواة يخلطون 3 خطوط. المحترفون يختارون واحداً — عادةً خط حديث مثل Söhne أو Inter أو SF Pro — ويستخدمون وزنين فقط: Regular للنص، Semibold للاسم والعناوين. النتيجة تبدو هادئة وواثقة وفاخرة.`) },
           { h2: "القاعدة 2 — أعطِ العناصر هواءً", body: p(`في البطاقات الورقية يحشر المصممون 12 معلومة في مستطيل 3.5×2 بوصة لأن المساحة محدودة. في الرقمية لديك مساحة لا نهائية — استخدمها. هوامش واسعة، مسافات أسطر سخية، أقسام مفصولة بإيقاع رأسي واضح. الهواء هو ما تشعر به الفخامة.`) },
-          { h2: "القاعدة 3 — اللون انضباط", body: p(`اختر لون تمييز واحداً. استخدمه 3 مرات، لا 15. الأسود والأبيض ولون تمييز جريء واحد (بنفسجي Cardix المميز #7C34FF أو لون علامتك) — هذه كل اللوحة. البقية محايدة.`) },
-          { h2: "القاعدة 4 — تصوير ريتينا أو لا شيء", body: p(`صورة ملف شخصي مشوشة تدمر كل قرارات التصميم. ارفع أوضح وأفضل وأعلى صورة دقة لديك. Cardix يحسّن تلقائياً لعرض ريتينا؛ لكنه لا يخترع تفاصيل غير موجودة.`) },
-          { h2: "القاعدة 5 — الحركة باعتدال", body: p(`الميلان الثلاثي في Cardix على سطح المكتب استثناء نادر لـ"الأقل أكثر" — لأنه خفيف ومبني على الفيزياء ومحصور بالبطاقة الرئيسية. الحركة تكسب مكانها فقط عندما تكشف شيئاً. تجنب التلاشي غير الضروري والأيقونات القافزة.`) },
+          { h2: "القاعدة 3 — اللون انضباط", body: p(`اختر لون تمييز واحداً. استخدمه 3 مرات، لا 15. الأسود والأبيض ولون تمييز جريء واحد (بنفسجي Cardixn المميز #7C34FF أو لون علامتك) — هذه كل اللوحة. البقية محايدة.`) },
+          { h2: "القاعدة 4 — تصوير ريتينا أو لا شيء", body: p(`صورة ملف شخصي مشوشة تدمر كل قرارات التصميم. ارفع أوضح وأفضل وأعلى صورة دقة لديك. Cardixn يحسّن تلقائياً لعرض ريتينا؛ لكنه لا يخترع تفاصيل غير موجودة.`) },
+          { h2: "القاعدة 5 — الحركة باعتدال", body: p(`الميلان الثلاثي في Cardixn على سطح المكتب استثناء نادر لـ"الأقل أكثر" — لأنه خفيف ومبني على الفيزياء ومحصور بالبطاقة الرئيسية. الحركة تكسب مكانها فقط عندما تكشف شيئاً. تجنب التلاشي غير الضروري والأيقونات القافزة.`) },
         ],
       },
     },
@@ -323,7 +323,7 @@ Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن 
     slug: "digital-cards-eco-impact",
     publishedAt: "2026-06-05",
     updatedAt: "2026-06-25",
-    author: "Cardix Editorial",
+    author: "Cardixn Editorial",
     category: "trends",
     copy: {
       en: {
@@ -335,8 +335,8 @@ Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن 
         tags: ["Sustainability", "Environment", "ESG"],
         sections: [
           { h2: "The numbers", body: p(`10 billion cards. 100,000 trees. 900 million litres of water. 100 tons of ink solvent. 88% thrown away within a week. Business cards are the single most-wasted printed object per gram of use on Earth.`) },
-          { h2: "The ESG angle", body: p(`For any company reporting on ESG or Scope 3 emissions, business cards are low-hanging fruit. Switching a 200-person company from paper to digital removes about 240 kg of CO2 equivalent per year — a rounding error in isolation, but a story your ESG report can tell in one line, backed by real data from the Cardix dashboard.`) },
-          { h2: "The Cardix commitment", body: p(`Every Cardix card is served from a green-energy-powered edge network. NFC cards, when ordered, are shipped in FSC-certified paper packaging. We do not ship plastic pouches, foam inserts, or promotional junk.`) },
+          { h2: "The ESG angle", body: p(`For any company reporting on ESG or Scope 3 emissions, business cards are low-hanging fruit. Switching a 200-person company from paper to digital removes about 240 kg of CO2 equivalent per year — a rounding error in isolation, but a story your ESG report can tell in one line, backed by real data from the Cardixn dashboard.`) },
+          { h2: "The Cardixn commitment", body: p(`Every Cardixn card is served from a green-energy-powered edge network. NFC cards, when ordered, are shipped in FSC-certified paper packaging. We do not ship plastic pouches, foam inserts, or promotional junk.`) },
         ],
       },
       ar: {
@@ -348,8 +348,8 @@ Cardix يفوز في السعر، وجودة التصميم، وحقيقة أن 
         tags: ["استدامة", "بيئة", "ESG"],
         sections: [
           { h2: "الأرقام", body: p(`10 مليارات بطاقة. 100,000 شجرة. 900 مليون لتر ماء. 100 طن مذيبات حبر. 88% تُرمى خلال أسبوع. البطاقات الورقية هي الشيء المطبوع الأكثر هدراً لكل غرام استخدام على الأرض.`) },
-          { h2: "زاوية ESG", body: p(`لأي شركة تُعد تقارير ESG أو انبعاثات Scope 3، البطاقات ثمرة منخفضة. تحويل شركة من 200 شخص من الورق إلى الرقمي يزيل حوالي 240 كغ CO2 سنوياً — رقم صغير منفرداً، لكنه قصة يخبرها تقرير ESG في سطر واحد، مدعوماً ببيانات حقيقية من لوحة Cardix.`) },
-          { h2: "التزام Cardix", body: p(`كل بطاقة Cardix تُقدَّم من شبكة حافة تعمل بالطاقة الخضراء. بطاقات NFC عند الطلب تُشحن في تغليف ورقي معتمد FSC. لا نشحن أكياس بلاستيكية أو حشوات فوم أو قمامة ترويجية.`) },
+          { h2: "زاوية ESG", body: p(`لأي شركة تُعد تقارير ESG أو انبعاثات Scope 3، البطاقات ثمرة منخفضة. تحويل شركة من 200 شخص من الورق إلى الرقمي يزيل حوالي 240 كغ CO2 سنوياً — رقم صغير منفرداً، لكنه قصة يخبرها تقرير ESG في سطر واحد، مدعوماً ببيانات حقيقية من لوحة Cardixn.`) },
+          { h2: "التزام Cardixn", body: p(`كل بطاقة Cardixn تُقدَّم من شبكة حافة تعمل بالطاقة الخضراء. بطاقات NFC عند الطلب تُشحن في تغليف ورقي معتمد FSC. لا نشحن أكياس بلاستيكية أو حشوات فوم أو قمامة ترويجية.`) },
         ],
       },
     },

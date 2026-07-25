@@ -7,7 +7,7 @@ import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/$lang/_authenticated/cards/new")({
-  head: () => ({ meta: [{ title: "New card — Cardix" }] }),
+  head: () => ({ meta: [{ title: "New card — Cardixn" }] }),
   component: NewCard,
 });
 

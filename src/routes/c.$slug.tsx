@@ -33,10 +33,10 @@ import QRCode from "qrcode";
 export const Route = createFileRoute("/c/$slug")({
   head: ({ params }) => ({
     meta: [
-      { title: `${params.slug} — Cardix` },
-      { name: "description", content: "A digital business card on Cardix." },
-      { property: "og:title", content: `${params.slug} — Cardix` },
-      { property: "og:description", content: "Digital business card by Cardix." },
+      { title: `${params.slug} — Cardixn` },
+      { name: "description", content: "A digital business card on Cardixn." },
+      { property: "og:title", content: `${params.slug} — Cardixn` },
+      { property: "og:description", content: "Digital business card by Cardixn." },
       { property: "og:type", content: "profile" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -385,7 +385,7 @@ function PublicCard() {
         </div>
 
         {isAuthed ? (
-          <Link to="/dashboard" className="flex items-center gap-2" aria-label="Cardix">
+          <Link to="/dashboard" className="flex items-center gap-2" aria-label="Cardixn">
             <span
               aria-hidden
               className="inline-block h-7 w-7"
@@ -405,7 +405,7 @@ function PublicCard() {
             <span className="text-[13px] font-semibold tracking-[0.32em]" style={{ color: accent }}>CARDIX</span>
           </Link>
         ) : (
-          <a href="/" className="flex items-center gap-2" aria-label="Cardix">
+          <a href="/" className="flex items-center gap-2" aria-label="Cardixn">
             <span
               aria-hidden
               className="inline-block h-7 w-7"
@@ -629,7 +629,7 @@ function PublicCard() {
               href="/"
               className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground hover:text-foreground"
             >
-              Powered by Cardix
+              Powered by Cardixn
             </a>
           </div>
         </footer>

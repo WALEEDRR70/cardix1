@@ -16,9 +16,9 @@ import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
 export const Route = createFileRoute("/$lang/_authenticated/vault/$id")({
   head: () => ({
     meta: [
-      { title: "Card details — Cardix Vault" },
-      { name: "description", content: "Full details of a saved business card in your Cardix vault." },
-      { property: "og:title", content: "Card details — Cardix Vault" },
+      { title: "Card details — Cardixn Vault" },
+      { name: "description", content: "Full details of a saved business card in your Cardixn vault." },
+      { property: "og:title", content: "Card details — Cardixn Vault" },
       { property: "og:description", content: "Saved business card details." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

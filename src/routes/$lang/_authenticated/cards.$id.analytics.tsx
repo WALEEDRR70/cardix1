@@ -9,8 +9,8 @@ import { useMemo } from "react";
 export const Route = createFileRoute("/$lang/_authenticated/cards/$id/analytics")({
   head: () => ({
     meta: [
-      { title: "Card analytics — Cardix" },
-      { name: "description", content: "See how people interact with your Cardix digital business card." },
+      { title: "Card analytics — Cardixn" },
+      { name: "description", content: "See how people interact with your Cardixn digital business card." },
     ],
   }),
   component: Analytics,

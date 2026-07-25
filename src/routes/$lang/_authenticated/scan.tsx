@@ -16,9 +16,9 @@ import { NoteDialog } from "@/components/NoteDialog";
 export const Route = createFileRoute("/$lang/_authenticated/scan")({
   head: () => ({
     meta: [
-      { title: "Scan a card — Cardix" },
-      { name: "description", content: "Scan any paper business card. Cardix AI extracts contacts in seconds." },
-      { property: "og:title", content: "Scan a card — Cardix" },
+      { title: "Scan a card — Cardixn" },
+      { name: "description", content: "Scan any paper business card. Cardixn AI extracts contacts in seconds." },
+      { property: "og:title", content: "Scan a card — Cardixn" },
       { property: "og:description", content: "AI-powered paper business card scanner." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -228,7 +228,7 @@ function ScanPage() {
                 className="flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-semibold text-accent-foreground shadow-glow disabled:opacity-60 lg:py-4"
                 style={{ background: "var(--gradient-gold)" }}
               >
-                {qrBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : <QrCode className="h-4 w-4 lg:h-5 lg:w-5" />} {t.scanQrCardix}
+                {qrBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : <QrCode className="h-4 w-4 lg:h-5 lg:w-5" />} {t.scanQrCardixn}
               </button>
               <button
                 onClick={() => cameraRef.current?.click()}

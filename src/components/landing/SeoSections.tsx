@@ -77,19 +77,19 @@ function WhyDigital({ c }: { c: SeoContent }) {
   );
 }
 
-/* -------- Why Cardix -------- */
-function WhyCardix({ c }: { c: SeoContent }) {
+/* -------- Why Cardixn -------- */
+function WhyCardixn({ c }: { c: SeoContent }) {
   const icons = [Sparkles, Palette, ShieldCheck, Globe2, BarChart3, Rocket];
   return (
     <section className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-[1200px] px-5 lg:px-10">
         <SectionHeader
-          eyebrow={c.whyCardix.eyebrow}
-          title={<>{c.whyCardix.title[0]}<Accent>{c.whyCardix.title[1]}</Accent></>}
-          sub={c.whyCardix.sub}
+          eyebrow={c.whyCardixn.eyebrow}
+          title={<>{c.whyCardixn.title[0]}<Accent>{c.whyCardixn.title[1]}</Accent></>}
+          sub={c.whyCardixn.sub}
         />
         <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {c.whyCardix.pillars.map((p, i) => {
+          {c.whyCardixn.pillars.map((p, i) => {
             const Icon = icons[i] ?? Sparkles;
             return (
               <GlassCard key={p.title}>
@@ -187,7 +187,7 @@ function DeepFeatures({ c }: { c: SeoContent }) {
         <div className="h-3 w-5/6 rounded-full bg-muted/60" />
         <div className="h-3 w-2/3 rounded-full bg-muted/60" />
         <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-3 py-1 text-[11px] text-muted-foreground">
-          <Sparkles className="h-3 w-3 text-accent" /> Cardix AI
+          <Sparkles className="h-3 w-3 text-accent" /> Cardixn AI
         </div>
       </div>
     ),
@@ -620,7 +620,7 @@ export function SeoSections({ authed }: { authed: boolean | null }) {
   return (
     <div className="relative">
       <WhyDigital c={c} />
-      <WhyCardix c={c} />
+      <WhyCardixn c={c} />
       <DeepFeatures c={c} />
       <ComparisonPaper c={c} />
       <ComparisonApps c={c} />

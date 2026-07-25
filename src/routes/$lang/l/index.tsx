@@ -8,7 +8,7 @@ export const Route = createFileRoute("/$lang/l/")({
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}/l`;
     const isAr = lang === "ar";
-    const title = isAr ? "دليل البطاقات الرقمية — Cardix" : "The Digital Business Card Guide — Cardix";
+    const title = isAr ? "دليل البطاقات الرقمية — Cardixn" : "The Digital Business Card Guide — Cardixn";
     const description = isAr
       ? "دليل شامل يغطي كل ما تحتاج معرفته عن البطاقات الرقمية و QR و NFC و OCR. عشرات الأدلة المتخصصة."
       : "The complete guide to digital business cards, QR, NFC, OCR and modern networking. Dozens of expert articles.";
@@ -41,7 +41,7 @@ function HubPage() {
     <div dir={rtl ? "rtl" : "ltr"} className="min-h-screen bg-background text-foreground">
       <section className="border-b border-border/40 py-20 text-center">
         <div className="mx-auto max-w-3xl px-6">
-          <p className="text-xs uppercase tracking-widest text-primary/80 mb-3">Cardix</p>
+          <p className="text-xs uppercase tracking-widest text-primary/80 mb-3">Cardixn</p>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
             {isAr ? "الدليل الشامل للبطاقات الرقمية" : "The Complete Digital Card Guide"}
           </h1>
