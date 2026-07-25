@@ -34,12 +34,11 @@ function HubPage() {
   const { lang } = Route.useParams();
   const locale = isSupportedLocale(lang) ? lang : DEFAULT_LOCALE;
   const isAr = locale === "ar";
-  const rtl = isRtl(locale);
   const byCat = getLandingPagesByCategory();
   const cats: LandingCategory[] = ["app", "qr", "nfc", "ocr", "share", "templates", "compare"];
 
   return (
-    <div dir={rtl ? "rtl" : "ltr"} className="min-h-screen bg-background text-foreground">
+    <MarketingLayout lang={locale}>
       <section className="border-b border-border/40 py-20 text-center">
         <div className="mx-auto max-w-3xl px-6">
           <p className="text-xs uppercase tracking-widest text-primary/80 mb-3">Cardixn</p>
