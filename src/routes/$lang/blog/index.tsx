@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@/lib/nav";
-import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale, isRtl } from "@/i18n/config";
+import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } from "@/i18n/config";
+import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { getAllPosts, getPostCopy } from "@/i18n/blog-posts";
 import { ArrowRight, Calendar, Clock } from "lucide-react";
 
