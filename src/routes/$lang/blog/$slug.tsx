@@ -1,6 +1,7 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { Link } from "@/lib/nav";
-import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale, isRtl } from "@/i18n/config";
+import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } from "@/i18n/config";
+import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { getPost, getPostCopy, getAllPosts } from "@/i18n/blog-posts";
 import { ArrowRight, Calendar, Clock } from "lucide-react";
 
@@ -73,14 +74,13 @@ export const Route = createFileRoute("/$lang/blog/$slug")({
 function BlogPostPage() {
   const { lang, slug } = Route.useParams();
   const locale = isSupportedLocale(lang) ? lang : DEFAULT_LOCALE;
-  const rtl = isRtl(locale);
   const post = getPost(slug)!;
   const c = getPostCopy(post, locale);
   const isAr = locale === "ar";
   const related = getAllPosts().filter((p) => p.slug !== slug).slice(0, 3);
 
   return (
-    <div dir={rtl ? "rtl" : "ltr"} className="min-h-screen bg-background text-foreground">
+    <MarketingLayout lang={locale}>
       <article className="mx-auto max-w-3xl px-6 py-16 md:py-24">
         <Link to="/blog" className="text-xs uppercase tracking-widest text-primary/80 hover:text-primary">
           ← Cardixn · {isAr ? "المدونة" : "Blog"}
@@ -135,6 +135,6 @@ function BlogPostPage() {
           </div>
         </section>
       )}
-    </div>
+    </MarketingLayout>
   );
 }

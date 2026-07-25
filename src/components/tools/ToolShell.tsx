@@ -1,7 +1,7 @@
 import { Link } from "@/lib/nav";
 import { ArrowRight } from "lucide-react";
 import type { Locale } from "@/i18n/config";
-import { isRtl } from "@/i18n/config";
+import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 
 export function ToolShell({
   lang, title, subtitle, intro, children, faqs,
@@ -13,10 +13,9 @@ export function ToolShell({
   children: React.ReactNode;
   faqs?: { q: string; a: string }[];
 }) {
-  const rtl = isRtl(lang);
   const isAr = lang === "ar";
   return (
-    <div dir={rtl ? "rtl" : "ltr"} className="min-h-screen bg-background text-foreground">
+    <MarketingLayout lang={lang}>
       <section className="relative overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.18),transparent_60%)]" />
         <div className="relative mx-auto max-w-4xl px-6 py-16 md:py-24">
@@ -63,6 +62,6 @@ export function ToolShell({
           </Link>
         </div>
       </section>
-    </div>
+    </MarketingLayout>
   );
 }

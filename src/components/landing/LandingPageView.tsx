@@ -3,17 +3,16 @@ import { ArrowRight, Check, Sparkles } from "lucide-react";
 import type { LandingCopy } from "@/i18n/landing-pages";
 import { CATEGORY_LABEL, LANDING_PAGES, type LandingCategory } from "@/i18n/landing-pages";
 import type { Locale } from "@/i18n/config";
-import { isRtl } from "@/i18n/config";
+import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 
 export function LandingPageView({
   copy, lang, category, slug,
 }: { copy: LandingCopy; lang: Locale; category: LandingCategory; slug: string }) {
-  const rtl = isRtl(lang);
   const catLabel = CATEGORY_LABEL[category][lang === "ar" ? "ar" : "en"];
   const related = LANDING_PAGES.filter((p) => p.category === category && p.slug !== slug).slice(0, 4);
 
   return (
-    <div dir={rtl ? "rtl" : "ltr"} className="min-h-screen bg-background text-foreground">
+    <MarketingLayout lang={lang}>
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.15),transparent_60%)]" />
@@ -123,6 +122,6 @@ export function LandingPageView({
           </Link>
         </div>
       </section>
-    </div>
+    </MarketingLayout>
   );
 }

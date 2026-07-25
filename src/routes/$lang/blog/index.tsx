@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@/lib/nav";
-import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale, isRtl } from "@/i18n/config";
+import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } from "@/i18n/config";
+import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { getAllPosts, getPostCopy } from "@/i18n/blog-posts";
 import { ArrowRight, Calendar, Clock } from "lucide-react";
 
@@ -45,12 +46,11 @@ export const Route = createFileRoute("/$lang/blog/")({
 function BlogIndex() {
   const { lang } = Route.useParams();
   const locale = isSupportedLocale(lang) ? lang : DEFAULT_LOCALE;
-  const rtl = isRtl(locale);
   const posts = getAllPosts();
   const isAr = locale === "ar";
 
   return (
-    <div dir={rtl ? "rtl" : "ltr"} className="min-h-screen bg-background text-foreground">
+    <MarketingLayout lang={locale}>
       <section className="relative overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.18),transparent_60%)]" />
         <div className="relative mx-auto max-w-5xl px-6 py-20 md:py-28">
@@ -96,6 +96,6 @@ function BlogIndex() {
           })}
         </div>
       </section>
-    </div>
+    </MarketingLayout>
   );
 }
