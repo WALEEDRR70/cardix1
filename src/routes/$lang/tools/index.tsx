@@ -77,6 +77,6 @@ function ToolsHub() {
           );
         })}
       </section>
-    </div>
+    </MarketingLayout>
   );
 }
