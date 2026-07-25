@@ -8,4 +8,4 @@ Disallow: /*/cards/
 Disallow: /auth
 Disallow: /*/auth
 
-Sitemap: https://cardix1.lovable.app/sitemap.xml
+Sitemap: https://cardixn.com/sitemap.xml
