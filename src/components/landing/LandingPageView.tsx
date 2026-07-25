@@ -122,6 +122,6 @@ export function LandingPageView({
           </Link>
         </div>
       </section>
-    </div>
+    </MarketingLayout>
   );
 }
