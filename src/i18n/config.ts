@@ -8,7 +8,7 @@ export type Locale = (typeof SUPPORTED_LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = "en";
 export const RTL_LOCALES: readonly Locale[] = ["ar"];
 
-export const SITE_ORIGIN = "https://cardix1.lovable.app";
+export const SITE_ORIGIN = "https://cardixn.com";
 
 export const LOCALE_META: Record<Locale, {
   nativeName: string;
