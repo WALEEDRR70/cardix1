@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@/lib/nav";
-import { SITE_ORIGIN, DEFAULT_LOCALE, isSupportedLocale, isRtl, SUPPORTED_LOCALES } from "@/i18n/config";
+import { SITE_ORIGIN, DEFAULT_LOCALE, isSupportedLocale, SUPPORTED_LOCALES } from "@/i18n/config";
 import { getLandingPagesByCategory, CATEGORY_LABEL, type LandingCategory } from "@/i18n/landing-pages";
+import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 
 export const Route = createFileRoute("/$lang/l/")({
   head: ({ params }) => {
