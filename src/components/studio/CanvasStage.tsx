@@ -535,8 +535,11 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
                 transform: `rotate(${n.rot}deg)`,
                 opacity: n.hidden ? 0 : n.opacity,
                 cursor: n.locked ? "default" : "move",
-                boxShadow: n.style.shadow ?? undefined,
-                filter: n.style.glow ? `drop-shadow(0 0 18px ${n.style.glow})` : undefined,
+                filter: [
+                  n.style.shadow ? toDropShadow(n.style.shadow) : null,
+                  n.style.glow ? `drop-shadow(0 0 18px ${n.style.glow})` : null,
+                ].filter(Boolean).join(" ") || undefined,
+
               }}
             >
               {editingId === n.id ? (
