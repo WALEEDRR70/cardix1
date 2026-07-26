@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CompanyShell, SectionPlaceholder } from "@/components/company/CompanyShell";
+import { CompanyShell } from "@/components/company/CompanyShell";
+import { QrTab } from "@/components/company/reach";
 import { useCompany } from "@/lib/company-context";
 import { useWs } from "@/lib/workspace";
 
@@ -10,7 +11,7 @@ function Page() {
   const { w } = useWs();
   return (
     <CompanyShell company={company} role={role} title={w.qrManager} subtitle={company.name}>
-      <SectionPlaceholder label={w.qrManager} />
+      <QrTab company={company} />
     </CompanyShell>
   );
 }
