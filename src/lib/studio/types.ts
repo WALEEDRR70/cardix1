@@ -31,6 +31,11 @@ export type NodeStyle = {
   svgFill?: string | null;
   svgStroke?: string | null;
   svgStrokeWidth?: number | null;
+  /** Per-color remap of the original artwork ("none" = transparent). */
+  svgColorMap?: Record<string, string> | null;
+  /** Drops the full-bleed background rectangle inside the artwork. */
+  svgRemoveBg?: boolean;
+
 
 };
 

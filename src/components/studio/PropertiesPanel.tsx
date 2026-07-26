@@ -6,6 +6,8 @@ import { useStudio } from "@/lib/studio/store";
 import { CARD_SIZES, PLACEHOLDERS, type ImageSource } from "@/lib/studio/types";
 import { uploadStudioImage } from "@/lib/studio/upload";
 import { isSvgSrc } from "@/lib/studio/svg";
+import { SvgPalette } from "@/components/studio/SvgPalette";
+
 
 import { GradientEditor } from "@/components/studio/GradientEditor";
 
@@ -214,7 +216,14 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
               </label>
               {s.svgInline !== false && (
                 <>
-                  <Field label={ar ? "لون التعبئة" : "Fill color"}>
+                  <SvgPalette src={n.src} style={s} onStyle={st} ar={ar} />
+                  <p className="text-[10px] leading-relaxed text-muted-foreground">
+                    {ar
+                      ? "التحكم الشامل أدناه يغيّر كل أجزاء الشعار دفعة واحدة — استخدم ألوان الشعار بالأعلى للتحكم الدقيق."
+                      : "The global controls below repaint every part at once — use the artwork colors above for precise control."}
+                  </p>
+                  <Field label={ar ? "لون التعبئة (شامل)" : "Fill color (global)"}>
+
                     <div className="flex gap-2">
                       <input
                         type="color"

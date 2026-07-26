@@ -11,7 +11,14 @@ const SNAP_TOLERANCE = 6;
 function ImageNode({ n, values }: { n: StudioNode; values?: Record<string, string> }) {
   const s = n.style;
   const src = resolveImageSrc(n, values);
-  const inline = useInlineSvg(src, { fill: s.svgFill, stroke: s.svgStroke, strokeWidth: s.svgStrokeWidth });
+  const inline = useInlineSvg(src, {
+    fill: s.svgFill,
+    stroke: s.svgStroke,
+    strokeWidth: s.svgStrokeWidth,
+    colorMap: s.svgColorMap,
+    removeBg: s.svgRemoveBg,
+  });
+
   const svg = isSvgSrc(src) && s.svgInline !== false ? inline : null;
 
 
