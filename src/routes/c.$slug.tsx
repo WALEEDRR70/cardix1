@@ -100,9 +100,12 @@ export function PublicCardView({ slug }: { slug: string }) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("cards")
-        .select("*")
+        .select(
+          "id, slug, name, title, company, bio, phone, whatsapp, email, website, address, avatar_url, cover_url, accent_color, template, socials, is_published, is_active, is_verified, card_type, company_id, department_id, extension, working_hours, languages",
+        )
         .eq("slug", slug)
         .eq("is_published", true)
+        .eq("is_active", true)
         .maybeSingle();
       if (error) throw error;
       if (!data) throw notFound();
@@ -113,11 +116,23 @@ export function PublicCardView({ slug }: { slug: string }) {
   useEffect(() => {
     if (!card) return;
     supabase.from("card_events").insert({ card_id: card.id, event_type: "view" });
-    supabase.auth.getUser().then(({ data }) => {
+    supabase.auth.getUser().then(async ({ data }) => {
       setIsAuthed(!!data.user);
-      setIsOwner(!!data.user && data.user.id === (card as CardRow & { user_id: string }).user_id);
+      if (!data.user) {
+        setIsOwner(false);
+        return;
+      }
+      // Ownership is verified against the base table (only the owner can read it there)
+      const { data: own } = await supabase
+        .from("cards")
+        .select("id")
+        .eq("id", card.id)
+        .eq("user_id", data.user.id)
+        .maybeSingle();
+      setIsOwner(!!own);
     });
   }, [card]);
+
 
   // 3D tilt on desktop
   useEffect(() => {
