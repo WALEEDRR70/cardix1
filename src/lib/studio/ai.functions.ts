@@ -1,5 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
+import { normalizeLayout, type AiLayout, type AiRect } from "./layout";
 import { z } from "zod";
+
+export type { AiLayout, AiRect };
+
 
 const Input = z.object({
   /** data URL of the uploaded business card image */
