@@ -94,13 +94,15 @@ function MarketingNav() {
 function MarketingFooter() {
   const { t } = useI18n();
   const productLinks = [
+    { to: "/features", label: "Features" },
+    { to: "/pricing", label: "Pricing" },
     { to: "/l/digital-business-card", label: "Digital Business Card" },
     { to: "/l/nfc-business-card", label: "NFC Business Card" },
     { to: "/l/qr-business-card", label: "QR Business Card" },
     { to: "/l/business-card-scanner", label: "Card Scanner (OCR)" },
     { to: "/l/business-card-templates", label: "Templates" },
-    { to: "/l/luxury-business-card", label: "Luxury Cards" },
   ];
+
   const toolLinks = [
     { to: "/tools/qr-generator", label: "QR Code Generator" },
     { to: "/tools/vcard-generator", label: "vCard (.vcf) Generator" },
