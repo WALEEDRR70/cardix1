@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useNavigate, Link } from "@/lib/nav";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -106,17 +106,38 @@ function OnboardingWizard() {
     [w],
   );
 
+  const pendingSlug = slugify(form.slug || form.name);
+
+  const slugOptions = (slug: string) => ({
+    queryKey: ["company-slug-available", slug],
+    queryFn: async () => {
+      const { data } = await supabase.from("companies").select("id").eq("slug", slug).maybeSingle();
+      return !data;
+    },
+    staleTime: 60_000,
+  });
+
+  // Preload the slug availability check while the user is still typing on
+  // step 0, so pressing "next" advances instantly instead of waiting.
+  useEffect(() => {
+    if (step !== 0 || pendingSlug.length < 2) return;
+    const t = setTimeout(() => {
+      void qc.prefetchQuery(slugOptions(pendingSlug));
+    }, 300);
+    return () => clearTimeout(t);
+  }, [step, pendingSlug, qc]);
+
   async function goNext() {
     setSlugError(null);
     if (step === 0) {
-      const slug = slugify(form.slug || form.name);
+      const slug = pendingSlug;
       const parsed = identitySchema.safeParse({ ...form, slug });
       if (!parsed.success) {
         toast.error(parsed.error.issues[0]?.message ?? "Invalid input");
         return;
       }
-      const { data: taken } = await supabase.from("companies").select("id").eq("slug", slug).maybeSingle();
-      if (taken) {
+      const available = await qc.ensureQueryData(slugOptions(slug));
+      if (!available) {
         setSlugError(w.slugTaken);
         return;
       }
@@ -132,6 +153,7 @@ function OnboardingWizard() {
     }
     setStep((s) => Math.min(s + 1, steps.length - 1));
   }
+
 
   async function create() {
     setBusy(true);
