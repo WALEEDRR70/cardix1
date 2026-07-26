@@ -173,7 +173,28 @@ function LayersPanel({ ar }: { ar: boolean }) {
             </li>
           );
         })}
+        <li>
+          <div
+            onClick={() => dispatch({ t: "select", ids: [] })}
+            className={cn(
+              "mt-1 flex cursor-pointer items-center gap-2 rounded-lg border border-dashed border-border/60 px-2 py-1.5",
+              sel.length === 0 ? "bg-accent/20 text-foreground" : "text-muted-foreground hover:bg-muted/40",
+            )}
+          >
+            <ImageIcon className="h-3.5 w-3.5 shrink-0 opacity-60" />
+            <span className="flex-1 truncate">{ar ? "الخلفية" : "Background"}</span>
+            <span
+              className="h-4 w-6 shrink-0 rounded border border-border/60"
+              style={{
+                background: state.doc.background.gradient ?? state.doc.background.color,
+                backgroundImage: state.doc.background.image ? `url(${state.doc.background.image})` : undefined,
+                backgroundSize: "cover",
+              }}
+            />
+          </div>
+        </li>
       </ul>
+
     </div>
   );
 }
