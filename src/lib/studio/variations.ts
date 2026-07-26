@@ -198,9 +198,23 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
     const tone = (role: string) =>
       role === "name" ? fg : role === "title" ? primary : muted;
 
-    for (const b of blocks) {
+    // sample copy used only to size the type so real content never overflows its box
+    const SAMPLE: Record<string, string> = {
+      name: "Sara Al-Amin", title: "Creative Director", company: "Cardixn",
+      tagline: a.tagline ?? "Cardixn", phone: "+971 50 000 0000",
+      email: "hello@cardixn.com", website: "cardixn.com", address: "Dubai, UAE",
+    };
+
+    type Placed = { x: number; y: number; w: number; h: number };
+    const placedText: Placed[] = [];
+
+    const textBlocks = blocks
+      .filter((b) => VALUE[b.role] !== undefined)
+      .sort((p, q) => p.y - q.y);
+    const others = blocks.filter((b) => VALUE[b.role] === undefined);
+
+    for (const b of others) {
       const bx = PX(b.x), by = PY(b.y), bw = Math.max(4, PX(b.w)), bh = Math.max(4, PY(b.h));
-      const align = b.align ?? (rtl ? "right" : "left");
 
       if (b.role === "logo") {
         push(node("image", { name: "Logo", imageSource: "logo", x: bx, y: by, w: bw, h: bh, style: { radius: Math.round(short * 0.012) } }));
@@ -208,8 +222,10 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
       }
       if (b.role === "photo") {
         const round = Math.abs(bw - bh) / Math.max(bw, bh) < 0.15;
+        const side = round ? Math.round((bw + bh) / 2) : 0;
         push(node("image", {
-          name: "Photo", imageSource: "employee", x: bx, y: by, w: bw, h: bh,
+          name: "Photo", imageSource: "employee", x: bx, y: by,
+          w: side || bw, h: side || bh,
           style: { radius: round ? 999 : Math.round(short * 0.02), borderWidth: 2, borderColor: `${primary}88` },
         }));
         continue;
@@ -229,25 +245,46 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
             color: "#ffffff", radius: 999, fontSize: Math.round(bh * 0.36), fontWeight: 600, align: "center",
           },
         }));
-        continue;
       }
-      if (b.role === "custom") continue;
+    }
 
-      const size = Math.round(((b.sizePct ?? 3) / 100) * short * 1.35);
+    for (const b of textBlocks) {
+      const bx = PX(b.x), bw = Math.max(4, PX(b.w));
+      let by = PY(b.y);
+      const bh = Math.max(4, PY(b.h));
+      const align = b.align ?? (rtl ? "right" : "left");
+
+      // fit the type inside its measured box: never taller than the box,
+      // never wider than the column (approx. 0.55em per character)
+      const chars = Math.max(6, (SAMPLE[b.role] ?? "").length);
+      const raw = ((b.sizePct ?? 3) / 100) * short * 1.35;
+      const size = Math.max(9, Math.round(Math.min(raw, bh * 0.82, bw / (chars * 0.55))));
+      const h = Math.max(bh, Math.round(size * 1.3));
+
+      // push the line down when it would collide with an already placed line
+      for (const p of placedText) {
+        const overlapX = bx < p.x + p.w && p.x < bx + bw;
+        const overlapY = by < p.y + p.h && p.y < by + h;
+        if (overlapX && overlapY) by = p.y + p.h + Math.round(short * 0.012);
+      }
+      by = Math.min(by, H - h - Math.round(short * 0.02));
+      placedText.push({ x: bx, y: by, w: bw, h });
+
       push(node("text", {
         name: LABEL[b.role] ?? b.role,
         text: VALUE[b.role] ?? "",
-        x: bx, y: by, w: bw, h: Math.max(bh, Math.round(size * 1.25)),
+        x: bx, y: by, w: bw, h,
         style: {
-          fontSize: Math.max(9, size),
+          fontSize: size,
           fontWeight: b.weight ?? (b.role === "name" ? 700 : b.role === "title" ? 600 : 400),
           color: light ? (b.role === "name" ? fg : muted) : (b.color ?? tone(b.role)),
           letterSpacing: b.letterSpacing ?? 0,
-          lineHeight: 1.25,
+          lineHeight: 1.2,
           align,
         },
       }));
     }
+
 
     // guarantee the essentials exist even if the scan had none
     if (!block("qr")) {
