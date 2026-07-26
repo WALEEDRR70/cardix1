@@ -14,6 +14,41 @@ export type Database = {
   }
   public: {
     Tables: {
+      card_design_versions: {
+        Row: {
+          card_id: string
+          created_at: string
+          design: Json
+          id: string
+          label: string | null
+          user_id: string
+        }
+        Insert: {
+          card_id: string
+          created_at?: string
+          design: Json
+          id?: string
+          label?: string | null
+          user_id: string
+        }
+        Update: {
+          card_id?: string
+          created_at?: string
+          design?: Json
+          id?: string
+          label?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "card_design_versions_card_id_fkey"
+            columns: ["card_id"]
+            isOneToOne: false
+            referencedRelation: "cards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       card_events: {
         Row: {
           card_id: string
@@ -68,6 +103,7 @@ export type Database = {
           created_at: string
           custom_values: Json
           department_id: string | null
+          design: Json | null
           email: string | null
           extension: string | null
           id: string
@@ -100,6 +136,7 @@ export type Database = {
           created_at?: string
           custom_values?: Json
           department_id?: string | null
+          design?: Json | null
           email?: string | null
           extension?: string | null
           id?: string
@@ -132,6 +169,7 @@ export type Database = {
           created_at?: string
           custom_values?: Json
           department_id?: string | null
+          design?: Json | null
           email?: string | null
           extension?: string | null
           id?: string
