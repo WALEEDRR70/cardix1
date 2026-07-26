@@ -78,7 +78,7 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
   }
 
   // ---- identity layer (placeholders, always editable) ----
-  const photoY = key === "corporate" ? 150 : key === "centered" ? 120 : 120;
+  const photoY = key === "corporate" ? 150 : 120;
   push(node("image", {
     name: "Photo",
     x: key === "creative" ? CARD_W - 220 : PAD,
