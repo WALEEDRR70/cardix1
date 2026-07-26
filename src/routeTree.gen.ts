@@ -35,6 +35,7 @@ import { Route as LangAuthenticatedVaultRouteImport } from './routes/$lang/_auth
 import { Route as LangAuthenticatedSwitchRouteImport } from './routes/$lang/_authenticated/switch'
 import { Route as LangAuthenticatedSettingsRouteImport } from './routes/$lang/_authenticated/settings'
 import { Route as LangAuthenticatedScanRouteImport } from './routes/$lang/_authenticated/scan'
+import { Route as LangAuthenticatedMeRouteImport } from './routes/$lang/_authenticated/me'
 import { Route as LangAuthenticatedDashboardRouteImport } from './routes/$lang/_authenticated/dashboard'
 import { Route as LangAuthenticatedWorkspaceIndexRouteImport } from './routes/$lang/_authenticated/workspace.index'
 import { Route as LangAuthenticatedWorkspaceIdRouteImport } from './routes/$lang/_authenticated/workspace.$id'
@@ -188,6 +189,11 @@ const LangAuthenticatedSettingsRoute =
 const LangAuthenticatedScanRoute = LangAuthenticatedScanRouteImport.update({
   id: '/scan',
   path: '/scan',
+  getParentRoute: () => LangAuthenticatedRouteRoute,
+} as any)
+const LangAuthenticatedMeRoute = LangAuthenticatedMeRouteImport.update({
+  id: '/me',
+  path: '/me',
   getParentRoute: () => LangAuthenticatedRouteRoute,
 } as any)
 const LangAuthenticatedDashboardRoute =
@@ -344,6 +350,7 @@ export interface FileRoutesByFullPath {
   '/sitemap/{$lang}.xml': typeof SitemapChar123langChar125DotxmlRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/dashboard': typeof LangAuthenticatedDashboardRoute
+  '/$lang/me': typeof LangAuthenticatedMeRoute
   '/$lang/scan': typeof LangAuthenticatedScanRoute
   '/$lang/settings': typeof LangAuthenticatedSettingsRoute
   '/$lang/switch': typeof LangAuthenticatedSwitchRoute
@@ -393,6 +400,7 @@ export interface FileRoutesByTo {
   '/join/$token': typeof JoinTokenRoute
   '/sitemap/{$lang}.xml': typeof SitemapChar123langChar125DotxmlRoute
   '/$lang/dashboard': typeof LangAuthenticatedDashboardRoute
+  '/$lang/me': typeof LangAuthenticatedMeRoute
   '/$lang/scan': typeof LangAuthenticatedScanRoute
   '/$lang/settings': typeof LangAuthenticatedSettingsRoute
   '/$lang/switch': typeof LangAuthenticatedSwitchRoute
@@ -444,6 +452,7 @@ export interface FileRoutesById {
   '/sitemap/{$lang}.xml': typeof SitemapChar123langChar125DotxmlRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/_authenticated/dashboard': typeof LangAuthenticatedDashboardRoute
+  '/$lang/_authenticated/me': typeof LangAuthenticatedMeRoute
   '/$lang/_authenticated/scan': typeof LangAuthenticatedScanRoute
   '/$lang/_authenticated/settings': typeof LangAuthenticatedSettingsRoute
   '/$lang/_authenticated/switch': typeof LangAuthenticatedSwitchRoute
@@ -496,6 +505,7 @@ export interface FileRouteTypes {
     | '/sitemap/{$lang}.xml'
     | '/$lang/'
     | '/$lang/dashboard'
+    | '/$lang/me'
     | '/$lang/scan'
     | '/$lang/settings'
     | '/$lang/switch'
@@ -545,6 +555,7 @@ export interface FileRouteTypes {
     | '/join/$token'
     | '/sitemap/{$lang}.xml'
     | '/$lang/dashboard'
+    | '/$lang/me'
     | '/$lang/scan'
     | '/$lang/settings'
     | '/$lang/switch'
@@ -595,6 +606,7 @@ export interface FileRouteTypes {
     | '/sitemap/{$lang}.xml'
     | '/$lang/'
     | '/$lang/_authenticated/dashboard'
+    | '/$lang/_authenticated/me'
     | '/$lang/_authenticated/scan'
     | '/$lang/_authenticated/settings'
     | '/$lang/_authenticated/switch'
@@ -825,6 +837,13 @@ declare module '@tanstack/react-router' {
       path: '/scan'
       fullPath: '/$lang/scan'
       preLoaderRoute: typeof LangAuthenticatedScanRouteImport
+      parentRoute: typeof LangAuthenticatedRouteRoute
+    }
+    '/$lang/_authenticated/me': {
+      id: '/$lang/_authenticated/me'
+      path: '/me'
+      fullPath: '/$lang/me'
+      preLoaderRoute: typeof LangAuthenticatedMeRouteImport
       parentRoute: typeof LangAuthenticatedRouteRoute
     }
     '/$lang/_authenticated/dashboard': {
@@ -1070,6 +1089,7 @@ const LangAuthenticatedCardsIdRouteWithChildren =
 
 interface LangAuthenticatedRouteRouteChildren {
   LangAuthenticatedDashboardRoute: typeof LangAuthenticatedDashboardRoute
+  LangAuthenticatedMeRoute: typeof LangAuthenticatedMeRoute
   LangAuthenticatedScanRoute: typeof LangAuthenticatedScanRoute
   LangAuthenticatedSettingsRoute: typeof LangAuthenticatedSettingsRoute
   LangAuthenticatedSwitchRoute: typeof LangAuthenticatedSwitchRoute
@@ -1084,6 +1104,7 @@ interface LangAuthenticatedRouteRouteChildren {
 const LangAuthenticatedRouteRouteChildren: LangAuthenticatedRouteRouteChildren =
   {
     LangAuthenticatedDashboardRoute: LangAuthenticatedDashboardRoute,
+    LangAuthenticatedMeRoute: LangAuthenticatedMeRoute,
     LangAuthenticatedScanRoute: LangAuthenticatedScanRoute,
     LangAuthenticatedSettingsRoute: LangAuthenticatedSettingsRoute,
     LangAuthenticatedSwitchRoute: LangAuthenticatedSwitchRoute,
