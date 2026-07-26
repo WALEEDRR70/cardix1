@@ -71,16 +71,13 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
             ))}
           </div>
         </Field>
-        <Field label={ar ? "تدرج CSS" : "CSS gradient"}>
-          <input value={bg.gradient ?? ""} onChange={(e) => dispatch({ t: "bg", patch: { gradient: e.target.value || null } })} className={input} />
-        </Field>
-        <button
-          type="button"
-          onClick={() => dispatch({ t: "bg", patch: { gradient: null } })}
-          className="w-full rounded-md border border-border/60 px-2 py-1.5 text-muted-foreground hover:text-foreground"
-        >
-          {ar ? "إزالة التدرج" : "Remove gradient"}
-        </button>
+        <GradientEditor
+          ar={ar}
+          value={bg.gradient}
+          onChange={(css) => dispatch({ t: "bg", patch: { gradient: css } })}
+          onRemove={() => dispatch({ t: "bg", patch: { gradient: null } })}
+        />
+
         <Field label={ar ? "رابط صورة" : "Image URL"}>
           <input value={bg.image ?? ""} onChange={(e) => dispatch({ t: "bg", patch: { image: e.target.value || null } })} className={input} />
         </Field>
