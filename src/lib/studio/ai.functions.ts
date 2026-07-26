@@ -22,6 +22,23 @@ export type AiVector = {
   blur?: number;
 };
 
+/** A rectangle expressed in percentages of the card (0..100). */
+export type AiRect = { x: number; y: number; w: number; h: number };
+
+/** Precise composition grid measured from the scanned card. */
+export type AiLayout = {
+  /** page margin in % of the short edge */
+  margin: number;
+  textZone: AiRect;
+  logoZone: AiRect;
+  photoZone: AiRect | null;
+  qrZone: AiRect;
+  /** relative type sizes, 1 = base */
+  typeScale: { name: number; title: number; company: number; body: number };
+  /** optical alignment of the text block */
+  textAlign: "left" | "center" | "right";
+};
+
 export type AiCardAnalysis = {
   style: string;
   industry: string;
@@ -37,10 +54,13 @@ export type AiCardAnalysis = {
   logoPosition: "left" | "center" | "right";
   /** free-form vector artwork the model draws itself (pen-tool style) */
   vectors: AiVector[];
+  /** measured composition grid */
+  layout: AiLayout;
   /** short services / slogan line detected on the card (no contact data) */
   tagline: string | null;
   notes: string;
 };
+
 
 const SYSTEM = `You are a senior brand designer analysing a scanned business card.
 You must IGNORE and NEVER reproduce any names, phone numbers, emails, websites, addresses,
