@@ -174,6 +174,10 @@ export type Database = {
           address: string | null
           brand_primary: string
           brand_secondary: string
+          city: string | null
+          company_size: string | null
+          contact_person: string | null
+          country: string | null
           cover_url: string | null
           created_at: string
           custom_domain: string | null
@@ -182,26 +186,40 @@ export type Database = {
           email: string | null
           font_body: string | null
           font_heading: string | null
+          founded_year: number | null
           id: string
+          industry: string | null
           is_published: boolean
           is_verified: boolean
+          legal_address: string | null
           legal_name: string | null
           logo_url: string | null
           name: string
+          onboarded_at: string | null
           owner_id: string
           phone: string | null
+          registration_number: string | null
           services: Json
           show_employees: boolean
           slug: string
           socials: Json
+          tagline: string | null
+          tax_number: string | null
           theme: string
+          timezone: string | null
           updated_at: string
+          verification_requested_at: string | null
+          verification_status: string
           website: string | null
         }
         Insert: {
           address?: string | null
           brand_primary?: string
           brand_secondary?: string
+          city?: string | null
+          company_size?: string | null
+          contact_person?: string | null
+          country?: string | null
           cover_url?: string | null
           created_at?: string
           custom_domain?: string | null
@@ -210,26 +228,40 @@ export type Database = {
           email?: string | null
           font_body?: string | null
           font_heading?: string | null
+          founded_year?: number | null
           id?: string
+          industry?: string | null
           is_published?: boolean
           is_verified?: boolean
+          legal_address?: string | null
           legal_name?: string | null
           logo_url?: string | null
           name: string
+          onboarded_at?: string | null
           owner_id: string
           phone?: string | null
+          registration_number?: string | null
           services?: Json
           show_employees?: boolean
           slug: string
           socials?: Json
+          tagline?: string | null
+          tax_number?: string | null
           theme?: string
+          timezone?: string | null
           updated_at?: string
+          verification_requested_at?: string | null
+          verification_status?: string
           website?: string | null
         }
         Update: {
           address?: string | null
           brand_primary?: string
           brand_secondary?: string
+          city?: string | null
+          company_size?: string | null
+          contact_person?: string | null
+          country?: string | null
           cover_url?: string | null
           created_at?: string
           custom_domain?: string | null
@@ -238,20 +270,30 @@ export type Database = {
           email?: string | null
           font_body?: string | null
           font_heading?: string | null
+          founded_year?: number | null
           id?: string
+          industry?: string | null
           is_published?: boolean
           is_verified?: boolean
+          legal_address?: string | null
           legal_name?: string | null
           logo_url?: string | null
           name?: string
+          onboarded_at?: string | null
           owner_id?: string
           phone?: string | null
+          registration_number?: string | null
           services?: Json
           show_employees?: boolean
           slug?: string
           socials?: Json
+          tagline?: string | null
+          tax_number?: string | null
           theme?: string
+          timezone?: string | null
           updated_at?: string
+          verification_requested_at?: string | null
+          verification_status?: string
           website?: string | null
         }
         Relationships: []

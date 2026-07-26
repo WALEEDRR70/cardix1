@@ -1,0 +1,15 @@
+ALTER TABLE public.companies
+  ADD COLUMN IF NOT EXISTS industry text,
+  ADD COLUMN IF NOT EXISTS company_size text,
+  ADD COLUMN IF NOT EXISTS country text,
+  ADD COLUMN IF NOT EXISTS city text,
+  ADD COLUMN IF NOT EXISTS timezone text,
+  ADD COLUMN IF NOT EXISTS founded_year integer,
+  ADD COLUMN IF NOT EXISTS tagline text,
+  ADD COLUMN IF NOT EXISTS contact_person text,
+  ADD COLUMN IF NOT EXISTS registration_number text,
+  ADD COLUMN IF NOT EXISTS tax_number text,
+  ADD COLUMN IF NOT EXISTS legal_address text,
+  ADD COLUMN IF NOT EXISTS verification_status text NOT NULL DEFAULT 'unverified',
+  ADD COLUMN IF NOT EXISTS verification_requested_at timestamptz,
+  ADD COLUMN IF NOT EXISTS onboarded_at timestamptz;
