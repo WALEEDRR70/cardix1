@@ -32,10 +32,9 @@ export async function signInWithFirebaseGoogle(): Promise<void> {
   const cred = await signInWithPopup(auth, provider);
   const idToken = await cred.user.getIdToken();
 
-  const { email, tokenHash } = await exchangeFirebaseToken({ data: { idToken } });
+  const { tokenHash } = await exchangeFirebaseToken({ data: { idToken } });
 
   const { error } = await supabase.auth.verifyOtp({
-    email,
     token_hash: tokenHash,
     type: "magiclink",
   });
