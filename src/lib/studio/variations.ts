@@ -108,14 +108,23 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
 
   if (vectors.length) {
     const pnt = paint[key];
+    // content boxes the artwork must not cover (text, photo, logo, qr)
+    const guard = blocks.filter((b) => b.role !== "custom");
     vectors.forEach((v, i) => {
+      const bb = pathBBox(v.d);
+      // how much of the readable content this drawing would sit on top of
+      const hit = bb
+        ? guard.reduce((m, b) => Math.max(m, overlapRatio(bb, b)), 0)
+        : 0;
+      const heavy = hit > 0.28;
       push(node("path", {
         name: v.name || `Artwork ${i + 1}`,
         x: 0, y: 0, w: W, h: H,
         path: v.d,
-        opacity: (v.opacity ?? 0.9) * pnt.op,
+        opacity: (v.opacity ?? 0.9) * pnt.op * (heavy ? 0.35 : 1),
         style: {
-          fill: v.fill ?? pnt.fill ?? "transparent",
+          // never paint a solid blob over the content area — keep it as a light outline
+          fill: heavy ? "transparent" : (v.fill ?? pnt.fill ?? "transparent"),
           stroke: v.stroke ?? pnt.stroke ?? null,
           strokeWidth: Math.max(1, Math.round((v.strokeWidth ?? 1.2) * (Math.min(W, H) / 100) * 0.9)),
           blur: (v.blur ?? 0) + pnt.blur,
@@ -124,6 +133,7 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
       }));
     });
   }
+
 
   // ---- decorative layer, unique per variation (fallback when the model drew nothing) ----
   const bandH = landscape ? Math.round(H * 0.28) : Math.round(H * 0.3);
