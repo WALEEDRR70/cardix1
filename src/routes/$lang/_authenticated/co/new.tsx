@@ -9,6 +9,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { accountQueryKey } from "@/lib/account";
 import { ArrowLeft, ArrowRight, Building2, Check, Sparkles } from "lucide-react";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
+import { LocaleSwitcher } from "@/components/LangToggle";
 
 export const Route = createFileRoute("/$lang/_authenticated/co/new")({
   head: () => ({
