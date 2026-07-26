@@ -140,13 +140,13 @@ export const analyzeCardImage = createServerFn({ method: "POST" })
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
       body: JSON.stringify({
-        model: "google/gemini-3.6-flash",
+        model: "google/gemini-2.5-pro",
         messages: [
           { role: "system", content: SYSTEM },
           {
             role: "user",
             content: [
-              { type: "text", text: "Analyse this business card's visual identity only." },
+              { type: "text", text: "Analyse this business card. Measure every element precisely and return the full JSON layout map (surfaces, blocks, margins, vectors). Visual identity only — never copy the printed text." },
               { type: "image_url", image_url: { url } },
             ],
           },
