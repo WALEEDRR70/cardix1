@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CompanyShell, SectionPlaceholder } from "@/components/company/CompanyShell";
+import { CompanyShell } from "@/components/company/CompanyShell";
+import { AnalyticsTab } from "@/components/company/sections";
 import { useCompany } from "@/lib/company-context";
 import { useWs } from "@/lib/workspace";
 
@@ -10,7 +11,7 @@ function Page() {
   const { w } = useWs();
   return (
     <CompanyShell company={company} role={role} title={w.analytics} subtitle={company.name}>
-      <SectionPlaceholder label={w.analytics} />
+      <AnalyticsTab company={company} />
     </CompanyShell>
   );
 }
