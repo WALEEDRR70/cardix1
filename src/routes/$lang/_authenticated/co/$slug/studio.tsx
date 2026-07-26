@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "@/lib/nav";
+import { useState } from "react";
+import { Link, useNavigate } from "@/lib/nav";
 import { useQuery } from "@tanstack/react-query";
-import { Wand2, Plus } from "lucide-react";
+import { Wand2, Plus, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import { CompanyShell } from "@/components/company/CompanyShell";
 import { Card } from "@/components/company/sections";
 import { supabase } from "@/integrations/supabase/client";
@@ -12,12 +14,14 @@ export const Route = createFileRoute("/$lang/_authenticated/co/$slug/studio")({ 
 
 const T = {
   en: {
-    desc: "Open any company card in the visual designer: layers, elements, AI style rebuild and export.",
-    open: "Open designer", none: "No cards yet", create: "Create a card", cards: "Company cards",
+    desc: "Open any company card in the visual designer: drag & drop canvas, layers, elements, AI style rebuild and export.",
+    open: "Open designer", none: "No cards yet", cards: "Company cards",
+    newDesign: "New drag & drop design", creating: "Creating…", failed: "Could not create the design",
   },
   ar: {
-    desc: "افتح أي بطاقة للشركة داخل المصمم البصري: الطبقات، العناصر، إعادة بناء النمط بالذكاء الاصطناعي والتصدير.",
-    open: "فتح المصمم", none: "لا توجد بطاقات بعد", create: "إنشاء بطاقة", cards: "بطاقات الشركة",
+    desc: "افتح أي بطاقة للشركة داخل المصمم البصري: لوحة سحب وإفلات، طبقات، عناصر، إعادة بناء النمط بالذكاء الاصطناعي والتصدير.",
+    open: "فتح المصمم", none: "لا توجد بطاقات بعد", cards: "بطاقات الشركة",
+    newDesign: "تصميم جديد بالسحب والإفلات", creating: "جارٍ الإنشاء…", failed: "تعذّر إنشاء التصميم",
   },
 };
 
@@ -25,6 +29,36 @@ function Page() {
   const { company, role } = useCompany();
   const { w, lang } = useWs();
   const t = T[lang === "ar" ? "ar" : "en"];
+  const navigate = useNavigate();
+  const [creating, setCreating] = useState(false);
+
+  async function createDesign() {
+    setCreating(true);
+    try {
+      const { data: auth } = await supabase.auth.getSession();
+      const uid = auth.session?.user.id;
+      if (!uid) throw new Error("no session");
+      const slug = `${company.slug}-design-${Math.random().toString(36).slice(2, 7)}`;
+      const { data, error } = await supabase
+        .from("cards")
+        .insert({
+          user_id: uid,
+          company_id: company.id,
+          name: company.name,
+          slug,
+          card_type: "company",
+          accent_color: (company as any).primary_color || "#7c34ff",
+        })
+        .select("id")
+        .single();
+      if (error) throw error;
+      navigate({ to: "/studio/$id", params: { id: data.id } });
+    } catch {
+      toast.error(t.failed);
+    } finally {
+      setCreating(false);
+    }
+  }
 
   const { data: cards = [] } = useQuery({
     queryKey: ["company-studio-cards", company.id],
