@@ -120,7 +120,7 @@ Return STRICT JSON, no markdown fences, matching exactly:
  "notes": one sentence on how to modernise the layout
 }
 Measure, do not guess: boxes must not overlap each other, must stay inside 0..100, and must reproduce the
-真 proportions and alignment of the scan so the rebuilt card looks like the original at a glance.
+true proportions and alignment of the scan so the rebuilt card looks like the original at a glance.
 Report the true orientation: a wide card MUST return "landscape" with aspect > 1.
 Improve the palette: raise contrast, refine harmony, keep the spirit of the original.`;
 
