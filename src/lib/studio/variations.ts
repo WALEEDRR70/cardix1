@@ -127,7 +127,7 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
 
   // ---- decorative layer, unique per variation (fallback when the model drew nothing) ----
   const bandH = landscape ? Math.round(H * 0.28) : Math.round(H * 0.3);
-  switch (vectors.length ? "__none" : key) {
+  switch (vectors.length || useMap ? "__none" : key) {
     case "minimal":
       push(node("line", { name: "Rule", x: colX, y: Math.round(H * 0.42), w: px(120), h: 3, style: { fill: primary, radius: 3 } }));
       break;
