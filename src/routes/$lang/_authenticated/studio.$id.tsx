@@ -34,7 +34,7 @@ function StudioRoute() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("cards")
-        .select("id, title, name, design, brand_primary")
+        .select("id, title, name, design, accent_color")
         .eq("id", id)
         .maybeSingle();
       if (error) throw error;
@@ -60,8 +60,8 @@ function StudioRoute() {
     );
   }
 
-  const initial = (data.design as StudioDoc | null) ?? emptyDoc((data as { brand_primary?: string }).brand_primary ?? "#7c34ff");
-  return <Studio cardId={data.id} title={(data.title as string) || (data.full_name as string) || ""} initial={initial} />;
+  const initial = (data.design as StudioDoc | null) ?? emptyDoc((data.accent_color as string) || "#7c34ff");
+  return <Studio cardId={data.id} title={(data.title as string) || (data.name as string) || ""} initial={initial} />;
 }
 
 function Studio({ cardId, title, initial }: { cardId: string; title: string; initial: StudioDoc }) {
