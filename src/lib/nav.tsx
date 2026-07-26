@@ -1,28 +1,32 @@
 import { Link as TSLink, useNavigate as useTSNavigate, useParams, type LinkProps } from "@tanstack/react-router";
 import { forwardRef } from "react";
-import { DEFAULT_LOCALE, isSupportedLocale, type Locale } from "@/i18n/config";
-
-/**
- * Paths that stay UN-localized (no /:lang prefix).
- * Public card share links, API, sitemaps, auth callback.
- */
-const UNLOCALIZED_PREFIXES = ["/c/", "/api/", "/sitemap", "/robots"];
+import { isSupportedLocale, type Locale } from "@/i18n/config";
+import { getLocaleFromPath, getPreferredLocale, isUnlocalizedPath, stripLocalePrefix } from "@/lib/locale-routing";
 
 function isLocalized(to: string): boolean {
   if (!to.startsWith("/")) return false;
-  if (to === "/") return true;
-  if (to.startsWith("/$lang")) return false; // already explicit
-  return !UNLOCALIZED_PREFIXES.some((p) => to.startsWith(p));
+  if (to.startsWith("/$lang")) return true;
+  return !isUnlocalizedPath(to);
 }
 
-function transform(to: string, lang: Locale): { to: string; injectLang: boolean } {
+function transform(to: string, lang: Locale): { to: string; injectLang: boolean; lang: Locale } {
   if (!isLocalized(to)) return { to, injectLang: false };
+  if (to.startsWith("/$lang")) return { to, injectLang: true, lang };
+  const explicitLocale = getLocaleFromPath(to);
+  if (explicitLocale) {
+    const stripped = stripLocalePrefix(to);
+    return {
+      to: stripped === "/" ? "/$lang/" : `/$lang${stripped}`,
+      injectLang: true,
+      lang: explicitLocale,
+    };
+  }
   if (to === "/") return { to: "/$lang/", injectLang: true };
-  return { to: `/$lang${to}`, injectLang: true };
+  return { to: `/$lang${to}`, injectLang: true, lang };
 }
 
 function currentLocale(paramsLang: string | undefined): Locale {
-  return isSupportedLocale(paramsLang) ? paramsLang : DEFAULT_LOCALE;
+  return isSupportedLocale(paramsLang) ? paramsLang : getPreferredLocale();
 }
 
 /**
@@ -35,8 +39,8 @@ export const Link = forwardRef<HTMLAnchorElement, any>(function Link(props, ref)
   const routeParams = useParams({ strict: false }) as { lang?: string };
   const lang = currentLocale(routeParams?.lang);
   if (typeof to === "string") {
-    const { to: nextTo, injectLang } = transform(to, lang);
-    const nextParams = injectLang ? { ...(params ?? {}), lang } : params;
+    const { to: nextTo, injectLang, lang: nextLang } = transform(to, lang);
+    const nextParams = injectLang ? { ...(params ?? {}), lang: nextLang } : params;
     return <TSLink ref={ref} to={nextTo as any} params={nextParams as any} {...(rest as any)} />;
   }
   return <TSLink ref={ref} to={to as any} params={params as any} {...(rest as any)} />;
@@ -51,11 +55,11 @@ export function useNavigate() {
   const lang = currentLocale(routeParams?.lang);
   return (opts: any) => {
     if (opts && typeof opts.to === "string") {
-      const { to: nextTo, injectLang } = transform(opts.to, lang);
+      const { to: nextTo, injectLang, lang: nextLang } = transform(opts.to, lang);
       return nav({
         ...opts,
         to: nextTo,
-        params: injectLang ? { ...(opts.params ?? {}), lang } : opts.params,
+        params: injectLang ? { ...(opts.params ?? {}), lang: nextLang } : opts.params,
       });
     }
     return nav(opts);

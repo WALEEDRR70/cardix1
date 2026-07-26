@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { useI18n } from "@/lib/i18n";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { getReadableText } from "@/lib/contrast";
+import { stripLocalePrefix } from "@/lib/locale-routing";
 
 
 export function MobileShell({
@@ -42,7 +43,7 @@ export function MobileShell({
 /* -------------------- Desktop sidebar -------------------- */
 function DesktopSidebar() {
   const { t } = useI18n();
-  const path = useRouterState({ select: (s) => s.location.pathname });
+  const path = useRouterState({ select: (s) => stripLocalePrefix(s.location.pathname) });
 
   const items = [
     { to: "/dashboard", icon: Home, label: t.home },
@@ -97,7 +98,7 @@ function DesktopSidebar() {
 /* -------------------- Mobile bottom nav + FAB -------------------- */
 export function MobileBottomNav({ accent }: { accent?: string } = {}) {
   const { t } = useI18n();
-  const path = useRouterState({ select: (s) => s.location.pathname });
+  const path = useRouterState({ select: (s) => stripLocalePrefix(s.location.pathname) });
 
   const items = [
     { to: "/dashboard", icon: Home, label: t.home },
