@@ -32,6 +32,7 @@ import { Route as LangToolsSlugRouteImport } from './routes/$lang/tools/$slug'
 import { Route as LangLSlugRouteImport } from './routes/$lang/l/$slug'
 import { Route as LangBlogSlugRouteImport } from './routes/$lang/blog/$slug'
 import { Route as LangAuthenticatedVaultRouteImport } from './routes/$lang/_authenticated/vault'
+import { Route as LangAuthenticatedSwitchRouteImport } from './routes/$lang/_authenticated/switch'
 import { Route as LangAuthenticatedSettingsRouteImport } from './routes/$lang/_authenticated/settings'
 import { Route as LangAuthenticatedScanRouteImport } from './routes/$lang/_authenticated/scan'
 import { Route as LangAuthenticatedDashboardRouteImport } from './routes/$lang/_authenticated/dashboard'
@@ -171,6 +172,11 @@ const LangBlogSlugRoute = LangBlogSlugRouteImport.update({
 const LangAuthenticatedVaultRoute = LangAuthenticatedVaultRouteImport.update({
   id: '/vault',
   path: '/vault',
+  getParentRoute: () => LangAuthenticatedRouteRoute,
+} as any)
+const LangAuthenticatedSwitchRoute = LangAuthenticatedSwitchRouteImport.update({
+  id: '/switch',
+  path: '/switch',
   getParentRoute: () => LangAuthenticatedRouteRoute,
 } as any)
 const LangAuthenticatedSettingsRoute =
@@ -340,6 +346,7 @@ export interface FileRoutesByFullPath {
   '/$lang/dashboard': typeof LangAuthenticatedDashboardRoute
   '/$lang/scan': typeof LangAuthenticatedScanRoute
   '/$lang/settings': typeof LangAuthenticatedSettingsRoute
+  '/$lang/switch': typeof LangAuthenticatedSwitchRoute
   '/$lang/vault': typeof LangAuthenticatedVaultRouteWithChildren
   '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/l/$slug': typeof LangLSlugRoute
@@ -388,6 +395,7 @@ export interface FileRoutesByTo {
   '/$lang/dashboard': typeof LangAuthenticatedDashboardRoute
   '/$lang/scan': typeof LangAuthenticatedScanRoute
   '/$lang/settings': typeof LangAuthenticatedSettingsRoute
+  '/$lang/switch': typeof LangAuthenticatedSwitchRoute
   '/$lang/vault': typeof LangAuthenticatedVaultRouteWithChildren
   '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/l/$slug': typeof LangLSlugRoute
@@ -438,6 +446,7 @@ export interface FileRoutesById {
   '/$lang/_authenticated/dashboard': typeof LangAuthenticatedDashboardRoute
   '/$lang/_authenticated/scan': typeof LangAuthenticatedScanRoute
   '/$lang/_authenticated/settings': typeof LangAuthenticatedSettingsRoute
+  '/$lang/_authenticated/switch': typeof LangAuthenticatedSwitchRoute
   '/$lang/_authenticated/vault': typeof LangAuthenticatedVaultRouteWithChildren
   '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/l/$slug': typeof LangLSlugRoute
@@ -489,6 +498,7 @@ export interface FileRouteTypes {
     | '/$lang/dashboard'
     | '/$lang/scan'
     | '/$lang/settings'
+    | '/$lang/switch'
     | '/$lang/vault'
     | '/$lang/blog/$slug'
     | '/$lang/l/$slug'
@@ -537,6 +547,7 @@ export interface FileRouteTypes {
     | '/$lang/dashboard'
     | '/$lang/scan'
     | '/$lang/settings'
+    | '/$lang/switch'
     | '/$lang/vault'
     | '/$lang/blog/$slug'
     | '/$lang/l/$slug'
@@ -586,6 +597,7 @@ export interface FileRouteTypes {
     | '/$lang/_authenticated/dashboard'
     | '/$lang/_authenticated/scan'
     | '/$lang/_authenticated/settings'
+    | '/$lang/_authenticated/switch'
     | '/$lang/_authenticated/vault'
     | '/$lang/blog/$slug'
     | '/$lang/l/$slug'
@@ -792,6 +804,13 @@ declare module '@tanstack/react-router' {
       path: '/vault'
       fullPath: '/$lang/vault'
       preLoaderRoute: typeof LangAuthenticatedVaultRouteImport
+      parentRoute: typeof LangAuthenticatedRouteRoute
+    }
+    '/$lang/_authenticated/switch': {
+      id: '/$lang/_authenticated/switch'
+      path: '/switch'
+      fullPath: '/$lang/switch'
+      preLoaderRoute: typeof LangAuthenticatedSwitchRouteImport
       parentRoute: typeof LangAuthenticatedRouteRoute
     }
     '/$lang/_authenticated/settings': {
@@ -1053,6 +1072,7 @@ interface LangAuthenticatedRouteRouteChildren {
   LangAuthenticatedDashboardRoute: typeof LangAuthenticatedDashboardRoute
   LangAuthenticatedScanRoute: typeof LangAuthenticatedScanRoute
   LangAuthenticatedSettingsRoute: typeof LangAuthenticatedSettingsRoute
+  LangAuthenticatedSwitchRoute: typeof LangAuthenticatedSwitchRoute
   LangAuthenticatedVaultRoute: typeof LangAuthenticatedVaultRouteWithChildren
   LangAuthenticatedCoSlugRouteRoute: typeof LangAuthenticatedCoSlugRouteRouteWithChildren
   LangAuthenticatedCardsIdRoute: typeof LangAuthenticatedCardsIdRouteWithChildren
@@ -1066,6 +1086,7 @@ const LangAuthenticatedRouteRouteChildren: LangAuthenticatedRouteRouteChildren =
     LangAuthenticatedDashboardRoute: LangAuthenticatedDashboardRoute,
     LangAuthenticatedScanRoute: LangAuthenticatedScanRoute,
     LangAuthenticatedSettingsRoute: LangAuthenticatedSettingsRoute,
+    LangAuthenticatedSwitchRoute: LangAuthenticatedSwitchRoute,
     LangAuthenticatedVaultRoute: LangAuthenticatedVaultRouteWithChildren,
     LangAuthenticatedCoSlugRouteRoute:
       LangAuthenticatedCoSlugRouteRouteWithChildren,
