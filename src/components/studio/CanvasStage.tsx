@@ -163,8 +163,9 @@ type Drag =
 type Marquee = { x0: number; y0: number; x1: number; y1: number };
 
 export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivElement | null> }) {
-  const { state, dispatch, selected } = useStudio();
-  const { doc, zoom, pan, grid, snap, guides, fitTick } = state;
+  const { state, dispatch, selected, addNode } = useStudio();
+  const { doc, zoom, pan, grid, snap, guides, fitTick, tool } = state;
+
   const viewportRef = useRef<HTMLDivElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [drag, setDrag] = useState<Drag | null>(null);
@@ -230,8 +231,9 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
   }, [dispatch, pan.x, pan.y, zoom]);
 
   const onPointerDownNode = (e: React.PointerEvent, n: StudioNode) => {
-    if (spaceDown || e.button === 1) return;
+    if (spaceDown || e.button === 1 || tool === "pen") return;
     if (n.locked) return;
+
     e.stopPropagation();
     const ids = e.shiftKey
       ? state.selection.includes(n.id) ? state.selection : [...state.selection, n.id]
@@ -267,7 +269,7 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
       window.addEventListener("pointerup", up, { once: true });
       return;
     }
-    if (e.button !== 0) return;
+    if (e.button !== 0 || tool === "pen") return;
     setEditingId(null);
     dispatch({ t: "select", ids: [] });
     const start = toDoc(e.clientX, e.clientY);
