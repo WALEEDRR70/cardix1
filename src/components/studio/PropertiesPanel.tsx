@@ -6,6 +6,15 @@ import { useStudio } from "@/lib/studio/store";
 import { CARD_SIZES, PLACEHOLDERS, type ImageSource } from "@/lib/studio/types";
 import { uploadStudioImage } from "@/lib/studio/upload";
 
+const BG_PRESETS: string[] = [
+  "linear-gradient(160deg,#0b0713,#2c125a)",
+  "linear-gradient(135deg,#7c34ff,#0b0713)",
+  "linear-gradient(135deg,#ffffff,#e9e6f5)",
+  "linear-gradient(135deg,#101010,#3a3a3a)",
+  "linear-gradient(135deg,#c9a227,#4a3608)",
+  "linear-gradient(135deg,#0f3b36,#0b0713)",
+];
+
 export function PropertiesPanel({ ar }: { ar: boolean }) {
   const { state, dispatch, selected } = useStudio();
   const n = selected[0];
@@ -44,18 +53,67 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
           {ar ? "تبديل الاتجاه" : "Swap orientation"}
         </button>
 
-        <h3 className="border-t border-border/50 pt-3 text-sm font-semibold">{ar ? "خلفية البطاقة" : "Card background"}</h3>
+        <h3 className="border-t border-border/50 pt-3 text-sm font-semibold">{ar ? "طبقة الخلفية" : "Background layer"}</h3>
         <Field label={ar ? "اللون" : "Color"}>
           <input type="color" value={bg.color} onChange={(e) => dispatch({ t: "bg", patch: { color: e.target.value } })} className="h-8 w-full rounded bg-transparent" />
+        </Field>
+        <Field label={ar ? "تدرجات جاهزة" : "Gradient presets"}>
+          <div className="grid grid-cols-6 gap-1.5">
+            {BG_PRESETS.map((g) => (
+              <button
+                key={g}
+                type="button"
+                title={g}
+                onClick={() => dispatch({ t: "bg", patch: { gradient: g } })}
+                className="h-7 rounded-md border border-border/60"
+                style={{ background: g }}
+              />
+            ))}
+          </div>
         </Field>
         <Field label={ar ? "تدرج CSS" : "CSS gradient"}>
           <input value={bg.gradient ?? ""} onChange={(e) => dispatch({ t: "bg", patch: { gradient: e.target.value || null } })} className={input} />
         </Field>
+        <button
+          type="button"
+          onClick={() => dispatch({ t: "bg", patch: { gradient: null } })}
+          className="w-full rounded-md border border-border/60 px-2 py-1.5 text-muted-foreground hover:text-foreground"
+        >
+          {ar ? "إزالة التدرج" : "Remove gradient"}
+        </button>
         <Field label={ar ? "رابط صورة" : "Image URL"}>
           <input value={bg.image ?? ""} onChange={(e) => dispatch({ t: "bg", patch: { image: e.target.value || null } })} className={input} />
         </Field>
         <UploadButton ar={ar} onDone={(url) => dispatch({ t: "bg", patch: { image: url } })} />
+        {bg.image && (
+          <>
+            <Field label={ar ? "ملاءمة الصورة" : "Image fit"}>
+              <select
+                value={bg.fit ?? "cover"}
+                onChange={(e) => dispatch({ t: "bg", patch: { fit: e.target.value as "cover" | "contain" | "repeat" } })}
+                className={input}
+              >
+                <option value="cover">{ar ? "تغطية" : "Cover"}</option>
+                <option value="contain">{ar ? "احتواء" : "Contain"}</option>
+                <option value="repeat">{ar ? "تكرار" : "Repeat"}</option>
+              </select>
+            </Field>
+            <Num
+              label={ar ? "شفافية الصورة %" : "Image opacity %"}
+              value={Math.round((bg.imageOpacity ?? 1) * 100)}
+              onChange={(v) => dispatch({ t: "bg", patch: { imageOpacity: Math.min(100, Math.max(0, v)) / 100 } })}
+            />
+            <button
+              type="button"
+              onClick={() => dispatch({ t: "bg", patch: { image: null } })}
+              className="w-full rounded-md border border-border/60 px-2 py-1.5 text-muted-foreground hover:text-foreground"
+            >
+              {ar ? "إزالة الصورة" : "Remove image"}
+            </button>
+          </>
+        )}
         <p className="pt-2 text-muted-foreground">{ar ? "اختر عنصرًا لتعديل خصائصه." : "Select an element to edit its properties."}</p>
+
       </aside>
     );
   }

@@ -262,11 +262,23 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
             transform: `scale(${zoom})`,
             transformOrigin: "top left",
             background: doc.background.gradient ?? doc.background.color,
-            backgroundImage: doc.background.image ? `url(${doc.background.image})` : undefined,
-            backgroundSize: "cover",
           }}
           className="absolute left-0 top-0 overflow-hidden rounded-[28px] shadow-2xl"
         >
+          {doc.background.image && (
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0"
+              style={{
+                backgroundImage: `url(${doc.background.image})`,
+                backgroundSize: doc.background.fit === "contain" ? "contain" : doc.background.fit === "repeat" ? "auto" : "cover",
+                backgroundRepeat: doc.background.fit === "repeat" ? "repeat" : "no-repeat",
+                backgroundPosition: "center",
+                opacity: doc.background.imageOpacity ?? 1,
+              }}
+            />
+          )}
+
           {grid && (
             <div
               aria-hidden

@@ -59,7 +59,15 @@ export type StudioDoc = {
   version: 1;
   w: number;
   h: number;
-  background: { color: string; gradient?: string | null; image?: string | null };
+  background: {
+    color: string;
+    gradient?: string | null;
+    image?: string | null;
+    /** How the background image fills the card. */
+    fit?: "cover" | "contain" | "repeat" | null;
+    /** 0..1 opacity of the background image layer. */
+    imageOpacity?: number | null;
+  };
   nodes: StudioNode[];
 };
 
