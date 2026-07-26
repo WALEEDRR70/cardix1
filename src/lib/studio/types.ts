@@ -23,9 +23,15 @@ export type NodeStyle = {
   padding?: number;
   /** free-form vector nodes: stroke paint + width + caps (pen tool) */
   stroke?: string | null;
-  strokeWidth?: number;
+  strokeWidth?: number | null;
   dash?: string | null;
   cap?: "butt" | "round" | "square";
+  /** SVG image nodes: recolor the uploaded artwork */
+  svgInline?: boolean;
+  svgFill?: string | null;
+  svgStroke?: string | null;
+  svgStrokeWidth?: number | null;
+
 };
 
 /** Where an image node takes its picture from. */

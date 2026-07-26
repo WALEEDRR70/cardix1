@@ -3,9 +3,42 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { useStudio } from "@/lib/studio/store";
 import { resolveImageSrc, resolvePlaceholders, type StudioNode } from "@/lib/studio/types";
+import { isSvgSrc, useInlineSvg } from "@/lib/studio/svg";
 
 const GRID = 8;
 const SNAP_TOLERANCE = 6;
+
+function ImageNode({ n, values }: { n: StudioNode; values?: Record<string, string> }) {
+  const s = n.style;
+  const src = resolveImageSrc(n, values);
+  const inline = useInlineSvg(src, { fill: s.svgFill, stroke: s.svgStroke, strokeWidth: s.svgStrokeWidth });
+  const svg = isSvgSrc(src) && s.svgInline !== false ? inline : null;
+
+
+  if (!src) {
+    return (
+      <div
+        className="grid h-full w-full place-items-center border border-dashed text-[10px] uppercase tracking-widest"
+        style={{ borderRadius: s.radius, borderColor: "#ffffff40", color: "#ffffff80" }}
+      >
+        {n.imageSource === "employee" ? "photo" : n.imageSource === "logo" ? "logo" : "image"}
+      </div>
+    );
+  }
+
+  if (svg) {
+    return (
+      <div
+        className="h-full w-full [&>svg]:h-full [&>svg]:w-full"
+        style={{ borderRadius: s.radius, overflow: "hidden" }}
+        dangerouslySetInnerHTML={{ __html: svg }}
+      />
+    );
+  }
+
+  return <img src={src} alt="" className="h-full w-full object-cover" style={{ borderRadius: s.radius }} />;
+}
+
 
 export function NodeContent({ n, values }: { n: StudioNode; values?: Record<string, string> }) {
   const s = n.style;
@@ -42,19 +75,9 @@ export function NodeContent({ n, values }: { n: StudioNode; values?: Record<stri
           {resolvePlaceholders(n.text ?? "Button", values)}
         </div>
       );
-    case "image": {
-      const src = resolveImageSrc(n, values);
-      return src ? (
-        <img src={src} alt="" className="h-full w-full object-cover" style={{ borderRadius: s.radius }} />
-      ) : (
-        <div
-          className="grid h-full w-full place-items-center border border-dashed text-[10px] uppercase tracking-widest"
-          style={{ borderRadius: s.radius, borderColor: "#ffffff40", color: "#ffffff80" }}
-        >
-          {n.imageSource === "employee" ? "photo" : n.imageSource === "logo" ? "logo" : "image"}
-        </div>
-      );
-    }
+    case "image":
+      return <ImageNode n={n} values={values} />;
+
     case "qr":
       return (
         <div

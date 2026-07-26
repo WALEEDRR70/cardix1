@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import { useStudio } from "@/lib/studio/store";
 import { CARD_SIZES, PLACEHOLDERS, type ImageSource } from "@/lib/studio/types";
 import { uploadStudioImage } from "@/lib/studio/upload";
+import { isSvgSrc } from "@/lib/studio/svg";
+
 import { GradientEditor } from "@/components/studio/GradientEditor";
 
 
@@ -197,8 +199,75 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
             </p>
           )}
 
+          {isSvgSrc(n.src) && (
+            <div className="space-y-2 rounded-lg border border-border/60 p-2">
+              <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                {ar ? "تحكم بملف SVG" : "SVG controls"}
+              </p>
+              <label className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                <input
+                  type="checkbox"
+                  checked={s.svgInline !== false}
+                  onChange={(e) => st({ svgInline: e.target.checked })}
+                />
+                {ar ? "تفعيل التحكم بالألوان" : "Enable color control"}
+              </label>
+              {s.svgInline !== false && (
+                <>
+                  <Field label={ar ? "لون التعبئة" : "Fill color"}>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={(s.svgFill ?? "#ffffff").slice(0, 7)}
+                        onChange={(e) => st({ svgFill: e.target.value })}
+                        className="h-8 w-full rounded bg-transparent"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => st({ svgFill: "none" })}
+                        className="whitespace-nowrap rounded-md border border-border/60 px-2 text-[11px] text-muted-foreground hover:text-foreground"
+                      >
+                        {ar ? "شفاف" : "None"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => st({ svgFill: null })}
+                        className="whitespace-nowrap rounded-md border border-border/60 px-2 text-[11px] text-muted-foreground hover:text-foreground"
+                      >
+                        {ar ? "الأصلي" : "Original"}
+                      </button>
+                    </div>
+                  </Field>
+                  <Field label={ar ? "لون الإطار" : "Stroke color"}>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={(s.svgStroke ?? "#7c34ff").slice(0, 7)}
+                        onChange={(e) => st({ svgStroke: e.target.value })}
+                        className="h-8 w-full rounded bg-transparent"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => st({ svgStroke: null, svgStrokeWidth: null })}
+                        className="whitespace-nowrap rounded-md border border-border/60 px-2 text-[11px] text-muted-foreground hover:text-foreground"
+                      >
+                        {ar ? "الأصلي" : "Original"}
+                      </button>
+                    </div>
+                  </Field>
+                  <Num
+                    label={ar ? "سماكة الإطار" : "Stroke width"}
+                    value={s.svgStrokeWidth ?? 0}
+                    step={0.5}
+                    onChange={(v) => st({ svgStrokeWidth: v })}
+                  />
+                </>
+              )}
+            </div>
+          )}
         </Section>
       )}
+
 
 
       {n.type === "path" && (
