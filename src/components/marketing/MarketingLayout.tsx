@@ -59,10 +59,13 @@ function MarketingNav() {
         </Link>
 
         <nav className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
+          <Link to="/features" className="hover:text-foreground transition">Features</Link>
+          <Link to="/pricing" className="hover:text-foreground transition">Pricing</Link>
           <Link to="/l" className="hover:text-foreground transition">Guides</Link>
           <Link to="/tools" className="hover:text-foreground transition">Tools</Link>
           <Link to="/blog" className="hover:text-foreground transition">Blog</Link>
         </nav>
+
 
         <div className="flex items-center gap-2">
           <div className="hidden md:flex items-center gap-2">
@@ -91,13 +94,15 @@ function MarketingNav() {
 function MarketingFooter() {
   const { t } = useI18n();
   const productLinks = [
+    { to: "/features", label: "Features" },
+    { to: "/pricing", label: "Pricing" },
     { to: "/l/digital-business-card", label: "Digital Business Card" },
     { to: "/l/nfc-business-card", label: "NFC Business Card" },
     { to: "/l/qr-business-card", label: "QR Business Card" },
     { to: "/l/business-card-scanner", label: "Card Scanner (OCR)" },
     { to: "/l/business-card-templates", label: "Templates" },
-    { to: "/l/luxury-business-card", label: "Luxury Cards" },
   ];
+
   const toolLinks = [
     { to: "/tools/qr-generator", label: "QR Code Generator" },
     { to: "/tools/vcard-generator", label: "vCard (.vcf) Generator" },
@@ -113,9 +118,11 @@ function MarketingFooter() {
   const learnLinks = [
     { to: "/blog", label: "Blog" },
     { to: "/l", label: "All Guides" },
+    { to: "/about", label: "About Cardixn" },
+    { to: "/contact", label: "Contact" },
     { to: "/blog/nfc-vs-qr-which-is-better", label: "NFC vs QR" },
-    { to: "/blog/how-to-create-digital-business-card", label: "How to Create One" },
   ];
+
   return (
     <footer className="border-t border-border/60">
       <div className="mx-auto grid w-full max-w-[1440px] gap-10 px-5 py-14 lg:grid-cols-5 lg:px-10">
