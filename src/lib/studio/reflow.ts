@@ -44,14 +44,14 @@ export function reflowBlocks(
   // ---- logo ---------------------------------------------------------------
   if (has("logo")) {
     const lw = landscape ? 16 : 26;
-    const lh = hOf((lw / 2.6) / (targetAspect < 1 ? 1 : 1), targetAspect) * (targetAspect < 1 ? 1 : 1);
-    const logoH = targetAspect < 1 ? (lw / 2.6) * targetAspect : lw / 2.6;
+    // keep a ~2.6:1 logo box in physical proportions on the target canvas
+    const logoH = Math.max(4, (lw / 2.6) * targetAspect);
     out.push({
       role: "logo",
       x: a.logoPosition === "center" ? (100 - lw) / 2 : rtl ? pad : 100 - pad - lw,
       y: pad,
       w: lw,
-      h: Math.max(4, logoH || lh),
+      h: logoH,
       align: "center",
     });
   }
