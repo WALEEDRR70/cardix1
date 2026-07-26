@@ -46,12 +46,9 @@ export function AiPanel({ ar }: { ar: boolean }) {
       const msg = (e as Error).message;
       toast.error(
         msg.includes("RATE_LIMIT") ? (ar ? "محاولات كثيرة، حاول لاحقًا" : "Rate limited, try again shortly")
-          : msg.includes("NO_CREDITS") ? (ar ? "رصيد OpenAI غير كافٍ" : "OpenAI quota exhausted")
-            : msg.includes("INVALID_KEY") ? (ar ? "مفتاح OpenAI غير صالح" : "Invalid OpenAI key")
-              : msg.includes("WEAK_ANALYSIS") ? (ar ? "لم يتم قراءة البطاقة جيدًا، جرّب صورة أوضح" : "Card not read clearly, try a sharper image")
-                : (ar ? "تعذر تحليل البطاقة" : "Could not analyse the card"),
+          : msg.includes("NO_CREDITS") ? (ar ? "نفد رصيد الذكاء الاصطناعي" : "AI credits exhausted")
+            : (ar ? "تعذر تحليل البطاقة" : "Could not analyse the card"),
       );
-
     } finally {
       setBusy(false);
     }

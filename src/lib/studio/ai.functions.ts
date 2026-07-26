@@ -129,30 +129,42 @@ Improve the palette: raise contrast, refine harmony, keep the spirit of the orig
 export const analyzeCardImage = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => Input.parse(d))
   .handler(async ({ data }): Promise<AiCardAnalysis> => {
-    const { openaiChat } = await import("@/lib/ai/openai.server");
+    const key = process.env.LOVABLE_API_KEY;
+    if (!key) throw new Error("Missing LOVABLE_API_KEY");
 
     const url = data.image.startsWith("data:")
       ? data.image
       : `data:${data.mime};base64,${data.image}`;
 
-    const raw = await openaiChat({
-      models: ["gpt-4.1", "gpt-4o"],
-      json: true,
-      maxTokens: 12000,
-      messages: [
-        { role: "system", content: SYSTEM },
-        {
-          role: "user",
-          content: [
-            { type: "text", text: "Analyse this business card. Measure every element precisely and return the full JSON layout map (surfaces, blocks, margins, vectors). Visual identity only — never copy the printed text." },
-            { type: "image_url", image_url: { url, detail: "high" } },
-          ],
-        },
-      ],
+    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-pro",
+        messages: [
+          { role: "system", content: SYSTEM },
+          {
+            role: "user",
+            content: [
+              { type: "text", text: "Analyse this business card. Measure every element precisely and return the full JSON layout map (surfaces, blocks, margins, vectors). Visual identity only — never copy the printed text." },
+              { type: "image_url", image_url: { url } },
+            ],
+          },
+        ],
+        response_format: { type: "json_object" },
+      }),
     });
 
-    const cleaned = raw.replace(/^```(?:json)?/i, "").replace(/```$/, "").trim();
+    if (!res.ok) {
+      const body = await res.text();
+      if (res.status === 429) throw new Error("RATE_LIMIT");
+      if (res.status === 402) throw new Error("NO_CREDITS");
+      throw new Error(`AI request failed [${res.status}]: ${body}`);
+    }
 
+    const json = (await res.json()) as { choices?: { message?: { content?: string } }[] };
+    const raw = json.choices?.[0]?.message?.content ?? "";
+    const cleaned = raw.replace(/^```(?:json)?/i, "").replace(/```$/, "").trim();
     let parsed: Partial<AiCardAnalysis>;
     try {
       parsed = JSON.parse(cleaned) as Partial<AiCardAnalysis>;
@@ -160,9 +172,6 @@ export const analyzeCardImage = createServerFn({ method: "POST" })
       const m = cleaned.match(/\{[\s\S]*\}/);
       parsed = m ? (JSON.parse(m[0]) as Partial<AiCardAnalysis>) : {};
     }
-
-    // A truncated/empty answer would silently produce a generic purple card — fail instead.
-    if (!Array.isArray(parsed.blocks) || parsed.blocks.length < 2) throw new Error("WEAK_ANALYSIS");
 
     const p = parsed.palette ?? ({} as AiCardAnalysis["palette"]);
     return {
