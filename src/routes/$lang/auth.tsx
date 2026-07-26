@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Link, useNavigate } from "@/lib/nav";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
+import { signInWithFirebaseGoogle } from "@/lib/firebase-auth";
 import { useI18n } from "@/lib/i18n";
 import { LocaleSwitcher } from "@/components/LangToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -65,19 +65,18 @@ function AuthPage() {
   }
 
   async function google() {
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: `${window.location.origin}/auth/callback?lang=${lang}&next=${encodeURIComponent(nextPath())}`,
-    });
-    if (result.error) { toast.error(result.error.message); return; }
-    if (result.redirected) return;
-    // Popup flow: session is set — wait for it before entering the gated area.
-    for (let i = 0; i < 20; i++) {
-      const { data } = await supabase.auth.getSession();
-      if (data.session) break;
-      await new Promise((r) => setTimeout(r, 150));
+    try {
+      setLoading(true);
+      await signInWithFirebaseGoogle();
+      nav({ to: nextPath() });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : t.somethingWrong;
+      if (!/popup-closed-by-user|cancelled-popup-request/.test(msg)) toast.error(msg);
+    } finally {
+      setLoading(false);
     }
-    nav({ to: nextPath() });
   }
+
 
 
   return (
