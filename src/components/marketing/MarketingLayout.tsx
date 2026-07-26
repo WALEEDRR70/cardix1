@@ -118,9 +118,11 @@ function MarketingFooter() {
   const learnLinks = [
     { to: "/blog", label: "Blog" },
     { to: "/l", label: "All Guides" },
+    { to: "/about", label: "About Cardixn" },
+    { to: "/contact", label: "Contact" },
     { to: "/blog/nfc-vs-qr-which-is-better", label: "NFC vs QR" },
-    { to: "/blog/how-to-create-digital-business-card", label: "How to Create One" },
   ];
+
   return (
     <footer className="border-t border-border/60">
       <div className="mx-auto grid w-full max-w-[1440px] gap-10 px-5 py-14 lg:grid-cols-5 lg:px-10">
