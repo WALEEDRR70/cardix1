@@ -49,9 +49,44 @@ export function StudioToolbar({
 
       <span className="mx-1 h-5 w-px bg-border/60" />
 
+      {/* alignment + distribution */}
+      {([
+        ["left", AlignStartVertical, ar ? "محاذاة لليسار" : "Align left"],
+        ["hcenter", AlignCenterVertical, ar ? "توسيط أفقي" : "Center horizontally"],
+        ["right", AlignEndVertical, ar ? "محاذاة لليمين" : "Align right"],
+        ["top", AlignStartHorizontal, ar ? "محاذاة للأعلى" : "Align top"],
+        ["vcenter", AlignCenterHorizontal, ar ? "توسيط عمودي" : "Center vertically"],
+        ["bottom", AlignEndHorizontal, ar ? "محاذاة للأسفل" : "Align bottom"],
+      ] as const).map(([how, Icon, label]) => (
+        <Btn key={how} title={label} disabled={!sel} onClick={() => dispatch({ t: "align", ids: state.selection, how })}>
+          <Icon className="h-4 w-4" />
+        </Btn>
+      ))}
+      <Btn title={ar ? "توزيع أفقي" : "Distribute horizontally"} disabled={state.selection.length < 3} onClick={() => dispatch({ t: "distribute", ids: state.selection, axis: "h" })}><AlignHorizontalSpaceAround className="h-4 w-4" /></Btn>
+      <Btn title={ar ? "توزيع عمودي" : "Distribute vertically"} disabled={state.selection.length < 3} onClick={() => dispatch({ t: "distribute", ids: state.selection, axis: "v" })}><AlignVerticalSpaceAround className="h-4 w-4" /></Btn>
+
+      <span className="mx-1 h-5 w-px bg-border/60" />
+
+      <Btn title={ar ? "تجميع" : "Group"} disabled={state.selection.length < 2} onClick={() => dispatch({ t: "group", ids: state.selection })}><Group className="h-4 w-4" /></Btn>
+      <Btn title={ar ? "فك التجميع" : "Ungroup"} disabled={!sel} onClick={() => state.selection[0] && dispatch({ t: "ungroup", id: state.selection[0] })}><Ungroup className="h-4 w-4" /></Btn>
+      <Btn title={ar ? "تكرار" : "Duplicate"} disabled={!sel} onClick={() => dispatch({ t: "duplicate", ids: state.selection })}><CopyPlus className="h-4 w-4" /></Btn>
+      <Btn title={ar ? "حذف" : "Delete"} disabled={!sel} onClick={() => dispatch({ t: "remove", ids: state.selection })}><Trash2 className="h-4 w-4" /></Btn>
+
+      <span className="mx-1 h-5 w-px bg-border/60" />
+
       <Btn title="Zoom out" onClick={() => dispatch({ t: "zoom", value: state.zoom - 0.1 })}><ZoomOut className="h-4 w-4" /></Btn>
-      <span className="w-10 text-center text-xs text-muted-foreground">{Math.round(state.zoom * 100)}%</span>
+      <select
+        value={zoomPreset}
+        onChange={(e) => (e.target.value === "fit" ? dispatch({ t: "fit" }) : dispatch({ t: "zoom", value: Number(e.target.value) }))}
+        className="rounded-md border border-border/60 bg-transparent px-1.5 py-1 text-[11px] text-muted-foreground outline-none"
+      >
+        {!PRESETS.includes(Math.round(state.zoom * 100)) && <option value={state.zoom}>{Math.round(state.zoom * 100)}%</option>}
+        {PRESETS.map((p) => <option key={p} value={p / 100}>{p}%</option>)}
+        <option value="fit">{ar ? "ملء الشاشة" : "Fit"}</option>
+      </select>
       <Btn title="Zoom in" onClick={() => dispatch({ t: "zoom", value: state.zoom + 0.1 })}><ZoomIn className="h-4 w-4" /></Btn>
+      <Btn title={ar ? "ملاءمة" : "Fit to screen"} onClick={() => dispatch({ t: "fit" })}><Maximize className="h-4 w-4" /></Btn>
+
 
       <div className="flex-1" />
 
