@@ -262,8 +262,7 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
             transform: `scale(${zoom})`,
             transformOrigin: "top left",
             background: doc.background.gradient ?? doc.background.color,
-            backgroundImage: doc.background.image ? `url(${doc.background.image})` : undefined,
-            backgroundSize: "cover",
+
           }}
           className="absolute left-0 top-0 overflow-hidden rounded-[28px] shadow-2xl"
         >
