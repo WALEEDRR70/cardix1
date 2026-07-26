@@ -59,10 +59,13 @@ function MarketingNav() {
         </Link>
 
         <nav className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
+          <Link to="/features" className="hover:text-foreground transition">Features</Link>
+          <Link to="/pricing" className="hover:text-foreground transition">Pricing</Link>
           <Link to="/l" className="hover:text-foreground transition">Guides</Link>
           <Link to="/tools" className="hover:text-foreground transition">Tools</Link>
           <Link to="/blog" className="hover:text-foreground transition">Blog</Link>
         </nav>
+
 
         <div className="flex items-center gap-2">
           <div className="hidden md:flex items-center gap-2">
