@@ -1,0 +1,134 @@
+import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+
+/** Look up an invitation by its token (public — only non-sensitive fields). */
+export const getInvitation = createServerFn({ method: "GET" })
+  .inputValidator((d: { token: string }) => d)
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: invite } = await supabaseAdmin
+      .from("company_invitations")
+      .select("id, email, name, job_title, phone, role, status, expires_at, company_id, department_id")
+      .eq("token", data.token)
+      .maybeSingle();
+    if (!invite) return { ok: false as const };
+    const { data: company } = await supabaseAdmin
+      .from("companies")
+      .select("id, name, slug, logo_url, brand_primary, default_template, website, address, is_verified")
+      .eq("id", invite.company_id)
+      .maybeSingle();
+    const valid =
+      invite.status === "pending" && new Date(invite.expires_at).getTime() > Date.now() && !!company;
+    return {
+      ok: valid,
+      invitation: {
+        email: invite.email,
+        name: invite.name,
+        job_title: invite.job_title,
+        role: invite.role,
+        status: invite.status,
+      },
+      company: company
+        ? { name: company.name, slug: company.slug, logo_url: company.logo_url, brand_primary: company.brand_primary, is_verified: company.is_verified }
+        : null,
+    };
+  });
+
+/** Accept an invitation: links the signed-in user to the company and creates their employee card. */
+export const acceptInvitation = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { token: string }) => d)
+  .handler(async ({ data, context }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const userEmail = String(context.claims.email ?? "").toLowerCase();
+
+    const { data: invite } = await supabaseAdmin
+      .from("company_invitations")
+      .select("*")
+      .eq("token", data.token)
+      .maybeSingle();
+
+    if (!invite || invite.status !== "pending" || new Date(invite.expires_at).getTime() < Date.now()) {
+      throw new Error("INVALID_INVITATION");
+    }
+    if (invite.email.toLowerCase() !== userEmail) {
+      throw new Error("EMAIL_MISMATCH");
+    }
+
+    const { data: company } = await supabaseAdmin
+      .from("companies")
+      .select("*")
+      .eq("id", invite.company_id)
+      .maybeSingle();
+    if (!company) throw new Error("INVALID_INVITATION");
+
+    await supabaseAdmin.from("company_members").upsert(
+      {
+        company_id: invite.company_id,
+        user_id: context.userId,
+        role: invite.role,
+        status: "active",
+        department_id: invite.department_id,
+        job_title: invite.job_title,
+        corporate_email: invite.email,
+        phone: invite.phone,
+      },
+      { onConflict: "company_id,user_id" },
+    );
+
+    // Create the employee card if the user does not have one for this company yet.
+    const { data: existing } = await supabaseAdmin
+      .from("cards")
+      .select("id, slug")
+      .eq("company_id", invite.company_id)
+      .eq("user_id", context.userId)
+      .maybeSingle();
+
+    let cardSlug = existing?.slug ?? null;
+    if (!existing) {
+      const base =
+        (invite.name ?? invite.email.split("@")[0])
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "") || "employee";
+      const slug = `${base}-${Math.random().toString(36).slice(2, 6)}`;
+      const { data: card } = await supabaseAdmin
+        .from("cards")
+        .insert({
+          user_id: context.userId,
+          company_id: invite.company_id,
+          department_id: invite.department_id,
+          card_type: "employee",
+          slug,
+          name: invite.name ?? invite.email.split("@")[0],
+          title: invite.job_title,
+          company: company.name,
+          email: invite.email,
+          phone: invite.phone,
+          website: company.website,
+          address: company.address,
+          avatar_url: null,
+          accent_color: company.brand_primary,
+          template: company.default_template,
+          is_verified: company.is_verified,
+        })
+        .select("slug")
+        .single();
+      cardSlug = card?.slug ?? null;
+    }
+
+    await supabaseAdmin
+      .from("company_invitations")
+      .update({ status: "accepted", accepted_at: new Date().toISOString() })
+      .eq("id", invite.id);
+
+    await supabaseAdmin.from("company_audit_logs").insert({
+      company_id: invite.company_id,
+      actor_id: context.userId,
+      action: "invitation.accepted",
+      entity: "company_members",
+      metadata: { email: invite.email },
+    });
+
+    return { ok: true as const, companySlug: company.slug, cardSlug };
+  });

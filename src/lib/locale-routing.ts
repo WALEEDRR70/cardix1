@@ -3,6 +3,7 @@ import { DEFAULT_LOCALE, isSupportedLocale, type Locale } from "@/i18n/config";
 const UNLOCALIZED_PREFIXES = [
   "/auth/callback",
   "/c/",
+  "/company/",
   "/api/",
   "/sitemap",
   "/robots",
