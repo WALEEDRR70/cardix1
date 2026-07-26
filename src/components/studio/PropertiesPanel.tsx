@@ -6,6 +6,15 @@ import { useStudio } from "@/lib/studio/store";
 import { CARD_SIZES, PLACEHOLDERS, type ImageSource } from "@/lib/studio/types";
 import { uploadStudioImage } from "@/lib/studio/upload";
 
+const BG_PRESETS: string[] = [
+  "linear-gradient(160deg,#0b0713,#2c125a)",
+  "linear-gradient(135deg,#7c34ff,#0b0713)",
+  "linear-gradient(135deg,#ffffff,#e9e6f5)",
+  "linear-gradient(135deg,#101010,#3a3a3a)",
+  "linear-gradient(135deg,#c9a227,#4a3608)",
+  "linear-gradient(135deg,#0f3b36,#0b0713)",
+];
+
 export function PropertiesPanel({ ar }: { ar: boolean }) {
   const { state, dispatch, selected } = useStudio();
   const n = selected[0];
