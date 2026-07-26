@@ -1,11 +1,14 @@
 // AI Designer: upload a card, strip its content, rebuild an editable template + variations.
 import { useRef, useState } from "react";
-import { Upload, Sparkles, Loader2, Wand2 } from "lucide-react";
+import { Upload, Sparkles, Loader2, Wand2, Ruler } from "lucide-react";
 import { toast } from "sonner";
 import { useServerFn } from "@tanstack/react-start";
 import { analyzeCardImage, type AiCardAnalysis } from "@/lib/studio/ai.functions";
-import { buildVariation, VARIATIONS, type VariationKey } from "@/lib/studio/variations";
+import { buildVariation, canvasFromAspect, VARIATIONS, type VariationKey } from "@/lib/studio/variations";
+import { CARD_SIZES } from "@/lib/studio/types";
 import { useStudio } from "@/lib/studio/store";
+
+type SizeKey = "original" | string;
 
 export function AiPanel({ ar }: { ar: boolean }) {
   const { dispatch } = useStudio();
@@ -15,6 +18,8 @@ export function AiPanel({ ar }: { ar: boolean }) {
   const [preview, setPreview] = useState<string | null>(null);
   const [result, setResult] = useState<AiCardAnalysis | null>(null);
   const [active, setActive] = useState<VariationKey>("modern");
+  const [sizeKey, setSizeKey] = useState<SizeKey>("original");
+
 
   async function onFile(file: File) {
     if (file.size > 8 * 1024 * 1024) {
