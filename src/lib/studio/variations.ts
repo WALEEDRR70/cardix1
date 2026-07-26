@@ -2,7 +2,8 @@
 // The layout is proportional and follows the ORIENTATION of the analysed card:
 // a landscape scan produces a landscape template, a portrait scan a portrait one.
 import { node, type StudioDoc, type StudioNode } from "./types";
-import type { AiCardAnalysis } from "./ai.functions";
+import type { AiBlock, AiCardAnalysis } from "./ai.functions";
+import { needsReflow, reflowBlocks } from "./reflow";
 
 export type VariationKey =
   | "minimal" | "luxury" | "glass" | "corporate" | "executive"
@@ -83,7 +84,7 @@ export function buildVariation(
       ? reflowBlocks(a, targetAspect)
       : srcBlocks;
 
-  const block = (role: string) => blocks.find((b) => b.role === role);
+  const block = (role: string) => (blocks as AiBlock[]).find((b) => b.role === role);
   const useMap = blocks.length >= 3;
 
   // ---- measured colour surfaces from the scan (bands, rails, panels) ----
