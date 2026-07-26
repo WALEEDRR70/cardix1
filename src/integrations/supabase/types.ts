@@ -767,7 +767,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      card_accepts_events: { Args: { _card_id: string }; Returns: boolean }
       company_role_of: {
         Args: { _company_id: string; _user_id: string }
         Returns: Database["public"]["Enums"]["company_role"]
