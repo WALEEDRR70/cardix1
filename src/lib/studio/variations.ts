@@ -115,7 +115,7 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
   const logoCentered = a.logoPosition === "center";
   push(node("image", {
     name: "Logo",
-    source: "logo",
+    imageSource: "logo",
     x: logoCentered ? Math.round((W - logoW) / 2) : rtl ? PAD : W - PAD - logoW,
     y: PAD,
     w: logoW, h: logoH,
@@ -125,7 +125,7 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
   const photo = Math.round(Math.min(W, H) * 0.17);
   push(node("image", {
     name: "Photo",
-    source: "photo",
+    imageSource: "employee",
     x: rtl ? W - PAD - photo : PAD,
     y: Math.round(H * (landscape ? 0.3 : 0.14)),
     w: photo, h: photo,
