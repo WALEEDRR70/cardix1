@@ -65,7 +65,32 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
     }));
   };
 
+  // normalised (0..100) -> canvas helpers
+  const PX = (v: number) => Math.round((v / 100) * W);
+  const PY = (v: number) => Math.round((v / 100) * H);
+  const short = Math.min(W, H);
+  const blocks = a.blocks ?? [];
+  const block = (role: string) => blocks.find((b) => b.role === role);
+  const useMap = blocks.length >= 3;
+
+  // ---- measured colour surfaces from the scan (bands, rails, panels) ----
+  for (const sf of a.surfaces ?? []) {
+    push(node("shape", {
+      name: sf.name,
+      x: PX(sf.x), y: PY(sf.y), w: PX(sf.w), h: PY(sf.h),
+      shape: sf.shape === "ellipse" ? "ellipse" : "rect",
+      opacity: sf.opacity ?? 1,
+      style: {
+        fill: light ? `${primary}14` : (sf.fill ?? "transparent"),
+        gradient: sf.gradient ?? null,
+        radius: Math.round(((sf.radius ?? 0) / 100) * short),
+        blur: sf.blur ?? 0,
+      },
+    }));
+  }
+
   // ---- free-form AI artwork (pen-tool paths drawn by the model) ----
+
   const vectors = a.vectors ?? [];
   // each variation reinterprets the same drawing with its own paint
   const paint: Record<VariationKey, { fill?: string; stroke?: string; op: number; blur: number }> = {
@@ -102,7 +127,7 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
 
   // ---- decorative layer, unique per variation (fallback when the model drew nothing) ----
   const bandH = landscape ? Math.round(H * 0.28) : Math.round(H * 0.3);
-  switch (vectors.length ? "__none" : key) {
+  switch (vectors.length || useMap ? "__none" : key) {
     case "minimal":
       push(node("line", { name: "Rule", x: colX, y: Math.round(H * 0.42), w: px(120), h: 3, style: { fill: primary, radius: 3 } }));
       break;
@@ -142,6 +167,106 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
       push(node("shape", { name: "Frame", x: 24, y: 24, w: W - 48, h: H - 48, shape: "rect", style: { fill: "transparent", borderWidth: 1, borderColor: `${accent}88`, radius: 28 } }));
       push(node("shape", { name: "Halo", x: W * 0.25, y: -H * 0.18, w: W * 0.7, h: W * 0.7, shape: "ellipse", style: { gradient: `radial-gradient(circle, ${accent}44, transparent 70%)` } }));
       break;
+  }
+
+  // ---- precise layer: rebuild the exact geometry measured on the scan ----
+  if (useMap) {
+    const VALUE: Record<string, string> = {
+      name: "{{Employee Name}}",
+      title: "{{Job Title}}",
+      company: "{{Company}}",
+      tagline: a.tagline ?? "{{Company}}",
+      phone: "{{Phone}}",
+      email: "{{Email}}",
+      website: "{{Website}}",
+      address: "{{Address}}",
+    };
+    const LABEL: Record<string, string> = {
+      name: "Name", title: "Job title", company: "Company", tagline: "Tagline",
+      phone: "Phone", email: "Email", website: "Website", address: "Address",
+    };
+    const tone = (role: string) =>
+      role === "name" ? fg : role === "title" ? primary : muted;
+
+    for (const b of blocks) {
+      const bx = PX(b.x), by = PY(b.y), bw = Math.max(4, PX(b.w)), bh = Math.max(4, PY(b.h));
+      const align = b.align ?? (rtl ? "right" : "left");
+
+      if (b.role === "logo") {
+        push(node("image", { name: "Logo", imageSource: "logo", x: bx, y: by, w: bw, h: bh, style: { radius: Math.round(short * 0.012) } }));
+        continue;
+      }
+      if (b.role === "photo") {
+        const round = Math.abs(bw - bh) / Math.max(bw, bh) < 0.15;
+        push(node("image", {
+          name: "Photo", imageSource: "employee", x: bx, y: by, w: bw, h: bh,
+          style: { radius: round ? 999 : Math.round(short * 0.02), borderWidth: 2, borderColor: `${primary}88` },
+        }));
+        continue;
+      }
+      if (b.role === "qr") {
+        const side = Math.max(bw, bh);
+        push(node("qr", { name: "QR", x: bx, y: by, w: side, h: side, style: { fill: "#ffffff", radius: Math.round(short * 0.02), padding: Math.round(side * 0.08) } }));
+        continue;
+      }
+      if (b.role === "cta") {
+        push(node("button", {
+          name: "Save contact", text: "Save contact", x: bx, y: by, w: bw, h: bh,
+          style: {
+            gradient: key === "luxury" || key === "premium"
+              ? `linear-gradient(135deg, ${accent}, ${primary})`
+              : `linear-gradient(135deg, ${primary}, ${secondary})`,
+            color: "#ffffff", radius: 999, fontSize: Math.round(bh * 0.36), fontWeight: 600, align: "center",
+          },
+        }));
+        continue;
+      }
+      if (b.role === "custom") continue;
+
+      const size = Math.round(((b.sizePct ?? 3) / 100) * short * 1.35);
+      push(node("text", {
+        name: LABEL[b.role] ?? b.role,
+        text: VALUE[b.role] ?? "",
+        x: bx, y: by, w: bw, h: Math.max(bh, Math.round(size * 1.25)),
+        style: {
+          fontSize: Math.max(9, size),
+          fontWeight: b.weight ?? (b.role === "name" ? 700 : b.role === "title" ? 600 : 400),
+          color: light ? (b.role === "name" ? fg : muted) : (b.color ?? tone(b.role)),
+          letterSpacing: b.letterSpacing ?? 0,
+          lineHeight: 1.25,
+          align,
+        },
+      }));
+    }
+
+    // guarantee the essentials exist even if the scan had none
+    if (!block("qr")) {
+      const side = Math.round(short * (landscape ? 0.34 : 0.24));
+      push(node("qr", {
+        name: "QR",
+        x: rtl ? PAD : W - PAD - side,
+        y: H - PAD - side,
+        w: side, h: side,
+        style: { fill: "#ffffff", radius: Math.round(short * 0.02), padding: Math.round(side * 0.08) },
+      }));
+    }
+    if (!block("logo")) {
+      const lw = Math.round(W * (landscape ? 0.18 : 0.24));
+      push(node("image", { name: "Logo", imageSource: "logo", x: rtl ? PAD : W - PAD - lw, y: PAD, w: lw, h: Math.round(lw * 0.4), style: { radius: 10 } }));
+    }
+
+    void s;
+    return {
+      version: 1,
+      w: W,
+      h: H,
+      background: {
+        color: bg,
+        gradient: light ? "linear-gradient(160deg,#ffffff,#eee9f7)" : a.backgroundCss,
+        image: null,
+      },
+      nodes,
+    };
   }
 
   // ---- identity layer (placeholders, always editable) ----
