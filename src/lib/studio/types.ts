@@ -1,6 +1,6 @@
 // Cardix Studio — document model for the visual business-card designer.
 export type NodeType =
-  | "text" | "image" | "shape" | "line" | "qr" | "icon" | "button" | "group";
+  | "text" | "image" | "shape" | "line" | "qr" | "icon" | "button" | "group" | "path";
 
 export type ShapeKind = "rect" | "ellipse" | "triangle";
 
@@ -21,6 +21,11 @@ export type NodeStyle = {
   glow?: string | null;
   blur?: number;
   padding?: number;
+  /** free-form vector nodes: stroke paint + width + caps (pen tool) */
+  stroke?: string | null;
+  strokeWidth?: number;
+  dash?: string | null;
+  cap?: "butt" | "round" | "square";
 };
 
 /** Where an image node takes its picture from. */
@@ -43,6 +48,8 @@ export type StudioNode = {
   imageSource?: ImageSource;
   icon?: string;
   shape?: ShapeKind;
+  /** SVG path data drawn inside a 0..100 x 0..100 viewBox (free-form pen node) */
+  path?: string;
   href?: string;
   style: NodeStyle;
   children?: StudioNode[];
@@ -136,6 +143,7 @@ const DEFAULT_STYLE: Record<NodeType, NodeStyle> = {
   line: { fill: "#ffffff", radius: 8 },
   qr: { fill: "#ffffff", radius: 16, padding: 12 },
   icon: { color: "#ffffff" },
+  path: { fill: "transparent", stroke: "#7c34ff", strokeWidth: 2, cap: "round" },
   button: { fill: "#7c34ff", color: "#ffffff", radius: 999, fontSize: 18, fontWeight: 600, align: "center" },
   group: {},
 };
@@ -159,6 +167,7 @@ export function node(type: NodeType, patch: Partial<StudioNode> = {}): StudioNod
     ...(patch.imageSource ? { imageSource: patch.imageSource } : {}),
     ...(patch.icon ? { icon: patch.icon } : {}),
     ...(patch.shape ? { shape: patch.shape } : {}),
+    ...(patch.path ? { path: patch.path } : {}),
     ...(patch.href ? { href: patch.href } : {}),
     ...(patch.children ? { children: patch.children } : {}),
   };

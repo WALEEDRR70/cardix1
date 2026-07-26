@@ -64,6 +64,26 @@ export function NodeContent({ n, values }: { n: StudioNode; values?: Record<stri
           <QRCodeSVG value={values?.["{{QR}}"] ?? "https://cardixn.com"} size={Math.min(n.w, n.h) - (s.padding ?? 0) * 2} bgColor="transparent" fgColor="#0b0713" />
         </div>
       );
+    case "path":
+      return (
+        <svg
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          className="h-full w-full overflow-visible"
+          style={{ filter: s.blur ? `blur(${s.blur}px)` : undefined }}
+        >
+          <path
+            d={n.path ?? ""}
+            fill={s.gradient ? "none" : (s.fill && s.fill !== "transparent" ? s.fill : "none")}
+            stroke={s.stroke ?? undefined}
+            strokeWidth={s.strokeWidth ?? 0}
+            strokeLinecap={s.cap ?? "round"}
+            strokeLinejoin="round"
+            strokeDasharray={s.dash ?? undefined}
+            vectorEffect="non-scaling-stroke"
+          />
+        </svg>
+      );
     case "line":
       return <div className="h-full w-full" style={{ background: s.gradient ?? s.fill, borderRadius: s.radius }} />;
     case "shape":
