@@ -44,7 +44,7 @@ export function AiPanel({ ar }: { ar: boolean }) {
     try {
       const analysis = await analyze({ data: { image: dataUrl, mime: file.type || "image/png", aspect } });
       setResult(analysis);
-      apply(analysis, active);
+      apply(analysis, active, sizeKey);
       toast.success(ar ? "تم إنشاء قالب قابل للتحرير" : "Editable template generated");
 
     } catch (e) {
@@ -59,10 +59,18 @@ export function AiPanel({ ar }: { ar: boolean }) {
     }
   }
 
-  function apply(a: AiCardAnalysis, key: VariationKey) {
-    setActive(key);
-    dispatch({ t: "replace", doc: buildVariation(a, key) });
+  function sizeOf(a: AiCardAnalysis, key: SizeKey) {
+    if (key === "original") return canvasFromAspect(a.aspect ?? 0.64);
+    const s = CARD_SIZES.find((x) => x.key === key);
+    return s ? { w: s.w, h: s.h } : canvasFromAspect(a.aspect ?? 0.64);
   }
+
+  function apply(a: AiCardAnalysis, key: VariationKey, size: SizeKey = sizeKey) {
+    setActive(key);
+    setSizeKey(size);
+    dispatch({ t: "replace", doc: buildVariation(a, key, sizeOf(a, size)) });
+  }
+
 
   return (
     <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-3 text-xs">
