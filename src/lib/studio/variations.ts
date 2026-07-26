@@ -222,14 +222,13 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
       }
       if (b.role === "photo") {
         const round = Math.abs(bw - bh) / Math.max(bw, bh) < 0.15;
-        const side = round ? Math.round((bw + bh) / 2) : 0;
         push(node("image", {
-          name: "Photo", imageSource: "employee", x: bx, y: by,
-          w: side || bw, h: side || bh,
+          name: "Photo", imageSource: "employee", x: bx, y: by, w: bw, h: bh,
           style: { radius: round ? 999 : Math.round(short * 0.02), borderWidth: 2, borderColor: `${primary}88` },
         }));
         continue;
       }
+
       if (b.role === "qr") {
         const side = Math.max(bw, bh);
         push(node("qr", { name: "QR", x: bx, y: by, w: side, h: side, style: { fill: "#ffffff", radius: Math.round(short * 0.02), padding: Math.round(side * 0.08) } }));
