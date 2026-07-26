@@ -161,6 +161,41 @@ export type WsDict = {
   enterWorkspace: string;
   noAccessTitle: string;
   noAccessDesc: string;
+  onboardTitle: string;
+  onboardDesc: string;
+  stepIdentity: string;
+  stepBrand: string;
+  stepContact: string;
+  stepLegal: string;
+  stepStructure: string;
+  stepReview: string;
+  next: string;
+  back: string;
+  finish: string;
+  creating: string;
+  workspaceReady: string;
+  industry: string;
+  companySize: string;
+  tagline: string;
+  foundedYear: string;
+  contactPerson: string;
+  registrationNumber: string;
+  taxNumber: string;
+  legalAddress: string;
+  optional: string;
+  slugHint: string;
+  slugTaken: string;
+  brandPreview: string;
+  defaultDepartments: string;
+  defaultDepartmentsDesc: string;
+  reviewDesc: string;
+  size1: string;
+  size2: string;
+  size3: string;
+  size4: string;
+  size5: string;
+  verificationStatus: string;
+  unverified: string;
 };
 
 const en: WsDict = {
@@ -323,6 +358,41 @@ const en: WsDict = {
   enterWorkspace: "Enter workspace",
   noAccessTitle: "No access",
   noAccessDesc: "You are not an active member of this company workspace.",
+  onboardTitle: "Create your company workspace",
+  onboardDesc: "A few details and your enterprise space is ready — branding, employees and templates included.",
+  stepIdentity: "Identity",
+  stepBrand: "Branding",
+  stepContact: "Contact",
+  stepLegal: "Legal",
+  stepStructure: "Structure",
+  stepReview: "Review",
+  next: "Next",
+  back: "Back",
+  finish: "Create workspace",
+  creating: "Creating…",
+  workspaceReady: "Your workspace is ready",
+  industry: "Industry",
+  companySize: "Company size",
+  tagline: "Tagline",
+  foundedYear: "Founded year",
+  contactPerson: "Primary contact",
+  registrationNumber: "Registration number",
+  taxNumber: "Tax number",
+  legalAddress: "Legal address",
+  optional: "Optional",
+  slugHint: "Your public address: cardixn.com/company/",
+  slugTaken: "This address is already taken",
+  brandPreview: "Brand preview",
+  defaultDepartments: "Starting departments",
+  defaultDepartmentsDesc: "We will create these departments. You can edit them later.",
+  reviewDesc: "Check everything before we create the workspace.",
+  size1: "1–10",
+  size2: "11–50",
+  size3: "51–200",
+  size4: "201–1000",
+  size5: "1000+",
+  verificationStatus: "Verification",
+  unverified: "Unverified",
 };
 
 const ar: Partial<WsDict> = {
@@ -485,6 +555,41 @@ const ar: Partial<WsDict> = {
   enterWorkspace: "دخول المساحة",
   noAccessTitle: "لا تملك صلاحية",
   noAccessDesc: "لست عضوًا نشطًا في مساحة هذه الشركة.",
+  onboardTitle: "أنشئ مساحة شركتك",
+  onboardDesc: "بضع خطوات وتصبح مساحتك المؤسسية جاهزة — الهوية والموظفون والقوالب.",
+  stepIdentity: "الهوية",
+  stepBrand: "العلامة",
+  stepContact: "التواصل",
+  stepLegal: "البيانات القانونية",
+  stepStructure: "الهيكل",
+  stepReview: "المراجعة",
+  next: "التالي",
+  back: "السابق",
+  finish: "إنشاء المساحة",
+  creating: "جارٍ الإنشاء…",
+  workspaceReady: "مساحتك جاهزة",
+  industry: "المجال",
+  companySize: "حجم الشركة",
+  tagline: "الشعار النصي",
+  foundedYear: "سنة التأسيس",
+  contactPerson: "مسؤول التواصل",
+  registrationNumber: "رقم السجل التجاري",
+  taxNumber: "الرقم الضريبي",
+  legalAddress: "العنوان القانوني",
+  optional: "اختياري",
+  slugHint: "عنوانك العام: cardixn.com/company/",
+  slugTaken: "هذا العنوان مستخدم بالفعل",
+  brandPreview: "معاينة الهوية",
+  defaultDepartments: "الأقسام الابتدائية",
+  defaultDepartmentsDesc: "سننشئ هذه الأقسام ويمكنك تعديلها لاحقًا.",
+  reviewDesc: "راجع البيانات قبل إنشاء المساحة.",
+  size1: "1–10",
+  size2: "11–50",
+  size3: "51–200",
+  size4: "201–1000",
+  size5: "1000+",
+  verificationStatus: "التوثيق",
+  unverified: "غير موثقة",
 };
 
 const OVERRIDES: Record<string, Partial<WsDict>> = { ar };

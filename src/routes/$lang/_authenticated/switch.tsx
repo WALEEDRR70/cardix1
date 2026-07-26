@@ -105,7 +105,7 @@ function SwitchPage() {
               ))}
 
               <Link
-                to="/workspace"
+                to="/co/new"
                 className="flex items-center gap-2 rounded-2xl border border-dashed border-border/70 p-3 text-sm text-muted-foreground transition hover:text-foreground"
               >
                 <Plus className="h-4 w-4" /> {w.createWorkspace}

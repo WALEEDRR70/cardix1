@@ -85,7 +85,7 @@ function WorkspaceIndex() {
             <h2 className="mt-4 text-lg font-semibold tracking-tight">{w.noWorkspaces}</h2>
             <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">{w.noWorkspacesDesc}</p>
             <button
-              onClick={() => setCreating(true)}
+              onClick={() => nav({ to: "/co/new" })}
               className="mt-6 inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold text-accent-foreground shadow-glow transition active:scale-[0.98]"
               style={{ background: "var(--gradient-gold)" }}
             >
@@ -127,7 +127,7 @@ function WorkspaceIndex() {
             ))}
             {!creating && (
               <button
-                onClick={() => setCreating(true)}
+                onClick={() => nav({ to: "/co/new" })}
                 className="flex w-full items-center justify-center gap-2 rounded-3xl border border-dashed border-border py-4 text-sm font-medium text-muted-foreground hover:text-foreground"
               >
                 <Plus className="h-4 w-4" /> {w.createWorkspace}
