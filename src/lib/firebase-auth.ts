@@ -38,5 +38,10 @@ export async function signInWithFirebaseGoogle(): Promise<void> {
     token_hash: tokenHash,
     type: "magiclink",
   });
-  if (error) throw error;
+  if (error) {
+    // Some projects hash the link as a generic email OTP — retry once with that type.
+    const retry = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: "email" });
+    if (retry.error) throw error;
+  }
+
 }
