@@ -4,6 +4,8 @@ import { QRCodeSVG } from "qrcode.react";
 import { useStudio } from "@/lib/studio/store";
 import { resolveImageSrc, resolvePlaceholders, type StudioNode } from "@/lib/studio/types";
 import { isSvgSrc, useInlineSvg } from "@/lib/studio/svg";
+import { PenLayer } from "./PenLayer";
+
 
 const GRID = 8;
 const SNAP_TOLERANCE = 6;
