@@ -211,6 +211,43 @@ export const analyzeCardImage = createServerFn({ method: "POST" })
               blur: typeof v.blur === "number" ? v.blur : 0,
             }))
         : [],
+      blocks: Array.isArray(parsed.blocks)
+        ? (parsed.blocks as AiBlock[])
+            .filter((b) => b && typeof b.x === "number" && typeof b.y === "number" && b.w > 0 && b.h > 0)
+            .slice(0, 24)
+            .map((b) => ({
+              role: (ROLES.includes(b.role) ? b.role : "custom") as AiBlockRole,
+              x: clamp(b.x), y: clamp(b.y), w: clamp(b.w), h: clamp(b.h),
+              align: b.align === "center" || b.align === "right" ? b.align : "left",
+              sizePct: typeof b.sizePct === "number" ? Math.min(20, Math.max(1, b.sizePct)) : undefined,
+              weight: typeof b.weight === "number" ? b.weight : undefined,
+              color: b.color ?? null,
+              letterSpacing: typeof b.letterSpacing === "number" ? b.letterSpacing : 0,
+              uppercase: !!b.uppercase,
+            }))
+        : [],
+      surfaces: Array.isArray(parsed.surfaces)
+        ? (parsed.surfaces as AiSurface[])
+            .filter((s2) => s2 && typeof s2.x === "number" && s2.w > 0 && s2.h > 0)
+            .slice(0, 8)
+            .map((s2, i) => ({
+              name: s2.name || `Surface ${i + 1}`,
+              x: clamp(s2.x, -30, 130), y: clamp(s2.y, -30, 130),
+              w: clamp(s2.w, 0, 160), h: clamp(s2.h, 0, 160),
+              shape: s2.shape === "ellipse" ? "ellipse" : "rect",
+              fill: s2.fill ?? null,
+              gradient: s2.gradient ?? null,
+              radius: typeof s2.radius === "number" ? s2.radius : 0,
+              opacity: typeof s2.opacity === "number" ? Math.min(1, Math.max(0.05, s2.opacity)) : 1,
+              blur: typeof s2.blur === "number" ? s2.blur : 0,
+            }))
+        : [],
+      margins: {
+        top: clamp(parsed.margins?.top ?? 7, 0, 25),
+        right: clamp(parsed.margins?.right ?? 7, 0, 25),
+        bottom: clamp(parsed.margins?.bottom ?? 7, 0, 25),
+        left: clamp(parsed.margins?.left ?? 7, 0, 25),
+      },
       tagline: parsed.tagline ?? null,
       notes: parsed.notes ?? "Increase whitespace and strengthen the type hierarchy.",
     };
