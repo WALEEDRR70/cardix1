@@ -22,6 +22,36 @@ export type AiVector = {
   blur?: number;
 };
 
+/** A measured content region on the analysed card, in 0..100 percentages. */
+export type AiBlockRole =
+  | "logo" | "photo" | "name" | "title" | "company" | "tagline"
+  | "phone" | "email" | "website" | "address" | "qr" | "cta" | "custom";
+
+export type AiBlock = {
+  role: AiBlockRole;
+  /** normalised box on a 0..100 x 0..100 card grid */
+  x: number; y: number; w: number; h: number;
+  align?: "left" | "center" | "right";
+  /** cap height of the text as a % of the card's short edge */
+  sizePct?: number;
+  weight?: number;
+  color?: string | null;
+  letterSpacing?: number;
+  uppercase?: boolean;
+};
+
+/** A flat background surface (band, rail, panel) measured on the card. */
+export type AiSurface = {
+  name: string;
+  x: number; y: number; w: number; h: number;
+  shape: "rect" | "ellipse";
+  fill?: string | null;
+  gradient?: string | null;
+  radius?: number;
+  opacity?: number;
+  blur?: number;
+};
+
 export type AiCardAnalysis = {
   style: string;
   industry: string;
@@ -37,10 +67,17 @@ export type AiCardAnalysis = {
   logoPosition: "left" | "center" | "right";
   /** free-form vector artwork the model draws itself (pen-tool style) */
   vectors: AiVector[];
+  /** measured layout of every content region on the scanned card */
+  blocks: AiBlock[];
+  /** measured flat colour surfaces behind the content */
+  surfaces: AiSurface[];
+  /** margins of the printed content area, in % of the card */
+  margins: { top: number; right: number; bottom: number; left: number };
   /** short services / slogan line detected on the card (no contact data) */
   tagline: string | null;
   notes: string;
 };
+
 
 const SYSTEM = `You are a senior brand designer analysing a scanned business card.
 You must IGNORE and NEVER reproduce any names, phone numbers, emails, websites, addresses,
