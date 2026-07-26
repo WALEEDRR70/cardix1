@@ -89,7 +89,19 @@ function DesktopSidebar() {
         })}
       </nav>
 
-      <div className="px-6 pb-6 pt-4 text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+      <div className="px-3 pb-2">
+        <Link
+          to="/switch"
+          className="flex items-center gap-3 rounded-xl border border-border/50 px-3 py-2.5 text-sm text-muted-foreground transition hover:text-foreground"
+        >
+          <span className="grid h-8 w-8 place-items-center rounded-lg">
+            <Building2 className="h-4 w-4" />
+          </span>
+          {wsDict(lang).switchAccount}
+        </Link>
+      </div>
+
+      <div className="px-6 pb-6 pt-2 text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
         © {new Date().getFullYear()} {t.brand}
       </div>
     </aside>
