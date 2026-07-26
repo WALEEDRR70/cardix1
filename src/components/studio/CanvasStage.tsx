@@ -11,6 +11,23 @@ import { PathEditLayer } from "./PathEditLayer";
 const GRID = 8;
 const SNAP_TOLERANCE = 6;
 
+/** Convert a CSS box-shadow value to a filter drop-shadow so the shadow
+ *  follows the real silhouette of the shape instead of its bounding box. */
+function toDropShadow(shadow: string): string {
+  const parts = shadow.trim().split(/\s+(?![^(]*\))/);
+  const lengths: string[] = [];
+  const rest: string[] = [];
+  for (const p of parts) {
+    if (p === "inset") return "";
+    if (/^-?[\d.]+(px|rem|em|%)?$/.test(p) && lengths.length < 4) lengths.push(p);
+    else rest.push(p);
+  }
+  const [x = "0", y = "0", blur = "0"] = lengths;
+  const color = rest.join(" ") || "rgba(0,0,0,.35)";
+  return `drop-shadow(${x} ${y} ${blur} ${color})`;
+}
+
+
 function ImageNode({ n, values }: { n: StudioNode; values?: Record<string, string> }) {
   const s = n.style;
   const src = resolveImageSrc(n, values);
