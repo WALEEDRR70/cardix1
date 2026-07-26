@@ -1,11 +1,17 @@
-// Top toolbar: history, zoom, grid toggles, export and save.
+// Top toolbar: history, alignment, zoom, grid toggles, export and save.
 import { useRef, useState } from "react";
 import {
   Undo2, Redo2, Grid3x3, Magnet, Ruler, ZoomIn, ZoomOut, Download, Save, Loader2,
+  AlignStartVertical, AlignCenterVertical, AlignEndVertical,
+  AlignStartHorizontal, AlignCenterHorizontal, AlignEndHorizontal,
+  AlignHorizontalSpaceAround, AlignVerticalSpaceAround,
+  Group, Ungroup, CopyPlus, Trash2, Maximize,
 } from "lucide-react";
 import { toPng, toJpeg, toSvg } from "html-to-image";
 import { useStudio } from "@/lib/studio/store";
 import { cn } from "@/lib/utils";
+
+const PRESETS = [25, 50, 75, 100, 150, 200, 300];
 
 export function StudioToolbar({
   ar, onSave, saving, title,
@@ -13,8 +19,11 @@ export function StudioToolbar({
   const { state, dispatch } = useStudio();
   const [busy, setBusy] = useState(false);
   const menuRef = useRef<HTMLDetailsElement>(null);
+  const sel = state.selection.length > 0;
+  const zoomPreset = String(state.zoom);
 
   const stage = () => document.querySelector<HTMLElement>("[data-studio-stage]");
+
 
   async function exportAs(kind: "png" | "jpg" | "svg" | "json") {
     if (kind === "json") {
