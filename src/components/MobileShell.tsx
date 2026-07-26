@@ -49,7 +49,6 @@ function DesktopSidebar() {
   const items = [
     { to: "/dashboard", icon: Home, label: t.home },
     { to: "/vault", icon: BookmarkCheck, label: t.vault },
-    { to: "/workspace", icon: Building2, label: wsDict(lang).workspace },
     { to: "/scan", icon: ScanLine, label: t.scanCard },
     { to: "/settings", icon: Layers, label: t.settings },
   ] as const;
