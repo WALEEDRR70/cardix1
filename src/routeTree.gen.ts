@@ -23,6 +23,7 @@ import { Route as LangContactRouteImport } from './routes/$lang/contact'
 import { Route as LangAuthRouteImport } from './routes/$lang/auth'
 import { Route as LangAboutRouteImport } from './routes/$lang/about'
 import { Route as LangAuthenticatedRouteRouteImport } from './routes/$lang/_authenticated/route'
+import { Route as CompanySlugIndexRouteImport } from './routes/company.$slug.index'
 import { Route as LangToolsIndexRouteImport } from './routes/$lang/tools/index'
 import { Route as LangLIndexRouteImport } from './routes/$lang/l/index'
 import { Route as LangBlogIndexRouteImport } from './routes/$lang/blog/index'
@@ -109,6 +110,11 @@ const LangAboutRoute = LangAboutRouteImport.update({
 const LangAuthenticatedRouteRoute = LangAuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => LangRouteRoute,
+} as any)
+const CompanySlugIndexRoute = CompanySlugIndexRouteImport.update({
+  id: '/company/$slug/',
+  path: '/company/$slug/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const LangToolsIndexRoute = LangToolsIndexRouteImport.update({
   id: '/tools/',
@@ -223,6 +229,7 @@ export interface FileRoutesByFullPath {
   '/$lang/blog/': typeof LangBlogIndexRoute
   '/$lang/l/': typeof LangLIndexRoute
   '/$lang/tools/': typeof LangToolsIndexRoute
+  '/company/$slug/': typeof CompanySlugIndexRoute
   '/$lang/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/cards/new': typeof LangAuthenticatedCardsNewRoute
   '/$lang/vault/$id': typeof LangAuthenticatedVaultIdRoute
@@ -253,6 +260,7 @@ export interface FileRoutesByTo {
   '/$lang/blog': typeof LangBlogIndexRoute
   '/$lang/l': typeof LangLIndexRoute
   '/$lang/tools': typeof LangToolsIndexRoute
+  '/company/$slug': typeof CompanySlugIndexRoute
   '/$lang/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/cards/new': typeof LangAuthenticatedCardsNewRoute
   '/$lang/vault/$id': typeof LangAuthenticatedVaultIdRoute
@@ -286,6 +294,7 @@ export interface FileRoutesById {
   '/$lang/blog/': typeof LangBlogIndexRoute
   '/$lang/l/': typeof LangLIndexRoute
   '/$lang/tools/': typeof LangToolsIndexRoute
+  '/company/$slug/': typeof CompanySlugIndexRoute
   '/$lang/_authenticated/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/_authenticated/cards/new': typeof LangAuthenticatedCardsNewRoute
   '/$lang/_authenticated/vault/$id': typeof LangAuthenticatedVaultIdRoute
@@ -319,6 +328,7 @@ export interface FileRouteTypes {
     | '/$lang/blog/'
     | '/$lang/l/'
     | '/$lang/tools/'
+    | '/company/$slug/'
     | '/$lang/cards/$id'
     | '/$lang/cards/new'
     | '/$lang/vault/$id'
@@ -349,6 +359,7 @@ export interface FileRouteTypes {
     | '/$lang/blog'
     | '/$lang/l'
     | '/$lang/tools'
+    | '/company/$slug'
     | '/$lang/cards/$id'
     | '/$lang/cards/new'
     | '/$lang/vault/$id'
@@ -381,6 +392,7 @@ export interface FileRouteTypes {
     | '/$lang/blog/'
     | '/$lang/l/'
     | '/$lang/tools/'
+    | '/company/$slug/'
     | '/$lang/_authenticated/cards/$id'
     | '/$lang/_authenticated/cards/new'
     | '/$lang/_authenticated/vault/$id'
@@ -397,6 +409,7 @@ export interface RootRouteChildren {
   CSlugRoute: typeof CSlugRoute
   JoinTokenRoute: typeof JoinTokenRoute
   SitemapChar123langChar125DotxmlRoute: typeof SitemapChar123langChar125DotxmlRoute
+  CompanySlugIndexRoute: typeof CompanySlugIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -498,6 +511,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/$lang'
       preLoaderRoute: typeof LangAuthenticatedRouteRouteImport
       parentRoute: typeof LangRouteRoute
+    }
+    '/company/$slug/': {
+      id: '/company/$slug/'
+      path: '/company/$slug'
+      fullPath: '/company/$slug/'
+      preLoaderRoute: typeof CompanySlugIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/$lang/tools/': {
       id: '/$lang/tools/'
@@ -715,6 +735,7 @@ const rootRouteChildren: RootRouteChildren = {
   CSlugRoute: CSlugRoute,
   JoinTokenRoute: JoinTokenRoute,
   SitemapChar123langChar125DotxmlRoute: SitemapChar123langChar125DotxmlRoute,
+  CompanySlugIndexRoute: CompanySlugIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
