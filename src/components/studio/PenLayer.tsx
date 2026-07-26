@@ -139,7 +139,7 @@ export function PenLayer({
       onDoubleClick={(e) => { e.stopPropagation(); finish(false); }}
     >
       <svg className="pointer-events-none absolute inset-0 h-full w-full overflow-visible">
-        {d && <path d={d} fill="none" stroke="hsl(var(--accent))" strokeWidth={1.5} strokeDasharray="4 4" />}
+        {d && <path d={d} fill="none" stroke="var(--accent)" strokeWidth={1.5} strokeDasharray="4 4" />}
         {pts.map((p, i) => {
           const m = mirror(p);
           const hasHandle = Math.hypot(p.hx - p.x, p.hy - p.y) > 0.5;
@@ -147,9 +147,9 @@ export function PenLayer({
             <g key={i}>
               {hasHandle && (
                 <>
-                  <line x1={m.x * zoom} y1={m.y * zoom} x2={p.hx * zoom} y2={p.hy * zoom} stroke="hsl(var(--accent))" strokeWidth={1} opacity={0.6} />
-                  <circle cx={p.hx * zoom} cy={p.hy * zoom} r={3} fill="hsl(var(--accent))" />
-                  <circle cx={m.x * zoom} cy={m.y * zoom} r={3} fill="hsl(var(--accent))" />
+                  <line x1={m.x * zoom} y1={m.y * zoom} x2={p.hx * zoom} y2={p.hy * zoom} stroke="var(--accent)" strokeWidth={1} opacity={0.6} />
+                  <circle cx={p.hx * zoom} cy={p.hy * zoom} r={3} fill="var(--accent)" />
+                  <circle cx={m.x * zoom} cy={m.y * zoom} r={3} fill="var(--accent)" />
                 </>
               )}
               <rect
@@ -157,8 +157,8 @@ export function PenLayer({
                 y={p.y * zoom - 3.5}
                 width={7}
                 height={7}
-                fill={i === 0 ? "hsl(var(--accent))" : "white"}
-                stroke="hsl(var(--accent))"
+                fill={i === 0 ? "var(--accent)" : "white"}
+                stroke="var(--accent)"
                 strokeWidth={1.5}
               />
             </g>
