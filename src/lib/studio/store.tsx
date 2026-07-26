@@ -131,6 +131,13 @@ function reducer(state: StudioState, a: Action): StudioState {
     }
     case "bg":
       return commit(state, { ...doc, background: { ...doc.background, ...a.patch } });
+    case "size":
+      return commit(state, {
+        ...doc,
+        w: Math.min(4000, Math.max(200, Math.round(a.w))),
+        h: Math.min(4000, Math.max(200, Math.round(a.h))),
+      });
+      return commit(state, { ...doc, background: { ...doc.background, ...a.patch } });
     case "select":
       return { ...state, selection: a.ids };
     case "undo": {
