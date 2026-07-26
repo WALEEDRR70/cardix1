@@ -15,9 +15,11 @@ function CompanyWorkspaceLayout() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["co-workspace", slug],
+    staleTime: 5 * 60_000,
     queryFn: async () => {
-      const { data: auth } = await supabase.auth.getUser();
-      const userId = auth.user?.id;
+      const { data: auth } = await supabase.auth.getSession();
+      const userId = auth.session?.user?.id;
+
       const { data: company } = await supabase.from("companies").select("*").eq("slug", slug).maybeSingle();
       if (!company || !userId) return { company: null as Company | null, role: null as CompanyRole | null };
       const { data: member } = await supabase
