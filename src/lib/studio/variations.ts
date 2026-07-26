@@ -65,6 +65,7 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
     }));
   };
 
+
   // ---- free-form AI artwork (pen-tool paths drawn by the model) ----
   const vectors = a.vectors ?? [];
   // each variation reinterprets the same drawing with its own paint
