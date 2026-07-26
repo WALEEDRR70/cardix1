@@ -300,10 +300,14 @@ export function useStudioState(initial: StudioDoc) {
     past: [],
     future: [],
     zoom: 0.7,
+    pan: { x: 0, y: 0 },
+    fitTick: 0,
     grid: true,
     snap: true,
     guides: true,
+    clipboard: [],
   } satisfies StudioState);
+
 
   const selected = useMemo(
     () => state.selection.map((id) => findNode(state.doc.nodes, id)).filter(Boolean) as StudioNode[],
