@@ -1,4 +1,5 @@
-import { createFileRoute, notFound, Link } from "@tanstack/react-router";
+import { createFileRoute, notFound } from "@tanstack/react-router";
+import { Link } from "@/lib/nav";
 import { MobileBottomNav } from "@/components/MobileShell";
 import { Home as HomeIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
