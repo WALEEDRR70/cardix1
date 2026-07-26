@@ -3,7 +3,7 @@ import { useState } from "react";
 import {
   Type, Image as ImageIcon, Square, Circle, Triangle, Minus, QrCode, Nfc, Link2,
   Star, MapPin, Video, Sparkles, Eye, EyeOff, Lock, Unlock, Copy, Trash2,
-  ChevronUp, ChevronDown, Group, Ungroup, User, Building2,
+  ChevronUp, ChevronDown, ChevronsUp, ChevronsDown, GripVertical, Group, Ungroup, User, Building2,
 } from "lucide-react";
 import { useStudio } from "@/lib/studio/store";
 import type { NodeType, StudioNode } from "@/lib/studio/types";
