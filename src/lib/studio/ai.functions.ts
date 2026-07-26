@@ -196,8 +196,14 @@ export const analyzeCardImage = createServerFn({ method: "POST" })
               blur: typeof v.blur === "number" ? v.blur : 0,
             }))
         : [],
+      layout: normalizeLayout(
+        parsed.layout,
+        (data.aspect ?? parsed.aspect ?? 0.64) >= 1,
+        parsed.direction === "rtl",
+      ),
       tagline: parsed.tagline ?? null,
       notes: parsed.notes ?? "Increase whitespace and strengthen the type hierarchy.",
     };
+
 
   });
