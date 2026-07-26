@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import { useStudio } from "@/lib/studio/store";
 import { CARD_SIZES, PLACEHOLDERS, type ImageSource } from "@/lib/studio/types";
 import { uploadStudioImage } from "@/lib/studio/upload";
+import { GradientEditor } from "@/components/studio/GradientEditor";
+
 
 const BG_PRESETS: string[] = [
   "linear-gradient(160deg,#0b0713,#2c125a)",
