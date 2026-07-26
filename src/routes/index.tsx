@@ -6,6 +6,12 @@ export const Route = createFileRoute("/")({
   beforeLoad: () => {
     let locale = DEFAULT_LOCALE;
     if (typeof window !== "undefined") {
+      // OAuth can land back on "/" with tokens in the hash — never strip them.
+      const raw = window.location.hash.startsWith("#") ? window.location.hash.slice(1) : "";
+      if (raw.includes("access_token=")) {
+        window.location.replace(`/auth/callback${window.location.search}${window.location.hash}`);
+        return;
+      }
       try {
         const saved = localStorage.getItem("cardix_lang");
         if (isSupportedLocale(saved)) locale = saved;
@@ -16,5 +22,6 @@ export const Route = createFileRoute("/")({
     }
     throw redirect({ to: "/$lang/", params: { lang: locale }, replace: true });
   },
+
   component: () => null,
 });

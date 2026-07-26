@@ -59,11 +59,20 @@ function AuthPage() {
   }
 
   async function google() {
-    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
+    const result = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: `${window.location.origin}/auth/callback`,
+    });
     if (result.error) { toast.error(result.error.message); return; }
     if (result.redirected) return;
+    // Popup flow: session is set — wait for it before entering the gated area.
+    for (let i = 0; i < 20; i++) {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) break;
+      await new Promise((r) => setTimeout(r, 150));
+    }
     nav({ to: "/dashboard" });
   }
+
 
   return (
     <div className="relative mx-auto flex min-h-[100dvh] w-full max-w-[520px] flex-col bg-background">
