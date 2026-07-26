@@ -5,7 +5,10 @@ const Input = z.object({
   /** data URL of the uploaded business card image */
   image: z.string().min(32),
   mime: z.string().default("image/png"),
+  /** measured width/height of the uploaded image */
+  aspect: z.number().positive().optional(),
 });
+
 
 export type AiCardAnalysis = {
   style: string;
