@@ -138,6 +138,17 @@ function reducer(state: StudioState, a: Action): StudioState {
       list.splice(target, 0, item);
       return commit(state, { ...doc, nodes: list });
     }
+    case "reorder": {
+      const moved = a.ids
+        .map((id) => findNode(doc.nodes, id))
+        .filter(Boolean) as StudioNode[];
+      if (moved.length === 0) return state;
+      // Never drop a node into its own subtree.
+      if (a.targetId && moved.some((m) => containsId(m, a.targetId as string))) return state;
+      const without = removeNodes(doc.nodes, a.ids);
+      const nodes = insertRelative(without, a.targetId, moved, a.place);
+      return { ...commit(state, { ...doc, nodes }), selection: a.ids };
+    }
     case "group": {
       const picked = doc.nodes.filter((n) => a.ids.includes(n.id));
       if (picked.length < 2) return state;
