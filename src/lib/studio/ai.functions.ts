@@ -110,6 +110,18 @@ export const analyzeCardImage = createServerFn({ method: "POST" })
       },
       backgroundCss: parsed.backgroundCss ?? "linear-gradient(160deg,#2c125a,#0b0713 60%)",
       composition: parsed.composition ?? "left-rail",
+      // the measured aspect from the browser always wins over the model's guess
+      aspect: data.aspect ?? (typeof parsed.aspect === "number" ? parsed.aspect : 0.64),
+      orientation:
+        (data.aspect ?? parsed.aspect ?? 0.64) > 1.05
+          ? "landscape"
+          : (data.aspect ?? parsed.aspect ?? 0.64) < 0.95
+            ? "portrait"
+            : "square",
+      direction: parsed.direction === "rtl" ? "rtl" : "ltr",
+      logoPosition: parsed.logoPosition ?? "right",
+      tagline: parsed.tagline ?? null,
       notes: parsed.notes ?? "Increase whitespace and strengthen the type hierarchy.",
     };
+
   });
