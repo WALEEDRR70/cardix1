@@ -36,8 +36,14 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
   const { w: W, h: H } = canvasFromAspect(a.aspect ?? 0.64);
   const landscape = W >= H;
   const rtl = a.direction === "rtl";
+  const L = a.layout ?? defaultLayout(landscape, rtl);
 
-  const PAD = Math.round(Math.min(W, H) * 0.075);
+  // percent -> pixel helpers (rounded to a 2px optical grid for crisp edges)
+  const gx = (p: number) => Math.round((p / 100) * W);
+  const gy = (p: number) => Math.round((p / 100) * H);
+  const snap2 = (v: number) => Math.round(v / 2) * 2;
+
+  const PAD = snap2(gx(L.margin) * 0.5 + gy(L.margin) * 0.5);
   const light = key === "light";
   const bg = light ? "#f6f4fb" : background;
   const fg = light ? "#141020" : textOnBg;
@@ -45,9 +51,12 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
   const s = Math.min(W, H) / 1000; // type scale relative to the short edge
   const px = (n: number) => Math.max(1, Math.round(n * (landscape ? H : W) / (landscape ? 650 : 640)));
 
-  // content column: on landscape the text sits on one half, QR on the other
-  const colW = landscape ? Math.round(W * 0.52) : W - PAD * 2;
-  const colX = rtl && landscape ? W - PAD - colW : PAD;
+  // content column comes straight from the measured text zone
+  const colX = snap2(gx(L.textZone.x));
+  const colW = snap2(gx(L.textZone.w));
+  const colY = snap2(gy(L.textZone.y));
+  const colH = snap2(gy(L.textZone.h));
+  const align = L.textAlign;
 
   const nodes: StudioNode[] = [];
   const push = (n: StudioNode) => nodes.push(n);
@@ -60,10 +69,11 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
   ) => {
     const { x = colX, w = colW, h = px(40), ...style } = opts;
     push(node("text", {
-      name, text: value, x, y, w, h,
-      style: { fontSize: px(20), lineHeight: 1.3, align: rtl ? "right" : "left", ...style },
+      name, text: value, x, y: snap2(y), w, h,
+      style: { fontSize: px(20), lineHeight: 1.25, align, ...style },
     }));
   };
+
 
   // ---- free-form AI artwork (pen-tool paths drawn by the model) ----
   const vectors = a.vectors ?? [];
