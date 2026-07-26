@@ -30,12 +30,19 @@ export function canvasFromAspect(aspect: number): { w: number; h: number } {
     : { w: Math.round(LONG * a), h: LONG };
 }
 
-/** Builds an editable document for one variation, driven by the extracted identity. */
-export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc {
+/** Builds an editable document for one variation, driven by the extracted identity.
+ *  `size` (optional) re-targets the design to any card format: the measured
+ *  layout is re-flowed professionally instead of being stretched. */
+export function buildVariation(
+  a: AiCardAnalysis,
+  key: VariationKey,
+  size?: { w: number; h: number },
+): StudioDoc {
   const { primary, secondary, accent, background, textOnBg } = a.palette;
-  const { w: W, h: H } = canvasFromAspect(a.aspect ?? 0.64);
+  const { w: W, h: H } = size ?? canvasFromAspect(a.aspect ?? 0.64);
   const landscape = W >= H;
   const rtl = a.direction === "rtl";
+
 
   const PAD = Math.round(Math.min(W, H) * 0.075);
   const light = key === "light";
