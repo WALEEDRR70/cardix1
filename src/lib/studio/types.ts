@@ -23,6 +23,9 @@ export type NodeStyle = {
   padding?: number;
 };
 
+/** Where an image node takes its picture from. */
+export type ImageSource = "upload" | "employee" | "logo";
+
 export type StudioNode = {
   id: string;
   type: NodeType;
@@ -37,6 +40,7 @@ export type StudioNode = {
   hidden: boolean;
   text?: string;
   src?: string;
+  imageSource?: ImageSource;
   icon?: string;
   shape?: ShapeKind;
   href?: string;
