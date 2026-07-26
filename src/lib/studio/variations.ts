@@ -248,17 +248,21 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
     }
 
     for (const b of textBlocks) {
-      const bx = PX(b.x), bw = Math.max(4, PX(b.w));
+      const bx = PX(b.x);
       let by = PY(b.y);
       const bh = Math.max(4, PY(b.h));
       const align = b.align ?? (rtl ? "right" : "left");
 
-      // fit the type inside its measured box: never taller than the box,
-      // never wider than the column (approx. 0.55em per character)
-      const chars = Math.max(6, (SAMPLE[b.role] ?? "").length);
+      // the box may grow into the free space beside it so a single line never wraps
+      const room = align === "right" ? bx + Math.max(4, PX(b.w)) : W - bx - Math.round(short * 0.04);
+      const bw = Math.max(Math.max(4, PX(b.w)), Math.min(room, Math.round(W * 0.6)));
+
+      // size the type to the longest string it can render (placeholder or real value)
+      const chars = Math.max(8, (VALUE[b.role] ?? "").length, (SAMPLE[b.role] ?? "").length);
       const raw = ((b.sizePct ?? 3) / 100) * short * 1.35;
-      const size = Math.max(9, Math.round(Math.min(raw, bh * 0.82, bw / (chars * 0.55))));
-      const h = Math.max(bh, Math.round(size * 1.3));
+      const size = Math.max(9, Math.round(Math.min(raw, bh * 1.1, bw / (chars * 0.52))));
+      const h = Math.round(size * 1.35);
+
 
       // push the line down when it would collide with an already placed line
       for (const p of placedText) {
