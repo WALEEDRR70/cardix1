@@ -27,6 +27,7 @@ type Action =
   | { t: "ungroup"; id: string }
   | { t: "select"; ids: string[] }
   | { t: "bg"; patch: Partial<StudioDoc["background"]> }
+  | { t: "size"; w: number; h: number }
   | { t: "undo" }
   | { t: "redo" }
   | { t: "zoom"; value: number }
