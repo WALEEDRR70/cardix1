@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import { useStudio } from "@/lib/studio/store";
 import { CARD_SIZES, PLACEHOLDERS, type ImageSource } from "@/lib/studio/types";
 import { uploadStudioImage } from "@/lib/studio/upload";
+import { GradientEditor } from "@/components/studio/GradientEditor";
+
 
 const BG_PRESETS: string[] = [
   "linear-gradient(160deg,#0b0713,#2c125a)",
@@ -71,16 +73,13 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
             ))}
           </div>
         </Field>
-        <Field label={ar ? "تدرج CSS" : "CSS gradient"}>
-          <input value={bg.gradient ?? ""} onChange={(e) => dispatch({ t: "bg", patch: { gradient: e.target.value || null } })} className={input} />
-        </Field>
-        <button
-          type="button"
-          onClick={() => dispatch({ t: "bg", patch: { gradient: null } })}
-          className="w-full rounded-md border border-border/60 px-2 py-1.5 text-muted-foreground hover:text-foreground"
-        >
-          {ar ? "إزالة التدرج" : "Remove gradient"}
-        </button>
+        <GradientEditor
+          ar={ar}
+          value={bg.gradient}
+          onChange={(css) => dispatch({ t: "bg", patch: { gradient: css } })}
+          onRemove={() => dispatch({ t: "bg", patch: { gradient: null } })}
+        />
+
         <Field label={ar ? "رابط صورة" : "Image URL"}>
           <input value={bg.image ?? ""} onChange={(e) => dispatch({ t: "bg", patch: { image: e.target.value || null } })} className={input} />
         </Field>
@@ -233,9 +232,20 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
         <Field label={ar ? "التعبئة" : "Fill"}>
           <input type="color" value={(s.fill ?? "#7c34ff").slice(0, 7)} onChange={(e) => st({ fill: e.target.value })} className="h-8 w-full rounded bg-transparent" />
         </Field>
-        <Field label={ar ? "تدرج CSS" : "CSS gradient"}>
-          <input value={s.gradient ?? ""} onChange={(e) => st({ gradient: e.target.value || null })} className={input} />
+        <Field label={ar ? "تدرجات جاهزة" : "Gradient presets"}>
+          <div className="grid grid-cols-6 gap-1.5">
+            {BG_PRESETS.map((g) => (
+              <button key={g} type="button" title={g} onClick={() => st({ gradient: g })} className="h-7 rounded-md border border-border/60" style={{ background: g }} />
+            ))}
+          </div>
         </Field>
+        <GradientEditor
+          ar={ar}
+          value={s.gradient}
+          onChange={(css: string) => st({ gradient: css })}
+          onRemove={() => st({ gradient: null })}
+        />
+
         <div className="grid grid-cols-2 gap-2">
           <Num label={ar ? "الاستدارة" : "Radius"} value={s.radius ?? 0} onChange={(v) => st({ radius: v })} />
           <Num label={ar ? "الحشوة" : "Padding"} value={s.padding ?? 0} onChange={(v) => st({ padding: v })} />
