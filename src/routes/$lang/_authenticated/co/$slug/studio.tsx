@@ -31,7 +31,7 @@ function Page() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("cards")
-        .select("id, full_name, title, slug, updated_at")
+        .select("id, name, title, slug, updated_at")
         .eq("company_id", company.id)
         .order("updated_at", { ascending: false });
       if (error) throw error;
@@ -41,7 +41,9 @@ function Page() {
 
   return (
     <CompanyShell company={company} role={role} title={w.designStudio} subtitle={company.name}>
-      <Card title={t.cards} description={t.desc}>
+      <Card>
+        <h2 className="text-base font-semibold text-foreground">{t.cards}</h2>
+        <p className="mb-4 mt-1 text-sm text-muted-foreground">{t.desc}</p>
         {cards.length === 0 ? (
           <div className="flex flex-col items-start gap-3 py-6">
             <p className="text-sm text-muted-foreground">{t.none}</p>
@@ -66,7 +68,7 @@ function Page() {
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-sm font-medium text-foreground">
-                      {c.full_name || c.slug}
+                      {c.name || c.slug}
                     </span>
                     <span className="block truncate text-xs text-muted-foreground">{c.title || t.open}</span>
                   </span>
