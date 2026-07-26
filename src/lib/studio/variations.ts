@@ -399,3 +399,26 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
     nodes,
   };
 }
+
+/** Rough bounding box of an SVG path on the 0..100 grid (numbers only, good enough for hit tests). */
+function pathBBox(d: string): { x: number; y: number; w: number; h: number } | null {
+  const nums = d.match(/-?\d*\.?\d+(?:e-?\d+)?/gi)?.map(Number) ?? [];
+  if (nums.length < 4) return null;
+  const xs: number[] = [], ys: number[] = [];
+  for (let i = 0; i + 1 < nums.length; i += 2) { xs.push(nums[i]); ys.push(nums[i + 1]); }
+  const x1 = Math.min(...xs), x2 = Math.max(...xs);
+  const y1 = Math.min(...ys), y2 = Math.max(...ys);
+  if (![x1, x2, y1, y2].every(Number.isFinite)) return null;
+  return { x: x1, y: y1, w: Math.max(0, x2 - x1), h: Math.max(0, y2 - y1) };
+}
+
+/** Share of box `b` covered by box `a`, both on the 0..100 grid. */
+function overlapRatio(
+  a: { x: number; y: number; w: number; h: number },
+  b: { x: number; y: number; w: number; h: number },
+): number {
+  const area = Math.max(1e-6, b.w * b.h);
+  const ox = Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x));
+  const oy = Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y));
+  return (ox * oy) / area;
+}
