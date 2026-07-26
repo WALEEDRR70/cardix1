@@ -23,6 +23,9 @@ export type NodeStyle = {
   padding?: number;
 };
 
+/** Where an image node takes its picture from. */
+export type ImageSource = "upload" | "employee" | "logo";
+
 export type StudioNode = {
   id: string;
   type: NodeType;
@@ -37,6 +40,7 @@ export type StudioNode = {
   hidden: boolean;
   text?: string;
   src?: string;
+  imageSource?: ImageSource;
   icon?: string;
   shape?: ShapeKind;
   href?: string;
@@ -72,8 +76,30 @@ export function resolvePlaceholders(text: string, values?: Record<string, string
   return text.replace(/\{\{[^}]+\}\}/g, (m) => values?.[m] ?? SAMPLE_VALUES[m] ?? m);
 }
 
+/** Resolves the picture of an image node (employee photo / company logo / uploaded file). */
+export function resolveImageSrc(
+  n: { src?: string; imageSource?: ImageSource },
+  values?: Record<string, string>,
+): string | undefined {
+  if (n.imageSource === "employee") return values?.["{{Photo}}"] || n.src || undefined;
+  if (n.imageSource === "logo") return values?.["{{Logo}}"] || n.src || undefined;
+  return n.src || undefined;
+}
+
 export const CARD_W = 640;
 export const CARD_H = 1000;
+
+/** Common card canvas sizes (px at 2x print-safe density). */
+export const CARD_SIZES: { key: string; label: string; labelAr: string; w: number; h: number }[] = [
+  { key: "portrait", label: "Portrait card", labelAr: "بطاقة عمودية", w: 640, h: 1000 },
+  { key: "standard-v", label: "Standard 85×55 (V)", labelAr: "قياسي ٨٥×٥٥ (عمودي)", w: 650, h: 1004 },
+  { key: "standard-h", label: "Standard 85×55 (H)", labelAr: "قياسي ٨٥×٥٥ (أفقي)", w: 1004, h: 650 },
+  { key: "us", label: "US 3.5×2 in", labelAr: "أمريكي ٣.٥×٢ إنش", w: 1050, h: 600 },
+  { key: "square", label: "Square", labelAr: "مربع", w: 800, h: 800 },
+  { key: "story", label: "Story 9:16", labelAr: "ستوري ٩:١٦", w: 720, h: 1280 },
+  { key: "badge", label: "Badge 54×86", labelAr: "بطاقة تعريف ٥٤×٨٦", w: 638, h: 1016 },
+];
+
 
 export function uid(): string {
   return Math.random().toString(36).slice(2, 10);
@@ -130,6 +156,7 @@ export function node(type: NodeType, patch: Partial<StudioNode> = {}): StudioNod
     style: { ...DEFAULT_STYLE[type], ...(patch.style ?? {}) },
     ...(patch.text !== undefined ? { text: patch.text } : type === "text" ? { text: "Text" } : {}),
     ...(patch.src ? { src: patch.src } : {}),
+    ...(patch.imageSource ? { imageSource: patch.imageSource } : {}),
     ...(patch.icon ? { icon: patch.icon } : {}),
     ...(patch.shape ? { shape: patch.shape } : {}),
     ...(patch.href ? { href: patch.href } : {}),

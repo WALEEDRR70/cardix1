@@ -1,6 +1,10 @@
 // Right panel: properties for the current selection (or the canvas background).
+import { useRef, useState } from "react";
+import { Loader2, Upload } from "lucide-react";
+import { toast } from "sonner";
 import { useStudio } from "@/lib/studio/store";
-import { PLACEHOLDERS } from "@/lib/studio/types";
+import { CARD_SIZES, PLACEHOLDERS, type ImageSource } from "@/lib/studio/types";
+import { uploadStudioImage } from "@/lib/studio/upload";
 
 export function PropertiesPanel({ ar }: { ar: boolean }) {
   const { state, dispatch, selected } = useStudio();
@@ -9,9 +13,38 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
 
   if (!n) {
     const bg = state.doc.background;
+    const activeSize = CARD_SIZES.find((s) => s.w === state.doc.w && s.h === state.doc.h);
     return (
       <aside className="w-72 shrink-0 space-y-4 overflow-y-auto border-s border-border/60 bg-card/40 p-4 text-xs">
-        <h3 className="text-sm font-semibold">{ar ? "خلفية البطاقة" : "Card background"}</h3>
+        <h3 className="text-sm font-semibold">{ar ? "مقاس البطاقة" : "Card size"}</h3>
+        <Field label={ar ? "المقاس الجاهز" : "Preset"}>
+          <select
+            value={activeSize?.key ?? "custom"}
+            onChange={(e) => {
+              const p = CARD_SIZES.find((s) => s.key === e.target.value);
+              if (p) dispatch({ t: "size", w: p.w, h: p.h });
+            }}
+            className={input}
+          >
+            {!activeSize && <option value="custom">{ar ? "مخصص" : "Custom"}</option>}
+            {CARD_SIZES.map((s) => (
+              <option key={s.key} value={s.key}>{ar ? s.labelAr : s.label}</option>
+            ))}
+          </select>
+        </Field>
+        <div className="grid grid-cols-2 gap-2">
+          <Num label={ar ? "العرض" : "Width"} value={state.doc.w} onChange={(v) => dispatch({ t: "size", w: v, h: state.doc.h })} />
+          <Num label={ar ? "الارتفاع" : "Height"} value={state.doc.h} onChange={(v) => dispatch({ t: "size", w: state.doc.w, h: v })} />
+        </div>
+        <button
+          type="button"
+          onClick={() => dispatch({ t: "size", w: state.doc.h, h: state.doc.w })}
+          className="w-full rounded-md border border-border/60 px-2 py-1.5 text-muted-foreground hover:text-foreground"
+        >
+          {ar ? "تبديل الاتجاه" : "Swap orientation"}
+        </button>
+
+        <h3 className="border-t border-border/50 pt-3 text-sm font-semibold">{ar ? "خلفية البطاقة" : "Card background"}</h3>
         <Field label={ar ? "اللون" : "Color"}>
           <input type="color" value={bg.color} onChange={(e) => dispatch({ t: "bg", patch: { color: e.target.value } })} className="h-8 w-full rounded bg-transparent" />
         </Field>
@@ -21,10 +54,12 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
         <Field label={ar ? "رابط صورة" : "Image URL"}>
           <input value={bg.image ?? ""} onChange={(e) => dispatch({ t: "bg", patch: { image: e.target.value || null } })} className={input} />
         </Field>
+        <UploadButton ar={ar} onDone={(url) => dispatch({ t: "bg", patch: { image: url } })} />
         <p className="pt-2 text-muted-foreground">{ar ? "اختر عنصرًا لتعديل خصائصه." : "Select an element to edit its properties."}</p>
       </aside>
     );
   }
+
 
   const s = n.style;
   const up = (patch: Parameters<typeof dispatch>[0] extends never ? never : Record<string, unknown>) =>
@@ -75,9 +110,39 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
 
       {n.type === "image" && (
         <Section title={ar ? "الصورة" : "Image"}>
-          <Field label="URL"><input value={n.src ?? ""} onChange={(e) => up({ src: e.target.value })} className={input} /></Field>
+          <p className="text-[10px] text-muted-foreground">{ar ? "مصدر الصورة" : "Image source"}</p>
+          <div className="grid grid-cols-3 gap-1">
+            {([
+              { k: "employee", en: "Employee", arL: "الموظف" },
+              { k: "logo", en: "Logo", arL: "الشعار" },
+              { k: "upload", en: "Upload", arL: "رفع" },
+            ] as { k: ImageSource; en: string; arL: string }[]).map((o) => (
+              <button
+                key={o.k}
+                type="button"
+                onClick={() => up({ imageSource: o.k })}
+                className={`rounded-md border px-2 py-1.5 text-[11px] ${(n.imageSource ?? "upload") === o.k ? "border-accent/60 bg-accent/15 text-foreground" : "border-border/60 text-muted-foreground"}`}
+              >
+                {ar ? o.arL : o.en}
+              </button>
+            ))}
+          </div>
+          {(n.imageSource ?? "upload") === "upload" ? (
+            <>
+              <Field label="URL"><input value={n.src ?? ""} onChange={(e) => up({ src: e.target.value })} className={input} /></Field>
+              <UploadButton ar={ar} onDone={(url) => up({ src: url, imageSource: "upload" })} />
+            </>
+          ) : (
+            <p className="text-[10px] leading-relaxed text-muted-foreground">
+              {n.imageSource === "employee"
+                ? (ar ? "تُستبدل تلقائيًا بصورة الموظف عند عرض البطاقة." : "Replaced automatically by the employee photo when the card is rendered.")
+                : (ar ? "تُستبدل تلقائيًا بشعار الشركة عند عرض البطاقة." : "Replaced automatically by the company logo when the card is rendered.")}
+            </p>
+          )}
+
         </Section>
       )}
+
 
       <Section title={ar ? "المظهر" : "Appearance"}>
         <Field label={ar ? "التعبئة" : "Fill"}>
@@ -135,6 +200,44 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
       <span className="text-[10px] text-muted-foreground">{label}</span>
       {children}
     </label>
+  );
+}
+
+function UploadButton({ ar, onDone }: { ar: boolean; onDone: (url: string) => void }) {
+  const ref = useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = useState(false);
+  return (
+    <>
+      <input
+        ref={ref}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={async (e) => {
+          const file = e.target.files?.[0];
+          e.target.value = "";
+          if (!file) return;
+          setBusy(true);
+          try {
+            onDone(await uploadStudioImage(file));
+            toast.success(ar ? "تم رفع الصورة" : "Image uploaded");
+          } catch (err) {
+            toast.error(err instanceof Error ? err.message : ar ? "تعذّر الرفع" : "Upload failed");
+          } finally {
+            setBusy(false);
+          }
+        }}
+      />
+      <button
+        type="button"
+        disabled={busy}
+        onClick={() => ref.current?.click()}
+        className="flex w-full items-center justify-center gap-2 rounded-md border border-border/60 px-2 py-1.5 text-muted-foreground hover:text-foreground disabled:opacity-60"
+      >
+        {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
+        {busy ? (ar ? "جارٍ الرفع…" : "Uploading…") : ar ? "رفع صورة" : "Upload image"}
+      </button>
+    </>
   );
 }
 

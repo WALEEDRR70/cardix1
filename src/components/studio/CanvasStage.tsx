@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { useStudio } from "@/lib/studio/store";
-import { resolvePlaceholders, type StudioNode } from "@/lib/studio/types";
+import { resolveImageSrc, resolvePlaceholders, type StudioNode } from "@/lib/studio/types";
 
 const GRID = 8;
 const SNAP_TOLERANCE = 6;
@@ -42,17 +42,19 @@ export function NodeContent({ n, values }: { n: StudioNode; values?: Record<stri
           {resolvePlaceholders(n.text ?? "Button", values)}
         </div>
       );
-    case "image":
-      return n.src ? (
-        <img src={n.src} alt="" className="h-full w-full object-cover" style={{ borderRadius: s.radius }} />
+    case "image": {
+      const src = resolveImageSrc(n, values);
+      return src ? (
+        <img src={src} alt="" className="h-full w-full object-cover" style={{ borderRadius: s.radius }} />
       ) : (
         <div
           className="grid h-full w-full place-items-center border border-dashed text-[10px] uppercase tracking-widest"
           style={{ borderRadius: s.radius, borderColor: "#ffffff40", color: "#ffffff80" }}
         >
-          image
+          {n.imageSource === "employee" ? "photo" : n.imageSource === "logo" ? "logo" : "image"}
         </div>
       );
+    }
     case "qr":
       return (
         <div

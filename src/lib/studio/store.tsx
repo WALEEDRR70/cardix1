@@ -27,6 +27,7 @@ type Action =
   | { t: "ungroup"; id: string }
   | { t: "select"; ids: string[] }
   | { t: "bg"; patch: Partial<StudioDoc["background"]> }
+  | { t: "size"; w: number; h: number }
   | { t: "undo" }
   | { t: "redo" }
   | { t: "zoom"; value: number }
@@ -130,6 +131,12 @@ function reducer(state: StudioState, a: Action): StudioState {
     }
     case "bg":
       return commit(state, { ...doc, background: { ...doc.background, ...a.patch } });
+    case "size":
+      return commit(state, {
+        ...doc,
+        w: Math.min(4000, Math.max(200, Math.round(a.w))),
+        h: Math.min(4000, Math.max(200, Math.round(a.h))),
+      });
     case "select":
       return { ...state, selection: a.ids };
     case "undo": {
