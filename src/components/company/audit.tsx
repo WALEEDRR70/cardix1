@@ -25,7 +25,7 @@ export async function logCompanyAction(
   try {
     await supabase
       .from("company_audit_logs")
-      .insert({ company_id: companyId, actor_id: actorId, action, entity: entity ?? null, metadata });
+      .insert({ company_id: companyId, actor_id: actorId, action, entity: entity ?? null, metadata: metadata as never });
   } catch {
     /* non-critical */
   }
@@ -43,7 +43,7 @@ const ACTION_LABEL: Record<string, { en: string; ar: string }> = {
 };
 
 export function AuditTab({ company, userId }: { company: Company; userId: string }) {
-  const { w, locale } = useWs();
+  const { w, lang } = useWs();
 
   const { data, isLoading } = useQuery({
     queryKey: ["company-audit", company.id],
@@ -58,7 +58,7 @@ export function AuditTab({ company, userId }: { company: Company; userId: string
     },
   });
 
-  const fmt = new Intl.DateTimeFormat(locale === "ar" ? "ar" : "en", {
+  const fmt = new Intl.DateTimeFormat(lang === "ar" ? "ar" : "en", {
     dateStyle: "medium",
     timeStyle: "short",
   });
@@ -90,7 +90,7 @@ export function AuditTab({ company, userId }: { company: Company; userId: string
                 />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm">
-                    {label ? (locale === "ar" ? label.ar : label.en) : row.action}
+                    {label ? (lang === "ar" ? label.ar : label.en) : row.action}
                     {target && <span className="text-muted-foreground"> — {target}</span>}
                   </p>
                   <p className="mt-0.5 text-[11px] text-muted-foreground">
