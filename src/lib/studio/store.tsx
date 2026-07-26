@@ -10,10 +10,18 @@ export type StudioState = {
   past: StudioDoc[];
   future: StudioDoc[];
   zoom: number;
+  /** Canvas panning offset in screen px. */
+  pan: { x: number; y: number };
+  /** Incremented whenever the canvas should re-fit itself to the viewport. */
+  fitTick: number;
   grid: boolean;
   snap: boolean;
   guides: boolean;
+  /** Internal copy buffer for copy / paste. */
+  clipboard: StudioNode[];
 };
+
+export type AlignHow = "left" | "hcenter" | "right" | "top" | "vcenter" | "bottom";
 
 type Action =
   | { t: "replace"; doc: StudioDoc; history?: boolean }
@@ -29,12 +37,19 @@ type Action =
   | { t: "select"; ids: string[] }
   | { t: "bg"; patch: Partial<StudioDoc["background"]> }
   | { t: "size"; w: number; h: number }
+  | { t: "align"; ids: string[]; how: AlignHow }
+  | { t: "distribute"; ids: string[]; axis: "h" | "v" }
+  | { t: "copy"; ids: string[] }
+  | { t: "paste" }
   | { t: "undo" }
   | { t: "redo" }
   | { t: "zoom"; value: number }
+  | { t: "pan"; x: number; y: number }
+  | { t: "fit" }
   | { t: "toggle"; key: "grid" | "snap" | "guides" };
 
 const MAX_HISTORY = 60;
+
 
 function mapNodes(nodes: StudioNode[], fn: (n: StudioNode) => StudioNode): StudioNode[] {
   return nodes.map((n) => {
@@ -181,6 +196,66 @@ function reducer(state: StudioState, a: Action): StudioState {
       });
     case "select":
       return { ...state, selection: a.ids };
+    case "align": {
+      const picked = doc.nodes.filter((n) => a.ids.includes(n.id) && !n.locked);
+      if (!picked.length) return state;
+      const many = picked.length > 1;
+      const minX = many ? Math.min(...picked.map((n) => n.x)) : 0;
+      const maxX = many ? Math.max(...picked.map((n) => n.x + n.w)) : doc.w;
+      const minY = many ? Math.min(...picked.map((n) => n.y)) : 0;
+      const maxY = many ? Math.max(...picked.map((n) => n.y + n.h)) : doc.h;
+      const move = (n: StudioNode): StudioNode => {
+        switch (a.how) {
+          case "left": return { ...n, x: Math.round(minX) };
+          case "right": return { ...n, x: Math.round(maxX - n.w) };
+          case "hcenter": return { ...n, x: Math.round((minX + maxX) / 2 - n.w / 2) };
+          case "top": return { ...n, y: Math.round(minY) };
+          case "bottom": return { ...n, y: Math.round(maxY - n.h) };
+          case "vcenter": return { ...n, y: Math.round((minY + maxY) / 2 - n.h / 2) };
+          default: return n;
+        }
+      };
+      return commit(state, {
+        ...doc,
+        nodes: doc.nodes.map((n) => (a.ids.includes(n.id) && !n.locked ? move(n) : n)),
+      });
+    }
+    case "distribute": {
+      const picked = doc.nodes.filter((n) => a.ids.includes(n.id) && !n.locked);
+      if (picked.length < 3) return state;
+      const horiz = a.axis === "h";
+      const sorted = [...picked].sort((p, q) => (horiz ? p.x - q.x : p.y - q.y));
+      const start = horiz ? sorted[0].x : sorted[0].y;
+      const last = sorted[sorted.length - 1];
+      const end = horiz ? last.x + last.w : last.y + last.h;
+      const total = sorted.reduce((sum, n) => sum + (horiz ? n.w : n.h), 0);
+      const gap = (end - start - total) / (sorted.length - 1);
+      const pos = new Map<string, number>();
+      let cursor = start;
+      for (const n of sorted) {
+        pos.set(n.id, Math.round(cursor));
+        cursor += (horiz ? n.w : n.h) + gap;
+      }
+      return commit(state, {
+        ...doc,
+        nodes: doc.nodes.map((n) =>
+          pos.has(n.id) ? (horiz ? { ...n, x: pos.get(n.id)! } : { ...n, y: pos.get(n.id)! }) : n),
+      });
+    }
+    case "copy": {
+      const picked = a.ids.map((id) => findNode(doc.nodes, id)).filter(Boolean) as StudioNode[];
+      if (!picked.length) return state;
+      return { ...state, clipboard: picked };
+    }
+    case "paste": {
+      if (!state.clipboard.length) return state;
+      const clones = state.clipboard.map(cloneNode);
+      return {
+        ...commit(state, { ...doc, nodes: [...doc.nodes, ...clones] }),
+        clipboard: clones,
+        selection: clones.map((c) => c.id),
+      };
+    }
     case "undo": {
       const prev = state.past[state.past.length - 1];
       if (!prev) return state;
@@ -192,9 +267,14 @@ function reducer(state: StudioState, a: Action): StudioState {
       return { ...state, doc: next, past: [...state.past, state.doc], future: state.future.slice(1) };
     }
     case "zoom":
-      return { ...state, zoom: Math.min(2, Math.max(0.25, a.value)) };
+      return { ...state, zoom: Math.min(5, Math.max(0.05, a.value)) };
+    case "pan":
+      return { ...state, pan: { x: a.x, y: a.y } };
+    case "fit":
+      return { ...state, fitTick: state.fitTick + 1 };
     case "toggle":
       return { ...state, [a.key]: !state[a.key] };
+
     default:
       return state;
   }
@@ -220,10 +300,14 @@ export function useStudioState(initial: StudioDoc) {
     past: [],
     future: [],
     zoom: 0.7,
+    pan: { x: 0, y: 0 },
+    fitTick: 0,
     grid: true,
     snap: true,
     guides: true,
+    clipboard: [],
   } satisfies StudioState);
+
 
   const selected = useMemo(
     () => state.selection.map((id) => findNode(state.doc.nodes, id)).filter(Boolean) as StudioNode[],
