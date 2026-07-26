@@ -108,23 +108,23 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
 
   if (vectors.length) {
     const pnt = paint[key];
-    // content boxes the artwork must not cover (text, photo, logo, qr)
-    const guard = blocks.filter((b) => b.role !== "custom");
+    // only text boxes must stay readable; artwork may sit behind images/QR
+    const guard = blocks.filter((b) => ["name", "title", "company", "tagline", "phone", "email", "website", "address"].includes(b.role));
     vectors.forEach((v, i) => {
       const bb = pathBBox(v.d);
-      // how much of the readable content this drawing would sit on top of
+      // how much of the readable text this drawing would sit on top of
       const hit = bb
         ? guard.reduce((m, b) => Math.max(m, overlapRatio(bb, b)), 0)
         : 0;
-      const heavy = hit > 0.28;
+      const heavy = hit > 0.65;
       push(node("path", {
         name: v.name || `Artwork ${i + 1}`,
         x: 0, y: 0, w: W, h: H,
         path: v.d,
-        opacity: (v.opacity ?? 0.9) * pnt.op * (heavy ? 0.35 : 1),
+        opacity: (v.opacity ?? 0.9) * pnt.op * (heavy ? 0.55 : 1),
         style: {
-          // never paint a solid blob over the content area — keep it as a light outline
-          fill: heavy ? "transparent" : (v.fill ?? pnt.fill ?? "transparent"),
+          fill: v.fill ?? pnt.fill ?? "transparent",
+
           stroke: v.stroke ?? pnt.stroke ?? null,
           strokeWidth: Math.max(1, Math.round((v.strokeWidth ?? 1.2) * (Math.min(W, H) / 100) * 0.9)),
           blur: (v.blur ?? 0) + pnt.blur,
