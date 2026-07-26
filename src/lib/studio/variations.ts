@@ -76,7 +76,13 @@ export function buildVariation(
   const PX = (v: number) => Math.round((v / 100) * W);
   const PY = (v: number) => Math.round((v / 100) * H);
   const short = Math.min(W, H);
-  const blocks = a.blocks ?? [];
+  const srcBlocks = a.blocks ?? [];
+  const targetAspect = W / H;
+  const blocks =
+    srcBlocks.length >= 3 && needsReflow(a.aspect ?? 0.64, targetAspect)
+      ? reflowBlocks(a, targetAspect)
+      : srcBlocks;
+
   const block = (role: string) => blocks.find((b) => b.role === role);
   const useMap = blocks.length >= 3;
 
