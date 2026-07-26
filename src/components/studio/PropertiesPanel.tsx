@@ -170,6 +170,7 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
         </Section>
       )}
 
+      <Section title={ar ? "المظهر" : "Appearance"}>
 
         <Field label={ar ? "التعبئة" : "Fill"}>
           <input type="color" value={(s.fill ?? "#7c34ff").slice(0, 7)} onChange={(e) => st({ fill: e.target.value })} className="h-8 w-full rounded bg-transparent" />
