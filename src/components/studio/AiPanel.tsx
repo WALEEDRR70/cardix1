@@ -116,6 +116,43 @@ export function AiPanel({ ar }: { ar: boolean }) {
 
           <div className="space-y-2">
             <p className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-muted-foreground">
+              <Ruler className="h-3 w-3" />
+              {ar ? "نفس الهوية بكل المقاسات" : "Same identity, every size"}
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              {[{ key: "original", label: "Original size", labelAr: "مقاس الأصل", w: 0, h: 0 }, ...CARD_SIZES].map((s) => {
+                const dim = s.key === "original" ? canvasFromAspect(result.aspect ?? 0.64) : { w: s.w, h: s.h };
+                const on = sizeKey === s.key;
+                return (
+                  <button
+                    key={s.key}
+                    onClick={() => apply(result, active, s.key)}
+                    className={`flex items-center gap-2 rounded-lg border px-2 py-2 text-left transition ${
+                      on ? "border-accent/70 bg-accent/15 text-foreground" : "border-border/60 text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    <span
+                      className="shrink-0 rounded-[3px] border border-current/60"
+                      style={{
+                        width: dim.w >= dim.h ? 20 : Math.max(8, Math.round((dim.w / dim.h) * 20)),
+                        height: dim.w >= dim.h ? Math.max(8, Math.round((dim.h / dim.w) * 20)) : 20,
+                      }}
+                    />
+                    <span className="min-w-0 truncate">{ar ? s.labelAr : s.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+            <p className="text-[10px] text-muted-foreground">
+              {ar
+                ? "يعيد الذكاء ترتيب العناصر باحتراف لكل مقاس بدل تمديد التصميم."
+                : "The layout is professionally re-flowed for each format instead of being stretched."}
+            </p>
+          </div>
+
+
+          <div className="space-y-2">
+            <p className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-muted-foreground">
               <Sparkles className="h-3 w-3" />
               {ar ? "١٠ تنويعات" : "10 variations"}
             </p>
