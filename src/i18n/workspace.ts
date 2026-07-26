@@ -134,6 +134,33 @@ export type WsDict = {
   contactCompany: string;
   loading: string;
   companyNotFound: string;
+  mediaLibrary: string;
+  qrManager: string;
+  nfcManager: string;
+  seo: string;
+  permissions: string;
+  groupManage: string;
+  groupIdentity: string;
+  groupReach: string;
+  groupAdmin: string;
+  personalAccount: string;
+  personalAccountDesc: string;
+  companyAccount: string;
+  companyAccountDesc: string;
+  chooseAccount: string;
+  chooseAccountDesc: string;
+  switchAccount: string;
+  continueLabel: string;
+  myCompanies: string;
+  employeeSpace: string;
+  myCard: string;
+  comingSoon: string;
+  comingSoonDesc: string;
+  legacyAdmin: string;
+  backToPersonal: string;
+  enterWorkspace: string;
+  noAccessTitle: string;
+  noAccessDesc: string;
 };
 
 const en: WsDict = {
