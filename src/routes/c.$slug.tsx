@@ -30,6 +30,7 @@ import { SOCIALS_BY_ID } from "@/lib/socials";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { toPng } from "html-to-image";
 import QRCode from "qrcode";
+import { localizedPath } from "@/lib/locale-routing";
 
 export const Route = createFileRoute("/c/$slug")({
   head: ({ params }) => ({
@@ -189,7 +190,7 @@ function PublicCard() {
   async function saveToVault() {
     const { data: userRes } = await supabase.auth.getUser();
     if (!userRes.user) {
-      window.location.href = `/auth?next=/c/${slug}`;
+      window.location.href = `${localizedPath("/auth", lang)}?next=${encodeURIComponent(`/c/${slug}`)}`;
       return;
     }
     const note = window.prompt(t.noteOptional, "") ?? "";
@@ -406,7 +407,7 @@ function PublicCard() {
             <span className="text-[13px] font-semibold tracking-[0.32em]" style={{ color: accent }}>CARDIX</span>
           </Link>
         ) : (
-          <a href="/" className="flex items-center gap-2" aria-label="Cardixn">
+          <Link to="/" className="flex items-center gap-2" aria-label="Cardixn">
             <span
               aria-hidden
               className="inline-block h-7 w-7"
@@ -424,7 +425,7 @@ function PublicCard() {
               }}
             />
             <span className="text-[13px] font-semibold tracking-[0.32em]" style={{ color: accent }}>CARDIX</span>
-          </a>
+          </Link>
         )}
 
 
@@ -626,12 +627,12 @@ function PublicCard() {
           )}
           <div className="flex items-center justify-center gap-2 pb-[calc(env(safe-area-inset-bottom)+96px)] lg:pb-6">
             <img src={logoAsset.url} alt="" className="h-4 w-4 opacity-70" />
-            <a
-              href="/"
+            <Link
+              to="/"
               className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground hover:text-foreground"
             >
               Powered by Cardixn
-            </a>
+            </Link>
           </div>
         </footer>
 

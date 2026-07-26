@@ -4,6 +4,7 @@ import { Globe, Check } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
+import { getLocaleFromPath, isUnlocalizedPath, stripLocalePrefix } from "@/lib/locale-routing";
 
 
 /**
@@ -110,10 +111,12 @@ export function useSwitchLocale() {
       if (!uid) return;
       supabase.from("profiles").update({ preferred_lang: next }).eq("id", uid).then(() => {});
     });
-    const currentLang = isSupportedLocale(params?.lang) ? params.lang : null;
+    window.dispatchEvent(new CustomEvent("cardix:locale-change", { detail: next }));
+    const currentLang = isSupportedLocale(params?.lang) ? params.lang : getLocaleFromPath(pathname);
+    if (isUnlocalizedPath(pathname)) return;
     let target: string;
     if (currentLang) {
-      target = pathname.replace(new RegExp(`^/${currentLang}(?=/|$)`), `/${next}`);
+      target = `/${next}${stripLocalePrefix(pathname) === "/" ? "" : stripLocalePrefix(pathname)}`;
     } else if (pathname === "/") {
       target = `/${next}`;
     } else {

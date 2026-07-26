@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { useI18n } from "@/lib/i18n";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { getReadableText } from "@/lib/contrast";
+import { stripLocalePrefix } from "@/lib/locale-routing";
 
 
 export function MobileShell({
@@ -42,7 +43,7 @@ export function MobileShell({
 /* -------------------- Desktop sidebar -------------------- */
 function DesktopSidebar() {
   const { t } = useI18n();
-  const path = useRouterState({ select: (s) => s.location.pathname });
+  const path = useRouterState({ select: (s) => stripLocalePrefix(s.location.pathname) });
 
   const items = [
     { to: "/dashboard", icon: Home, label: t.home },
@@ -97,7 +98,7 @@ function DesktopSidebar() {
 /* -------------------- Mobile bottom nav + FAB -------------------- */
 export function MobileBottomNav({ accent }: { accent?: string } = {}) {
   const { t } = useI18n();
-  const path = useRouterState({ select: (s) => s.location.pathname });
+  const path = useRouterState({ select: (s) => stripLocalePrefix(s.location.pathname) });
 
   const items = [
     { to: "/dashboard", icon: Home, label: t.home },
@@ -161,11 +162,13 @@ export function PageHeader({
   subtitle,
   right,
   back,
+  backParams,
 }: {
   title: string;
   subtitle?: string;
   right?: ReactNode;
   back?: string;
+  backParams?: Record<string, unknown>;
 }) {
   const { t } = useI18n();
   return (
@@ -175,6 +178,7 @@ export function PageHeader({
           {back && (
             <Link
               to={back}
+              params={backParams}
               className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-border/60 bg-card/60 text-muted-foreground backdrop-blur hover:text-foreground lg:hidden"
               aria-label={t.back}
             >

@@ -16,6 +16,7 @@ import { ThemeProvider } from "@/lib/theme";
 import { supabase } from "@/integrations/supabase/client";
 import { Toaster } from "sonner";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
+import { localizedPath } from "@/lib/locale-routing";
 
 function NotFoundComponent() {
   return (
@@ -32,9 +33,9 @@ function NotFoundInner() {
         <p className="text-[10px] uppercase tracking-[0.4em] text-muted-foreground">{t.brand}</p>
         <h1 className="mt-2 text-7xl font-semibold tracking-tight">404</h1>
         <p className="mt-3 text-muted-foreground">{t.pageNotFound}</p>
-        <Link to="/" className="mt-6 inline-flex rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90">
+        <a href={localizedPath("/")} className="mt-6 inline-flex rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90">
           {t.goHome}
-        </Link>
+        </a>
       </div>
     </div>
   );
@@ -64,7 +65,7 @@ function ErrorInner({ router, reset }: { router: ReturnType<typeof useRouter>; r
             onClick={() => { router.invalidate(); reset(); }}
             className="rounded-full bg-primary px-5 py-2 text-sm text-primary-foreground"
           >{t.tryAgain}</button>
-          <a href="/" className="rounded-full border border-input px-5 py-2 text-sm">{t.goHome}</a>
+          <a href={localizedPath("/")} className="rounded-full border border-input px-5 py-2 text-sm">{t.goHome}</a>
         </div>
       </div>
     </div>

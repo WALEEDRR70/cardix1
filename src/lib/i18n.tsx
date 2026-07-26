@@ -1,7 +1,8 @@
-import { createContext, useContext, useEffect, useMemo, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useParams } from "@tanstack/react-router";
 import { DEFAULT_LOCALE, isRtl, isSupportedLocale, type Locale } from "@/i18n/config";
 import { DICTIONARIES, type UIDict } from "@/i18n/dictionaries";
+import { getPreferredLocale } from "@/lib/locale-routing";
 
 // Base English dictionary — canonical source of every UI key.
 // All other locales override keys via src/i18n/dictionaries.ts; missing keys fall back here.
@@ -231,9 +232,26 @@ const Ctx = createContext<{ lang: Locale; t: Dict; dir: "ltr" | "rtl" }>({
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const params = useParams({ strict: false }) as { lang?: string };
-  const lang: Locale = isSupportedLocale(params?.lang) ? params.lang : DEFAULT_LOCALE;
+  const routeLang = isSupportedLocale(params?.lang) ? params.lang : null;
+  const [fallbackLang, setFallbackLang] = useState<Locale>(() => getPreferredLocale(DEFAULT_LOCALE));
+  const lang: Locale = routeLang ?? fallbackLang;
   const dir: "ltr" | "rtl" = isRtl(lang) ? "rtl" : "ltr";
   const t = useMemo(() => getDict(lang), [lang]);
+
+  useEffect(() => {
+    if (routeLang) setFallbackLang(routeLang);
+  }, [routeLang]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const sync = () => setFallbackLang(getPreferredLocale(DEFAULT_LOCALE));
+    window.addEventListener("storage", sync);
+    window.addEventListener("cardix:locale-change", sync);
+    return () => {
+      window.removeEventListener("storage", sync);
+      window.removeEventListener("cardix:locale-change", sync);
+    };
+  }, []);
 
   useEffect(() => {
     if (typeof document === "undefined") return;

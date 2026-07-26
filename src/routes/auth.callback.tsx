@@ -1,14 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { DEFAULT_LOCALE, isSupportedLocale } from "@/i18n/config";
+import { DEFAULT_LOCALE, isSupportedLocale, type Locale } from "@/i18n/config";
+import { localizedPath, readLocaleFromUrl, safeNextPath } from "@/lib/locale-routing";
 
 export const Route = createFileRoute("/auth/callback")({
   ssr: false,
   component: AuthCallback,
 });
 
-function readLocale(): string {
+function readLocale(): Locale {
+  const urlLocale = readLocaleFromUrl(window.location.search, DEFAULT_LOCALE);
+  if (isSupportedLocale(urlLocale)) return urlLocale;
   try {
     const saved = localStorage.getItem("cardix_lang");
     if (isSupportedLocale(saved)) return saved;
@@ -37,12 +40,13 @@ function AuthCallback() {
       for (let i = 0; i < 25 && !cancelled; i++) {
         const { data } = await supabase.auth.getSession();
         if (data.session) {
-          window.location.replace(`/${readLocale()}/dashboard`);
+          const locale = readLocale();
+          window.location.replace(safeNextPath(new URLSearchParams(window.location.search).get("next"), locale));
           return;
         }
         await new Promise((r) => setTimeout(r, 200));
       }
-      if (!cancelled) window.location.replace(`/${readLocale()}/auth`);
+      if (!cancelled) window.location.replace(localizedPath("/auth", readLocale()));
     })();
     return () => {
       cancelled = true;

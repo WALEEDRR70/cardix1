@@ -8,6 +8,7 @@ import { LocaleSwitcher } from "@/components/LangToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { toast } from "sonner";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
+import { localizedPath, safeNextPath } from "@/lib/locale-routing";
 
 export const Route = createFileRoute("/$lang/auth")({
   head: () => ({
@@ -22,16 +23,21 @@ export const Route = createFileRoute("/$lang/auth")({
 });
 
 function AuthPage() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const nav = useNavigate();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  function nextPath() {
+    const params = new URLSearchParams(window.location.search);
+    return safeNextPath(params.get("next"), lang);
+  }
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) nav({ to: "/dashboard" });
+      if (data.session) nav({ to: nextPath() });
     });
   }, [nav]);
 
@@ -42,14 +48,14 @@ function AuthPage() {
       if (mode === "signup") {
         const { error } = await supabase.auth.signUp({
           email, password,
-          options: { emailRedirectTo: window.location.origin + "/dashboard" },
+          options: { emailRedirectTo: `${window.location.origin}/auth/callback?lang=${lang}&next=${encodeURIComponent(localizedPath("/dashboard", lang))}` },
         });
         if (error) throw error;
         toast.success(t.checkEmail);
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        nav({ to: "/dashboard" });
+        nav({ to: nextPath() });
       }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : t.somethingWrong);
@@ -60,7 +66,7 @@ function AuthPage() {
 
   async function google() {
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: `${window.location.origin}/auth/callback`,
+      redirect_uri: `${window.location.origin}/auth/callback?lang=${lang}&next=${encodeURIComponent(nextPath())}`,
     });
     if (result.error) { toast.error(result.error.message); return; }
     if (result.redirected) return;
@@ -70,7 +76,7 @@ function AuthPage() {
       if (data.session) break;
       await new Promise((r) => setTimeout(r, 150));
     }
-    nav({ to: "/dashboard" });
+    nav({ to: nextPath() });
   }
 
 

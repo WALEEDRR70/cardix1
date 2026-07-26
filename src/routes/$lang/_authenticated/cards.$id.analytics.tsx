@@ -75,7 +75,7 @@ function Analytics() {
   }, [events]);
 
   return (
-    <MobileShell topBar={<PageHeader title={t.analytics} subtitle={card?.name} back={`/cards/${id}`} />}>
+    <MobileShell topBar={<PageHeader title={t.analytics} subtitle={card?.name} back="/cards/$id" backParams={{ id }} />}>
       <div className="space-y-4 px-5 lg:px-8 lg:space-y-6">
         <div className="grid grid-cols-3 gap-2 lg:gap-4">
           <Stat icon={<Eye className="h-3.5 w-3.5" />} label={t.totalViews} value={card?.view_count ?? 0} />
