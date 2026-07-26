@@ -1,14 +1,11 @@
 // AI Designer: upload a card, strip its content, rebuild an editable template + variations.
 import { useRef, useState } from "react";
-import { Upload, Sparkles, Loader2, Wand2, Ruler } from "lucide-react";
+import { Upload, Sparkles, Loader2, Wand2 } from "lucide-react";
 import { toast } from "sonner";
 import { useServerFn } from "@tanstack/react-start";
 import { analyzeCardImage, type AiCardAnalysis } from "@/lib/studio/ai.functions";
-import { buildVariation, canvasFromAspect, VARIATIONS, type VariationKey } from "@/lib/studio/variations";
-import { CARD_SIZES } from "@/lib/studio/types";
+import { buildVariation, VARIATIONS, type VariationKey } from "@/lib/studio/variations";
 import { useStudio } from "@/lib/studio/store";
-
-type SizeKey = "original" | string;
 
 export function AiPanel({ ar }: { ar: boolean }) {
   const { dispatch } = useStudio();
@@ -18,8 +15,6 @@ export function AiPanel({ ar }: { ar: boolean }) {
   const [preview, setPreview] = useState<string | null>(null);
   const [result, setResult] = useState<AiCardAnalysis | null>(null);
   const [active, setActive] = useState<VariationKey>("modern");
-  const [sizeKey, setSizeKey] = useState<SizeKey>("original");
-
 
   async function onFile(file: File) {
     if (file.size > 8 * 1024 * 1024) {
@@ -44,7 +39,7 @@ export function AiPanel({ ar }: { ar: boolean }) {
     try {
       const analysis = await analyze({ data: { image: dataUrl, mime: file.type || "image/png", aspect } });
       setResult(analysis);
-      apply(analysis, active, sizeKey);
+      apply(analysis, active);
       toast.success(ar ? "تم إنشاء قالب قابل للتحرير" : "Editable template generated");
 
     } catch (e) {
@@ -59,18 +54,10 @@ export function AiPanel({ ar }: { ar: boolean }) {
     }
   }
 
-  function sizeOf(a: AiCardAnalysis, key: SizeKey) {
-    if (key === "original") return canvasFromAspect(a.aspect ?? 0.64);
-    const s = CARD_SIZES.find((x) => x.key === key);
-    return s ? { w: s.w, h: s.h } : canvasFromAspect(a.aspect ?? 0.64);
-  }
-
-  function apply(a: AiCardAnalysis, key: VariationKey, size: SizeKey = sizeKey) {
+  function apply(a: AiCardAnalysis, key: VariationKey) {
     setActive(key);
-    setSizeKey(size);
-    dispatch({ t: "replace", doc: buildVariation(a, key, sizeOf(a, size)) });
+    dispatch({ t: "replace", doc: buildVariation(a, key) });
   }
-
 
   return (
     <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-3 text-xs">
@@ -113,43 +100,6 @@ export function AiPanel({ ar }: { ar: boolean }) {
             </div>
             <p className="pt-1 text-[11px] text-muted-foreground">{result.notes}</p>
           </div>
-
-          <div className="space-y-2">
-            <p className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-muted-foreground">
-              <Ruler className="h-3 w-3" />
-              {ar ? "نفس الهوية بكل المقاسات" : "Same identity, every size"}
-            </p>
-            <div className="grid grid-cols-2 gap-2">
-              {[{ key: "original", label: "Original size", labelAr: "مقاس الأصل", w: 0, h: 0 }, ...CARD_SIZES].map((s) => {
-                const dim = s.key === "original" ? canvasFromAspect(result.aspect ?? 0.64) : { w: s.w, h: s.h };
-                const on = sizeKey === s.key;
-                return (
-                  <button
-                    key={s.key}
-                    onClick={() => apply(result, active, s.key)}
-                    className={`flex items-center gap-2 rounded-lg border px-2 py-2 text-left transition ${
-                      on ? "border-accent/70 bg-accent/15 text-foreground" : "border-border/60 text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    <span
-                      className="shrink-0 rounded-[3px] border border-current/60"
-                      style={{
-                        width: dim.w >= dim.h ? 20 : Math.max(8, Math.round((dim.w / dim.h) * 20)),
-                        height: dim.w >= dim.h ? Math.max(8, Math.round((dim.h / dim.w) * 20)) : 20,
-                      }}
-                    />
-                    <span className="min-w-0 truncate">{ar ? s.labelAr : s.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-            <p className="text-[10px] text-muted-foreground">
-              {ar
-                ? "يعيد الذكاء ترتيب العناصر باحتراف لكل مقاس بدل تمديد التصميم."
-                : "The layout is professionally re-flowed for each format instead of being stretched."}
-            </p>
-          </div>
-
 
           <div className="space-y-2">
             <p className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-muted-foreground">

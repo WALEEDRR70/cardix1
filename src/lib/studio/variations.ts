@@ -2,8 +2,7 @@
 // The layout is proportional and follows the ORIENTATION of the analysed card:
 // a landscape scan produces a landscape template, a portrait scan a portrait one.
 import { node, type StudioDoc, type StudioNode } from "./types";
-import type { AiBlock, AiCardAnalysis } from "./ai.functions";
-import { needsReflow, reflowBlocks } from "./reflow";
+import type { AiCardAnalysis } from "./ai.functions";
 
 export type VariationKey =
   | "minimal" | "luxury" | "glass" | "corporate" | "executive"
@@ -31,19 +30,12 @@ export function canvasFromAspect(aspect: number): { w: number; h: number } {
     : { w: Math.round(LONG * a), h: LONG };
 }
 
-/** Builds an editable document for one variation, driven by the extracted identity.
- *  `size` (optional) re-targets the design to any card format: the measured
- *  layout is re-flowed professionally instead of being stretched. */
-export function buildVariation(
-  a: AiCardAnalysis,
-  key: VariationKey,
-  size?: { w: number; h: number },
-): StudioDoc {
+/** Builds an editable document for one variation, driven by the extracted identity. */
+export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc {
   const { primary, secondary, accent, background, textOnBg } = a.palette;
-  const { w: W, h: H } = size ?? canvasFromAspect(a.aspect ?? 0.64);
+  const { w: W, h: H } = canvasFromAspect(a.aspect ?? 0.64);
   const landscape = W >= H;
   const rtl = a.direction === "rtl";
-
 
   const PAD = Math.round(Math.min(W, H) * 0.075);
   const light = key === "light";
@@ -77,14 +69,8 @@ export function buildVariation(
   const PX = (v: number) => Math.round((v / 100) * W);
   const PY = (v: number) => Math.round((v / 100) * H);
   const short = Math.min(W, H);
-  const srcBlocks = a.blocks ?? [];
-  const targetAspect = W / H;
-  const blocks =
-    srcBlocks.length >= 3 && needsReflow(a.aspect ?? 0.64, targetAspect)
-      ? reflowBlocks(a, targetAspect)
-      : srcBlocks;
-
-  const block = (role: string) => (blocks as AiBlock[]).find((b) => b.role === role);
+  const blocks = a.blocks ?? [];
+  const block = (role: string) => blocks.find((b) => b.role === role);
   const useMap = blocks.length >= 3;
 
   // ---- measured colour surfaces from the scan (bands, rails, panels) ----
