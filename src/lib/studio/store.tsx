@@ -23,6 +23,7 @@ type Action =
   | { t: "remove"; ids: string[] }
   | { t: "duplicate"; ids: string[] }
   | { t: "order"; id: string; dir: "front" | "back" | "forward" | "backward" }
+  | { t: "reorder"; ids: string[]; targetId: string | null; place: "before" | "after" | "inside" }
   | { t: "group"; ids: string[] }
   | { t: "ungroup"; id: string }
   | { t: "select"; ids: string[] }
@@ -47,6 +48,36 @@ function removeNodes(nodes: StudioNode[], ids: string[]): StudioNode[] {
     .filter((n) => !ids.includes(n.id))
     .map((n) => (n.children ? { ...n, children: removeNodes(n.children, ids) } : n));
 }
+
+/** Is `id` inside the subtree of `n` (or the node itself)? */
+function containsId(n: StudioNode, id: string): boolean {
+  if (n.id === id) return true;
+  return (n.children ?? []).some((c) => containsId(c, id));
+}
+
+/** Insert `items` relative to `targetId` anywhere in the tree. */
+function insertRelative(
+  nodes: StudioNode[],
+  targetId: string | null,
+  items: StudioNode[],
+  place: "before" | "after" | "inside",
+): StudioNode[] {
+  if (targetId === null) return [...nodes, ...items];
+  const i = nodes.findIndex((n) => n.id === targetId);
+  if (i >= 0) {
+    if (place === "inside" && nodes[i].children) {
+      const next = [...nodes];
+      next[i] = { ...next[i], children: [...(next[i].children ?? []), ...items] };
+      return next;
+    }
+    const next = [...nodes];
+    next.splice(place === "before" ? i : i + 1, 0, ...items);
+    return next;
+  }
+  return nodes.map((n) =>
+    n.children ? { ...n, children: insertRelative(n.children, targetId, items, place) } : n);
+}
+
 
 function commit(state: StudioState, doc: StudioDoc, history = true): StudioState {
   if (!history) return { ...state, doc };
@@ -106,6 +137,17 @@ function reducer(state: StudioState, a: Action): StudioState {
               : Math.max(0, i - 1);
       list.splice(target, 0, item);
       return commit(state, { ...doc, nodes: list });
+    }
+    case "reorder": {
+      const moved = a.ids
+        .map((id) => findNode(doc.nodes, id))
+        .filter(Boolean) as StudioNode[];
+      if (moved.length === 0) return state;
+      // Never drop a node into its own subtree.
+      if (a.targetId && moved.some((m) => containsId(m, a.targetId as string))) return state;
+      const without = removeNodes(doc.nodes, a.ids);
+      const nodes = insertRelative(without, a.targetId, moved, a.place);
+      return { ...commit(state, { ...doc, nodes }), selection: a.ids };
     }
     case "group": {
       const picked = doc.nodes.filter((n) => a.ids.includes(n.id));

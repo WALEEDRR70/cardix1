@@ -3,7 +3,7 @@ import { useState } from "react";
 import {
   Type, Image as ImageIcon, Square, Circle, Triangle, Minus, QrCode, Nfc, Link2,
   Star, MapPin, Video, Sparkles, Eye, EyeOff, Lock, Unlock, Copy, Trash2,
-  ChevronUp, ChevronDown, Group, Ungroup, User, Building2,
+  ChevronUp, ChevronDown, ChevronsUp, ChevronsDown, GripVertical, Group, Ungroup, User, Building2,
 } from "lucide-react";
 import { useStudio } from "@/lib/studio/store";
 import type { NodeType, StudioNode } from "@/lib/studio/types";
@@ -76,46 +76,108 @@ export function ElementsPanel({ ar }: { ar: boolean }) {
 function LayersPanel({ ar }: { ar: boolean }) {
   const { state, dispatch, list } = useStudio();
   const ordered = [...list].reverse();
+  const [drag, setDrag] = useState<string[] | null>(null);
+  const [over, setOver] = useState<{ id: string; place: "before" | "after" | "inside" } | null>(null);
+
+  const sel = state.selection;
+
+  function onDragStart(e: React.DragEvent, id: string) {
+    const ids = sel.includes(id) ? sel : [id];
+    setDrag(ids);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", ids.join(","));
+  }
+
+  function onDragOver(e: React.DragEvent, n: StudioNode) {
+    if (!drag || drag.includes(n.id)) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const p = (e.clientY - r.top) / r.height;
+    const isGroup = n.type === "group";
+    const place = isGroup && p > 0.3 && p < 0.7 ? "inside" : p < 0.5 ? "before" : "after";
+    setOver((o) => (o?.id === n.id && o.place === place ? o : { id: n.id, place }));
+  }
+
+  function onDrop(e: React.DragEvent) {
+    e.preventDefault();
+    if (drag && over) {
+      // Layer list is reversed (top = front), so flip before/after for doc order.
+      const place = over.place === "inside" ? "inside" : over.place === "before" ? "after" : "before";
+      dispatch({ t: "reorder", ids: drag, targetId: over.id, place });
+    }
+    setDrag(null);
+    setOver(null);
+  }
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
-      <div className="flex items-center gap-1 border-b border-border/60 p-2">
-        <IconBtn title={ar ? "تجميع" : "Group"} onClick={() => dispatch({ t: "group", ids: state.selection })}><Group className="h-3.5 w-3.5" /></IconBtn>
-        <IconBtn title={ar ? "فك التجميع" : "Ungroup"} onClick={() => state.selection[0] && dispatch({ t: "ungroup", id: state.selection[0] })}><Ungroup className="h-3.5 w-3.5" /></IconBtn>
-        <IconBtn title={ar ? "للأمام" : "Forward"} onClick={() => state.selection[0] && dispatch({ t: "order", id: state.selection[0], dir: "forward" })}><ChevronUp className="h-3.5 w-3.5" /></IconBtn>
-        <IconBtn title={ar ? "للخلف" : "Backward"} onClick={() => state.selection[0] && dispatch({ t: "order", id: state.selection[0], dir: "backward" })}><ChevronDown className="h-3.5 w-3.5" /></IconBtn>
-        <IconBtn title={ar ? "تكرار" : "Duplicate"} onClick={() => dispatch({ t: "duplicate", ids: state.selection })}><Copy className="h-3.5 w-3.5" /></IconBtn>
-        <IconBtn title={ar ? "حذف" : "Delete"} onClick={() => dispatch({ t: "remove", ids: state.selection })}><Trash2 className="h-3.5 w-3.5" /></IconBtn>
+      <div className="flex items-center gap-0.5 border-b border-border/60 p-2">
+        <IconBtn title={ar ? "تجميع" : "Group"} onClick={() => dispatch({ t: "group", ids: sel })}><Group className="h-3.5 w-3.5" /></IconBtn>
+        <IconBtn title={ar ? "فك التجميع" : "Ungroup"} onClick={() => sel[0] && dispatch({ t: "ungroup", id: sel[0] })}><Ungroup className="h-3.5 w-3.5" /></IconBtn>
+        <IconBtn title={ar ? "إلى المقدمة" : "To front"} onClick={() => sel[0] && dispatch({ t: "order", id: sel[0], dir: "front" })}><ChevronsUp className="h-3.5 w-3.5" /></IconBtn>
+        <IconBtn title={ar ? "للأمام" : "Forward"} onClick={() => sel[0] && dispatch({ t: "order", id: sel[0], dir: "forward" })}><ChevronUp className="h-3.5 w-3.5" /></IconBtn>
+        <IconBtn title={ar ? "للخلف" : "Backward"} onClick={() => sel[0] && dispatch({ t: "order", id: sel[0], dir: "backward" })}><ChevronDown className="h-3.5 w-3.5" /></IconBtn>
+        <IconBtn title={ar ? "إلى الخلف" : "To back"} onClick={() => sel[0] && dispatch({ t: "order", id: sel[0], dir: "back" })}><ChevronsDown className="h-3.5 w-3.5" /></IconBtn>
+        <IconBtn title={ar ? "تكرار" : "Duplicate"} onClick={() => dispatch({ t: "duplicate", ids: sel })}><Copy className="h-3.5 w-3.5" /></IconBtn>
+        <IconBtn title={ar ? "حذف" : "Delete"} onClick={() => dispatch({ t: "remove", ids: sel })}><Trash2 className="h-3.5 w-3.5" /></IconBtn>
       </div>
-      <ul className="flex-1 overflow-y-auto p-2 text-xs">
-        {ordered.map(({ node: n, depth }) => (
-          <li key={n.id}>
-            <div
-              onClick={() => dispatch({ t: "select", ids: [n.id] })}
-              className={cn(
-                "flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5",
-                state.selection.includes(n.id) ? "bg-accent/20 text-foreground" : "text-muted-foreground hover:bg-muted/40",
-              )}
-              style={{ paddingInlineStart: 8 + depth * 12 }}
-            >
-              <input
-                value={n.name}
-                onChange={(e) => dispatch({ t: "update", ids: [n.id], patch: { name: e.target.value } })}
-                className="min-w-0 flex-1 bg-transparent outline-none"
-              />
-              <button onClick={(e) => { e.stopPropagation(); dispatch({ t: "update", ids: [n.id], patch: { hidden: !n.hidden } }); }}>
-                {n.hidden ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
-              </button>
-              <button onClick={(e) => { e.stopPropagation(); dispatch({ t: "update", ids: [n.id], patch: { locked: !n.locked } }); }}>
-                {n.locked ? <Lock className="h-3.5 w-3.5" /> : <Unlock className="h-3.5 w-3.5" />}
-              </button>
-            </div>
-          </li>
-        ))}
+      <p className="px-3 py-1.5 text-[10px] text-muted-foreground/70">
+        {ar ? "اسحب الطبقة لتغيير ترتيبها أو أفلتها داخل مجموعة" : "Drag a layer to reorder, or drop it inside a group"}
+      </p>
+      <ul
+        className="flex-1 overflow-y-auto p-2 text-xs"
+        onDragOver={(e) => { if (drag) e.preventDefault(); }}
+        onDrop={onDrop}
+        onDragLeave={() => setOver(null)}
+      >
+        {ordered.map(({ node: n, depth }) => {
+          const hint = over?.id === n.id ? over.place : null;
+          return (
+            <li key={n.id} onDragOver={(e) => onDragOver(e, n)} onDrop={onDrop}>
+              <div
+                draggable={!n.locked}
+                onDragStart={(e) => onDragStart(e, n.id)}
+                onDragEnd={() => { setDrag(null); setOver(null); }}
+                onClick={(e) => dispatch({
+                  t: "select",
+                  ids: e.shiftKey || e.metaKey || e.ctrlKey
+                    ? (sel.includes(n.id) ? sel.filter((s) => s !== n.id) : [...sel, n.id])
+                    : [n.id],
+                })}
+                className={cn(
+                  "flex items-center gap-2 rounded-lg px-2 py-1.5 transition",
+                  n.locked ? "cursor-default" : "cursor-grab active:cursor-grabbing",
+                  sel.includes(n.id) ? "bg-accent/20 text-foreground" : "text-muted-foreground hover:bg-muted/40",
+                  drag?.includes(n.id) && "opacity-40",
+                  hint === "before" && "border-t-2 border-t-accent",
+                  hint === "after" && "border-b-2 border-b-accent",
+                  hint === "inside" && "ring-1 ring-accent/70",
+                )}
+                style={{ paddingInlineStart: 8 + depth * 12 }}
+              >
+                <GripVertical className="h-3.5 w-3.5 shrink-0 opacity-50" />
+                <input
+                  value={n.name}
+                  onChange={(e) => dispatch({ t: "update", ids: [n.id], patch: { name: e.target.value } })}
+                  onDragStart={(e) => e.preventDefault()}
+                  className="min-w-0 flex-1 bg-transparent outline-none"
+                />
+                <button onClick={(e) => { e.stopPropagation(); dispatch({ t: "update", ids: [n.id], patch: { hidden: !n.hidden } }); }}>
+                  {n.hidden ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                </button>
+                <button onClick={(e) => { e.stopPropagation(); dispatch({ t: "update", ids: [n.id], patch: { locked: !n.locked } }); }}>
+                  {n.locked ? <Lock className="h-3.5 w-3.5" /> : <Unlock className="h-3.5 w-3.5" />}
+                </button>
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
 }
+
 
 function IconBtn({ children, ...rest }: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
