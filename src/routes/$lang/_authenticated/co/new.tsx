@@ -205,11 +205,14 @@ function OnboardingWizard() {
       />
 
       <div className="relative mx-auto w-full max-w-3xl">
-        <header className="safe-top flex items-center justify-between py-5">
+        <header className="safe-top flex items-center justify-between gap-3 py-5">
           <Link to="/switch" className="flex items-center gap-2 text-sm text-muted-foreground">
             <ArrowLeft className="h-4 w-4 rtl:rotate-180" /> {w.switchAccount}
           </Link>
-          <img src={logoAsset.url} alt="" className="h-8 w-8 object-contain" />
+          <div className="flex items-center gap-3">
+            <LocaleSwitcher />
+            <img src={logoAsset.url} alt="" className="h-8 w-8 object-contain" />
+          </div>
         </header>
 
         <h1 className="mt-4 text-3xl font-semibold tracking-tight lg:text-4xl">{w.onboardTitle}</h1>
