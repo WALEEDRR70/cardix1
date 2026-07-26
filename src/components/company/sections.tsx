@@ -12,6 +12,7 @@ import {
   parseEmployeeCsv, type Company, type CompanyRole, type MemberStatus,
 } from "@/lib/workspace";
 import { TEMPLATE_META } from "@/components/CardPreview";
+import { logCompanyAction } from "@/components/company/audit";
 
 /* ---------------------------- shared bits ---------------------------- */
 
@@ -327,6 +328,9 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
       .select("token")
       .single();
     if (error) throw error;
+    void logCompanyAction(company.id, userId, "invitation.created", "company_invitations", {
+      label: payload.email || payload.name,
+    });
     return inviteUrl(data.token);
   }
 
@@ -376,6 +380,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
         .eq("user_id", member.user_id)
         .eq("card_type", "employee");
     }
+    void logCompanyAction(company.id, userId, "member.status", "company_members", { label: status });
     qc.invalidateQueries({ queryKey: ["company-members", company.id] });
     toast.success(w.saved);
   }
@@ -383,6 +388,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
   async function setRole(memberId: string, role: CompanyRole) {
     const { error } = await supabase.from("company_members").update({ role }).eq("id", memberId);
     if (error) { toast.error(error.message); return; }
+    void logCompanyAction(company.id, userId, "member.role", "company_members", { label: role });
     qc.invalidateQueries({ queryKey: ["company-members", company.id] });
   }
 
