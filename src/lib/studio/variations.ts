@@ -65,9 +65,44 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
     }));
   };
 
-  // ---- decorative layer, unique per variation ----
+  // ---- free-form AI artwork (pen-tool paths drawn by the model) ----
+  const vectors = a.vectors ?? [];
+  // each variation reinterprets the same drawing with its own paint
+  const paint: Record<VariationKey, { fill?: string; stroke?: string; op: number; blur: number }> = {
+    minimal: { stroke: primary, op: 0.55, blur: 0 },
+    luxury: { fill: `${accent}33`, stroke: accent, op: 0.9, blur: 0 },
+    glass: { fill: `${primary}22`, stroke: `${accent}99`, op: 0.85, blur: 6 },
+    corporate: { fill: `${secondary}cc`, stroke: primary, op: 1, blur: 0 },
+    executive: { fill: `${primary}55`, stroke: accent, op: 0.9, blur: 0 },
+    creative: { fill: `${accent}55`, stroke: primary, op: 1, blur: 2 },
+    modern: { fill: `${primary}44`, stroke: secondary, op: 0.95, blur: 0 },
+    dark: { fill: `${primary}33`, stroke: `${accent}88`, op: 0.8, blur: 4 },
+    light: { fill: `${primary}1f`, stroke: primary, op: 0.8, blur: 0 },
+    premium: { fill: `${accent}2e`, stroke: accent, op: 0.95, blur: 1 },
+  };
+
+  if (vectors.length) {
+    const pnt = paint[key];
+    vectors.forEach((v, i) => {
+      push(node("path", {
+        name: v.name || `Artwork ${i + 1}`,
+        x: 0, y: 0, w: W, h: H,
+        path: v.d,
+        opacity: (v.opacity ?? 0.9) * pnt.op,
+        style: {
+          fill: v.fill ?? pnt.fill ?? "transparent",
+          stroke: v.stroke ?? pnt.stroke ?? null,
+          strokeWidth: Math.max(1, Math.round((v.strokeWidth ?? 1.2) * (Math.min(W, H) / 100) * 0.9)),
+          blur: (v.blur ?? 0) + pnt.blur,
+          cap: "round",
+        },
+      }));
+    });
+  }
+
+  // ---- decorative layer, unique per variation (fallback when the model drew nothing) ----
   const bandH = landscape ? Math.round(H * 0.28) : Math.round(H * 0.3);
-  switch (key) {
+  switch (vectors.length ? "__none" : key) {
     case "minimal":
       push(node("line", { name: "Rule", x: colX, y: Math.round(H * 0.42), w: px(120), h: 3, style: { fill: primary, radius: 3 } }));
       break;
