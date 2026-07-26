@@ -156,67 +156,84 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
       break;
   }
 
-  // ---- identity layer (placeholders, always editable) ----
-  const logoW = Math.round(W * (landscape ? 0.2 : 0.26));
-  const logoH = Math.round(logoW * 0.4);
+  // ---- identity layer, placed on the measured grid (all editable) ----
   const logoCentered = a.logoPosition === "center";
+  const logoW = snap2(gx(L.logoZone.w));
+  const logoH = snap2(gy(L.logoZone.h));
   push(node("image", {
     name: "Logo",
     imageSource: "logo",
-    x: logoCentered ? Math.round((W - logoW) / 2) : rtl ? PAD : W - PAD - logoW,
-    y: PAD,
+    x: logoCentered ? snap2((W - logoW) / 2) : snap2(gx(L.logoZone.x)),
+    y: snap2(gy(L.logoZone.y)),
     w: logoW, h: logoH,
     style: { radius: 10 },
   }));
 
-  const photo = Math.round(Math.min(W, H) * 0.17);
-  push(node("image", {
-    name: "Photo",
-    imageSource: "employee",
-    x: rtl ? W - PAD - photo : PAD,
-    y: Math.round(H * (landscape ? 0.3 : 0.14)),
-    w: photo, h: photo,
-    style: { radius: 999, borderWidth: 2, borderColor: `${primary}88` },
-  }));
-
-  // headline block
-  let y = Math.round(H * (landscape ? 0.34 : 0.5));
-  text("Name", "{{Employee Name}}", y, { fontSize: px(44), fontWeight: 700, color: fg, h: px(60) });
-  y += px(66);
-  text("Job title", "{{Job Title}}", y, { fontSize: px(21), fontWeight: 600, color: primary, h: px(32) });
-  y += px(38);
-  text("Company", "{{Company}}", y, { fontSize: px(19), color: muted, h: px(30) });
-
-  // tagline / services line detected on the original card
-  if (a.tagline) {
-    y += px(36);
-    text("Tagline", a.tagline, y, { fontSize: px(15), color: muted, h: px(28) });
+  if (L.photoZone) {
+    const photo = snap2(Math.min(gx(L.photoZone.w), gy(L.photoZone.h)));
+    push(node("image", {
+      name: "Photo",
+      imageSource: "employee",
+      x: snap2(gx(L.photoZone.x)),
+      y: snap2(gy(L.photoZone.y)),
+      w: photo, h: photo,
+      style: { radius: 999, borderWidth: 2, borderColor: `${primary}88` },
+    }));
   }
 
-  y += px(52);
-  text("Phone", "{{Phone}}", y, { fontSize: px(17), color: muted, h: px(26) });
-  text("Email", "{{Email}}", y + px(32), { fontSize: px(17), color: muted, h: px(26) });
-  text("Website", "{{Website}}", y + px(64), { fontSize: px(17), color: muted, h: px(26) });
+  // ---- typography on a single baseline rhythm inside the text zone ----
+  const ts = L.typeScale;
+  const nameSize = px(42 * ts.name);
+  const titleSize = px(21 * ts.title);
+  const compSize = px(19 * ts.company);
+  const bodySize = px(17 * ts.body);
+  const step = Math.max(4, Math.round(px(8)));           // baseline unit
+  const gap = (n: number) => n * step;                    // spacing stays on the rhythm
 
-  // QR: opposite side of the content column on landscape, bottom corner on portrait
-  const qr = Math.round(Math.min(W, H) * (landscape ? 0.55 : 0.24));
+  let y = colY;
+  const lineH = (size: number) => snap2(Math.round(size * 1.28));
+
+  text("Name", "{{Employee Name}}", y, { fontSize: nameSize, fontWeight: 700, color: fg, letterSpacing: -0.5, h: lineH(nameSize) });
+  y += lineH(nameSize) + gap(0.75);
+  text("Job title", "{{Job Title}}", y, { fontSize: titleSize, fontWeight: 600, color: primary, letterSpacing: 0.4, h: lineH(titleSize) });
+  y += lineH(titleSize) + gap(0.4);
+  text("Company", "{{Company}}", y, { fontSize: compSize, color: muted, h: lineH(compSize) });
+  y += lineH(compSize);
+
+  if (a.tagline) {
+    y += gap(0.6);
+    text("Tagline", a.tagline, y, { fontSize: bodySize * 0.92, color: muted, h: lineH(bodySize) });
+    y += lineH(bodySize);
+  }
+
+  // contact block: kept together and pinned to the bottom of the text zone when it fits
+  const contactLine = lineH(bodySize) + gap(0.35);
+  const contactBlock = contactLine * 3;
+  const zoneBottom = colY + colH;
+  y = Math.max(y + gap(1.2), Math.min(y + gap(1.2), zoneBottom - contactBlock));
+
+  text("Phone", "{{Phone}}", y, { fontSize: bodySize, color: muted, h: lineH(bodySize) });
+  text("Email", "{{Email}}", y + contactLine, { fontSize: bodySize, color: muted, h: lineH(bodySize) });
+  text("Website", "{{Website}}", y + contactLine * 2, { fontSize: bodySize, color: muted, h: lineH(bodySize) });
+
+  // QR: exactly the measured square zone, kept perfectly square and inside the card
+  const qr = snap2(Math.min(gx(L.qrZone.w), gy(L.qrZone.h)));
+  const qrX = Math.min(Math.max(snap2(gx(L.qrZone.x)), PAD), W - PAD - qr);
+  const qrY = Math.min(Math.max(snap2(gy(L.qrZone.y)), PAD), H - PAD - qr);
   push(node("qr", {
     name: "QR",
-    x: landscape
-      ? (rtl ? PAD : W - PAD - qr)
-      : (rtl ? PAD : W - PAD - qr),
-    y: landscape ? Math.round((H - qr) / 2) : H - PAD - qr,
-    w: qr, h: qr,
-    style: { fill: "#ffffff", radius: 18, padding: 12 },
+    x: qrX, y: qrY, w: qr, h: qr,
+    style: { fill: "#ffffff", radius: Math.round(qr * 0.08), padding: Math.round(qr * 0.06) },
   }));
 
-  const btnW = Math.round(Math.min(W * 0.42, px(260)));
+  const btnW = snap2(Math.min(colW, px(260)));
+  const btnH = snap2(px(56));
   push(node("button", {
     name: "Save contact",
     text: "Save contact",
-    x: rtl && !landscape ? W - PAD - btnW : colX,
-    y: H - PAD - px(58),
-    w: btnW, h: px(58),
+    x: align === "center" ? snap2((W - btnW) / 2) : align === "right" ? colX + colW - btnW : colX,
+    y: H - PAD - btnH,
+    w: btnW, h: btnH,
     style: {
       gradient: key === "luxury" || key === "premium"
         ? `linear-gradient(135deg, ${accent}, ${primary})`
@@ -224,6 +241,7 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
       color: "#ffffff", radius: 999, fontSize: px(17), fontWeight: 600, align: "center",
     },
   }));
+
 
   void s;
 
