@@ -162,11 +162,13 @@ export function PageHeader({
   subtitle,
   right,
   back,
+  backParams,
 }: {
   title: string;
   subtitle?: string;
   right?: ReactNode;
   back?: string;
+  backParams?: Record<string, unknown>;
 }) {
   const { t } = useI18n();
   return (
@@ -176,6 +178,7 @@ export function PageHeader({
           {back && (
             <Link
               to={back}
+              params={backParams}
               className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-border/60 bg-card/60 text-muted-foreground backdrop-blur hover:text-foreground lg:hidden"
               aria-label={t.back}
             >
