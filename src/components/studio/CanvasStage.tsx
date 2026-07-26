@@ -399,7 +399,13 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
       if (editable(e.target)) return;
       const meta = e.metaKey || e.ctrlKey;
       const key = e.key.toLowerCase();
+      if (!meta && (key === "p" || key === "v")) {
+        e.preventDefault();
+        dispatch({ t: "tool", value: key === "p" ? "pen" : "select" });
+        return;
+      }
       if (meta && key === "z") {
+
         e.preventDefault();
         dispatch({ t: e.shiftKey ? "redo" : "undo" });
       } else if (meta && key === "y") {
