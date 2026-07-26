@@ -6,6 +6,8 @@ import { useStudio } from "@/lib/studio/store";
 import { CARD_SIZES, PLACEHOLDERS, type ImageSource } from "@/lib/studio/types";
 import { uploadStudioImage } from "@/lib/studio/upload";
 import { isSvgSrc } from "@/lib/studio/svg";
+import { SvgPalette } from "@/components/studio/SvgPalette";
+
 
 import { GradientEditor } from "@/components/studio/GradientEditor";
 
