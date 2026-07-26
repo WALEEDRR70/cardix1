@@ -186,7 +186,7 @@ export function QrTab({ company }: { company: Company }) {
     queryFn: async () => {
       const { data } = await supabase
         .from("cards")
-        .select("id, slug, full_name, job_title")
+        .select("id, slug, name, title")
         .eq("company_id", company.id)
         .order("created_at", { ascending: true });
       return data ?? [];
@@ -209,7 +209,7 @@ export function QrTab({ company }: { company: Company }) {
               <QrBlock
                 key={c.id}
                 value={`${origin()}/c/${c.slug}`}
-                label={c.full_name || c.job_title || c.slug}
+                label={c.name || c.title || c.slug}
                 color={company.brand_primary}
               />
             ))}
