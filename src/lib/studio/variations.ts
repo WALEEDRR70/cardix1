@@ -2,7 +2,9 @@
 // The layout is proportional and follows the ORIENTATION of the analysed card:
 // a landscape scan produces a landscape template, a portrait scan a portrait one.
 import { node, type StudioDoc, type StudioNode } from "./types";
+import { defaultLayout } from "./layout";
 import type { AiCardAnalysis } from "./ai.functions";
+
 
 export type VariationKey =
   | "minimal" | "luxury" | "glass" | "corporate" | "executive"
