@@ -19,9 +19,14 @@ export type StudioState = {
   guides: boolean;
   /** Internal copy buffer for copy / paste. */
   clipboard: StudioNode[];
+  /** Active canvas tool: pointer selection or the free-form pen. */
+  tool: StudioTool;
 };
 
+export type StudioTool = "select" | "pen";
+
 export type AlignHow = "left" | "hcenter" | "right" | "top" | "vcenter" | "bottom";
+
 
 type Action =
   | { t: "replace"; doc: StudioDoc; history?: boolean }
@@ -46,7 +51,9 @@ type Action =
   | { t: "zoom"; value: number }
   | { t: "pan"; x: number; y: number }
   | { t: "fit" }
-  | { t: "toggle"; key: "grid" | "snap" | "guides" };
+  | { t: "toggle"; key: "grid" | "snap" | "guides" }
+  | { t: "tool"; value: StudioTool };
+
 
 const MAX_HISTORY = 60;
 
@@ -274,6 +281,9 @@ function reducer(state: StudioState, a: Action): StudioState {
       return { ...state, fitTick: state.fitTick + 1 };
     case "toggle":
       return { ...state, [a.key]: !state[a.key] };
+    case "tool":
+      return { ...state, tool: a.value };
+
 
     default:
       return state;
@@ -306,6 +316,8 @@ export function useStudioState(initial: StudioDoc) {
     snap: true,
     guides: true,
     clipboard: [],
+    tool: "select",
+
   } satisfies StudioState);
 
 

@@ -5,8 +5,9 @@ import {
   AlignStartVertical, AlignCenterVertical, AlignEndVertical,
   AlignStartHorizontal, AlignCenterHorizontal, AlignEndHorizontal,
   AlignHorizontalSpaceAround, AlignVerticalSpaceAround,
-  Group, Ungroup, CopyPlus, Trash2, Maximize,
+  Group, Ungroup, CopyPlus, Trash2, Maximize, MousePointer2, PenTool,
 } from "lucide-react";
+
 import { toPng, toJpeg, toSvg } from "html-to-image";
 import { useStudio } from "@/lib/studio/store";
 import { cn } from "@/lib/utils";
@@ -47,10 +48,24 @@ export function StudioToolbar({
     <header className="flex items-center gap-2 border-b border-border/60 bg-card/50 px-3 py-2">
       <span className="me-2 truncate text-sm font-semibold">{title || (ar ? "بطاقة بدون عنوان" : "Untitled card")}</span>
 
+      <Btn
+        title={ar ? "أداة التحديد (V)" : "Select tool (V)"}
+        active={state.tool === "select"}
+        onClick={() => dispatch({ t: "tool", value: "select" })}
+      ><MousePointer2 className="h-4 w-4" /></Btn>
+      <Btn
+        title={ar ? "أداة البنتول (P) — انقر لإضافة نقطة، اسحب لمنحنى، Enter للإنهاء" : "Pen tool (P) — click to add a point, drag to curve, Enter to finish"}
+        active={state.tool === "pen"}
+        onClick={() => dispatch({ t: "tool", value: state.tool === "pen" ? "select" : "pen" })}
+      ><PenTool className="h-4 w-4" /></Btn>
+
+      <span className="mx-1 h-5 w-px bg-border/60" />
+
       <Btn title={ar ? "تراجع" : "Undo"} disabled={!state.past.length} onClick={() => dispatch({ t: "undo" })}><Undo2 className="h-4 w-4" /></Btn>
       <Btn title={ar ? "إعادة" : "Redo"} disabled={!state.future.length} onClick={() => dispatch({ t: "redo" })}><Redo2 className="h-4 w-4" /></Btn>
 
       <span className="mx-1 h-5 w-px bg-border/60" />
+
 
       <Btn title={ar ? "الشبكة" : "Grid"} active={state.grid} onClick={() => dispatch({ t: "toggle", key: "grid" })}><Grid3x3 className="h-4 w-4" /></Btn>
       <Btn title={ar ? "المحاذاة" : "Snap"} active={state.snap} onClick={() => dispatch({ t: "toggle", key: "snap" })}><Magnet className="h-4 w-4" /></Btn>
