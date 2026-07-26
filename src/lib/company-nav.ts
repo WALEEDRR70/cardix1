@@ -1,6 +1,6 @@
 import {
   LayoutDashboard, IdCard, Users, Building, LayoutTemplate, Palette, Images,
-  MailPlus, BarChart3, QrCode, Nfc, Settings, Search, Globe, ShieldCheck,
+  MailPlus, BarChart3, QrCode, Nfc, Settings, Search, Globe, ShieldCheck, ScrollText,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { WsDict } from "@/i18n/workspace";
@@ -30,6 +30,7 @@ export const COMPANY_SECTIONS: CompanySection[] = [
   { path: "/page", icon: Globe, label: (w) => w.publicPage, group: "reach" },
   { path: "/seo", icon: Search, label: (w) => w.seo, group: "reach" },
 
+  { path: "/activity", icon: ScrollText, label: (w) => w.auditLog, group: "admin" },
   { path: "/permissions", icon: ShieldCheck, label: (w) => w.permissions, group: "admin" },
   { path: "/settings", icon: Settings, label: (w) => w.settings, group: "admin" },
 ];

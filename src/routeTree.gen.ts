@@ -59,6 +59,7 @@ import { Route as LangAuthenticatedCoSlugDepartmentsRouteImport } from './routes
 import { Route as LangAuthenticatedCoSlugCardRouteImport } from './routes/$lang/_authenticated/co/$slug/card'
 import { Route as LangAuthenticatedCoSlugBrandRouteImport } from './routes/$lang/_authenticated/co/$slug/brand'
 import { Route as LangAuthenticatedCoSlugAnalyticsRouteImport } from './routes/$lang/_authenticated/co/$slug/analytics'
+import { Route as LangAuthenticatedCoSlugActivityRouteImport } from './routes/$lang/_authenticated/co/$slug/activity'
 import { Route as LangAuthenticatedCardsIdAnalyticsRouteImport } from './routes/$lang/_authenticated/cards.$id.analytics'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -334,6 +335,12 @@ const LangAuthenticatedCoSlugAnalyticsRoute =
     path: '/analytics',
     getParentRoute: () => LangAuthenticatedCoSlugRouteRoute,
   } as any)
+const LangAuthenticatedCoSlugActivityRoute =
+  LangAuthenticatedCoSlugActivityRouteImport.update({
+    id: '/activity',
+    path: '/activity',
+    getParentRoute: () => LangAuthenticatedCoSlugRouteRoute,
+  } as any)
 const LangAuthenticatedCardsIdAnalyticsRoute =
   LangAuthenticatedCardsIdAnalyticsRouteImport.update({
     id: '/analytics',
@@ -377,6 +384,7 @@ export interface FileRoutesByFullPath {
   '/$lang/workspace/$id': typeof LangAuthenticatedWorkspaceIdRoute
   '/$lang/workspace/': typeof LangAuthenticatedWorkspaceIndexRoute
   '/$lang/cards/$id/analytics': typeof LangAuthenticatedCardsIdAnalyticsRoute
+  '/$lang/co/$slug/activity': typeof LangAuthenticatedCoSlugActivityRoute
   '/$lang/co/$slug/analytics': typeof LangAuthenticatedCoSlugAnalyticsRoute
   '/$lang/co/$slug/brand': typeof LangAuthenticatedCoSlugBrandRoute
   '/$lang/co/$slug/card': typeof LangAuthenticatedCoSlugCardRoute
@@ -427,6 +435,7 @@ export interface FileRoutesByTo {
   '/$lang/workspace/$id': typeof LangAuthenticatedWorkspaceIdRoute
   '/$lang/workspace': typeof LangAuthenticatedWorkspaceIndexRoute
   '/$lang/cards/$id/analytics': typeof LangAuthenticatedCardsIdAnalyticsRoute
+  '/$lang/co/$slug/activity': typeof LangAuthenticatedCoSlugActivityRoute
   '/$lang/co/$slug/analytics': typeof LangAuthenticatedCoSlugAnalyticsRoute
   '/$lang/co/$slug/brand': typeof LangAuthenticatedCoSlugBrandRoute
   '/$lang/co/$slug/card': typeof LangAuthenticatedCoSlugCardRoute
@@ -481,6 +490,7 @@ export interface FileRoutesById {
   '/$lang/_authenticated/workspace/$id': typeof LangAuthenticatedWorkspaceIdRoute
   '/$lang/_authenticated/workspace/': typeof LangAuthenticatedWorkspaceIndexRoute
   '/$lang/_authenticated/cards/$id/analytics': typeof LangAuthenticatedCardsIdAnalyticsRoute
+  '/$lang/_authenticated/co/$slug/activity': typeof LangAuthenticatedCoSlugActivityRoute
   '/$lang/_authenticated/co/$slug/analytics': typeof LangAuthenticatedCoSlugAnalyticsRoute
   '/$lang/_authenticated/co/$slug/brand': typeof LangAuthenticatedCoSlugBrandRoute
   '/$lang/_authenticated/co/$slug/card': typeof LangAuthenticatedCoSlugCardRoute
@@ -535,6 +545,7 @@ export interface FileRouteTypes {
     | '/$lang/workspace/$id'
     | '/$lang/workspace/'
     | '/$lang/cards/$id/analytics'
+    | '/$lang/co/$slug/activity'
     | '/$lang/co/$slug/analytics'
     | '/$lang/co/$slug/brand'
     | '/$lang/co/$slug/card'
@@ -585,6 +596,7 @@ export interface FileRouteTypes {
     | '/$lang/workspace/$id'
     | '/$lang/workspace'
     | '/$lang/cards/$id/analytics'
+    | '/$lang/co/$slug/activity'
     | '/$lang/co/$slug/analytics'
     | '/$lang/co/$slug/brand'
     | '/$lang/co/$slug/card'
@@ -638,6 +650,7 @@ export interface FileRouteTypes {
     | '/$lang/_authenticated/workspace/$id'
     | '/$lang/_authenticated/workspace/'
     | '/$lang/_authenticated/cards/$id/analytics'
+    | '/$lang/_authenticated/co/$slug/activity'
     | '/$lang/_authenticated/co/$slug/analytics'
     | '/$lang/_authenticated/co/$slug/brand'
     | '/$lang/_authenticated/co/$slug/card'
@@ -1019,6 +1032,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangAuthenticatedCoSlugAnalyticsRouteImport
       parentRoute: typeof LangAuthenticatedCoSlugRouteRoute
     }
+    '/$lang/_authenticated/co/$slug/activity': {
+      id: '/$lang/_authenticated/co/$slug/activity'
+      path: '/activity'
+      fullPath: '/$lang/co/$slug/activity'
+      preLoaderRoute: typeof LangAuthenticatedCoSlugActivityRouteImport
+      parentRoute: typeof LangAuthenticatedCoSlugRouteRoute
+    }
     '/$lang/_authenticated/cards/$id/analytics': {
       id: '/$lang/_authenticated/cards/$id/analytics'
       path: '/analytics'
@@ -1044,6 +1064,7 @@ const LangAuthenticatedVaultRouteWithChildren =
   )
 
 interface LangAuthenticatedCoSlugRouteRouteChildren {
+  LangAuthenticatedCoSlugActivityRoute: typeof LangAuthenticatedCoSlugActivityRoute
   LangAuthenticatedCoSlugAnalyticsRoute: typeof LangAuthenticatedCoSlugAnalyticsRoute
   LangAuthenticatedCoSlugBrandRoute: typeof LangAuthenticatedCoSlugBrandRoute
   LangAuthenticatedCoSlugCardRoute: typeof LangAuthenticatedCoSlugCardRoute
@@ -1063,6 +1084,7 @@ interface LangAuthenticatedCoSlugRouteRouteChildren {
 
 const LangAuthenticatedCoSlugRouteRouteChildren: LangAuthenticatedCoSlugRouteRouteChildren =
   {
+    LangAuthenticatedCoSlugActivityRoute: LangAuthenticatedCoSlugActivityRoute,
     LangAuthenticatedCoSlugAnalyticsRoute:
       LangAuthenticatedCoSlugAnalyticsRoute,
     LangAuthenticatedCoSlugBrandRoute: LangAuthenticatedCoSlugBrandRoute,
