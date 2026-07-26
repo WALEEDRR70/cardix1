@@ -15,6 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as LangIndexRouteImport } from './routes/$lang/index'
 import { Route as SitemapChar123langChar125DotxmlRouteImport } from './routes/sitemap/{$lang}[.]xml'
 import { Route as CSlugRouteImport } from './routes/c.$slug'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as LangPricingRouteImport } from './routes/$lang/pricing'
 import { Route as LangFeaturesRouteImport } from './routes/$lang/features'
 import { Route as LangContactRouteImport } from './routes/$lang/contact'
@@ -65,6 +66,11 @@ const SitemapChar123langChar125DotxmlRoute =
 const CSlugRoute = CSlugRouteImport.update({
   id: '/c/$slug',
   path: '/c/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LangPricingRoute = LangPricingRouteImport.update({
@@ -182,6 +188,7 @@ export interface FileRoutesByFullPath {
   '/$lang/contact': typeof LangContactRoute
   '/$lang/features': typeof LangFeaturesRoute
   '/$lang/pricing': typeof LangPricingRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/c/$slug': typeof CSlugRoute
   '/sitemap/{$lang}.xml': typeof SitemapChar123langChar125DotxmlRoute
   '/$lang/': typeof LangIndexRoute
@@ -209,6 +216,7 @@ export interface FileRoutesByTo {
   '/$lang/contact': typeof LangContactRoute
   '/$lang/features': typeof LangFeaturesRoute
   '/$lang/pricing': typeof LangPricingRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/c/$slug': typeof CSlugRoute
   '/sitemap/{$lang}.xml': typeof SitemapChar123langChar125DotxmlRoute
   '/$lang/dashboard': typeof LangAuthenticatedDashboardRoute
@@ -237,6 +245,7 @@ export interface FileRoutesById {
   '/$lang/contact': typeof LangContactRoute
   '/$lang/features': typeof LangFeaturesRoute
   '/$lang/pricing': typeof LangPricingRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/c/$slug': typeof CSlugRoute
   '/sitemap/{$lang}.xml': typeof SitemapChar123langChar125DotxmlRoute
   '/$lang/': typeof LangIndexRoute
@@ -266,6 +275,7 @@ export interface FileRouteTypes {
     | '/$lang/contact'
     | '/$lang/features'
     | '/$lang/pricing'
+    | '/auth/callback'
     | '/c/$slug'
     | '/sitemap/{$lang}.xml'
     | '/$lang/'
@@ -293,6 +303,7 @@ export interface FileRouteTypes {
     | '/$lang/contact'
     | '/$lang/features'
     | '/$lang/pricing'
+    | '/auth/callback'
     | '/c/$slug'
     | '/sitemap/{$lang}.xml'
     | '/$lang/dashboard'
@@ -320,6 +331,7 @@ export interface FileRouteTypes {
     | '/$lang/contact'
     | '/$lang/features'
     | '/$lang/pricing'
+    | '/auth/callback'
     | '/c/$slug'
     | '/sitemap/{$lang}.xml'
     | '/$lang/'
@@ -343,6 +355,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LangRouteRoute: typeof LangRouteRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
   CSlugRoute: typeof CSlugRoute
   SitemapChar123langChar125DotxmlRoute: typeof SitemapChar123langChar125DotxmlRoute
 }
@@ -389,6 +402,13 @@ declare module '@tanstack/react-router' {
       path: '/c/$slug'
       fullPath: '/c/$slug'
       preLoaderRoute: typeof CSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$lang/pricing': {
@@ -627,19 +647,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LangRouteRoute: LangRouteRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
   CSlugRoute: CSlugRoute,
   SitemapChar123langChar125DotxmlRoute: SitemapChar123langChar125DotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
