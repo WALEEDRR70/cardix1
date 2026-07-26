@@ -65,8 +65,32 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
     }));
   };
 
+  // normalised (0..100) -> canvas helpers
+  const PX = (v: number) => Math.round((v / 100) * W);
+  const PY = (v: number) => Math.round((v / 100) * H);
+  const short = Math.min(W, H);
+  const blocks = a.blocks ?? [];
+  const block = (role: string) => blocks.find((b) => b.role === role);
+  const useMap = blocks.length >= 3;
+
+  // ---- measured colour surfaces from the scan (bands, rails, panels) ----
+  for (const sf of a.surfaces ?? []) {
+    push(node("shape", {
+      name: sf.name,
+      x: PX(sf.x), y: PY(sf.y), w: PX(sf.w), h: PY(sf.h),
+      shape: sf.shape === "ellipse" ? "ellipse" : "rect",
+      opacity: sf.opacity ?? 1,
+      style: {
+        fill: light ? `${primary}14` : (sf.fill ?? "transparent"),
+        gradient: sf.gradient ?? null,
+        radius: Math.round(((sf.radius ?? 0) / 100) * short),
+        blur: sf.blur ?? 0,
+      },
+    }));
+  }
 
   // ---- free-form AI artwork (pen-tool paths drawn by the model) ----
+
   const vectors = a.vectors ?? [];
   // each variation reinterprets the same drawing with its own paint
   const paint: Record<VariationKey, { fill?: string; stroke?: string; op: number; blur: number }> = {
