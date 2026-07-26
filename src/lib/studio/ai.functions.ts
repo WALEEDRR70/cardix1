@@ -78,18 +78,36 @@ Return STRICT JSON, no markdown fences, matching exactly:
  "orientation": "landscape" | "portrait" | "square",
  "direction": "rtl" if the card's main language is Arabic/Hebrew, else "ltr",
  "logoPosition": "left" | "center" | "right",
- "vectors": an ARRAY of 3 to 8 FREE-FORM vector drawings you compose yourself, like using a pen tool.
+ "vectors": an ARRAY of 4 to 9 FREE-FORM vector drawings you compose yourself, like using a pen tool.
    Each item = { "name": short label, "d": SVG path data, "fill": hex or null, "stroke": hex or null,
    "strokeWidth": number 0.2-4, "opacity": 0-1, "blur": 0-30 }.
-   Coordinates live on a 0..100 x 0..100 grid mapped onto the whole card, so use decimals freely.
-   Draw ORGANIC, ORIGINAL artwork inspired by the scan: sweeping curves (C/Q/S commands), ribbons,
-   arcs, waves, corner flourishes, diagonal blades, layered blobs. Do NOT limit yourself to rectangles
-   or circles, do NOT trace text or logos, and keep the drawing behind the content area so the text stays readable.
+   Coordinates live on a 0..100 x 0..100 grid mapped onto the whole card.
+   PRECISION RULES for "d":
+     - use 2 decimals on every coordinate (e.g. 12.40, not 12), never integers-only sketches,
+     - start with an absolute M, use C/S/Q/A for every curve, close filled shapes with Z,
+     - keep every coordinate inside -5..105, never leave a path half finished,
+     - align related paths to the same anchors so edges meet exactly (shared start/end points),
+     - make the drawing follow the real geometry you SEE in the scan (angle of a diagonal, radius of an
+       arc, thickness of a rail) rather than a generic decoration,
+     - keep artwork out of "textZone" so type stays perfectly legible.
+   Draw ORGANIC, ORIGINAL artwork: sweeping ribbons, arcs, waves, corner flourishes, diagonal blades,
+   layered blobs. Do NOT trace text or logos.
+ "layout": the MEASURED composition grid of the scan, all values in PERCENT of the card (0..100) with 1 decimal:
+   { "margin": number 3-12 (safe margin), 
+     "textZone": {"x","y","w","h"} rectangle holding name/title/contact block,
+     "logoZone": {"x","y","w","h"} rectangle of the logo,
+     "photoZone": {"x","y","w","h"} or null if the card shows no portrait,
+     "qrZone": {"x","y","w","h"} square area free for a QR code,
+     "typeScale": {"name":0.8-1.6,"title":0.6-1.2,"company":0.5-1.1,"body":0.5-1.0},
+     "textAlign": "left" | "center" | "right" }
+   Zones must NOT overlap each other and must stay inside the margins.
  "tagline": a generic services/slogan line describing the business WITHOUT any contact data, or null,
  "notes": one sentence on how to modernise the layout
 }
 Report the true orientation: a wide card MUST return "landscape" with aspect > 1.
+Measure, do not guess: read distances off the image and keep zones proportional to what you see.
 Improve the palette: raise contrast, refine harmony, keep the spirit of the original.`;
+
 
 
 export const analyzeCardImage = createServerFn({ method: "POST" })
