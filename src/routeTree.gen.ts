@@ -18,6 +18,7 @@ import { Route as CSlugRouteImport } from './routes/c.$slug'
 import { Route as LangPricingRouteImport } from './routes/$lang/pricing'
 import { Route as LangFeaturesRouteImport } from './routes/$lang/features'
 import { Route as LangAuthRouteImport } from './routes/$lang/auth'
+import { Route as LangAboutRouteImport } from './routes/$lang/about'
 import { Route as LangAuthenticatedRouteRouteImport } from './routes/$lang/_authenticated/route'
 import { Route as LangToolsIndexRouteImport } from './routes/$lang/tools/index'
 import { Route as LangLIndexRouteImport } from './routes/$lang/l/index'
@@ -78,6 +79,11 @@ const LangFeaturesRoute = LangFeaturesRouteImport.update({
 const LangAuthRoute = LangAuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => LangRouteRoute,
+} as any)
+const LangAboutRoute = LangAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => LangRouteRoute,
 } as any)
 const LangAuthenticatedRouteRoute = LangAuthenticatedRouteRouteImport.update({
@@ -165,6 +171,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$lang': typeof LangRouteRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/$lang/about': typeof LangAboutRoute
   '/$lang/auth': typeof LangAuthRoute
   '/$lang/features': typeof LangFeaturesRoute
   '/$lang/pricing': typeof LangPricingRoute
@@ -190,6 +197,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang': typeof LangIndexRoute
+  '/$lang/about': typeof LangAboutRoute
   '/$lang/auth': typeof LangAuthRoute
   '/$lang/features': typeof LangFeaturesRoute
   '/$lang/pricing': typeof LangPricingRoute
@@ -216,6 +224,7 @@ export interface FileRoutesById {
   '/$lang': typeof LangRouteRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang/_authenticated': typeof LangAuthenticatedRouteRouteWithChildren
+  '/$lang/about': typeof LangAboutRoute
   '/$lang/auth': typeof LangAuthRoute
   '/$lang/features': typeof LangFeaturesRoute
   '/$lang/pricing': typeof LangPricingRoute
@@ -243,6 +252,7 @@ export interface FileRouteTypes {
     | '/'
     | '/$lang'
     | '/sitemap.xml'
+    | '/$lang/about'
     | '/$lang/auth'
     | '/$lang/features'
     | '/$lang/pricing'
@@ -268,6 +278,7 @@ export interface FileRouteTypes {
     | '/'
     | '/sitemap.xml'
     | '/$lang'
+    | '/$lang/about'
     | '/$lang/auth'
     | '/$lang/features'
     | '/$lang/pricing'
@@ -293,6 +304,7 @@ export interface FileRouteTypes {
     | '/$lang'
     | '/sitemap.xml'
     | '/$lang/_authenticated'
+    | '/$lang/about'
     | '/$lang/auth'
     | '/$lang/features'
     | '/$lang/pricing'
@@ -386,6 +398,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/$lang/auth'
       preLoaderRoute: typeof LangAuthRouteImport
+      parentRoute: typeof LangRouteRoute
+    }
+    '/$lang/about': {
+      id: '/$lang/about'
+      path: '/about'
+      fullPath: '/$lang/about'
+      preLoaderRoute: typeof LangAboutRouteImport
       parentRoute: typeof LangRouteRoute
     }
     '/$lang/_authenticated': {
@@ -551,6 +570,7 @@ const LangAuthenticatedRouteRouteWithChildren =
 
 interface LangRouteRouteChildren {
   LangAuthenticatedRouteRoute: typeof LangAuthenticatedRouteRouteWithChildren
+  LangAboutRoute: typeof LangAboutRoute
   LangAuthRoute: typeof LangAuthRoute
   LangFeaturesRoute: typeof LangFeaturesRoute
   LangPricingRoute: typeof LangPricingRoute
@@ -565,6 +585,7 @@ interface LangRouteRouteChildren {
 
 const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangAuthenticatedRouteRoute: LangAuthenticatedRouteRouteWithChildren,
+  LangAboutRoute: LangAboutRoute,
   LangAuthRoute: LangAuthRoute,
   LangFeaturesRoute: LangFeaturesRoute,
   LangPricingRoute: LangPricingRoute,
