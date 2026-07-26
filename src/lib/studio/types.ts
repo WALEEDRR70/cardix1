@@ -156,6 +156,7 @@ export function node(type: NodeType, patch: Partial<StudioNode> = {}): StudioNod
     style: { ...DEFAULT_STYLE[type], ...(patch.style ?? {}) },
     ...(patch.text !== undefined ? { text: patch.text } : type === "text" ? { text: "Text" } : {}),
     ...(patch.src ? { src: patch.src } : {}),
+    ...(patch.imageSource ? { imageSource: patch.imageSource } : {}),
     ...(patch.icon ? { icon: patch.icon } : {}),
     ...(patch.shape ? { shape: patch.shape } : {}),
     ...(patch.href ? { href: patch.href } : {}),
