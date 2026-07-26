@@ -18,6 +18,7 @@ export type WsDict = {
   employees: string;
   departments: string;
   templates: string;
+  designStudio: string;
   fields: string;
   analytics: string;
   branches: string;
@@ -218,6 +219,7 @@ const en: WsDict = {
   employees: "Employees",
   departments: "Departments",
   templates: "Templates",
+  designStudio: "Design studio",
   fields: "Fields",
   analytics: "Analytics",
   branches: "Branches",
@@ -418,6 +420,7 @@ const ar: Partial<WsDict> = {
   employees: "الموظفون",
   departments: "الأقسام",
   templates: "القوالب",
+  designStudio: "استوديو التصميم",
   fields: "الحقول",
   analytics: "الإحصائيات",
   branches: "الفروع",
