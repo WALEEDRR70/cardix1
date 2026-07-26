@@ -26,7 +26,7 @@ function EmployeeSpace() {
     queryFn: async () => {
       const { data } = await supabase
         .from("cards")
-        .select("id, slug, full_name, job_title, is_active, view_count")
+        .select("id, slug, name, title, is_published, view_count")
         .eq("company_id", membership!.company_id)
         .eq("user_id", account!.userId!)
         .maybeSingle();
@@ -120,8 +120,8 @@ function EmployeeSpace() {
               className="glass flex items-center gap-3 rounded-2xl border border-border/50 p-4"
             >
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-medium">{card.full_name}</span>
-                <span className="block truncate text-xs text-muted-foreground">{card.job_title || w.myCard}</span>
+                <span className="block truncate text-sm font-medium">{card.name}</span>
+                <span className="block truncate text-xs text-muted-foreground">{card.title || w.myCard}</span>
               </span>
               <ArrowRight className="h-4 w-4 text-muted-foreground rtl:rotate-180" />
             </Link>

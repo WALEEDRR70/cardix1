@@ -24,12 +24,12 @@ function CompanyOverview() {
           .select("id", { count: "exact", head: true })
           .eq("company_id", company.id)
           .eq("status", "active"),
-        supabase.from("cards").select("id, is_active, view_count").eq("company_id", company.id),
+        supabase.from("cards").select("id, is_published, view_count").eq("company_id", company.id),
       ]);
       const list = cards ?? [];
       return {
         employees: employees ?? 0,
-        activeCards: list.filter((c) => c.is_active).length,
+        activeCards: list.filter((c) => c.is_published).length,
         totalCards: list.length,
         views: list.reduce((sum, c) => sum + (c.view_count ?? 0), 0),
       };
