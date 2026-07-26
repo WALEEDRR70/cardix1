@@ -316,6 +316,8 @@ export function useStudioState(initial: StudioDoc) {
     snap: true,
     guides: true,
     clipboard: [],
+    tool: "select",
+
   } satisfies StudioState);
 
 
