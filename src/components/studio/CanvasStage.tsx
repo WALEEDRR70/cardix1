@@ -42,19 +42,9 @@ export function NodeContent({ n, values }: { n: StudioNode; values?: Record<stri
           {resolvePlaceholders(n.text ?? "Button", values)}
         </div>
       );
-    case "image": {
-      const src = resolveImageSrc(n, values);
-      return src ? (
-        <img src={src} alt="" className="h-full w-full object-cover" style={{ borderRadius: s.radius }} />
-      ) : (
-        <div
-          className="grid h-full w-full place-items-center border border-dashed text-[10px] uppercase tracking-widest"
-          style={{ borderRadius: s.radius, borderColor: "#ffffff40", color: "#ffffff80" }}
-        >
-          {n.imageSource === "employee" ? "photo" : n.imageSource === "logo" ? "logo" : "image"}
-        </div>
-      );
-    }
+    case "image":
+      return <ImageNode n={n} values={values} />;
+
     case "qr":
       return (
         <div
