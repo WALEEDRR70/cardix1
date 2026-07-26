@@ -1,105 +1,77 @@
-# Cardix Global i18n Architecture
+# Two Independent Products Inside Cardixn
 
-Rebuild internationalization around URL-prefixed locales (`/en`, `/ar`, `/fr`, …) with per-language SEO, hreflang, sitemaps, and localized landing pages. This is a large multi-phase change — I'll ship it in ordered, verifiable phases rather than one giant commit.
-
-## Scope
-
-**20 locales:** ar, en, fr, de, es, it, pt, ru, tr, nl, pl, zh, zh-TW, ja, ko, hi, id, ms, th, vi
-**RTL:** ar (auto `dir="rtl"`)
-**Default:** en; **x-default → en**
-**Canonical domain:** https://cardix1.lovable.app
-
-## URL Structure
+Today the app has one dashboard with a "workspace" tab bolted on. This plan separates it into two products that share only auth and the public card renderer.
 
 ```text
-/                       → redirect to detected/preferred locale
-/:lang                  → localized landing
-/:lang/features
-/:lang/pricing
-/:lang/about
-/:lang/contact
-/:lang/blog
-/:lang/blog/:slug
-/:lang/l/:landingSlug   → SEO landing pages (30+ topics)
-/:lang/auth
-/:lang/dashboard        (app — still localized UI, noindex)
-/:lang/scan | vault | vault/:id | cards/:id/edit | cards/:id/analytics
-/c/:slug                (public card — stays unprefixed; owner-selected card locale)
+                 sign in
+                    |
+        +-----------+-----------+
+        |                       |
+  PERSONAL ACCOUNT        COMPANY ACCOUNT
+  /{lang}/app/*           /{lang}/co/{slug}/*
+  mobile-app feel         enterprise SaaS feel
+  own nav + shell         own nav + shell
+                                |
+                          EMPLOYEE VIEW
+                          /{lang}/me/*  (card-only, no admin)
 ```
 
-App routes stay under the locale prefix so UI language is deterministic. Public card pages keep the short `/c/:slug` (shared links shouldn't break); card content itself is user-authored.
+An account chooser after sign-in routes people to the right product. A user can hold both: personal cards always exist independently of any company.
 
-## Technical Design
+## Phase 1 — Account separation & shells
 
-**Route layout (TanStack file routes):**
-- New pathless/segment layout `src/routes/$lang.tsx` acts as the locale gate: validates `params.lang` against the supported list (else `notFound()`), sets `<html lang dir>` via `useEffect`, provides `I18nContext`.
-- Move existing pages under `src/routes/$lang.*` (e.g. `$lang.index.tsx`, `$lang.dashboard.tsx`, `$lang.features.tsx`, `$lang.blog.tsx`, `$lang.blog.$slug.tsx`, `$lang.l.$slug.tsx`, etc.).
-- Root `src/routes/index.tsx` becomes a redirector: reads `localStorage.cardix_lang` → else `navigator.language` match → else `en`, then `navigate({ to: '/$lang', params })`.
-- Keep `/c/$slug` and `/auth/callback` unprefixed.
+- Account-type selection on first sign-in (Personal / Company), stored on the profile; `/{lang}/switch` to move between contexts.
+- Three route trees with three distinct layouts:
+  - `app/*` — Personal: bottom-nav mobile shell (Cards, Vault, Scan, Analytics, Settings). No company anything.
+  - `co/$slug/*` — Company: desktop sidebar + topbar enterprise shell.
+  - `me/*` — Employee: minimal shell (My Card, Edit, QR/NFC, Analytics, Share, Settings).
+- Routing guard picks the shell from membership + role; employees can never reach `co/*` admin routes.
+- Existing `/dashboard` and `/workspace` routes redirect into the new trees.
 
-**Translation files:** `src/i18n/locales/{lang}/{namespace}.json` (namespaces: `common`, `nav`, `landing`, `dashboard`, `card`, `scan`, `vault`, `auth`, `errors`). Lazy-loaded per locale via dynamic `import()` and cached; only current locale ships to client.
+## Phase 2 — Company registration & data model
 
-**I18n runtime:** Replace `src/lib/i18n.tsx` with a new provider that:
-- Takes `lang` from route params (single source of truth — no more local state drift)
-- Exposes `t(key, vars?)`, `locale`, `dir`, `switchLocale(nextLang)` (which navigates to the same route under the new lang using `router.buildLocation`)
-- Sets `document.documentElement.lang` and `dir`
+- Multi-step company onboarding wizard collecting all requested fields (identity, legal, location, contact, brand, domain, description, socials, business hours, verification docs), with save-and-resume.
+- Database: extend `companies` and add `company_settings`, `company_media`, `company_roles`, `company_permissions`, `company_business_hours`, `company_socials`, `company_verification_docs`, plus a `company_analytics` events stream. Personal tables (`cards` where `company_id is null`, `saved_cards`, `profiles`) stay free of company foreign keys.
+- Private storage buckets for logos, media library and verification documents, with company-scoped access rules.
 
-**Language switcher:** Premium dropdown (flag + native name) in `MobileShell` header + desktop sidebar; on change → `switchLocale` preserves current path + search.
+## Phase 3 — Company dashboard
 
-**Auto-detect:** Only on root `/` (one-shot). After first navigation the URL is the source of truth; selection persists to `localStorage`.
+Sections: Overview, Company Card, Employee Cards, Departments, Templates, Brand Manager, Media Library, Invitations, Analytics, QR Manager, NFC Manager, Settings, SEO, Public Page, Permissions. Each is its own route (not tabs in one file), sharing the enterprise shell.
 
-## SEO
+- Brand Center: logo variants (dark/light), primary/secondary/accent, typography, icons, backgrounds, card/button style, corner radius, animation preset, verification badge — applied as CSS variables across every company surface and card.
+- Media Library: shared, approved-asset flagging, employees see only approved items.
+- Employee management: invite, create card, assign department/template, activate/deactivate/suspend/archive, transfer department.
+- Permissions matrix: per-field locked/editable rules per template and role.
 
-Per-route `head()` reads `params.lang` and returns:
-- Localized `title` / `description` / `og:title` / `og:description` from the namespace JSON
-- `og:locale` (e.g. `ar_SA`, `en_US`) + `og:locale:alternate` list
-- Canonical `https://cardix1.lovable.app/:lang/...` (self-referential on leaves)
-- `<link rel="alternate" hreflang="xx" href="…">` for every locale + `x-default`
-- Structured data (WebSite/Organization on root; Article on blog; FAQPage on landing)
+## Phase 4 — Drag & drop card builder
 
-Dashboard/app routes emit `<meta name="robots" content="noindex,nofollow">`.
+Canvas editor (Canva/Figma-like) replacing the form for company templates:
 
-## Sitemaps
+- Element palette: logo, employee photo, company photo, background, gradient, glass layer, name, job title, company, department, phone, email, website, QR, NFC, buttons, social icons, divider, text, shapes, images, video, map, custom section.
+- Per-element: drag, resize, rotate, duplicate, delete, align guides, snap-to-grid, layer ordering, lock, hide, opacity, radius, shadow, glow, animation.
+- Layout stored as JSON; a shared renderer draws the same JSON on the public card page.
+- Employees open the same canvas in restricted mode: locked elements are non-selectable, only permitted fields are editable.
 
-Replace single sitemap with an index:
-- `src/routes/sitemap[.]xml.ts` → `<sitemapindex>` listing per-locale sitemaps
-- `src/routes/sitemap-$lang[.]xml.ts` → `<urlset>` for that locale, each `<url>` carries full `<xhtml:link rel="alternate" hreflang>` set
-- Enumerate: landing, features, pricing, about, contact, blog index, published blog posts, all landing-page slugs
-- Update `public/robots.txt` `Sitemap:` line to point at the index
+## Phase 5 — Templates, employee experience, public company page
 
-## Blog & SEO Landing Pages
+- Unlimited company templates with starter presets (Corporate, Executive, Sales, Marketing, Creative, Luxury, Minimal, Premium, Modern); assignment per employee or department.
+- Employee product surface finalized — card-only, zero admin.
+- `/company/{slug}`: profile, company card, services, branches, optional employee directory, contact, socials, QR, NFC, with per-company SEO metadata.
 
-- Two new tables: `blog_posts` (id, slug, lang, title, excerpt, body_md, cover_url, published_at, status) and `landing_pages` (id, slug, lang, title, meta_description, hero_json, sections_json, faq_json, published). Both have `(slug, lang)` uniqueness and public `SELECT` policies for published rows; admin-only writes.
-- `$lang.blog.tsx` lists posts for that lang; `$lang.blog.$slug.tsx` renders MDX-ish markdown.
-- `$lang.l.$slug.tsx` renders SEO landing pages with H1/H2 hierarchy + FAQ (FAQPage JSON-LD) + internal links.
-- **Content authoring:** I'll seed the schema + a small starter set (EN + AR for 3–5 landing topics, 1 blog post per language) so the pipeline is real end-to-end. Filling all 30 topics × 20 langs × 2500 words = ~1.5M words of copy and is not something to auto-generate blindly in one shot — I'll wire an admin editor (or accept structured JSON drops) so real localized copy can be added incrementally without code changes.
+## Phase 6 — Analytics
 
-## Emails
+Company analytics: total/active/inactive employees and cards, views, QR scans, NFC opens, contact saves, website clicks, country/city/device breakdowns, top employee cards, top departments. Personal analytics stays as-is, scoped to the individual.
 
-Auth email templates: I'll scaffold localized templates and switch by user's `preferred_language` column added to `profiles`. (Best-effort — Supabase auth emails support one template per event; I'll use a locale-router that inlines all languages with a language-tagged section, or per-lang templates keyed off metadata.)
+## Design
 
-## Performance
+Dark glassmorphism and purple gradient throughout. Personal = premium mobile app (large touch targets, bottom nav, card-stack motion). Company = premium desktop SaaS (dense sidebar, data tables, command palette). Company surfaces re-theme themselves from that company's brand tokens.
 
-- Lazy `import()` per-locale namespace bundles
-- Route-level code splitting (TanStack default)
-- Cache-Control on sitemaps
-- Only the active locale's JSON is fetched at runtime
+## Technical notes
 
-## Phased Rollout
+- Company data access goes through server functions with role checks; RLS keeps company rows readable only by active members, personal rows only by their owner.
+- The builder JSON schema is versioned so old cards keep rendering after builder changes.
+- Bilingual AR/EN with RTL preserved on every new screen; all new strings go through the i18n dictionaries.
 
-1. **Foundation:** i18n provider rewrite, locale registry, `$lang` route layout, root redirector, language switcher, migrate current pages (landing, dashboard, scan, vault, editor, analytics, auth) under `$lang.*`. All existing English strings extracted to `en/*.json`; Arabic ported from current i18n; other 18 langs seeded with English fallback + machine-translated `common`/`nav` so the UI never shows raw keys.
-2. **SEO plumbing:** per-route localized `head()`, hreflang helper, sitemap index + per-locale sitemaps, robots update, `og:locale` alternates, structured data.
-3. **Content surfaces:** blog + landing-page schema/migrations, list/detail routes, admin authoring page (protected), seed set (EN + AR).
-4. **Polish:** email localization scaffold, `preferred_language` on profile, QA pass on RTL.
+## Delivery
 
-## Technical Details
-
-- **Route param validation:** `parseParams: ({ lang }) => ({ lang: SUPPORTED.includes(lang) ? lang : throw notFound() })` on `$lang` layout.
-- **Locale registry:** `src/i18n/config.ts` exports `SUPPORTED_LOCALES`, `DEFAULT_LOCALE = 'en'`, `RTL_LOCALES = ['ar']`, `LOCALE_META` (native name, flag, `og:locale` code).
-- **Translation loading:** `loadNamespace(lang, ns)` returns cached promise; provider suspends via React `use()` inside a boundary or loader-level `ensureQueryData` so SSR head sees translated strings.
-- **hreflang helper:** `buildAlternates(pathTemplate, params)` → array of `{ rel:'alternate', hreflang, href }` including `x-default`.
-- **Sitemap enumeration:** static route list constant + Supabase queries for published blog posts and landing pages (via server route with `supabase` publishable client; `SELECT` policy allows `anon` for published rows).
-- **Migration:** existing `/dashboard`, `/scan`, `/vault/...`, `/cards/...` URLs redirect to `/en/...` (or detected lang) via a catch-style redirect route so bookmarks don't 404.
-- **What I will NOT do this pass:** hand-author 30×20 fully localized 2500-word landing pages, or a full CMS. The plumbing supports them; content lands over time through the admin editor or JSON seeds. Say the word if you want me to prioritize a specific subset (e.g. EN+AR+ES for "qr-business-card", "nfc-business-card", "business-card-scanner") and I'll draft real long-form copy for those first.
-
-Approve and I'll start with Phase 1.
+This is far too large for one pass. I will build phase by phase and check in after each, starting with Phase 1 so you can see the two shells side by side before the heavy work lands.
