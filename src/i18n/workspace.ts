@@ -134,6 +134,33 @@ export type WsDict = {
   contactCompany: string;
   loading: string;
   companyNotFound: string;
+  mediaLibrary: string;
+  qrManager: string;
+  nfcManager: string;
+  seo: string;
+  permissions: string;
+  groupManage: string;
+  groupIdentity: string;
+  groupReach: string;
+  groupAdmin: string;
+  personalAccount: string;
+  personalAccountDesc: string;
+  companyAccount: string;
+  companyAccountDesc: string;
+  chooseAccount: string;
+  chooseAccountDesc: string;
+  switchAccount: string;
+  continueLabel: string;
+  myCompanies: string;
+  employeeSpace: string;
+  myCard: string;
+  comingSoon: string;
+  comingSoonDesc: string;
+  legacyAdmin: string;
+  backToPersonal: string;
+  enterWorkspace: string;
+  noAccessTitle: string;
+  noAccessDesc: string;
 };
 
 const en: WsDict = {
@@ -269,6 +296,33 @@ const en: WsDict = {
   contactCompany: "Contact",
   loading: "Loading…",
   companyNotFound: "Company not found",
+  mediaLibrary: "Media library",
+  qrManager: "QR manager",
+  nfcManager: "NFC manager",
+  seo: "SEO",
+  permissions: "Permissions",
+  groupManage: "Manage",
+  groupIdentity: "Identity",
+  groupReach: "Reach",
+  groupAdmin: "Administration",
+  personalAccount: "Personal account",
+  personalAccountDesc: "For freelancers and individuals. Your own cards, QR, NFC, analytics and saved contacts.",
+  companyAccount: "Company account",
+  companyAccountDesc: "A dedicated enterprise workspace: branding, employee cards, templates and permissions.",
+  chooseAccount: "Choose your space",
+  chooseAccountDesc: "Two independent experiences inside Cardixn. You can switch at any time.",
+  switchAccount: "Switch space",
+  continueLabel: "Continue",
+  myCompanies: "My companies",
+  employeeSpace: "My employee card",
+  myCard: "My card",
+  comingSoon: "In progress",
+  comingSoonDesc: "This section is being built in the next phase of the new company workspace.",
+  legacyAdmin: "Classic admin",
+  backToPersonal: "Personal space",
+  enterWorkspace: "Enter workspace",
+  noAccessTitle: "No access",
+  noAccessDesc: "You are not an active member of this company workspace.",
 };
 
 const ar: Partial<WsDict> = {
@@ -404,6 +458,33 @@ const ar: Partial<WsDict> = {
   contactCompany: "تواصل",
   loading: "جارٍ التحميل…",
   companyNotFound: "الشركة غير موجودة",
+  mediaLibrary: "مكتبة الوسائط",
+  qrManager: "إدارة QR",
+  nfcManager: "إدارة NFC",
+  seo: "تحسين الظهور",
+  permissions: "الصلاحيات",
+  groupManage: "الإدارة",
+  groupIdentity: "الهوية",
+  groupReach: "الانتشار",
+  groupAdmin: "الإعدادات",
+  personalAccount: "حساب شخصي",
+  personalAccountDesc: "للأفراد وروّاد الأعمال. بطاقاتك الخاصة و QR و NFC والتحليلات وجهات الاتصال المحفوظة.",
+  companyAccount: "حساب شركة",
+  companyAccountDesc: "مساحة مؤسسية مستقلة: الهوية البصرية وبطاقات الموظفين والقوالب والصلاحيات.",
+  chooseAccount: "اختر مساحتك",
+  chooseAccountDesc: "تجربتان مستقلتان داخل Cardixn، ويمكنك التبديل بينهما في أي وقت.",
+  switchAccount: "تبديل المساحة",
+  continueLabel: "متابعة",
+  myCompanies: "شركاتي",
+  employeeSpace: "بطاقتي الوظيفية",
+  myCard: "بطاقتي",
+  comingSoon: "قيد التنفيذ",
+  comingSoonDesc: "هذا القسم يتم بناؤه في المرحلة القادمة من مساحة الشركة الجديدة.",
+  legacyAdmin: "الإدارة الكلاسيكية",
+  backToPersonal: "المساحة الشخصية",
+  enterWorkspace: "دخول المساحة",
+  noAccessTitle: "لا تملك صلاحية",
+  noAccessDesc: "لست عضوًا نشطًا في مساحة هذه الشركة.",
 };
 
 const OVERRIDES: Record<string, Partial<WsDict>> = { ar };
