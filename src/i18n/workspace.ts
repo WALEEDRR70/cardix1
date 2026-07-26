@@ -129,6 +129,9 @@ export type WsDict = {
   invitationAccepted: string;
   invitationInvalid: string;
   auditLog: string;
+  auditDesc: string;
+  auditEmpty: string;
+  auditYou: string;
   noEmployees: string;
   ourTeam: string;
   contactCompany: string;
@@ -326,6 +329,9 @@ const en: WsDict = {
   invitationAccepted: "Welcome aboard",
   invitationInvalid: "This invitation is no longer valid.",
   auditLog: "Activity log",
+  auditDesc: "Every administrative change in this workspace, newest first.",
+  auditEmpty: "No activity recorded yet.",
+  auditYou: "You",
   noEmployees: "No employees yet",
   ourTeam: "Our team",
   contactCompany: "Contact",
@@ -523,6 +529,9 @@ const ar: Partial<WsDict> = {
   invitationAccepted: "أهلًا بك في الفريق",
   invitationInvalid: "هذه الدعوة لم تعد صالحة.",
   auditLog: "سجل النشاط",
+  auditDesc: "كل تغيير إداري في مساحة الشركة، الأحدث أولًا.",
+  auditEmpty: "لا يوجد نشاط مسجّل بعد.",
+  auditYou: "أنت",
   noEmployees: "لا يوجد موظفون بعد",
   ourTeam: "فريقنا",
   contactCompany: "تواصل",
