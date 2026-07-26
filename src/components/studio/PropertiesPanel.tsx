@@ -1,16 +1,17 @@
-// Right panel: properties for the current selection (or the canvas background).
+// Right inspector: Figma-style properties for the selection (or the canvas).
 import { useRef, useState } from "react";
-import { Loader2, Upload } from "lucide-react";
+import {
+  Loader2, Upload, AlignLeft, AlignCenter, AlignRight, Eye, EyeOff, Lock, Unlock,
+  Type, Image as ImageIcon, Square, QrCode, Minus, Spline, Layers, Frame, MousePointerSquareDashed,
+} from "lucide-react";
 import { toast } from "sonner";
 import { useStudio } from "@/lib/studio/store";
-import { CARD_SIZES, PLACEHOLDERS, type ImageSource } from "@/lib/studio/types";
+import { CARD_SIZES, PLACEHOLDERS, type ImageSource, type NodeType } from "@/lib/studio/types";
 import { uploadStudioImage } from "@/lib/studio/upload";
 import { isSvgSrc } from "@/lib/studio/svg";
 import { SvgPalette } from "@/components/studio/SvgPalette";
-
-
 import { GradientEditor } from "@/components/studio/GradientEditor";
-
+import { PanelSection, Row, NumInput, ColorInput, Seg, MiniBtn, SwitchRow, fieldCls } from "@/components/studio/inspector";
 
 const BG_PRESETS: string[] = [
   "linear-gradient(160deg,#0b0713,#2c125a)",
@@ -21,6 +22,13 @@ const BG_PRESETS: string[] = [
   "linear-gradient(135deg,#0f3b36,#0b0713)",
 ];
 
+const TYPE_ICON: Record<NodeType, React.ElementType> = {
+  text: Type, image: ImageIcon, shape: Square, line: Minus, qr: QrCode,
+  icon: Frame, button: MousePointerSquareDashed, group: Layers, path: Spline,
+};
+
+const shell = "flex w-[268px] shrink-0 flex-col overflow-y-auto border-s border-border/60 bg-card/40";
+
 export function PropertiesPanel({ ar }: { ar: boolean }) {
   const { state, dispatch, selected } = useStudio();
   const n = selected[0];
@@ -30,167 +38,192 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
     const bg = state.doc.background;
     const activeSize = CARD_SIZES.find((s) => s.w === state.doc.w && s.h === state.doc.h);
     return (
-      <aside className="w-72 shrink-0 space-y-4 overflow-y-auto border-s border-border/60 bg-card/40 p-4 text-xs">
-        <h3 className="text-sm font-semibold">{ar ? "مقاس البطاقة" : "Card size"}</h3>
-        <Field label={ar ? "المقاس الجاهز" : "Preset"}>
-          <select
-            value={activeSize?.key ?? "custom"}
-            onChange={(e) => {
-              const p = CARD_SIZES.find((s) => s.key === e.target.value);
-              if (p) dispatch({ t: "size", w: p.w, h: p.h });
-            }}
-            className={input}
-          >
-            {!activeSize && <option value="custom">{ar ? "مخصص" : "Custom"}</option>}
-            {CARD_SIZES.map((s) => (
-              <option key={s.key} value={s.key}>{ar ? s.labelAr : s.label}</option>
-            ))}
-          </select>
-        </Field>
-        <div className="grid grid-cols-2 gap-2">
-          <Num label={ar ? "العرض" : "Width"} value={state.doc.w} onChange={(v) => dispatch({ t: "size", w: v, h: state.doc.h })} />
-          <Num label={ar ? "الارتفاع" : "Height"} value={state.doc.h} onChange={(v) => dispatch({ t: "size", w: state.doc.w, h: v })} />
-        </div>
-        <button
-          type="button"
-          onClick={() => dispatch({ t: "size", w: state.doc.h, h: state.doc.w })}
-          className="w-full rounded-md border border-border/60 px-2 py-1.5 text-muted-foreground hover:text-foreground"
-        >
-          {ar ? "تبديل الاتجاه" : "Swap orientation"}
-        </button>
+      <aside className={shell}>
+        <PanelHeader icon={Frame} title={ar ? "اللوحة" : "Canvas"} sub={`${state.doc.w} × ${state.doc.h}`} />
 
-        <h3 className="border-t border-border/50 pt-3 text-sm font-semibold">{ar ? "طبقة الخلفية" : "Background layer"}</h3>
-        <Field label={ar ? "اللون" : "Color"}>
-          <input type="color" value={bg.color} onChange={(e) => dispatch({ t: "bg", patch: { color: e.target.value } })} className="h-8 w-full rounded bg-transparent" />
-        </Field>
-        <Field label={ar ? "تدرجات جاهزة" : "Gradient presets"}>
-          <div className="grid grid-cols-6 gap-1.5">
+        <PanelSection title={ar ? "مقاس البطاقة" : "Card size"}>
+          <Row label={ar ? "جاهز" : "Preset"}>
+            <select
+              value={activeSize?.key ?? "custom"}
+              onChange={(e) => {
+                const p = CARD_SIZES.find((s) => s.key === e.target.value);
+                if (p) dispatch({ t: "size", w: p.w, h: p.h });
+              }}
+              className={fieldCls}
+            >
+              {!activeSize && <option value="custom">{ar ? "مخصص" : "Custom"}</option>}
+              {CARD_SIZES.map((s) => (
+                <option key={s.key} value={s.key}>{ar ? s.labelAr : s.label}</option>
+              ))}
+            </select>
+          </Row>
+          <div className="grid grid-cols-2 gap-1.5">
+            <NumInput badge="W" value={state.doc.w} onChange={(v) => dispatch({ t: "size", w: v, h: state.doc.h })} />
+            <NumInput badge="H" value={state.doc.h} onChange={(v) => dispatch({ t: "size", w: state.doc.w, h: v })} />
+          </div>
+          <MiniBtn className="w-full" onClick={() => dispatch({ t: "size", w: state.doc.h, h: state.doc.w })}>
+            {ar ? "تبديل الاتجاه" : "Swap orientation"}
+          </MiniBtn>
+        </PanelSection>
+
+        <PanelSection title={ar ? "الخلفية" : "Background"}>
+          <Row label={ar ? "اللون" : "Color"}>
+            <ColorInput value={bg.color} fallback="#0b0713" onChange={(v) => dispatch({ t: "bg", patch: { color: v } })} />
+          </Row>
+          <div className="grid grid-cols-6 gap-1 pt-0.5">
             {BG_PRESETS.map((g) => (
               <button
                 key={g}
                 type="button"
                 title={g}
                 onClick={() => dispatch({ t: "bg", patch: { gradient: g } })}
-                className="h-7 rounded-md border border-border/60"
+                className="h-6 rounded-md border border-border/50 transition hover:scale-105 hover:border-accent/60"
                 style={{ background: g }}
               />
             ))}
           </div>
-        </Field>
-        <GradientEditor
-          ar={ar}
-          value={bg.gradient}
-          onChange={(css) => dispatch({ t: "bg", patch: { gradient: css } })}
-          onRemove={() => dispatch({ t: "bg", patch: { gradient: null } })}
-        />
+          <GradientEditor
+            ar={ar}
+            value={bg.gradient}
+            onChange={(css) => dispatch({ t: "bg", patch: { gradient: css } })}
+            onRemove={() => dispatch({ t: "bg", patch: { gradient: null } })}
+          />
+        </PanelSection>
 
-        <Field label={ar ? "رابط صورة" : "Image URL"}>
-          <input value={bg.image ?? ""} onChange={(e) => dispatch({ t: "bg", patch: { image: e.target.value || null } })} className={input} />
-        </Field>
-        <UploadButton ar={ar} onDone={(url) => dispatch({ t: "bg", patch: { image: url } })} />
-        {bg.image && (
-          <>
-            <Field label={ar ? "ملاءمة الصورة" : "Image fit"}>
-              <select
-                value={bg.fit ?? "cover"}
-                onChange={(e) => dispatch({ t: "bg", patch: { fit: e.target.value as "cover" | "contain" | "repeat" } })}
-                className={input}
-              >
-                <option value="cover">{ar ? "تغطية" : "Cover"}</option>
-                <option value="contain">{ar ? "احتواء" : "Contain"}</option>
-                <option value="repeat">{ar ? "تكرار" : "Repeat"}</option>
-              </select>
-            </Field>
-            <Num
-              label={ar ? "شفافية الصورة %" : "Image opacity %"}
-              value={Math.round((bg.imageOpacity ?? 1) * 100)}
-              onChange={(v) => dispatch({ t: "bg", patch: { imageOpacity: Math.min(100, Math.max(0, v)) / 100 } })}
-            />
-            <button
-              type="button"
-              onClick={() => dispatch({ t: "bg", patch: { image: null } })}
-              className="w-full rounded-md border border-border/60 px-2 py-1.5 text-muted-foreground hover:text-foreground"
-            >
-              {ar ? "إزالة الصورة" : "Remove image"}
-            </button>
-          </>
-        )}
-        <p className="pt-2 text-muted-foreground">{ar ? "اختر عنصرًا لتعديل خصائصه." : "Select an element to edit its properties."}</p>
+        <PanelSection title={ar ? "صورة الخلفية" : "Background image"} defaultOpen={!!bg.image}>
+          <Row label="URL">
+            <input value={bg.image ?? ""} onChange={(e) => dispatch({ t: "bg", patch: { image: e.target.value || null } })} className={fieldCls} />
+          </Row>
+          <UploadButton ar={ar} onDone={(url) => dispatch({ t: "bg", patch: { image: url } })} />
+          {bg.image && (
+            <>
+              <Row label={ar ? "الملاءمة" : "Fit"}>
+                <Seg
+                  value={(bg.fit ?? "cover") as "cover" | "contain" | "repeat"}
+                  options={[
+                    { v: "cover", label: ar ? "تغطية" : "Cover" },
+                    { v: "contain", label: ar ? "احتواء" : "Contain" },
+                    { v: "repeat", label: ar ? "تكرار" : "Tile" },
+                  ]}
+                  onChange={(v) => dispatch({ t: "bg", patch: { fit: v } })}
+                />
+              </Row>
+              <Row label={ar ? "الشفافية" : "Opacity"}>
+                <NumInput
+                  badge="%"
+                  min={0}
+                  max={100}
+                  value={Math.round((bg.imageOpacity ?? 1) * 100)}
+                  onChange={(v) => dispatch({ t: "bg", patch: { imageOpacity: Math.min(100, Math.max(0, v)) / 100 } })}
+                />
+              </Row>
+              <MiniBtn className="w-full" onClick={() => dispatch({ t: "bg", patch: { image: null } })}>
+                {ar ? "إزالة الصورة" : "Remove image"}
+              </MiniBtn>
+            </>
+          )}
+        </PanelSection>
 
+        <p className="p-3 text-[11px] leading-relaxed text-muted-foreground/80">
+          {ar ? "اختر عنصرًا على اللوحة لتعديل خصائصه." : "Select an element on the canvas to edit its properties."}
+        </p>
       </aside>
     );
   }
 
-
   const s = n.style;
-  const up = (patch: Parameters<typeof dispatch>[0] extends never ? never : Record<string, unknown>) =>
-    dispatch({ t: "update", ids, patch });
+  const up = (patch: Record<string, unknown>) => dispatch({ t: "update", ids, patch });
   const st = (patch: Record<string, unknown>) => dispatch({ t: "style", ids, patch });
 
   return (
-    <aside className="w-72 shrink-0 space-y-4 overflow-y-auto border-s border-border/60 bg-card/40 p-4 text-xs">
-      <h3 className="text-sm font-semibold">{n.name}</h3>
+    <aside className={shell}>
+      <PanelHeader
+        icon={TYPE_ICON[n.type] ?? Layers}
+        title={n.name}
+        sub={ids.length > 1 ? (ar ? `${ids.length} عناصر محددة` : `${ids.length} selected`) : n.type}
+        right={
+          <div className="flex items-center gap-0.5">
+            <HeadBtn title={ar ? "إظهار/إخفاء" : "Show / hide"} onClick={() => up({ hidden: !n.hidden })}>
+              {n.hidden ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+            </HeadBtn>
+            <HeadBtn title={ar ? "قفل" : "Lock"} onClick={() => up({ locked: !n.locked })}>
+              {n.locked ? <Lock className="h-3.5 w-3.5" /> : <Unlock className="h-3.5 w-3.5" />}
+            </HeadBtn>
+          </div>
+        }
+      />
 
-      <Section title={ar ? "الموضع والحجم" : "Position & size"}>
-        <div className="grid grid-cols-2 gap-2">
-          <Num label="X" value={n.x} onChange={(v) => up({ x: v })} />
-          <Num label="Y" value={n.y} onChange={(v) => up({ y: v })} />
-          <Num label="W" value={n.w} onChange={(v) => up({ w: v })} />
-          <Num label="H" value={n.h} onChange={(v) => up({ h: v })} />
-          <Num label={ar ? "دوران" : "Rotate"} value={n.rot} onChange={(v) => up({ rot: v })} />
-          <Num label={ar ? "شفافية" : "Opacity"} value={Math.round(n.opacity * 100)} onChange={(v) => up({ opacity: Math.min(100, Math.max(0, v)) / 100 })} />
+      <PanelSection title={ar ? "التخطيط" : "Layout"}>
+        <div className="grid grid-cols-2 gap-1.5">
+          <NumInput badge="X" value={Math.round(n.x)} onChange={(v) => up({ x: v })} />
+          <NumInput badge="Y" value={Math.round(n.y)} onChange={(v) => up({ y: v })} />
+          <NumInput badge="W" value={Math.round(n.w)} onChange={(v) => up({ w: v })} />
+          <NumInput badge="H" value={Math.round(n.h)} onChange={(v) => up({ h: v })} />
+          <NumInput badge="°" value={Math.round(n.rot)} onChange={(v) => up({ rot: v })} />
+          <NumInput badge="%" min={0} max={100} value={Math.round(n.opacity * 100)} onChange={(v) => up({ opacity: Math.min(100, Math.max(0, v)) / 100 })} />
         </div>
-      </Section>
+      </PanelSection>
 
       {(n.type === "text" || n.type === "button") && (
-        <Section title={ar ? "النص" : "Text"}>
-          <textarea value={n.text ?? ""} onChange={(e) => up({ text: e.target.value })} rows={3} className={input} />
-          <div className="flex flex-wrap gap-1 pt-1">
+        <PanelSection title={ar ? "النص" : "Text"}>
+          <textarea
+            value={n.text ?? ""}
+            onChange={(e) => up({ text: e.target.value })}
+            rows={2}
+            className={`${fieldCls} h-auto resize-y py-1.5 leading-relaxed`}
+          />
+          <div className="flex flex-wrap gap-1 pt-0.5">
             {PLACEHOLDERS.map((p) => (
-              <button key={p} onClick={() => up({ text: `${n.text ?? ""}${p}` })} className="rounded border border-border/60 px-1.5 py-0.5 text-[10px] text-muted-foreground hover:text-foreground">
+              <button
+                key={p}
+                onClick={() => up({ text: `${n.text ?? ""}${p}` })}
+                className="rounded border border-border/50 px-1.5 py-0.5 text-[10px] text-muted-foreground transition hover:border-accent/50 hover:text-foreground"
+              >
                 {p.replace(/[{}]/g, "")}
               </button>
             ))}
           </div>
-          <div className="grid grid-cols-2 gap-2 pt-2">
-            <Num label={ar ? "الحجم" : "Size"} value={s.fontSize ?? 20} onChange={(v) => st({ fontSize: v })} />
-            <Num label={ar ? "السماكة" : "Weight"} value={s.fontWeight ?? 500} onChange={(v) => st({ fontWeight: v })} />
-            <Num label={ar ? "تباعد" : "Tracking"} value={s.letterSpacing ?? 0} onChange={(v) => st({ letterSpacing: v })} />
-            <Num label={ar ? "ارتفاع السطر" : "Leading"} value={s.lineHeight ?? 1.3} step={0.1} onChange={(v) => st({ lineHeight: v })} />
+          <div className="grid grid-cols-2 gap-1.5 pt-1">
+            <NumInput badge="Aa" value={s.fontSize ?? 20} onChange={(v) => st({ fontSize: v })} />
+            <NumInput badge="W" step={100} value={s.fontWeight ?? 500} onChange={(v) => st({ fontWeight: v })} />
+            <NumInput badge="LS" step={0.5} value={s.letterSpacing ?? 0} onChange={(v) => st({ letterSpacing: v })} />
+            <NumInput badge="LH" step={0.1} value={s.lineHeight ?? 1.3} onChange={(v) => st({ lineHeight: v })} />
           </div>
-          <Field label={ar ? "المحاذاة" : "Align"}>
-            <select value={s.align ?? "left"} onChange={(e) => st({ align: e.target.value })} className={input}>
-              <option value="left">left</option><option value="center">center</option><option value="right">right</option>
-            </select>
-          </Field>
-          <Field label={ar ? "لون النص" : "Text color"}>
-            <input type="color" value={s.color ?? "#ffffff"} onChange={(e) => st({ color: e.target.value })} className="h-8 w-full rounded bg-transparent" />
-          </Field>
-        </Section>
+          <Row label={ar ? "المحاذاة" : "Align"}>
+            <Seg
+              value={(s.align ?? "left") as "left" | "center" | "right"}
+              options={[
+                { v: "left", icon: AlignLeft, title: "Left" },
+                { v: "center", icon: AlignCenter, title: "Center" },
+                { v: "right", icon: AlignRight, title: "Right" },
+              ]}
+              onChange={(v) => st({ align: v })}
+            />
+          </Row>
+          <Row label={ar ? "اللون" : "Color"}>
+            <ColorInput value={s.color} onChange={(v) => st({ color: v })} />
+          </Row>
+        </PanelSection>
       )}
 
       {n.type === "image" && (
-        <Section title={ar ? "الصورة" : "Image"}>
-          <p className="text-[10px] text-muted-foreground">{ar ? "مصدر الصورة" : "Image source"}</p>
-          <div className="grid grid-cols-3 gap-1">
-            {([
-              { k: "employee", en: "Employee", arL: "الموظف" },
-              { k: "logo", en: "Logo", arL: "الشعار" },
-              { k: "upload", en: "Upload", arL: "رفع" },
-            ] as { k: ImageSource; en: string; arL: string }[]).map((o) => (
-              <button
-                key={o.k}
-                type="button"
-                onClick={() => up({ imageSource: o.k })}
-                className={`rounded-md border px-2 py-1.5 text-[11px] ${(n.imageSource ?? "upload") === o.k ? "border-accent/60 bg-accent/15 text-foreground" : "border-border/60 text-muted-foreground"}`}
-              >
-                {ar ? o.arL : o.en}
-              </button>
-            ))}
-          </div>
+        <PanelSection title={ar ? "الصورة" : "Image"}>
+          <Row label={ar ? "المصدر" : "Source"}>
+            <Seg
+              value={(n.imageSource ?? "upload") as ImageSource}
+              options={[
+                { v: "employee" as ImageSource, label: ar ? "الموظف" : "Employee" },
+                { v: "logo" as ImageSource, label: ar ? "الشعار" : "Logo" },
+                { v: "upload" as ImageSource, label: ar ? "رفع" : "Upload" },
+              ]}
+              onChange={(v) => up({ imageSource: v })}
+            />
+          </Row>
           {(n.imageSource ?? "upload") === "upload" ? (
             <>
-              <Field label="URL"><input value={n.src ?? ""} onChange={(e) => up({ src: e.target.value })} className={input} /></Field>
+              <Row label="URL">
+                <input value={n.src ?? ""} onChange={(e) => up({ src: e.target.value })} className={fieldCls} />
+              </Row>
               <UploadButton ar={ar} onDone={(url) => up({ src: url, imageSource: "upload" })} />
             </>
           ) : (
@@ -202,195 +235,149 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
           )}
 
           {isSvgSrc(n.src) && (
-            <div className="space-y-2 rounded-lg border border-border/60 p-2">
+            <div className="mt-1 space-y-1.5 rounded-lg border border-border/50 bg-background/30 p-2">
               <div className="flex items-center justify-between gap-2">
-                <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                  {ar ? "تحكم بملف SVG" : "SVG controls"}
-                </p>
-                <button
-                  type="button"
-                  onClick={() =>
-                    st({
-                      svgColorMap: null,
-                      svgRemoveBg: false,
-                      svgFill: null,
-                      svgStroke: null,
-                      svgStrokeWidth: null,
-                    })
-                  }
-                  className="whitespace-nowrap rounded-md border border-border/60 px-2 py-1 text-[10px] text-muted-foreground hover:text-foreground"
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground">{ar ? "تحكم SVG" : "SVG"}</p>
+                <MiniBtn
+                  className="h-6"
+                  onClick={() => st({ svgColorMap: null, svgRemoveBg: false, svgFill: null, svgStroke: null, svgStrokeWidth: null })}
                 >
-                  {ar ? "إعادة ضبط الشعار" : "Reset artwork"}
-                </button>
+                  {ar ? "إعادة ضبط" : "Reset"}
+                </MiniBtn>
               </div>
-
-              <label className="flex items-center gap-2 text-[11px] text-muted-foreground">
-                <input
-                  type="checkbox"
-                  checked={s.svgInline !== false}
-                  onChange={(e) => st({ svgInline: e.target.checked })}
-                />
-                {ar ? "تفعيل التحكم بالألوان" : "Enable color control"}
-              </label>
+              <SwitchRow
+                label={ar ? "تفعيل التحكم بالألوان" : "Enable color control"}
+                on={s.svgInline !== false}
+                onChange={(v) => st({ svgInline: v })}
+              />
               {s.svgInline !== false && (
                 <>
                   <SvgPalette src={n.src} style={s} onStyle={st} ar={ar} />
-                  <p className="text-[10px] leading-relaxed text-muted-foreground">
-                    {ar
-                      ? "التحكم الشامل أدناه يغيّر كل أجزاء الشعار دفعة واحدة — استخدم ألوان الشعار بالأعلى للتحكم الدقيق."
-                      : "The global controls below repaint every part at once — use the artwork colors above for precise control."}
-                  </p>
-                  <Field label={ar ? "لون التعبئة (شامل)" : "Fill color (global)"}>
-
-                    <div className="flex gap-2">
-                      <input
-                        type="color"
-                        value={(s.svgFill ?? "#ffffff").slice(0, 7)}
-                        onChange={(e) => st({ svgFill: e.target.value })}
-                        className="h-8 w-full rounded bg-transparent"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => st({ svgFill: "none" })}
-                        className="whitespace-nowrap rounded-md border border-border/60 px-2 text-[11px] text-muted-foreground hover:text-foreground"
-                      >
-                        {ar ? "شفاف" : "None"}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => st({ svgFill: null })}
-                        className="whitespace-nowrap rounded-md border border-border/60 px-2 text-[11px] text-muted-foreground hover:text-foreground"
-                      >
-                        {ar ? "الأصلي" : "Original"}
-                      </button>
-                    </div>
-                  </Field>
-                  <Field label={ar ? "لون الإطار" : "Stroke color"}>
-                    <div className="flex gap-2">
-                      <input
-                        type="color"
-                        value={(s.svgStroke ?? "#7c34ff").slice(0, 7)}
-                        onChange={(e) => st({ svgStroke: e.target.value })}
-                        className="h-8 w-full rounded bg-transparent"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => st({ svgStroke: null, svgStrokeWidth: null })}
-                        className="whitespace-nowrap rounded-md border border-border/60 px-2 text-[11px] text-muted-foreground hover:text-foreground"
-                      >
-                        {ar ? "الأصلي" : "Original"}
-                      </button>
-                    </div>
-                  </Field>
-                  <Num
-                    label={ar ? "سماكة الإطار" : "Stroke width"}
-                    value={s.svgStrokeWidth ?? 0}
-                    step={0.5}
-                    onChange={(v) => st({ svgStrokeWidth: v })}
-                  />
+                  <Row label={ar ? "تعبئة" : "Fill"}>
+                    <ColorInput
+                      value={s.svgFill}
+                      onChange={(v) => st({ svgFill: v })}
+                      extra={
+                        <>
+                          <MiniBtn className="h-5 border-0 px-1" onClick={() => st({ svgFill: "none" })}>{ar ? "شفاف" : "None"}</MiniBtn>
+                          <MiniBtn className="h-5 border-0 px-1" onClick={() => st({ svgFill: null })}>{ar ? "أصلي" : "Orig"}</MiniBtn>
+                        </>
+                      }
+                    />
+                  </Row>
+                  <Row label={ar ? "الإطار" : "Stroke"}>
+                    <ColorInput
+                      value={s.svgStroke}
+                      fallback="#7c34ff"
+                      onChange={(v) => st({ svgStroke: v })}
+                      extra={<MiniBtn className="h-5 border-0 px-1" onClick={() => st({ svgStroke: null, svgStrokeWidth: null })}>{ar ? "أصلي" : "Orig"}</MiniBtn>}
+                    />
+                  </Row>
+                  <Row label={ar ? "السماكة" : "Width"}>
+                    <NumInput badge="◻" step={0.5} value={s.svgStrokeWidth ?? 0} onChange={(v) => st({ svgStrokeWidth: v })} />
+                  </Row>
                 </>
               )}
             </div>
           )}
-        </Section>
+        </PanelSection>
       )}
-
-
 
       {n.type === "path" && (
-        <Section title={ar ? "الرسم الحر" : "Free drawing"}>
-          <Field label={ar ? "مسار SVG (شبكة ١٠٠×١٠٠)" : "SVG path (100×100 grid)"}>
-            <textarea
-              value={n.path ?? ""}
-              onChange={(e) => up({ path: e.target.value })}
-              rows={3}
-              className={`${input} font-mono leading-relaxed`}
-            />
-          </Field>
-          <Field label={ar ? "لون الخط" : "Stroke color"}>
-            <input type="color" value={(s.stroke ?? "#7c34ff").slice(0, 7)} onChange={(e) => st({ stroke: e.target.value })} className="h-8 w-full rounded bg-transparent" />
-          </Field>
-          <div className="grid grid-cols-2 gap-2">
-            <Num label={ar ? "سماكة الخط" : "Stroke width"} value={s.strokeWidth ?? 0} onChange={(v) => st({ strokeWidth: v })} />
-            <Num label={ar ? "تقطيع" : "Dash"} value={Number(s.dash ?? 0)} onChange={(v) => st({ dash: v ? String(v) : null })} />
+        <PanelSection title={ar ? "المسار المتجهي" : "Vector path"}>
+          <textarea
+            value={n.path ?? ""}
+            onChange={(e) => up({ path: e.target.value })}
+            rows={2}
+            className={`${fieldCls} h-auto resize-y py-1.5 font-mono leading-relaxed`}
+          />
+          <Row label={ar ? "الخط" : "Stroke"}>
+            <ColorInput value={s.stroke} fallback="#7c34ff" onChange={(v) => st({ stroke: v })} />
+          </Row>
+          <div className="grid grid-cols-2 gap-1.5">
+            <NumInput badge="◻" value={s.strokeWidth ?? 0} onChange={(v) => st({ strokeWidth: v })} />
+            <NumInput badge="⋯" value={Number(s.dash ?? 0)} onChange={(v) => st({ dash: v ? String(v) : null })} />
           </div>
-          <button
-            onClick={() => st({ fill: "transparent" })}
-            className="rounded-lg border border-border/60 px-2 py-1.5 text-[11px] text-muted-foreground hover:text-foreground"
-          >
+          <MiniBtn className="w-full" onClick={() => st({ fill: "transparent" })}>
             {ar ? "بدون تعبئة (خط فقط)" : "No fill (stroke only)"}
-          </button>
-        </Section>
+          </MiniBtn>
+        </PanelSection>
       )}
 
-      <Section title={ar ? "المظهر" : "Appearance"}>
-
-        <Field label={ar ? "التعبئة" : "Fill"}>
-          <input type="color" value={(s.fill ?? "#7c34ff").slice(0, 7)} onChange={(e) => st({ fill: e.target.value })} className="h-8 w-full rounded bg-transparent" />
-        </Field>
-        <Field label={ar ? "تدرجات جاهزة" : "Gradient presets"}>
-          <div className="grid grid-cols-6 gap-1.5">
-            {BG_PRESETS.map((g) => (
-              <button key={g} type="button" title={g} onClick={() => st({ gradient: g })} className="h-7 rounded-md border border-border/60" style={{ background: g }} />
-            ))}
-          </div>
-        </Field>
-        <GradientEditor
-          ar={ar}
-          value={s.gradient}
-          onChange={(css: string) => st({ gradient: css })}
-          onRemove={() => st({ gradient: null })}
-        />
-
-        <div className="grid grid-cols-2 gap-2">
-          <Num label={ar ? "الاستدارة" : "Radius"} value={s.radius ?? 0} onChange={(v) => st({ radius: v })} />
-          <Num label={ar ? "الحشوة" : "Padding"} value={s.padding ?? 0} onChange={(v) => st({ padding: v })} />
-          <Num label={ar ? "الحد" : "Border"} value={s.borderWidth ?? 0} onChange={(v) => st({ borderWidth: v })} />
-          <Num label={ar ? "ضبابية" : "Blur"} value={s.blur ?? 0} onChange={(v) => st({ blur: v })} />
+      <PanelSection title={ar ? "التعبئة" : "Fill"} defaultOpen={n.type !== "text"}>
+        <Row label={ar ? "اللون" : "Color"}>
+          <ColorInput value={s.fill} fallback="#7c34ff" onChange={(v) => st({ fill: v })} />
+        </Row>
+        <div className="grid grid-cols-6 gap-1 pt-0.5">
+          {BG_PRESETS.map((g) => (
+            <button
+              key={g}
+              type="button"
+              title={g}
+              onClick={() => st({ gradient: g })}
+              className="h-6 rounded-md border border-border/50 transition hover:scale-105 hover:border-accent/60"
+              style={{ background: g }}
+            />
+          ))}
         </div>
-        <Field label={ar ? "لون الحد" : "Border color"}>
-          <input type="color" value={s.borderColor ?? "#ffffff"} onChange={(e) => st({ borderColor: e.target.value })} className="h-8 w-full rounded bg-transparent" />
-        </Field>
-        <Field label={ar ? "الظل" : "Shadow"}>
-          <select value={s.shadow ?? ""} onChange={(e) => st({ shadow: e.target.value || null })} className={input}>
-            <option value="">none</option>
-            <option value="0 8px 24px rgba(0,0,0,.35)">soft</option>
-            <option value="0 18px 50px rgba(0,0,0,.55)">deep</option>
-          </select>
-        </Field>
-        <Field label={ar ? "توهج" : "Glow"}>
-          <input value={s.glow ?? ""} placeholder="#7c34ff88" onChange={(e) => st({ glow: e.target.value || null })} className={input} />
-        </Field>
-      </Section>
+        <GradientEditor ar={ar} value={s.gradient} onChange={(css: string) => st({ gradient: css })} onRemove={() => st({ gradient: null })} />
+      </PanelSection>
 
-      <Section title={ar ? "الظهور" : "Visibility"}>
-        <div className="flex gap-2">
-          <Toggle on={!n.hidden} onClick={() => up({ hidden: !n.hidden })}>{ar ? "ظاهر" : "Visible"}</Toggle>
-          <Toggle on={n.locked} onClick={() => up({ locked: !n.locked })}>{ar ? "مقفل" : "Locked"}</Toggle>
+      <PanelSection title={ar ? "المظهر" : "Appearance"} defaultOpen={n.type !== "text"}>
+        <div className="grid grid-cols-2 gap-1.5">
+          <NumInput badge="⌒" value={s.radius ?? 0} onChange={(v) => st({ radius: v })} />
+          <NumInput badge="⇱" value={s.padding ?? 0} onChange={(v) => st({ padding: v })} />
+          <NumInput badge="▭" value={s.borderWidth ?? 0} onChange={(v) => st({ borderWidth: v })} />
+          <NumInput badge="✦" value={s.blur ?? 0} onChange={(v) => st({ blur: v })} />
         </div>
-      </Section>
+        <Row label={ar ? "لون الحد" : "Border"}>
+          <ColorInput value={s.borderColor} onChange={(v) => st({ borderColor: v })} />
+        </Row>
+        <Row label={ar ? "الظل" : "Shadow"}>
+          <Seg
+            value={(s.shadow ?? "") as string}
+            options={[
+              { v: "", label: ar ? "بدون" : "None" },
+              { v: "0 8px 24px rgba(0,0,0,.35)", label: ar ? "ناعم" : "Soft" },
+              { v: "0 18px 50px rgba(0,0,0,.55)", label: ar ? "عميق" : "Deep" },
+            ]}
+            onChange={(v) => st({ shadow: v || null })}
+          />
+        </Row>
+        <Row label={ar ? "توهج" : "Glow"}>
+          <input value={s.glow ?? ""} placeholder="#7c34ff88" onChange={(e) => st({ glow: e.target.value || null })} className={fieldCls} />
+        </Row>
+      </PanelSection>
     </aside>
   );
 }
 
-const input =
-  "w-full rounded-md border border-border/60 bg-background/60 px-2 py-1.5 text-xs outline-none focus:border-accent";
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function PanelHeader({
+  icon: Icon, title, sub, right,
+}: { icon: React.ElementType; title: string; sub?: string; right?: React.ReactNode }) {
   return (
-    <div className="space-y-2 border-t border-border/50 pt-3 first:border-0 first:pt-0">
-      <p className="text-[10px] uppercase tracking-widest text-muted-foreground">{title}</p>
-      {children}
-    </div>
+    <header className="sticky top-0 z-10 flex items-center gap-2 border-b border-border/50 bg-card/80 px-3 py-2.5 backdrop-blur">
+      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-md bg-accent/15 text-accent">
+        <Icon className="h-3.5 w-3.5" />
+      </span>
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-[12px] font-semibold leading-tight">{title}</p>
+        {sub && <p className="truncate text-[10px] uppercase tracking-wider text-muted-foreground">{sub}</p>}
+      </div>
+      {right}
+    </header>
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function HeadBtn({ children, ...rest }: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
-    <label className="block space-y-1">
-      <span className="text-[10px] text-muted-foreground">{label}</span>
+    <button
+      type="button"
+      {...rest}
+      className="rounded-md p-1.5 text-muted-foreground transition hover:bg-muted/50 hover:text-foreground"
+    >
       {children}
-    </label>
+    </button>
   );
 }
 
@@ -419,34 +406,10 @@ function UploadButton({ ar, onDone }: { ar: boolean; onDone: (url: string) => vo
           }
         }}
       />
-      <button
-        type="button"
-        disabled={busy}
-        onClick={() => ref.current?.click()}
-        className="flex w-full items-center justify-center gap-2 rounded-md border border-border/60 px-2 py-1.5 text-muted-foreground hover:text-foreground disabled:opacity-60"
-      >
+      <MiniBtn className="flex w-full items-center justify-center gap-2" disabled={busy} onClick={() => ref.current?.click()}>
         {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
         {busy ? (ar ? "جارٍ الرفع…" : "Uploading…") : ar ? "رفع صورة" : "Upload image"}
-      </button>
+      </MiniBtn>
     </>
-  );
-}
-
-function Num({ label, value, onChange, step = 1 }: { label: string; value: number; onChange: (v: number) => void; step?: number }) {
-  return (
-    <Field label={label}>
-      <input type="number" step={step} value={Number.isFinite(value) ? value : 0} onChange={(e) => onChange(Number(e.target.value))} className={input} />
-    </Field>
-  );
-}
-
-function Toggle({ on, onClick, children }: { on: boolean; onClick: () => void; children: React.ReactNode }) {
-  return (
-    <button
-      onClick={onClick}
-      className={`flex-1 rounded-md border px-2 py-1.5 ${on ? "border-accent/60 bg-accent/15 text-foreground" : "border-border/60 text-muted-foreground"}`}
-    >
-      {children}
-    </button>
   );
 }
