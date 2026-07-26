@@ -1,18 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
-import { toast } from "sonner";
 import {
-  BadgeCheck, Building2, Users, Palette, LayoutGrid, ListTree, MapPin, BarChart3,
-  Plus, Copy, Trash2, Upload, ExternalLink, Lock, Sparkles,
+  Building2, Users, Palette, LayoutGrid, ListTree, MapPin, BarChart3, ExternalLink, Lock,
 } from "lucide-react";
 import {
-  useWs, canManageCompany, canManageEmployees, roleLabel, statusLabel, slugify,
-  parseEmployeeCsv, type Company, type CompanyRole, type MemberStatus,
+  useWs, canManageCompany, canManageEmployees, type Company, type CompanyRole, type MemberStatus,
 } from "@/lib/workspace";
-import { TEMPLATE_META } from "@/components/CardPreview";
+import {
+  OverviewTab, BrandTab, EmployeesTab, DepartmentsTab, TemplatesTab, FieldsTab, BranchesTab, AnalyticsTab,
+} from "@/components/company/sections";
 
 export const Route = createFileRoute("/$lang/_authenticated/workspace/$id")({
   head: () => ({ meta: [{ title: "Workspace — Cardixn" }] }),
@@ -117,5 +116,4 @@ function WorkspaceAdmin() {
       </div>
     </MobileShell>
   );
-}
 }
