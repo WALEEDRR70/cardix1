@@ -1,11 +1,12 @@
 import { useRouterState } from "@tanstack/react-router";
 import { Link } from "@/lib/nav";
-import { Home, Layers, Plus, ScanLine, BookmarkCheck } from "lucide-react";
+import { Home, Layers, Plus, ScanLine, BookmarkCheck, Building2 } from "lucide-react";
 import type { ReactNode } from "react";
 import { useI18n } from "@/lib/i18n";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { getReadableText } from "@/lib/contrast";
 import { stripLocalePrefix } from "@/lib/locale-routing";
+import { wsDict } from "@/i18n/workspace";
 
 
 export function MobileShell({
@@ -42,12 +43,13 @@ export function MobileShell({
 
 /* -------------------- Desktop sidebar -------------------- */
 function DesktopSidebar() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const path = useRouterState({ select: (s) => stripLocalePrefix(s.location.pathname) });
 
   const items = [
     { to: "/dashboard", icon: Home, label: t.home },
     { to: "/vault", icon: BookmarkCheck, label: t.vault },
+    { to: "/workspace", icon: Building2, label: wsDict(lang).workspace },
     { to: "/scan", icon: ScanLine, label: t.scanCard },
     { to: "/settings", icon: Layers, label: t.settings },
   ] as const;

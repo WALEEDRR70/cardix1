@@ -78,6 +78,11 @@ type CardRow = {
 
 function PublicCard() {
   const { slug } = Route.useParams();
+  return <PublicCardView slug={slug} />;
+}
+
+/** Reusable public card renderer — also used by company-scoped employee URLs. */
+export function PublicCardView({ slug }: { slug: string }) {
   const { t, lang } = useI18n();
   const [saved, setSaved] = useState(false);
   const [savingCard, setSavingCard] = useState(false);

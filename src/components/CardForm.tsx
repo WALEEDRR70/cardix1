@@ -4,7 +4,7 @@ import { CardPreview, TEMPLATE_META, type TemplateId } from "@/components/CardPr
 import { useServerFn } from "@tanstack/react-start";
 import { generateBio } from "@/lib/bio.functions";
 import { supabase } from "@/integrations/supabase/client";
-import { Sparkles, Upload, X, Check, Plus } from "lucide-react";
+import { Sparkles, Upload, X, Check, Plus, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { SOCIALS } from "@/lib/socials";
 
@@ -36,10 +36,20 @@ export function CardForm({
   initial,
   onSubmit,
   submitLabel,
+  locked,
+  lockedNote,
+  allowedTemplates,
+  slugPrefix = "/c/",
 }: {
   initial: CardFormData;
   onSubmit: (data: CardFormData) => Promise<void>;
   submitLabel: string;
+  /** Fields owned by the company that the employee cannot change. */
+  locked?: Partial<Record<keyof CardFormData, boolean>>;
+  lockedNote?: string;
+  /** When set, only these template ids may be picked. */
+  allowedTemplates?: string[];
+  slugPrefix?: string;
 }) {
   const { t, lang } = useI18n();
   const [data, setData] = useState<CardFormData>(initial);
@@ -98,11 +108,18 @@ export function CardForm({
 
 
 
+      {lockedNote && (
+        <div className="flex items-start gap-2 rounded-2xl border border-border/70 bg-secondary/50 px-4 py-3 text-xs text-muted-foreground">
+          <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+          <span>{lockedNote}</span>
+        </div>
+      )}
+
       {/* Template picker */}
-      <section>
+      <section hidden={!!locked?.template}>
         <label className="mb-2 block px-1 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{t.template}</label>
         <div className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-2.5 overflow-x-auto px-4 pb-1 lg:mx-0 lg:px-0">
-          {TEMPLATE_META.map((tpl) => {
+          {TEMPLATE_META.filter((tpl) => !allowedTemplates || allowedTemplates.includes(tpl.id)).map((tpl) => {
             const active = data.template === tpl.id;
             return (
               <button
@@ -135,7 +152,7 @@ export function CardForm({
 
 
       {/* Accent color */}
-      <section>
+      <section hidden={!!locked?.accent_color}>
         <label className="mb-2 block px-1 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{t.accent}</label>
         <div className="flex flex-wrap items-center gap-2">
           {ACCENTS.map((c) => (
@@ -208,11 +225,11 @@ export function CardForm({
         </section>
 
         <Field label={t.name} value={data.name} onChange={(v) => set("name", v)} required />
-        <Field label={t.slug} value={data.slug} onChange={(v) => set("slug", v.toLowerCase().replace(/[^a-z0-9-]/g, "-"))} required prefix="/c/" />
+        <Field label={t.slug} value={data.slug} onChange={(v) => set("slug", v.toLowerCase().replace(/[^a-z0-9-]/g, "-"))} required prefix={slugPrefix} locked={locked?.slug} />
 
         <div className="grid grid-cols-2 gap-3">
           <Field label={t.title} value={data.title} onChange={(v) => set("title", v)} />
-          <Field label={t.company} value={data.company} onChange={(v) => set("company", v)} />
+          <Field label={t.company} value={data.company} onChange={(v) => set("company", v)} locked={locked?.company} />
         </div>
 
         <section>
@@ -241,9 +258,9 @@ export function CardForm({
         </div>
         <div className="grid grid-cols-2 gap-3">
           <Field label={t.email} value={data.email} onChange={(v) => set("email", v)} type="email" />
-          <Field label={t.website} value={data.website} onChange={(v) => set("website", v)} />
+          <Field label={t.website} value={data.website} onChange={(v) => set("website", v)} locked={locked?.website} />
         </div>
-        <Field label={t.address} value={data.address} onChange={(v) => set("address", v)} />
+        <Field label={t.address} value={data.address} onChange={(v) => set("address", v)} locked={locked?.address} />
 
         {/* Social accounts */}
         <SocialsEditor
@@ -284,19 +301,24 @@ export function CardForm({
 }
 
 
-function Field({ label, value, onChange, required, type = "text", prefix }: {
+function Field({ label, value, onChange, required, type = "text", prefix, locked }: {
   label: string; value: string; onChange: (v: string) => void;
-  required?: boolean; type?: string; prefix?: string;
+  required?: boolean; type?: string; prefix?: string; locked?: boolean;
 }) {
   return (
     <div>
-      <label className="mb-1 block px-1 text-xs font-medium text-muted-foreground">{label}</label>
-      <div className="flex items-center rounded-2xl border border-input bg-card focus-within:ring-2 focus-within:ring-ring">
+      <label className="mb-1 flex items-center gap-1.5 px-1 text-xs font-medium text-muted-foreground">
+        {label}
+        {locked && <Lock className="h-3 w-3" />}
+      </label>
+      <div className={"flex items-center rounded-2xl border border-input bg-card focus-within:ring-2 focus-within:ring-ring " + (locked ? "opacity-60" : "")}>
         {prefix && <span className="pl-4 text-sm text-muted-foreground">{prefix}</span>}
         <input
           type={type}
           required={required}
           value={value}
+          readOnly={locked}
+          disabled={locked}
           onChange={(e) => onChange(e.target.value)}
           className="w-full rounded-2xl bg-transparent px-4 py-3 text-sm outline-none"
         />

@@ -9,6 +9,7 @@ import { BarChart3, Download, Share2, Copy, ExternalLink, QrCode } from "lucide-
 import { toast } from "sonner";
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
+import { useWs } from "@/lib/workspace";
 
 export const Route = createFileRoute("/$lang/_authenticated/cards/$id")({
   head: () => ({ meta: [{ title: "Edit card — Cardixn" }] }),
@@ -31,6 +32,7 @@ function NotFoundView() {
 
 function EditCard() {
   const { t } = useI18n();
+  const { w } = useWs();
   const { id } = Route.useParams();
   const { user } = Route.useRouteContext();
   const qc = useQueryClient();
@@ -42,6 +44,24 @@ function EditCard() {
       const { data, error } = await supabase.from("cards").select("*").eq("id", id).eq("user_id", user.id).maybeSingle();
       if (error) throw error;
       return data;
+    },
+  });
+
+  const { data: corp } = useQuery({
+    queryKey: ["card-company", card?.company_id],
+    enabled: !!card?.company_id,
+    queryFn: async () => {
+      const { data: company } = await supabase
+        .from("companies")
+        .select("id, name, slug, brand_primary, default_template, website, address")
+        .eq("id", card!.company_id!)
+        .maybeSingle();
+      const { data: tpls } = await supabase
+        .from("company_templates")
+        .select("template")
+        .eq("company_id", card!.company_id!)
+        .eq("is_approved", true);
+      return { company, templates: (tpls ?? []).map((t) => t.template) };
     },
   });
 
@@ -123,7 +143,19 @@ function EditCard() {
       }
     >
       <div className="px-5 lg:px-8">
-        <CardForm initial={initial} onSubmit={onSubmit} submitLabel={t.save} />
+        <CardForm
+          initial={initial}
+          onSubmit={onSubmit}
+          submitLabel={t.save}
+          slugPrefix={corp?.company ? `/company/${corp.company.slug}/` : "/c/"}
+          lockedNote={card.company_id ? w.lockedByCompanyDesc : undefined}
+          locked={
+            card.company_id
+              ? { company: true, accent_color: true, template: true, website: true, address: true, slug: true }
+              : undefined
+          }
+          allowedTemplates={corp && corp.templates.length > 0 ? corp.templates : undefined}
+        />
       </div>
 
       <BottomSheet open={shareOpen} onClose={() => setShareOpen(false)} title={t.shareCard}>
