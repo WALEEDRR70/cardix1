@@ -14,6 +14,7 @@ import { Route as LangRouteRouteImport } from './routes/$lang/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LangIndexRouteImport } from './routes/$lang/index'
 import { Route as SitemapChar123langChar125DotxmlRouteImport } from './routes/sitemap/{$lang}[.]xml'
+import { Route as JoinTokenRouteImport } from './routes/join.$token'
 import { Route as CSlugRouteImport } from './routes/c.$slug'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as LangPricingRouteImport } from './routes/$lang/pricing'
@@ -65,6 +66,11 @@ const SitemapChar123langChar125DotxmlRoute =
     path: '/sitemap/{$lang}.xml',
     getParentRoute: () => rootRouteImport,
   } as any)
+const JoinTokenRoute = JoinTokenRouteImport.update({
+  id: '/join/$token',
+  path: '/join/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CSlugRoute = CSlugRouteImport.update({
   id: '/c/$slug',
   path: '/c/$slug',
@@ -204,6 +210,7 @@ export interface FileRoutesByFullPath {
   '/$lang/pricing': typeof LangPricingRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/c/$slug': typeof CSlugRoute
+  '/join/$token': typeof JoinTokenRoute
   '/sitemap/{$lang}.xml': typeof SitemapChar123langChar125DotxmlRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/dashboard': typeof LangAuthenticatedDashboardRoute
@@ -234,6 +241,7 @@ export interface FileRoutesByTo {
   '/$lang/pricing': typeof LangPricingRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/c/$slug': typeof CSlugRoute
+  '/join/$token': typeof JoinTokenRoute
   '/sitemap/{$lang}.xml': typeof SitemapChar123langChar125DotxmlRoute
   '/$lang/dashboard': typeof LangAuthenticatedDashboardRoute
   '/$lang/scan': typeof LangAuthenticatedScanRoute
@@ -265,6 +273,7 @@ export interface FileRoutesById {
   '/$lang/pricing': typeof LangPricingRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/c/$slug': typeof CSlugRoute
+  '/join/$token': typeof JoinTokenRoute
   '/sitemap/{$lang}.xml': typeof SitemapChar123langChar125DotxmlRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/_authenticated/dashboard': typeof LangAuthenticatedDashboardRoute
@@ -297,6 +306,7 @@ export interface FileRouteTypes {
     | '/$lang/pricing'
     | '/auth/callback'
     | '/c/$slug'
+    | '/join/$token'
     | '/sitemap/{$lang}.xml'
     | '/$lang/'
     | '/$lang/dashboard'
@@ -327,6 +337,7 @@ export interface FileRouteTypes {
     | '/$lang/pricing'
     | '/auth/callback'
     | '/c/$slug'
+    | '/join/$token'
     | '/sitemap/{$lang}.xml'
     | '/$lang/dashboard'
     | '/$lang/scan'
@@ -357,6 +368,7 @@ export interface FileRouteTypes {
     | '/$lang/pricing'
     | '/auth/callback'
     | '/c/$slug'
+    | '/join/$token'
     | '/sitemap/{$lang}.xml'
     | '/$lang/'
     | '/$lang/_authenticated/dashboard'
@@ -383,6 +395,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   CSlugRoute: typeof CSlugRoute
+  JoinTokenRoute: typeof JoinTokenRoute
   SitemapChar123langChar125DotxmlRoute: typeof SitemapChar123langChar125DotxmlRoute
 }
 
@@ -421,6 +434,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap/{$lang}.xml'
       fullPath: '/sitemap/{$lang}.xml'
       preLoaderRoute: typeof SitemapChar123langChar125DotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/join/$token': {
+      id: '/join/$token'
+      path: '/join/$token'
+      fullPath: '/join/$token'
+      preLoaderRoute: typeof JoinTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/c/$slug': {
@@ -693,6 +713,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   CSlugRoute: CSlugRoute,
+  JoinTokenRoute: JoinTokenRoute,
   SitemapChar123langChar125DotxmlRoute: SitemapChar123langChar125DotxmlRoute,
 }
 export const routeTree = rootRouteImport
