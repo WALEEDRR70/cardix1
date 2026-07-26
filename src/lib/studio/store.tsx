@@ -23,6 +23,7 @@ type Action =
   | { t: "remove"; ids: string[] }
   | { t: "duplicate"; ids: string[] }
   | { t: "order"; id: string; dir: "front" | "back" | "forward" | "backward" }
+  | { t: "reorder"; ids: string[]; targetId: string | null; place: "before" | "after" | "inside" }
   | { t: "group"; ids: string[] }
   | { t: "ungroup"; id: string }
   | { t: "select"; ids: string[] }
