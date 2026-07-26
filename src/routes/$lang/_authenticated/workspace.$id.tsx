@@ -159,7 +159,7 @@ function SaveBar({ onSave, busy, label }: { onSave: () => void; busy: boolean; l
 function useSaveCompany(id: string) {
   const qc = useQueryClient();
   const [busy, setBusy] = useState(false);
-  async function save(patch: Record<string, unknown>, msg: string) {
+  async function save(patch: Partial<Company>, msg: string) {
     setBusy(true);
     const { error } = await supabase.from("companies").update(patch).eq("id", id);
     setBusy(false);
@@ -304,7 +304,7 @@ function BrandTab({ company, canEdit }: { company: Company; canEdit: boolean }) 
                   (f.default_template === tpl.id ? "border-accent bg-accent/10 text-foreground" : "border-border bg-card text-muted-foreground")
                 }
               >
-                {tpl.name}
+                {tpl.label}
               </button>
             ))}
           </div>
@@ -741,13 +741,13 @@ function TemplatesTab({ company, canEdit }: { company: Company; canEdit: boolean
           <button
             key={tpl.id}
             disabled={!canEdit}
-            onClick={() => toggle(tpl.id, tpl.name)}
+            onClick={() => toggle(tpl.id, tpl.label)}
             className={
               "rounded-2xl border px-3 py-2.5 text-xs font-medium transition " +
               (approved.has(tpl.id) ? "border-accent bg-accent/10 text-foreground" : "border-border bg-card text-muted-foreground")
             }
           >
-            {tpl.name}
+            {tpl.label}
           </button>
         ))}
       </div>
