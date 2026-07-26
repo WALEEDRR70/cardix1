@@ -34,7 +34,7 @@ function StudioRoute() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("cards")
-        .select("id, title, full_name, design, brand_primary")
+        .select("id, title, name, design, brand_primary")
         .eq("id", id)
         .maybeSingle();
       if (error) throw error;
