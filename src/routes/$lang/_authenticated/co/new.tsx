@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useNavigate, Link } from "@/lib/nav";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
