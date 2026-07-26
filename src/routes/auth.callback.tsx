@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { DEFAULT_LOCALE, isSupportedLocale } from "@/i18n/config";
+import { DEFAULT_LOCALE, isSupportedLocale, type Locale } from "@/i18n/config";
 import { localizedPath, readLocaleFromUrl, safeNextPath } from "@/lib/locale-routing";
 
 export const Route = createFileRoute("/auth/callback")({
@@ -9,7 +9,7 @@ export const Route = createFileRoute("/auth/callback")({
   component: AuthCallback,
 });
 
-function readLocale(): string {
+function readLocale(): Locale {
   const urlLocale = readLocaleFromUrl(window.location.search, DEFAULT_LOCALE);
   if (isSupportedLocale(urlLocale)) return urlLocale;
   try {

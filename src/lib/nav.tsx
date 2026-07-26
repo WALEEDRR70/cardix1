@@ -10,7 +10,7 @@ function isLocalized(to: string): boolean {
 }
 
 function transform(to: string, lang: Locale): { to: string; injectLang: boolean; lang: Locale } {
-  if (!isLocalized(to)) return { to, injectLang: false };
+  if (!isLocalized(to)) return { to, injectLang: false, lang };
   if (to.startsWith("/$lang")) return { to, injectLang: true, lang };
   const explicitLocale = getLocaleFromPath(to);
   if (explicitLocale) {
@@ -21,7 +21,7 @@ function transform(to: string, lang: Locale): { to: string; injectLang: boolean;
       lang: explicitLocale,
     };
   }
-  if (to === "/") return { to: "/$lang/", injectLang: true };
+  if (to === "/") return { to: "/$lang/", injectLang: true, lang };
   return { to: `/$lang${to}`, injectLang: true, lang };
 }
 
