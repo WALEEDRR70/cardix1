@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Link, useNavigate } from "@/lib/nav";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
+import { signInWithFirebaseGoogle } from "@/lib/firebase-auth";
 import { useI18n } from "@/lib/i18n";
 import { LocaleSwitcher } from "@/components/LangToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
