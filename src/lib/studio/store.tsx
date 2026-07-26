@@ -10,10 +10,18 @@ export type StudioState = {
   past: StudioDoc[];
   future: StudioDoc[];
   zoom: number;
+  /** Canvas panning offset in screen px. */
+  pan: { x: number; y: number };
+  /** Incremented whenever the canvas should re-fit itself to the viewport. */
+  fitTick: number;
   grid: boolean;
   snap: boolean;
   guides: boolean;
+  /** Internal copy buffer for copy / paste. */
+  clipboard: StudioNode[];
 };
+
+export type AlignHow = "left" | "hcenter" | "right" | "top" | "vcenter" | "bottom";
 
 type Action =
   | { t: "replace"; doc: StudioDoc; history?: boolean }
@@ -29,12 +37,19 @@ type Action =
   | { t: "select"; ids: string[] }
   | { t: "bg"; patch: Partial<StudioDoc["background"]> }
   | { t: "size"; w: number; h: number }
+  | { t: "align"; ids: string[]; how: AlignHow }
+  | { t: "distribute"; ids: string[]; axis: "h" | "v" }
+  | { t: "copy"; ids: string[] }
+  | { t: "paste" }
   | { t: "undo" }
   | { t: "redo" }
   | { t: "zoom"; value: number }
+  | { t: "pan"; x: number; y: number }
+  | { t: "fit" }
   | { t: "toggle"; key: "grid" | "snap" | "guides" };
 
 const MAX_HISTORY = 60;
+
 
 function mapNodes(nodes: StudioNode[], fn: (n: StudioNode) => StudioNode): StudioNode[] {
   return nodes.map((n) => {
