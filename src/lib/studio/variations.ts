@@ -108,14 +108,23 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
 
   if (vectors.length) {
     const pnt = paint[key];
+    // content boxes the artwork must not cover (text, photo, logo, qr)
+    const guard = blocks.filter((b) => b.role !== "custom");
     vectors.forEach((v, i) => {
+      const bb = pathBBox(v.d);
+      // how much of the readable content this drawing would sit on top of
+      const hit = bb
+        ? guard.reduce((m, b) => Math.max(m, overlapRatio(bb, b)), 0)
+        : 0;
+      const heavy = hit > 0.28;
       push(node("path", {
         name: v.name || `Artwork ${i + 1}`,
         x: 0, y: 0, w: W, h: H,
         path: v.d,
-        opacity: (v.opacity ?? 0.9) * pnt.op,
+        opacity: (v.opacity ?? 0.9) * pnt.op * (heavy ? 0.35 : 1),
         style: {
-          fill: v.fill ?? pnt.fill ?? "transparent",
+          // never paint a solid blob over the content area — keep it as a light outline
+          fill: heavy ? "transparent" : (v.fill ?? pnt.fill ?? "transparent"),
           stroke: v.stroke ?? pnt.stroke ?? null,
           strokeWidth: Math.max(1, Math.round((v.strokeWidth ?? 1.2) * (Math.min(W, H) / 100) * 0.9)),
           blur: (v.blur ?? 0) + pnt.blur,
@@ -124,6 +133,7 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
       }));
     });
   }
+
 
   // ---- decorative layer, unique per variation (fallback when the model drew nothing) ----
   const bandH = landscape ? Math.round(H * 0.28) : Math.round(H * 0.3);
@@ -188,9 +198,23 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
     const tone = (role: string) =>
       role === "name" ? fg : role === "title" ? primary : muted;
 
-    for (const b of blocks) {
+    // sample copy used only to size the type so real content never overflows its box
+    const SAMPLE: Record<string, string> = {
+      name: "Sara Al-Amin", title: "Creative Director", company: "Cardixn",
+      tagline: a.tagline ?? "Cardixn", phone: "+971 50 000 0000",
+      email: "hello@cardixn.com", website: "cardixn.com", address: "Dubai, UAE",
+    };
+
+    type Placed = { x: number; y: number; w: number; h: number };
+    const placedText: Placed[] = [];
+
+    const textBlocks = blocks
+      .filter((b) => VALUE[b.role] !== undefined)
+      .sort((p, q) => p.y - q.y);
+    const others = blocks.filter((b) => VALUE[b.role] === undefined);
+
+    for (const b of others) {
       const bx = PX(b.x), by = PY(b.y), bw = Math.max(4, PX(b.w)), bh = Math.max(4, PY(b.h));
-      const align = b.align ?? (rtl ? "right" : "left");
 
       if (b.role === "logo") {
         push(node("image", { name: "Logo", imageSource: "logo", x: bx, y: by, w: bw, h: bh, style: { radius: Math.round(short * 0.012) } }));
@@ -198,8 +222,10 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
       }
       if (b.role === "photo") {
         const round = Math.abs(bw - bh) / Math.max(bw, bh) < 0.15;
+        const side = round ? Math.round((bw + bh) / 2) : 0;
         push(node("image", {
-          name: "Photo", imageSource: "employee", x: bx, y: by, w: bw, h: bh,
+          name: "Photo", imageSource: "employee", x: bx, y: by,
+          w: side || bw, h: side || bh,
           style: { radius: round ? 999 : Math.round(short * 0.02), borderWidth: 2, borderColor: `${primary}88` },
         }));
         continue;
@@ -219,25 +245,46 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
             color: "#ffffff", radius: 999, fontSize: Math.round(bh * 0.36), fontWeight: 600, align: "center",
           },
         }));
-        continue;
       }
-      if (b.role === "custom") continue;
+    }
 
-      const size = Math.round(((b.sizePct ?? 3) / 100) * short * 1.35);
+    for (const b of textBlocks) {
+      const bx = PX(b.x), bw = Math.max(4, PX(b.w));
+      let by = PY(b.y);
+      const bh = Math.max(4, PY(b.h));
+      const align = b.align ?? (rtl ? "right" : "left");
+
+      // fit the type inside its measured box: never taller than the box,
+      // never wider than the column (approx. 0.55em per character)
+      const chars = Math.max(6, (SAMPLE[b.role] ?? "").length);
+      const raw = ((b.sizePct ?? 3) / 100) * short * 1.35;
+      const size = Math.max(9, Math.round(Math.min(raw, bh * 0.82, bw / (chars * 0.55))));
+      const h = Math.max(bh, Math.round(size * 1.3));
+
+      // push the line down when it would collide with an already placed line
+      for (const p of placedText) {
+        const overlapX = bx < p.x + p.w && p.x < bx + bw;
+        const overlapY = by < p.y + p.h && p.y < by + h;
+        if (overlapX && overlapY) by = p.y + p.h + Math.round(short * 0.012);
+      }
+      by = Math.min(by, H - h - Math.round(short * 0.02));
+      placedText.push({ x: bx, y: by, w: bw, h });
+
       push(node("text", {
         name: LABEL[b.role] ?? b.role,
         text: VALUE[b.role] ?? "",
-        x: bx, y: by, w: bw, h: Math.max(bh, Math.round(size * 1.25)),
+        x: bx, y: by, w: bw, h,
         style: {
-          fontSize: Math.max(9, size),
+          fontSize: size,
           fontWeight: b.weight ?? (b.role === "name" ? 700 : b.role === "title" ? 600 : 400),
           color: light ? (b.role === "name" ? fg : muted) : (b.color ?? tone(b.role)),
           letterSpacing: b.letterSpacing ?? 0,
-          lineHeight: 1.25,
+          lineHeight: 1.2,
           align,
         },
       }));
     }
+
 
     // guarantee the essentials exist even if the scan had none
     if (!block("qr")) {
@@ -351,4 +398,27 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
     },
     nodes,
   };
+}
+
+/** Rough bounding box of an SVG path on the 0..100 grid (numbers only, good enough for hit tests). */
+function pathBBox(d: string): { x: number; y: number; w: number; h: number } | null {
+  const nums = d.match(/-?\d*\.?\d+(?:e-?\d+)?/gi)?.map(Number) ?? [];
+  if (nums.length < 4) return null;
+  const xs: number[] = [], ys: number[] = [];
+  for (let i = 0; i + 1 < nums.length; i += 2) { xs.push(nums[i]); ys.push(nums[i + 1]); }
+  const x1 = Math.min(...xs), x2 = Math.max(...xs);
+  const y1 = Math.min(...ys), y2 = Math.max(...ys);
+  if (![x1, x2, y1, y2].every(Number.isFinite)) return null;
+  return { x: x1, y: y1, w: Math.max(0, x2 - x1), h: Math.max(0, y2 - y1) };
+}
+
+/** Share of box `b` covered by box `a`, both on the 0..100 grid. */
+function overlapRatio(
+  a: { x: number; y: number; w: number; h: number },
+  b: { x: number; y: number; w: number; h: number },
+): number {
+  const area = Math.max(1e-6, b.w * b.h);
+  const ox = Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x));
+  const oy = Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y));
+  return (ox * oy) / area;
 }
