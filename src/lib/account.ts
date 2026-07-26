@@ -31,8 +31,9 @@ export function isAdminRole(role?: CompanyRole | null): boolean {
 }
 
 async function loadAccountContext(): Promise<AccountContext> {
-  const { data: auth } = await supabase.auth.getUser();
-  const userId = auth.user?.id ?? null;
+  const { data: auth } = await supabase.auth.getSession();
+  const userId = auth.session?.user?.id ?? null;
+
   if (!userId) {
     return { userId: null, accountType: "personal", activeCompanyId: null, memberships: [], managed: [], employed: [] };
   }
