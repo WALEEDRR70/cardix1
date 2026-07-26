@@ -1,0 +1,101 @@
+import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
+
+const Input = z.object({
+  /** data URL of the uploaded business card image */
+  image: z.string().min(32),
+  mime: z.string().default("image/png"),
+});
+
+export type AiCardAnalysis = {
+  style: string;
+  industry: string;
+  mood: string;
+  fonts: { detected: string; suggested: string };
+  palette: { primary: string; secondary: string; accent: string; background: string; textOnBg: string };
+  backgroundCss: string;
+  composition: "left-rail" | "top-band" | "centered" | "diagonal" | "corner-arc" | "split";
+  notes: string;
+};
+
+const SYSTEM = `You are a senior brand designer analysing a scanned business card.
+You must IGNORE and NEVER reproduce any text, names, phone numbers, emails, websites, logos,
+social icons or watermarks found on the card. Extract ONLY the visual identity.
+Return STRICT JSON, no markdown fences, matching exactly:
+{
+ "style": one of ["luxury","minimal","corporate","creative","technology","medical","legal","architecture","fashion","photography","finance","hospitality","modern","classic"],
+ "industry": short english word,
+ "mood": 3 words,
+ "fonts": { "detected": string, "suggested": string },
+ "palette": { "primary": hex, "secondary": hex, "accent": hex, "background": hex, "textOnBg": hex },
+ "backgroundCss": a single CSS background value (gradient allowed) INSPIRED by the card but original, never a copy,
+ "composition": one of ["left-rail","top-band","centered","diagonal","corner-arc","split"],
+ "notes": one sentence on how to modernise the layout
+}
+Improve the palette: raise contrast, refine harmony, keep the spirit of the original.`;
+
+export const analyzeCardImage = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) => Input.parse(d))
+  .handler(async ({ data }): Promise<AiCardAnalysis> => {
+    const key = process.env.LOVABLE_API_KEY;
+    if (!key) throw new Error("Missing LOVABLE_API_KEY");
+
+    const url = data.image.startsWith("data:")
+      ? data.image
+      : `data:${data.mime};base64,${data.image}`;
+
+    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
+      body: JSON.stringify({
+        model: "google/gemini-3.6-flash",
+        messages: [
+          { role: "system", content: SYSTEM },
+          {
+            role: "user",
+            content: [
+              { type: "text", text: "Analyse this business card's visual identity only." },
+              { type: "image_url", image_url: { url } },
+            ],
+          },
+        ],
+        response_format: { type: "json_object" },
+      }),
+    });
+
+    if (!res.ok) {
+      const body = await res.text();
+      if (res.status === 429) throw new Error("RATE_LIMIT");
+      if (res.status === 402) throw new Error("NO_CREDITS");
+      throw new Error(`AI request failed [${res.status}]: ${body}`);
+    }
+
+    const json = (await res.json()) as { choices?: { message?: { content?: string } }[] };
+    const raw = json.choices?.[0]?.message?.content ?? "";
+    const cleaned = raw.replace(/^```(?:json)?/i, "").replace(/```$/, "").trim();
+    let parsed: Partial<AiCardAnalysis>;
+    try {
+      parsed = JSON.parse(cleaned) as Partial<AiCardAnalysis>;
+    } catch {
+      const m = cleaned.match(/\{[\s\S]*\}/);
+      parsed = m ? (JSON.parse(m[0]) as Partial<AiCardAnalysis>) : {};
+    }
+
+    const p = parsed.palette ?? ({} as AiCardAnalysis["palette"]);
+    return {
+      style: parsed.style ?? "modern",
+      industry: parsed.industry ?? "business",
+      mood: parsed.mood ?? "premium confident clean",
+      fonts: parsed.fonts ?? { detected: "Grotesque sans", suggested: "Inter / Plus Jakarta Sans" },
+      palette: {
+        primary: p.primary ?? "#7c34ff",
+        secondary: p.secondary ?? "#2c125a",
+        accent: p.accent ?? "#d9c07a",
+        background: p.background ?? "#0b0713",
+        textOnBg: p.textOnBg ?? "#ffffff",
+      },
+      backgroundCss: parsed.backgroundCss ?? "linear-gradient(160deg,#2c125a,#0b0713 60%)",
+      composition: parsed.composition ?? "left-rail",
+      notes: parsed.notes ?? "Increase whitespace and strengthen the type hierarchy.",
+    };
+  });
