@@ -5,6 +5,7 @@ import { useStudio } from "@/lib/studio/store";
 import { resolveImageSrc, resolvePlaceholders, type StudioNode } from "@/lib/studio/types";
 import { isSvgSrc, useInlineSvg } from "@/lib/studio/svg";
 import { PenLayer } from "./PenLayer";
+import { PathEditLayer } from "./PathEditLayer";
 
 
 const GRID = 8;
@@ -232,6 +233,7 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
 
   const onPointerDownNode = (e: React.PointerEvent, n: StudioNode) => {
     if (spaceDown || e.button === 1 || tool === "pen") return;
+    if (tool === "node" && n.type === "path") return;
     if (n.locked) return;
 
     e.stopPropagation();
@@ -399,9 +401,9 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
       if (editable(e.target)) return;
       const meta = e.metaKey || e.ctrlKey;
       const key = e.key.toLowerCase();
-      if (!meta && (key === "p" || key === "v")) {
+      if (!meta && (key === "p" || key === "v" || key === "a")) {
         e.preventDefault();
-        dispatch({ t: "tool", value: key === "p" ? "pen" : "select" });
+        dispatch({ t: "tool", value: key === "p" ? "pen" : key === "a" ? "node" : "select" });
         return;
       }
       if (meta && key === "z") {
@@ -596,6 +598,18 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
           <div
             className="pointer-events-none absolute border border-accent bg-accent/10"
             style={marqueeBox}
+          />
+        )}
+
+        {tool === "node" && !spaceDown && selected.length === 1 && selected[0].type === "path" && (
+          <PathEditLayer
+            node={selected[0]}
+            zoom={zoom}
+            toDoc={toDoc}
+            onExit={() => dispatch({ t: "tool", value: "select" })}
+            onChange={(path, transient) =>
+              dispatch({ t: "update", ids: [selected[0].id], patch: { path }, transient })
+            }
           />
         )}
 
