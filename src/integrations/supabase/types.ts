@@ -654,33 +654,50 @@ export type Database = {
       }
       profiles: {
         Row: {
+          account_type: string
+          active_company_id: string | null
           avatar_url: string | null
           created_at: string
           display_name: string | null
           id: string
+          onboarded_at: string | null
           preferred_lang: string | null
           updated_at: string
           username: string
         }
         Insert: {
+          account_type?: string
+          active_company_id?: string | null
           avatar_url?: string | null
           created_at?: string
           display_name?: string | null
           id: string
+          onboarded_at?: string | null
           preferred_lang?: string | null
           updated_at?: string
           username: string
         }
         Update: {
+          account_type?: string
+          active_company_id?: string | null
           avatar_url?: string | null
           created_at?: string
           display_name?: string | null
           id?: string
+          onboarded_at?: string | null
           preferred_lang?: string | null
           updated_at?: string
           username?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_active_company_id_fkey"
+            columns: ["active_company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       saved_cards: {
         Row: {
