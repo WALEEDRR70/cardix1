@@ -4,9 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/$lang/_authenticated")({
   ssr: false,
   beforeLoad: async ({ params }) => {
-    const { data, error } = await supabase.auth.getUser();
-    if (error || !data.user) throw redirect({ to: "/$lang/auth", params: { lang: params.lang } });
-    return { user: data.user };
+    // getSession() reads the locally cached session (no network round-trip),
+    // keeping page-to-page navigation instant.
+    const { data } = await supabase.auth.getSession();
+    const user = data.session?.user ?? null;
+    if (!user) throw redirect({ to: "/$lang/auth", params: { lang: params.lang } });
+    return { user };
   },
+
   component: () => <Outlet />,
 });
