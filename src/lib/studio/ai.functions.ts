@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { ROLES, clamp } from "./ai-shared";
 
 const Input = z.object({
   /** data URL of the uploaded business card image */
