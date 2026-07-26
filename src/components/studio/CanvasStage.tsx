@@ -69,21 +69,25 @@ export function NodeContent({ n, values }: { n: StudioNode; values?: Record<stri
         <svg
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
+          shapeRendering="geometricPrecision"
           className="h-full w-full overflow-visible"
           style={{ filter: s.blur ? `blur(${s.blur}px)` : undefined }}
         >
           <path
             d={n.path ?? ""}
             fill={s.gradient ? "none" : (s.fill && s.fill !== "transparent" ? s.fill : "none")}
+            fillRule="evenodd"
             stroke={s.stroke ?? undefined}
             strokeWidth={s.strokeWidth ?? 0}
             strokeLinecap={s.cap ?? "round"}
             strokeLinejoin="round"
+            strokeMiterlimit={2}
             strokeDasharray={s.dash ?? undefined}
             vectorEffect="non-scaling-stroke"
           />
         </svg>
       );
+
     case "line":
       return <div className="h-full w-full" style={{ background: s.gradient ?? s.fill, borderRadius: s.radius }} />;
     case "shape":
