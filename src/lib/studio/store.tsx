@@ -49,6 +49,36 @@ function removeNodes(nodes: StudioNode[], ids: string[]): StudioNode[] {
     .map((n) => (n.children ? { ...n, children: removeNodes(n.children, ids) } : n));
 }
 
+/** Is `id` inside the subtree of `n` (or the node itself)? */
+function containsId(n: StudioNode, id: string): boolean {
+  if (n.id === id) return true;
+  return (n.children ?? []).some((c) => containsId(c, id));
+}
+
+/** Insert `items` relative to `targetId` anywhere in the tree. */
+function insertRelative(
+  nodes: StudioNode[],
+  targetId: string | null,
+  items: StudioNode[],
+  place: "before" | "after" | "inside",
+): StudioNode[] {
+  if (targetId === null) return [...nodes, ...items];
+  const i = nodes.findIndex((n) => n.id === targetId);
+  if (i >= 0) {
+    if (place === "inside" && nodes[i].children) {
+      const next = [...nodes];
+      next[i] = { ...next[i], children: [...(next[i].children ?? []), ...items] };
+      return next;
+    }
+    const next = [...nodes];
+    next.splice(place === "before" ? i : i + 1, 0, ...items);
+    return next;
+  }
+  return nodes.map((n) =>
+    n.children ? { ...n, children: insertRelative(n.children, targetId, items, place) } : n);
+}
+
+
 function commit(state: StudioState, doc: StudioDoc, history = true): StudioState {
   if (!history) return { ...state, doc };
   return {
