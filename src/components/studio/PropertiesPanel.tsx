@@ -203,9 +203,27 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
 
           {isSvgSrc(n.src) && (
             <div className="space-y-2 rounded-lg border border-border/60 p-2">
-              <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                {ar ? "تحكم بملف SVG" : "SVG controls"}
-              </p>
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                  {ar ? "تحكم بملف SVG" : "SVG controls"}
+                </p>
+                <button
+                  type="button"
+                  onClick={() =>
+                    st({
+                      svgColorMap: null,
+                      svgRemoveBg: false,
+                      svgFill: null,
+                      svgStroke: null,
+                      svgStrokeWidth: null,
+                    })
+                  }
+                  className="whitespace-nowrap rounded-md border border-border/60 px-2 py-1 text-[10px] text-muted-foreground hover:text-foreground"
+                >
+                  {ar ? "إعادة ضبط الشعار" : "Reset artwork"}
+                </button>
+              </div>
+
               <label className="flex items-center gap-2 text-[11px] text-muted-foreground">
                 <input
                   type="checkbox"
