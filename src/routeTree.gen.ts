@@ -27,6 +27,7 @@ import { Route as CompanySlugIndexRouteImport } from './routes/company.$slug.ind
 import { Route as LangToolsIndexRouteImport } from './routes/$lang/tools/index'
 import { Route as LangLIndexRouteImport } from './routes/$lang/l/index'
 import { Route as LangBlogIndexRouteImport } from './routes/$lang/blog/index'
+import { Route as CompanySlugEmployeeRouteImport } from './routes/company.$slug.$employee'
 import { Route as LangToolsSlugRouteImport } from './routes/$lang/tools/$slug'
 import { Route as LangLSlugRouteImport } from './routes/$lang/l/$slug'
 import { Route as LangBlogSlugRouteImport } from './routes/$lang/blog/$slug'
@@ -131,6 +132,11 @@ const LangBlogIndexRoute = LangBlogIndexRouteImport.update({
   path: '/blog/',
   getParentRoute: () => LangRouteRoute,
 } as any)
+const CompanySlugEmployeeRoute = CompanySlugEmployeeRouteImport.update({
+  id: '/company/$slug/$employee',
+  path: '/company/$slug/$employee',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LangToolsSlugRoute = LangToolsSlugRouteImport.update({
   id: '/tools/$slug',
   path: '/tools/$slug',
@@ -226,6 +232,7 @@ export interface FileRoutesByFullPath {
   '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/l/$slug': typeof LangLSlugRoute
   '/$lang/tools/$slug': typeof LangToolsSlugRoute
+  '/company/$slug/$employee': typeof CompanySlugEmployeeRoute
   '/$lang/blog/': typeof LangBlogIndexRoute
   '/$lang/l/': typeof LangLIndexRoute
   '/$lang/tools/': typeof LangToolsIndexRoute
@@ -257,6 +264,7 @@ export interface FileRoutesByTo {
   '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/l/$slug': typeof LangLSlugRoute
   '/$lang/tools/$slug': typeof LangToolsSlugRoute
+  '/company/$slug/$employee': typeof CompanySlugEmployeeRoute
   '/$lang/blog': typeof LangBlogIndexRoute
   '/$lang/l': typeof LangLIndexRoute
   '/$lang/tools': typeof LangToolsIndexRoute
@@ -291,6 +299,7 @@ export interface FileRoutesById {
   '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/l/$slug': typeof LangLSlugRoute
   '/$lang/tools/$slug': typeof LangToolsSlugRoute
+  '/company/$slug/$employee': typeof CompanySlugEmployeeRoute
   '/$lang/blog/': typeof LangBlogIndexRoute
   '/$lang/l/': typeof LangLIndexRoute
   '/$lang/tools/': typeof LangToolsIndexRoute
@@ -325,6 +334,7 @@ export interface FileRouteTypes {
     | '/$lang/blog/$slug'
     | '/$lang/l/$slug'
     | '/$lang/tools/$slug'
+    | '/company/$slug/$employee'
     | '/$lang/blog/'
     | '/$lang/l/'
     | '/$lang/tools/'
@@ -356,6 +366,7 @@ export interface FileRouteTypes {
     | '/$lang/blog/$slug'
     | '/$lang/l/$slug'
     | '/$lang/tools/$slug'
+    | '/company/$slug/$employee'
     | '/$lang/blog'
     | '/$lang/l'
     | '/$lang/tools'
@@ -389,6 +400,7 @@ export interface FileRouteTypes {
     | '/$lang/blog/$slug'
     | '/$lang/l/$slug'
     | '/$lang/tools/$slug'
+    | '/company/$slug/$employee'
     | '/$lang/blog/'
     | '/$lang/l/'
     | '/$lang/tools/'
@@ -409,6 +421,7 @@ export interface RootRouteChildren {
   CSlugRoute: typeof CSlugRoute
   JoinTokenRoute: typeof JoinTokenRoute
   SitemapChar123langChar125DotxmlRoute: typeof SitemapChar123langChar125DotxmlRoute
+  CompanySlugEmployeeRoute: typeof CompanySlugEmployeeRoute
   CompanySlugIndexRoute: typeof CompanySlugIndexRoute
 }
 
@@ -539,6 +552,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/$lang/blog/'
       preLoaderRoute: typeof LangBlogIndexRouteImport
       parentRoute: typeof LangRouteRoute
+    }
+    '/company/$slug/$employee': {
+      id: '/company/$slug/$employee'
+      path: '/company/$slug/$employee'
+      fullPath: '/company/$slug/$employee'
+      preLoaderRoute: typeof CompanySlugEmployeeRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/$lang/tools/$slug': {
       id: '/$lang/tools/$slug'
@@ -735,6 +755,7 @@ const rootRouteChildren: RootRouteChildren = {
   CSlugRoute: CSlugRoute,
   JoinTokenRoute: JoinTokenRoute,
   SitemapChar123langChar125DotxmlRoute: SitemapChar123langChar125DotxmlRoute,
+  CompanySlugEmployeeRoute: CompanySlugEmployeeRoute,
   CompanySlugIndexRoute: CompanySlugIndexRoute,
 }
 export const routeTree = rootRouteImport
