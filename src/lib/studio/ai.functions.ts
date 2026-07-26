@@ -5,7 +5,10 @@ const Input = z.object({
   /** data URL of the uploaded business card image */
   image: z.string().min(32),
   mime: z.string().default("image/png"),
+  /** measured width/height of the uploaded image */
+  aspect: z.number().positive().optional(),
 });
+
 
 export type AiCardAnalysis = {
   style: string;
@@ -15,12 +18,19 @@ export type AiCardAnalysis = {
   palette: { primary: string; secondary: string; accent: string; background: string; textOnBg: string };
   backgroundCss: string;
   composition: "left-rail" | "top-band" | "centered" | "diagonal" | "corner-arc" | "split";
+  /** width / height of the original card (>1 = landscape) */
+  aspect: number;
+  orientation: "landscape" | "portrait" | "square";
+  direction: "ltr" | "rtl";
+  logoPosition: "left" | "center" | "right";
+  /** short services / slogan line detected on the card (no contact data) */
+  tagline: string | null;
   notes: string;
 };
 
 const SYSTEM = `You are a senior brand designer analysing a scanned business card.
-You must IGNORE and NEVER reproduce any text, names, phone numbers, emails, websites, logos,
-social icons or watermarks found on the card. Extract ONLY the visual identity.
+You must IGNORE and NEVER reproduce any names, phone numbers, emails, websites, addresses,
+social handles or personal data found on the card. Extract ONLY the visual identity and layout.
 Return STRICT JSON, no markdown fences, matching exactly:
 {
  "style": one of ["luxury","minimal","corporate","creative","technology","medical","legal","architecture","fashion","photography","finance","hospitality","modern","classic"],
@@ -30,9 +40,16 @@ Return STRICT JSON, no markdown fences, matching exactly:
  "palette": { "primary": hex, "secondary": hex, "accent": hex, "background": hex, "textOnBg": hex },
  "backgroundCss": a single CSS background value (gradient allowed) INSPIRED by the card but original, never a copy,
  "composition": one of ["left-rail","top-band","centered","diagonal","corner-arc","split"],
+ "aspect": number = card width divided by height as it appears in the image,
+ "orientation": "landscape" | "portrait" | "square",
+ "direction": "rtl" if the card's main language is Arabic/Hebrew, else "ltr",
+ "logoPosition": "left" | "center" | "right",
+ "tagline": a generic services/slogan line describing the business WITHOUT any contact data, or null,
  "notes": one sentence on how to modernise the layout
 }
+Report the true orientation: a wide card MUST return "landscape" with aspect > 1.
 Improve the palette: raise contrast, refine harmony, keep the spirit of the original.`;
+
 
 export const analyzeCardImage = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => Input.parse(d))
@@ -96,6 +113,18 @@ export const analyzeCardImage = createServerFn({ method: "POST" })
       },
       backgroundCss: parsed.backgroundCss ?? "linear-gradient(160deg,#2c125a,#0b0713 60%)",
       composition: parsed.composition ?? "left-rail",
+      // the measured aspect from the browser always wins over the model's guess
+      aspect: data.aspect ?? (typeof parsed.aspect === "number" ? parsed.aspect : 0.64),
+      orientation:
+        (data.aspect ?? parsed.aspect ?? 0.64) > 1.05
+          ? "landscape"
+          : (data.aspect ?? parsed.aspect ?? 0.64) < 0.95
+            ? "portrait"
+            : "square",
+      direction: parsed.direction === "rtl" ? "rtl" : "ltr",
+      logoPosition: parsed.logoPosition ?? "right",
+      tagline: parsed.tagline ?? null,
       notes: parsed.notes ?? "Increase whitespace and strengthen the type hierarchy.",
     };
+
   });

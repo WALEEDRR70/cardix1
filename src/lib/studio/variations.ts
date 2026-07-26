@@ -1,5 +1,7 @@
 // Turns an AI analysis into fully editable Studio documents (never a flat image).
-import { CARD_H, CARD_W, node, type StudioDoc, type StudioNode } from "./types";
+// The layout is proportional and follows the ORIENTATION of the analysed card:
+// a landscape scan produces a landscape template, a portrait scan a portrait one.
+import { node, type StudioDoc, type StudioNode } from "./types";
 import type { AiCardAnalysis } from "./ai.functions";
 
 export type VariationKey =
@@ -19,108 +21,169 @@ export const VARIATIONS: { key: VariationKey; en: string; ar: string }[] = [
   { key: "premium", en: "Premium", ar: "مميز" },
 ];
 
-const PAD = 56;
-
-function textNode(name: string, text: string, y: number, opts: Partial<StudioNode["style"]> & { x?: number; w?: number; h?: number } = {}): StudioNode {
-  const { x = PAD, w = CARD_W - PAD * 2, h = 56, ...style } = opts;
-  return node("text", { name, text, x, y, w, h, style: { fontSize: 22, lineHeight: 1.3, ...style } });
+/** Canvas size that keeps the aspect ratio of the uploaded card. */
+export function canvasFromAspect(aspect: number): { w: number; h: number } {
+  const a = Number.isFinite(aspect) && aspect > 0.2 && aspect < 5 ? aspect : 0.64;
+  const LONG = 1050;
+  return a >= 1
+    ? { w: LONG, h: Math.round(LONG / a) }
+    : { w: Math.round(LONG * a), h: LONG };
 }
 
 /** Builds an editable document for one variation, driven by the extracted identity. */
 export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc {
   const { primary, secondary, accent, background, textOnBg } = a.palette;
+  const { w: W, h: H } = canvasFromAspect(a.aspect ?? 0.64);
+  const landscape = W >= H;
+  const rtl = a.direction === "rtl";
+
+  const PAD = Math.round(Math.min(W, H) * 0.075);
   const light = key === "light";
   const bg = light ? "#f6f4fb" : background;
   const fg = light ? "#141020" : textOnBg;
   const muted = light ? "#5d5670" : "#c9c2d8";
+  const s = Math.min(W, H) / 1000; // type scale relative to the short edge
+  const px = (n: number) => Math.max(1, Math.round(n * (landscape ? H : W) / (landscape ? 650 : 640)));
+
+  // content column: on landscape the text sits on one half, QR on the other
+  const colW = landscape ? Math.round(W * 0.52) : W - PAD * 2;
+  const colX = rtl && landscape ? W - PAD - colW : PAD;
 
   const nodes: StudioNode[] = [];
   const push = (n: StudioNode) => nodes.push(n);
 
+  const text = (
+    name: string,
+    value: string,
+    y: number,
+    opts: Partial<StudioNode["style"]> & { x?: number; w?: number; h?: number } = {},
+  ) => {
+    const { x = colX, w = colW, h = px(40), ...style } = opts;
+    push(node("text", {
+      name, text: value, x, y, w, h,
+      style: { fontSize: px(20), lineHeight: 1.3, align: rtl ? "right" : "left", ...style },
+    }));
+  };
+
   // ---- decorative layer, unique per variation ----
+  const bandH = landscape ? Math.round(H * 0.28) : Math.round(H * 0.3);
   switch (key) {
     case "minimal":
-      push(node("line", { name: "Rule", x: PAD, y: 470, w: 120, h: 3, style: { fill: primary, radius: 3 } }));
+      push(node("line", { name: "Rule", x: colX, y: Math.round(H * 0.42), w: px(120), h: 3, style: { fill: primary, radius: 3 } }));
       break;
     case "luxury":
-      push(node("shape", { name: "Glow", x: -140, y: -160, w: 520, h: 520, shape: "ellipse", style: { gradient: `radial-gradient(circle, ${accent}55, transparent 70%)` } }));
-      push(node("line", { name: "Gold rule", x: PAD, y: 480, w: CARD_W - PAD * 2, h: 1, style: { fill: accent } }));
+      push(node("shape", { name: "Glow", x: -W * 0.2, y: -H * 0.18, w: W * 0.8, h: W * 0.8, shape: "ellipse", style: { gradient: `radial-gradient(circle, ${accent}55, transparent 70%)` } }));
+      push(node("line", { name: "Gold rule", x: colX, y: Math.round(H * 0.44), w: colW, h: 1, style: { fill: accent } }));
       break;
     case "glass":
-      push(node("shape", { name: "Aura", x: 60, y: 60, w: 520, h: 420, shape: "ellipse", style: { gradient: `radial-gradient(circle, ${primary}66, transparent 70%)` } }));
-      push(node("shape", { name: "Glass panel", x: 40, y: 430, w: CARD_W - 80, h: 500, shape: "rect", style: { fill: "#ffffff14", blur: 18, radius: 32, borderWidth: 1, borderColor: "#ffffff33" } }));
+      push(node("shape", { name: "Aura", x: W * 0.1, y: H * 0.06, w: W * 0.8, h: H * 0.42, shape: "ellipse", style: { gradient: `radial-gradient(circle, ${primary}66, transparent 70%)` } }));
+      push(node("shape", { name: "Glass panel", x: PAD * 0.7, y: Math.round(H * 0.42), w: W - PAD * 1.4, h: Math.round(H * 0.5), shape: "rect", style: { fill: "#ffffff14", blur: 18, radius: 32, borderWidth: 1, borderColor: "#ffffff33" } }));
       break;
     case "corporate":
-      push(node("shape", { name: "Header band", x: 0, y: 0, w: CARD_W, h: 300, shape: "rect", style: { fill: secondary, radius: 0 } }));
-      push(node("line", { name: "Accent bar", x: 0, y: 300, w: CARD_W, h: 6, style: { fill: primary, radius: 0 } }));
+      push(node("shape", { name: "Header band", x: 0, y: 0, w: W, h: bandH, shape: "rect", style: { fill: secondary, radius: 0 } }));
+      push(node("line", { name: "Accent bar", x: 0, y: bandH, w: W, h: 6, style: { fill: primary, radius: 0 } }));
       break;
     case "executive":
-      push(node("shape", { name: "Side rail", x: 0, y: 0, w: 26, h: CARD_H, shape: "rect", style: { gradient: `linear-gradient(180deg, ${primary}, ${accent})`, radius: 0 } }));
+      push(node("shape", {
+        name: "Side rail",
+        x: rtl ? W - px(26) : 0, y: 0, w: px(26), h: H, shape: "rect",
+        style: { gradient: `linear-gradient(180deg, ${primary}, ${accent})`, radius: 0 },
+      }));
       break;
     case "creative":
-      push(node("shape", { name: "Blob A", x: -120, y: 520, w: 420, h: 420, shape: "ellipse", style: { gradient: `radial-gradient(circle, ${primary}77, transparent 70%)` } }));
-      push(node("shape", { name: "Blob B", x: 320, y: -100, w: 420, h: 420, shape: "ellipse", style: { gradient: `radial-gradient(circle, ${accent}66, transparent 70%)` } }));
-      push(node("shape", { name: "Chip", x: PAD, y: 420, w: 120, h: 40, shape: "rect", style: { fill: `${primary}33`, radius: 999 } }));
+      push(node("shape", { name: "Blob A", x: -W * 0.2, y: H * 0.55, w: W * 0.65, h: W * 0.65, shape: "ellipse", style: { gradient: `radial-gradient(circle, ${primary}77, transparent 70%)` } }));
+      push(node("shape", { name: "Blob B", x: W * 0.55, y: -H * 0.12, w: W * 0.6, h: W * 0.6, shape: "ellipse", style: { gradient: `radial-gradient(circle, ${accent}66, transparent 70%)` } }));
       break;
     case "modern":
-      push(node("shape", { name: "Arc", x: CARD_W - 260, y: -120, w: 420, h: 420, shape: "ellipse", style: { gradient: `linear-gradient(135deg, ${primary}, ${secondary})` } }));
+      push(node("shape", { name: "Arc", x: rtl ? -W * 0.2 : W - W * 0.42, y: -H * 0.14, w: W * 0.62, h: W * 0.62, shape: "ellipse", style: { gradient: `linear-gradient(135deg, ${primary}, ${secondary})` } }));
       break;
     case "dark":
-      push(node("shape", { name: "Vignette", x: 0, y: 0, w: CARD_W, h: CARD_H, shape: "rect", style: { gradient: `radial-gradient(120% 80% at 20% 0%, ${primary}33, transparent 60%)`, radius: 0 } }));
+      push(node("shape", { name: "Vignette", x: 0, y: 0, w: W, h: H, shape: "rect", style: { gradient: `radial-gradient(120% 80% at 20% 0%, ${primary}33, transparent 60%)`, radius: 0 } }));
       break;
     case "light":
-      push(node("shape", { name: "Tint", x: 0, y: 0, w: CARD_W, h: 340, shape: "rect", style: { gradient: `linear-gradient(160deg, ${primary}22, transparent)`, radius: 0 } }));
+      push(node("shape", { name: "Tint", x: 0, y: 0, w: W, h: Math.round(H * 0.34), shape: "rect", style: { gradient: `linear-gradient(160deg, ${primary}22, transparent)`, radius: 0 } }));
       break;
     case "premium":
-      push(node("shape", { name: "Frame", x: 24, y: 24, w: CARD_W - 48, h: CARD_H - 48, shape: "rect", style: { fill: "transparent", borderWidth: 1, borderColor: `${accent}88`, radius: 28 } }));
-      push(node("shape", { name: "Halo", x: 140, y: -180, w: 460, h: 460, shape: "ellipse", style: { gradient: `radial-gradient(circle, ${accent}44, transparent 70%)` } }));
+      push(node("shape", { name: "Frame", x: 24, y: 24, w: W - 48, h: H - 48, shape: "rect", style: { fill: "transparent", borderWidth: 1, borderColor: `${accent}88`, radius: 28 } }));
+      push(node("shape", { name: "Halo", x: W * 0.25, y: -H * 0.18, w: W * 0.7, h: W * 0.7, shape: "ellipse", style: { gradient: `radial-gradient(circle, ${accent}44, transparent 70%)` } }));
       break;
   }
 
   // ---- identity layer (placeholders, always editable) ----
-  const photoY = key === "corporate" ? 150 : 120;
+  const logoW = Math.round(W * (landscape ? 0.2 : 0.26));
+  const logoH = Math.round(logoW * 0.4);
+  const logoCentered = a.logoPosition === "center";
+  push(node("image", {
+    name: "Logo",
+    imageSource: "logo",
+    x: logoCentered ? Math.round((W - logoW) / 2) : rtl ? PAD : W - PAD - logoW,
+    y: PAD,
+    w: logoW, h: logoH,
+    style: { radius: 10 },
+  }));
+
+  const photo = Math.round(Math.min(W, H) * 0.17);
   push(node("image", {
     name: "Photo",
-    x: key === "creative" ? CARD_W - 220 : PAD,
-    y: photoY,
-    w: 160, h: 160,
+    imageSource: "employee",
+    x: rtl ? W - PAD - photo : PAD,
+    y: Math.round(H * (landscape ? 0.3 : 0.14)),
+    w: photo, h: photo,
     style: { radius: 999, borderWidth: 2, borderColor: `${primary}88` },
   }));
-  push(node("image", { name: "Logo", x: CARD_W - PAD - 130, y: PAD, w: 130, h: 52, style: { radius: 10 } }));
 
-  const baseY = key === "corporate" ? 360 : 520;
-  push(textNode("Name", "{{Employee Name}}", baseY, { fontSize: 46, fontWeight: 700, color: fg, h: 64 }));
-  push(textNode("Job title", "{{Job Title}}", baseY + 70, { fontSize: 22, color: primary, fontWeight: 600, h: 34 }));
-  push(textNode("Company", "{{Company}}", baseY + 108, { fontSize: 20, color: muted, h: 32 }));
+  // headline block
+  let y = Math.round(H * (landscape ? 0.34 : 0.5));
+  text("Name", "{{Employee Name}}", y, { fontSize: px(44), fontWeight: 700, color: fg, h: px(60) });
+  y += px(66);
+  text("Job title", "{{Job Title}}", y, { fontSize: px(21), fontWeight: 600, color: primary, h: px(32) });
+  y += px(38);
+  text("Company", "{{Company}}", y, { fontSize: px(19), color: muted, h: px(30) });
 
-  const contactY = baseY + 170;
-  push(textNode("Phone", "{{Phone}}", contactY, { fontSize: 18, color: muted, h: 28 }));
-  push(textNode("Email", "{{Email}}", contactY + 34, { fontSize: 18, color: muted, h: 28 }));
-  push(textNode("Website", "{{Website}}", contactY + 68, { fontSize: 18, color: muted, h: 28 }));
+  // tagline / services line detected on the original card
+  if (a.tagline) {
+    y += px(36);
+    text("Tagline", a.tagline, y, { fontSize: px(15), color: muted, h: px(28) });
+  }
 
+  y += px(52);
+  text("Phone", "{{Phone}}", y, { fontSize: px(17), color: muted, h: px(26) });
+  text("Email", "{{Email}}", y + px(32), { fontSize: px(17), color: muted, h: px(26) });
+  text("Website", "{{Website}}", y + px(64), { fontSize: px(17), color: muted, h: px(26) });
+
+  // QR: opposite side of the content column on landscape, bottom corner on portrait
+  const qr = Math.round(Math.min(W, H) * (landscape ? 0.55 : 0.24));
   push(node("qr", {
     name: "QR",
-    x: CARD_W - PAD - 150,
-    y: CARD_H - PAD - 150,
-    w: 150, h: 150,
-    style: { fill: light ? "#ffffff" : "#ffffff", radius: 18, padding: 12 },
+    x: landscape
+      ? (rtl ? PAD : W - PAD - qr)
+      : (rtl ? PAD : W - PAD - qr),
+    y: landscape ? Math.round((H - qr) / 2) : H - PAD - qr,
+    w: qr, h: qr,
+    style: { fill: "#ffffff", radius: 18, padding: 12 },
   }));
+
+  const btnW = Math.round(Math.min(W * 0.42, px(260)));
   push(node("button", {
     name: "Save contact",
     text: "Save contact",
-    x: PAD, y: CARD_H - PAD - 66, w: 260, h: 60,
+    x: rtl && !landscape ? W - PAD - btnW : colX,
+    y: H - PAD - px(58),
+    w: btnW, h: px(58),
     style: {
       gradient: key === "luxury" || key === "premium"
         ? `linear-gradient(135deg, ${accent}, ${primary})`
         : `linear-gradient(135deg, ${primary}, ${secondary})`,
-      color: "#ffffff", radius: 999, fontSize: 18, fontWeight: 600, align: "center",
+      color: "#ffffff", radius: 999, fontSize: px(17), fontWeight: 600, align: "center",
     },
   }));
 
+  void s;
+
   return {
     version: 1,
-    w: CARD_W,
-    h: CARD_H,
+    w: W,
+    h: H,
     background: {
       color: bg,
       gradient: light ? "linear-gradient(160deg,#ffffff,#eee9f7)" : a.backgroundCss,

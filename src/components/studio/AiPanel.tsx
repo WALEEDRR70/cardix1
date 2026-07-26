@@ -28,12 +28,20 @@ export function AiPanel({ ar }: { ar: boolean }) {
       r.readAsDataURL(file);
     });
     setPreview(dataUrl);
+    // measure the real orientation of the uploaded card
+    const aspect = await new Promise<number>((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(img.naturalWidth / Math.max(1, img.naturalHeight));
+      img.onerror = () => resolve(0.64);
+      img.src = dataUrl;
+    });
     setBusy(true);
     try {
-      const analysis = await analyze({ data: { image: dataUrl, mime: file.type || "image/png" } });
+      const analysis = await analyze({ data: { image: dataUrl, mime: file.type || "image/png", aspect } });
       setResult(analysis);
       apply(analysis, active);
       toast.success(ar ? "تم إنشاء قالب قابل للتحرير" : "Editable template generated");
+
     } catch (e) {
       const msg = (e as Error).message;
       toast.error(
