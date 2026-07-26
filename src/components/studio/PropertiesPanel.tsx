@@ -304,7 +304,7 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
         </PanelSection>
       )}
 
-      <PanelSection title={ar ? "التعبئة" : "Fill"}>
+      <PanelSection title={ar ? "التعبئة" : "Fill"} defaultOpen={n.type !== "text"}>
         <Row label={ar ? "اللون" : "Color"}>
           <ColorInput value={s.fill} fallback="#7c34ff" onChange={(v) => st({ fill: v })} />
         </Row>
@@ -323,7 +323,7 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
         <GradientEditor ar={ar} value={s.gradient} onChange={(css: string) => st({ gradient: css })} onRemove={() => st({ gradient: null })} />
       </PanelSection>
 
-      <PanelSection title={ar ? "المظهر" : "Appearance"}>
+      <PanelSection title={ar ? "المظهر" : "Appearance"} defaultOpen={n.type !== "text"}>
         <div className="grid grid-cols-2 gap-1.5">
           <NumInput badge="⌒" value={s.radius ?? 0} onChange={(v) => st({ radius: v })} />
           <NumInput badge="⇱" value={s.padding ?? 0} onChange={(v) => st({ padding: v })} />
