@@ -8,6 +8,7 @@ import {
 import { useStudio } from "@/lib/studio/store";
 import type { NodeType, StudioNode } from "@/lib/studio/types";
 import { cn } from "@/lib/utils";
+import { AiPanel } from "./AiPanel";
 
 type Item = { key: string; label: string; labelAr: string; icon: React.ElementType; make: () => [NodeType, Partial<StudioNode>] };
 
@@ -33,18 +34,18 @@ const ITEMS: Item[] = [
 
 export function ElementsPanel({ ar }: { ar: boolean }) {
   const { addNode } = useStudio();
-  const [tab, setTab] = useState<"elements" | "layers">("elements");
+  const [tab, setTab] = useState<"elements" | "layers" | "ai">("elements");
 
   return (
     <aside className="flex w-64 shrink-0 flex-col border-e border-border/60 bg-card/40">
-      <div className="grid grid-cols-2 border-b border-border/60 text-xs">
-        {(["elements", "layers"] as const).map((t) => (
+      <div className="grid grid-cols-3 border-b border-border/60 text-xs">
+        {(["elements", "layers", "ai"] as const).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
             className={cn("px-3 py-2.5 font-medium transition", tab === t ? "bg-accent/15 text-foreground" : "text-muted-foreground hover:text-foreground")}
           >
-            {t === "elements" ? (ar ? "العناصر" : "Elements") : (ar ? "الطبقات" : "Layers")}
+            {t === "elements" ? (ar ? "العناصر" : "Elements") : t === "layers" ? (ar ? "الطبقات" : "Layers") : (ar ? "الذكاء" : "AI")}
           </button>
         ))}
       </div>
@@ -61,8 +62,10 @@ export function ElementsPanel({ ar }: { ar: boolean }) {
             </button>
           ))}
         </div>
-      ) : (
+      ) : tab === "layers" ? (
         <LayersPanel ar={ar} />
+      ) : (
+        <AiPanel ar={ar} />
       )}
     </aside>
   );
