@@ -4,6 +4,7 @@ const UNLOCALIZED_PREFIXES = [
   "/auth/callback",
   "/c/",
   "/company/",
+  "/join/",
   "/api/",
   "/sitemap",
   "/robots",
