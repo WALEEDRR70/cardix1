@@ -110,9 +110,41 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
 
       {n.type === "image" && (
         <Section title={ar ? "الصورة" : "Image"}>
-          <Field label="URL"><input value={n.src ?? ""} onChange={(e) => up({ src: e.target.value })} className={input} /></Field>
+          <p className="text-[10px] text-muted-foreground">{ar ? "مصدر الصورة" : "Image source"}</p>
+          <div className="grid grid-cols-3 gap-1">
+            {([
+              { k: "employee", en: "Employee", arL: "الموظف" },
+              { k: "logo", en: "Logo", arL: "الشعار" },
+              { k: "upload", en: "Upload", arL: "رفع" },
+            ] as { k: ImageSource; en: string; arL: string }[]).map((o) => (
+              <button
+                key={o.k}
+                type="button"
+                onClick={() => up({ imageSource: o.k })}
+                className={`rounded-md border px-2 py-1.5 text-[11px] ${(n.imageSource ?? "upload") === o.k ? "border-accent/60 bg-accent/15 text-foreground" : "border-border/60 text-muted-foreground"}`}
+              >
+                {ar ? o.arL : o.en}
+              </button>
+            ))}
+          </div>
+          {(n.imageSource ?? "upload") === "upload" ? (
+            <>
+              <Field label="URL"><input value={n.src ?? ""} onChange={(e) => up({ src: e.target.value })} className={input} /></Field>
+              <UploadButton ar={ar} onDone={(url) => up({ src: url, imageSource: "upload" })} />
+            </>
+          ) : (
+            <p className="text-[10px] leading-relaxed text-muted-foreground">
+              {n.imageSource === "employee"
+                ? (ar ? "تُستبدل تلقائيًا بصورة الموظف عند عرض البطاقة." : "Replaced automatically by the employee photo when the card is rendered.")
+                : (ar ? "تُستبدل تلقائيًا بشعار الشركة عند عرض البطاقة." : "Replaced automatically by the company logo when the card is rendered.")}
+            </p>
+          )}
+          <Field label={ar ? "صورة احتياطية (URL)" : "Fallback image URL"}>
+            <input value={n.src ?? ""} onChange={(e) => up({ src: e.target.value })} className={input} />
+          </Field>
         </Section>
       )}
+
 
       <Section title={ar ? "المظهر" : "Appearance"}>
         <Field label={ar ? "التعبئة" : "Fill"}>
