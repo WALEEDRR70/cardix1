@@ -108,23 +108,23 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
 
   if (vectors.length) {
     const pnt = paint[key];
-    // content boxes the artwork must not cover (text, photo, logo, qr)
-    const guard = blocks.filter((b) => b.role !== "custom");
+    // only text boxes must stay readable; artwork may sit behind images/QR
+    const guard = blocks.filter((b) => ["name", "title", "company", "tagline", "phone", "email", "website", "address"].includes(b.role));
     vectors.forEach((v, i) => {
       const bb = pathBBox(v.d);
-      // how much of the readable content this drawing would sit on top of
+      // how much of the readable text this drawing would sit on top of
       const hit = bb
         ? guard.reduce((m, b) => Math.max(m, overlapRatio(bb, b)), 0)
         : 0;
-      const heavy = hit > 0.28;
+      const heavy = hit > 0.65;
       push(node("path", {
         name: v.name || `Artwork ${i + 1}`,
         x: 0, y: 0, w: W, h: H,
         path: v.d,
-        opacity: (v.opacity ?? 0.9) * pnt.op * (heavy ? 0.35 : 1),
+        opacity: (v.opacity ?? 0.9) * pnt.op * (heavy ? 0.55 : 1),
         style: {
-          // never paint a solid blob over the content area — keep it as a light outline
-          fill: heavy ? "transparent" : (v.fill ?? pnt.fill ?? "transparent"),
+          fill: v.fill ?? pnt.fill ?? "transparent",
+
           stroke: v.stroke ?? pnt.stroke ?? null,
           strokeWidth: Math.max(1, Math.round((v.strokeWidth ?? 1.2) * (Math.min(W, H) / 100) * 0.9)),
           blur: (v.blur ?? 0) + pnt.blur,
@@ -222,14 +222,13 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
       }
       if (b.role === "photo") {
         const round = Math.abs(bw - bh) / Math.max(bw, bh) < 0.15;
-        const side = round ? Math.round((bw + bh) / 2) : 0;
         push(node("image", {
-          name: "Photo", imageSource: "employee", x: bx, y: by,
-          w: side || bw, h: side || bh,
+          name: "Photo", imageSource: "employee", x: bx, y: by, w: bw, h: bh,
           style: { radius: round ? 999 : Math.round(short * 0.02), borderWidth: 2, borderColor: `${primary}88` },
         }));
         continue;
       }
+
       if (b.role === "qr") {
         const side = Math.max(bw, bh);
         push(node("qr", { name: "QR", x: bx, y: by, w: side, h: side, style: { fill: "#ffffff", radius: Math.round(short * 0.02), padding: Math.round(side * 0.08) } }));
@@ -249,17 +248,21 @@ export function buildVariation(a: AiCardAnalysis, key: VariationKey): StudioDoc 
     }
 
     for (const b of textBlocks) {
-      const bx = PX(b.x), bw = Math.max(4, PX(b.w));
+      const bx = PX(b.x);
       let by = PY(b.y);
       const bh = Math.max(4, PY(b.h));
       const align = b.align ?? (rtl ? "right" : "left");
 
-      // fit the type inside its measured box: never taller than the box,
-      // never wider than the column (approx. 0.55em per character)
-      const chars = Math.max(6, (SAMPLE[b.role] ?? "").length);
+      // the box may grow into the free space beside it so a single line never wraps
+      const room = align === "right" ? bx + Math.max(4, PX(b.w)) : W - bx - Math.round(short * 0.04);
+      const bw = Math.max(Math.max(4, PX(b.w)), Math.min(room, Math.round(W * 0.6)));
+
+      // size the type to the longest string it can render (placeholder or real value)
+      const chars = Math.max(8, (VALUE[b.role] ?? "").length, (SAMPLE[b.role] ?? "").length);
       const raw = ((b.sizePct ?? 3) / 100) * short * 1.35;
-      const size = Math.max(9, Math.round(Math.min(raw, bh * 0.82, bw / (chars * 0.55))));
-      const h = Math.max(bh, Math.round(size * 1.3));
+      const size = Math.max(9, Math.round(Math.min(raw, bh * 1.1, bw / (chars * 0.52))));
+      const h = Math.round(size * 1.35);
+
 
       // push the line down when it would collide with an already placed line
       for (const p of placedText) {
