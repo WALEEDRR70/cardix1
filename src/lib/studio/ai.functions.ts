@@ -102,9 +102,25 @@ Return STRICT JSON, no markdown fences, matching exactly:
    Draw ORGANIC, ORIGINAL artwork inspired by the scan: sweeping curves (C/Q/S commands), ribbons,
    arcs, waves, corner flourishes, diagonal blades, layered blobs. Do NOT limit yourself to rectangles
    or circles, do NOT trace text or logos, and keep the drawing behind the content area so the text stays readable.
+ "surfaces": ARRAY (0-6) of the FLAT colour areas printed behind the content (bands, rails, panels,
+   corner blocks, photo plates). Measure each one on the 0..100 grid:
+   { "name": label, "x","y","w","h": numbers, "shape": "rect"|"ellipse", "fill": hex or null,
+     "gradient": CSS gradient or null, "radius": 0-50 (% of the smaller side), "opacity": 0-1, "blur": 0-40 }.
+ "margins": { "top","right","bottom","left" } = the printed safe area margins as % of the card,
+ "blocks": ARRAY measuring EVERY content region you can see, in reading order. Be precise: read the real
+   pixel position of each element in the image and convert it to the 0..100 grid. One item per region:
+   { "role": one of ["logo","photo","name","title","company","tagline","phone","email","website","address","qr","cta","custom"],
+     "x","y","w","h": the bounding box on the 0..100 grid,
+     "align": "left"|"center"|"right" (how the text sits inside its box),
+     "sizePct": the text cap height as a % of the card's SHORT edge (e.g. 6 for a big name, 2.6 for contact lines),
+     "weight": 300-900, "color": hex of that text, "letterSpacing": -2..12, "uppercase": true|false }.
+   Include a block only if that element really exists on the card; never invent a QR if none is printed,
+   but DO add one "qr" block in free space if the card has none. Never copy the actual text content.
  "tagline": a generic services/slogan line describing the business WITHOUT any contact data, or null,
  "notes": one sentence on how to modernise the layout
 }
+Measure, do not guess: boxes must not overlap each other, must stay inside 0..100, and must reproduce the
+真 proportions and alignment of the scan so the rebuilt card looks like the original at a glance.
 Report the true orientation: a wide card MUST return "landscape" with aspect > 1.
 Improve the palette: raise contrast, refine harmony, keep the spirit of the original.`;
 
