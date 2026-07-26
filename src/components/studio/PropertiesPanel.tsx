@@ -144,7 +144,34 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
       )}
 
 
+      {n.type === "path" && (
+        <Section title={ar ? "الرسم الحر" : "Free drawing"}>
+          <Field label={ar ? "مسار SVG (شبكة ١٠٠×١٠٠)" : "SVG path (100×100 grid)"}>
+            <textarea
+              value={n.path ?? ""}
+              onChange={(e) => up({ path: e.target.value })}
+              rows={3}
+              className={`${input} font-mono leading-relaxed`}
+            />
+          </Field>
+          <Field label={ar ? "لون الخط" : "Stroke color"}>
+            <input type="color" value={(s.stroke ?? "#7c34ff").slice(0, 7)} onChange={(e) => st({ stroke: e.target.value })} className="h-8 w-full rounded bg-transparent" />
+          </Field>
+          <div className="grid grid-cols-2 gap-2">
+            <Num label={ar ? "سماكة الخط" : "Stroke width"} value={s.strokeWidth ?? 0} onChange={(v) => st({ strokeWidth: v })} />
+            <Num label={ar ? "تقطيع" : "Dash"} value={Number(s.dash ?? 0)} onChange={(v) => st({ dash: v ? String(v) : null })} />
+          </div>
+          <button
+            onClick={() => st({ fill: "transparent" })}
+            className="rounded-lg border border-border/60 px-2 py-1.5 text-[11px] text-muted-foreground hover:text-foreground"
+          >
+            {ar ? "بدون تعبئة (خط فقط)" : "No fill (stroke only)"}
+          </button>
+        </Section>
+      )}
+
       <Section title={ar ? "المظهر" : "Appearance"}>
+
         <Field label={ar ? "التعبئة" : "Fill"}>
           <input type="color" value={(s.fill ?? "#7c34ff").slice(0, 7)} onChange={(e) => st({ fill: e.target.value })} className="h-8 w-full rounded bg-transparent" />
         </Field>
