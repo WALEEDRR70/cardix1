@@ -15,6 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as LangIndexRouteImport } from './routes/$lang/index'
 import { Route as SitemapChar123langChar125DotxmlRouteImport } from './routes/sitemap/{$lang}[.]xml'
 import { Route as CSlugRouteImport } from './routes/c.$slug'
+import { Route as LangFeaturesRouteImport } from './routes/$lang/features'
 import { Route as LangAuthRouteImport } from './routes/$lang/auth'
 import { Route as LangAuthenticatedRouteRouteImport } from './routes/$lang/_authenticated/route'
 import { Route as LangToolsIndexRouteImport } from './routes/$lang/tools/index'
@@ -62,6 +63,11 @@ const CSlugRoute = CSlugRouteImport.update({
   id: '/c/$slug',
   path: '/c/$slug',
   getParentRoute: () => rootRouteImport,
+} as any)
+const LangFeaturesRoute = LangFeaturesRouteImport.update({
+  id: '/features',
+  path: '/features',
+  getParentRoute: () => LangRouteRoute,
 } as any)
 const LangAuthRoute = LangAuthRouteImport.update({
   id: '/auth',
@@ -154,6 +160,7 @@ export interface FileRoutesByFullPath {
   '/$lang': typeof LangRouteRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang/auth': typeof LangAuthRoute
+  '/$lang/features': typeof LangFeaturesRoute
   '/c/$slug': typeof CSlugRoute
   '/sitemap/{$lang}.xml': typeof SitemapChar123langChar125DotxmlRoute
   '/$lang/': typeof LangIndexRoute
@@ -177,6 +184,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang': typeof LangIndexRoute
   '/$lang/auth': typeof LangAuthRoute
+  '/$lang/features': typeof LangFeaturesRoute
   '/c/$slug': typeof CSlugRoute
   '/sitemap/{$lang}.xml': typeof SitemapChar123langChar125DotxmlRoute
   '/$lang/dashboard': typeof LangAuthenticatedDashboardRoute
@@ -201,6 +209,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang/_authenticated': typeof LangAuthenticatedRouteRouteWithChildren
   '/$lang/auth': typeof LangAuthRoute
+  '/$lang/features': typeof LangFeaturesRoute
   '/c/$slug': typeof CSlugRoute
   '/sitemap/{$lang}.xml': typeof SitemapChar123langChar125DotxmlRoute
   '/$lang/': typeof LangIndexRoute
@@ -226,6 +235,7 @@ export interface FileRouteTypes {
     | '/$lang'
     | '/sitemap.xml'
     | '/$lang/auth'
+    | '/$lang/features'
     | '/c/$slug'
     | '/sitemap/{$lang}.xml'
     | '/$lang/'
@@ -249,6 +259,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/$lang'
     | '/$lang/auth'
+    | '/$lang/features'
     | '/c/$slug'
     | '/sitemap/{$lang}.xml'
     | '/$lang/dashboard'
@@ -272,6 +283,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/$lang/_authenticated'
     | '/$lang/auth'
+    | '/$lang/features'
     | '/c/$slug'
     | '/sitemap/{$lang}.xml'
     | '/$lang/'
@@ -342,6 +354,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/c/$slug'
       preLoaderRoute: typeof CSlugRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/$lang/features': {
+      id: '/$lang/features'
+      path: '/features'
+      fullPath: '/$lang/features'
+      preLoaderRoute: typeof LangFeaturesRouteImport
+      parentRoute: typeof LangRouteRoute
     }
     '/$lang/auth': {
       id: '/$lang/auth'
@@ -514,6 +533,7 @@ const LangAuthenticatedRouteRouteWithChildren =
 interface LangRouteRouteChildren {
   LangAuthenticatedRouteRoute: typeof LangAuthenticatedRouteRouteWithChildren
   LangAuthRoute: typeof LangAuthRoute
+  LangFeaturesRoute: typeof LangFeaturesRoute
   LangIndexRoute: typeof LangIndexRoute
   LangBlogSlugRoute: typeof LangBlogSlugRoute
   LangLSlugRoute: typeof LangLSlugRoute
@@ -526,6 +546,7 @@ interface LangRouteRouteChildren {
 const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangAuthenticatedRouteRoute: LangAuthenticatedRouteRouteWithChildren,
   LangAuthRoute: LangAuthRoute,
+  LangFeaturesRoute: LangFeaturesRoute,
   LangIndexRoute: LangIndexRoute,
   LangBlogSlugRoute: LangBlogSlugRoute,
   LangLSlugRoute: LangLSlugRoute,
@@ -549,13 +570,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
