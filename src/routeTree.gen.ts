@@ -40,6 +40,7 @@ import { Route as LangAuthenticatedDashboardRouteImport } from './routes/$lang/_
 import { Route as LangAuthenticatedWorkspaceIndexRouteImport } from './routes/$lang/_authenticated/workspace.index'
 import { Route as LangAuthenticatedWorkspaceIdRouteImport } from './routes/$lang/_authenticated/workspace.$id'
 import { Route as LangAuthenticatedVaultIdRouteImport } from './routes/$lang/_authenticated/vault.$id'
+import { Route as LangAuthenticatedStudioIdRouteImport } from './routes/$lang/_authenticated/studio.$id'
 import { Route as LangAuthenticatedCoNewRouteImport } from './routes/$lang/_authenticated/co/new'
 import { Route as LangAuthenticatedCardsNewRouteImport } from './routes/$lang/_authenticated/cards.new'
 import { Route as LangAuthenticatedCardsIdRouteImport } from './routes/$lang/_authenticated/cards.$id'
@@ -222,6 +223,12 @@ const LangAuthenticatedVaultIdRoute =
     path: '/$id',
     getParentRoute: () => LangAuthenticatedVaultRoute,
   } as any)
+const LangAuthenticatedStudioIdRoute =
+  LangAuthenticatedStudioIdRouteImport.update({
+    id: '/studio/$id',
+    path: '/studio/$id',
+    getParentRoute: () => LangAuthenticatedRouteRoute,
+  } as any)
 const LangAuthenticatedCoNewRoute = LangAuthenticatedCoNewRouteImport.update({
   id: '/co/new',
   path: '/co/new',
@@ -380,6 +387,7 @@ export interface FileRoutesByFullPath {
   '/$lang/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/cards/new': typeof LangAuthenticatedCardsNewRoute
   '/$lang/co/new': typeof LangAuthenticatedCoNewRoute
+  '/$lang/studio/$id': typeof LangAuthenticatedStudioIdRoute
   '/$lang/vault/$id': typeof LangAuthenticatedVaultIdRoute
   '/$lang/workspace/$id': typeof LangAuthenticatedWorkspaceIdRoute
   '/$lang/workspace/': typeof LangAuthenticatedWorkspaceIndexRoute
@@ -431,6 +439,7 @@ export interface FileRoutesByTo {
   '/$lang/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/cards/new': typeof LangAuthenticatedCardsNewRoute
   '/$lang/co/new': typeof LangAuthenticatedCoNewRoute
+  '/$lang/studio/$id': typeof LangAuthenticatedStudioIdRoute
   '/$lang/vault/$id': typeof LangAuthenticatedVaultIdRoute
   '/$lang/workspace/$id': typeof LangAuthenticatedWorkspaceIdRoute
   '/$lang/workspace': typeof LangAuthenticatedWorkspaceIndexRoute
@@ -486,6 +495,7 @@ export interface FileRoutesById {
   '/$lang/_authenticated/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/_authenticated/cards/new': typeof LangAuthenticatedCardsNewRoute
   '/$lang/_authenticated/co/new': typeof LangAuthenticatedCoNewRoute
+  '/$lang/_authenticated/studio/$id': typeof LangAuthenticatedStudioIdRoute
   '/$lang/_authenticated/vault/$id': typeof LangAuthenticatedVaultIdRoute
   '/$lang/_authenticated/workspace/$id': typeof LangAuthenticatedWorkspaceIdRoute
   '/$lang/_authenticated/workspace/': typeof LangAuthenticatedWorkspaceIndexRoute
@@ -541,6 +551,7 @@ export interface FileRouteTypes {
     | '/$lang/cards/$id'
     | '/$lang/cards/new'
     | '/$lang/co/new'
+    | '/$lang/studio/$id'
     | '/$lang/vault/$id'
     | '/$lang/workspace/$id'
     | '/$lang/workspace/'
@@ -592,6 +603,7 @@ export interface FileRouteTypes {
     | '/$lang/cards/$id'
     | '/$lang/cards/new'
     | '/$lang/co/new'
+    | '/$lang/studio/$id'
     | '/$lang/vault/$id'
     | '/$lang/workspace/$id'
     | '/$lang/workspace'
@@ -646,6 +658,7 @@ export interface FileRouteTypes {
     | '/$lang/_authenticated/cards/$id'
     | '/$lang/_authenticated/cards/new'
     | '/$lang/_authenticated/co/new'
+    | '/$lang/_authenticated/studio/$id'
     | '/$lang/_authenticated/vault/$id'
     | '/$lang/_authenticated/workspace/$id'
     | '/$lang/_authenticated/workspace/'
@@ -899,6 +912,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangAuthenticatedVaultIdRouteImport
       parentRoute: typeof LangAuthenticatedVaultRoute
     }
+    '/$lang/_authenticated/studio/$id': {
+      id: '/$lang/_authenticated/studio/$id'
+      path: '/studio/$id'
+      fullPath: '/$lang/studio/$id'
+      preLoaderRoute: typeof LangAuthenticatedStudioIdRouteImport
+      parentRoute: typeof LangAuthenticatedRouteRoute
+    }
     '/$lang/_authenticated/co/new': {
       id: '/$lang/_authenticated/co/new'
       path: '/co/new'
@@ -1139,6 +1159,7 @@ interface LangAuthenticatedRouteRouteChildren {
   LangAuthenticatedCardsIdRoute: typeof LangAuthenticatedCardsIdRouteWithChildren
   LangAuthenticatedCardsNewRoute: typeof LangAuthenticatedCardsNewRoute
   LangAuthenticatedCoNewRoute: typeof LangAuthenticatedCoNewRoute
+  LangAuthenticatedStudioIdRoute: typeof LangAuthenticatedStudioIdRoute
   LangAuthenticatedWorkspaceIdRoute: typeof LangAuthenticatedWorkspaceIdRoute
   LangAuthenticatedWorkspaceIndexRoute: typeof LangAuthenticatedWorkspaceIndexRoute
 }
@@ -1156,6 +1177,7 @@ const LangAuthenticatedRouteRouteChildren: LangAuthenticatedRouteRouteChildren =
     LangAuthenticatedCardsIdRoute: LangAuthenticatedCardsIdRouteWithChildren,
     LangAuthenticatedCardsNewRoute: LangAuthenticatedCardsNewRoute,
     LangAuthenticatedCoNewRoute: LangAuthenticatedCoNewRoute,
+    LangAuthenticatedStudioIdRoute: LangAuthenticatedStudioIdRoute,
     LangAuthenticatedWorkspaceIdRoute: LangAuthenticatedWorkspaceIdRoute,
     LangAuthenticatedWorkspaceIndexRoute: LangAuthenticatedWorkspaceIndexRoute,
   }

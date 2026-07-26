@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { CardForm, type CardFormData } from "@/components/CardForm";
 import { useI18n } from "@/lib/i18n";
 import { MobileShell, PageHeader, BottomSheet } from "@/components/MobileShell";
-import { BarChart3, Download, Share2, Copy, ExternalLink, QrCode } from "lucide-react";
+import { BarChart3, Download, Share2, Copy, ExternalLink, QrCode, Wand2 } from "lucide-react";
 import { toast } from "sonner";
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
@@ -126,6 +126,9 @@ function EditCard() {
           back="/dashboard"
           right={
             <>
+              <Link to="/studio/$id" params={{ id }} className="grid h-9 w-9 place-items-center rounded-full border border-border bg-card text-muted-foreground hover:text-foreground" aria-label="Studio">
+                <Wand2 className="h-4 w-4" />
+              </Link>
               <Link to="/cards/$id/analytics" params={{ id }} className="grid h-9 w-9 place-items-center rounded-full border border-border bg-card text-muted-foreground hover:text-foreground" aria-label={t.analytics}>
                 <BarChart3 className="h-4 w-4" />
               </Link>
