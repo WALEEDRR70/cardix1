@@ -1,6 +1,10 @@
 // Right panel: properties for the current selection (or the canvas background).
+import { useRef, useState } from "react";
+import { Loader2, Upload } from "lucide-react";
+import { toast } from "sonner";
 import { useStudio } from "@/lib/studio/store";
-import { PLACEHOLDERS } from "@/lib/studio/types";
+import { CARD_SIZES, PLACEHOLDERS, type ImageSource } from "@/lib/studio/types";
+import { uploadStudioImage } from "@/lib/studio/upload";
 
 export function PropertiesPanel({ ar }: { ar: boolean }) {
   const { state, dispatch, selected } = useStudio();
@@ -9,9 +13,38 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
 
   if (!n) {
     const bg = state.doc.background;
+    const activeSize = CARD_SIZES.find((s) => s.w === state.doc.w && s.h === state.doc.h);
     return (
       <aside className="w-72 shrink-0 space-y-4 overflow-y-auto border-s border-border/60 bg-card/40 p-4 text-xs">
-        <h3 className="text-sm font-semibold">{ar ? "خلفية البطاقة" : "Card background"}</h3>
+        <h3 className="text-sm font-semibold">{ar ? "مقاس البطاقة" : "Card size"}</h3>
+        <Field label={ar ? "المقاس الجاهز" : "Preset"}>
+          <select
+            value={activeSize?.key ?? "custom"}
+            onChange={(e) => {
+              const p = CARD_SIZES.find((s) => s.key === e.target.value);
+              if (p) dispatch({ t: "size", w: p.w, h: p.h });
+            }}
+            className={input}
+          >
+            {!activeSize && <option value="custom">{ar ? "مخصص" : "Custom"}</option>}
+            {CARD_SIZES.map((s) => (
+              <option key={s.key} value={s.key}>{ar ? s.labelAr : s.label}</option>
+            ))}
+          </select>
+        </Field>
+        <div className="grid grid-cols-2 gap-2">
+          <Num label={ar ? "العرض" : "Width"} value={state.doc.w} onChange={(v) => dispatch({ t: "size", w: v, h: state.doc.h })} />
+          <Num label={ar ? "الارتفاع" : "Height"} value={state.doc.h} onChange={(v) => dispatch({ t: "size", w: state.doc.w, h: v })} />
+        </div>
+        <button
+          type="button"
+          onClick={() => dispatch({ t: "size", w: state.doc.h, h: state.doc.w })}
+          className="w-full rounded-md border border-border/60 px-2 py-1.5 text-muted-foreground hover:text-foreground"
+        >
+          {ar ? "تبديل الاتجاه" : "Swap orientation"}
+        </button>
+
+        <h3 className="border-t border-border/50 pt-3 text-sm font-semibold">{ar ? "خلفية البطاقة" : "Card background"}</h3>
         <Field label={ar ? "اللون" : "Color"}>
           <input type="color" value={bg.color} onChange={(e) => dispatch({ t: "bg", patch: { color: e.target.value } })} className="h-8 w-full rounded bg-transparent" />
         </Field>
@@ -21,10 +54,12 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
         <Field label={ar ? "رابط صورة" : "Image URL"}>
           <input value={bg.image ?? ""} onChange={(e) => dispatch({ t: "bg", patch: { image: e.target.value || null } })} className={input} />
         </Field>
+        <UploadButton ar={ar} onDone={(url) => dispatch({ t: "bg", patch: { image: url } })} />
         <p className="pt-2 text-muted-foreground">{ar ? "اختر عنصرًا لتعديل خصائصه." : "Select an element to edit its properties."}</p>
       </aside>
     );
   }
+
 
   const s = n.style;
   const up = (patch: Parameters<typeof dispatch>[0] extends never ? never : Record<string, unknown>) =>
