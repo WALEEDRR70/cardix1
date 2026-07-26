@@ -139,9 +139,7 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
                 : (ar ? "تُستبدل تلقائيًا بشعار الشركة عند عرض البطاقة." : "Replaced automatically by the company logo when the card is rendered.")}
             </p>
           )}
-          <Field label={ar ? "صورة احتياطية (URL)" : "Fallback image URL"}>
-            <input value={n.src ?? ""} onChange={(e) => up({ src: e.target.value })} className={input} />
-          </Field>
+
         </Section>
       )}
 
