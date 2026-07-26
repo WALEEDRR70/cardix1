@@ -10,6 +10,18 @@ const Input = z.object({
 });
 
 
+/** One free-hand vector stroke/shape drawn by the model on a 0..100 card grid. */
+export type AiVector = {
+  name: string;
+  /** SVG path data in a 0..100 x 0..100 coordinate space covering the whole card */
+  d: string;
+  fill?: string | null;
+  stroke?: string | null;
+  strokeWidth?: number;
+  opacity?: number;
+  blur?: number;
+};
+
 export type AiCardAnalysis = {
   style: string;
   industry: string;
@@ -23,6 +35,8 @@ export type AiCardAnalysis = {
   orientation: "landscape" | "portrait" | "square";
   direction: "ltr" | "rtl";
   logoPosition: "left" | "center" | "right";
+  /** free-form vector artwork the model draws itself (pen-tool style) */
+  vectors: AiVector[];
   /** short services / slogan line detected on the card (no contact data) */
   tagline: string | null;
   notes: string;
@@ -44,6 +58,13 @@ Return STRICT JSON, no markdown fences, matching exactly:
  "orientation": "landscape" | "portrait" | "square",
  "direction": "rtl" if the card's main language is Arabic/Hebrew, else "ltr",
  "logoPosition": "left" | "center" | "right",
+ "vectors": an ARRAY of 3 to 8 FREE-FORM vector drawings you compose yourself, like using a pen tool.
+   Each item = { "name": short label, "d": SVG path data, "fill": hex or null, "stroke": hex or null,
+   "strokeWidth": number 0.2-4, "opacity": 0-1, "blur": 0-30 }.
+   Coordinates live on a 0..100 x 0..100 grid mapped onto the whole card, so use decimals freely.
+   Draw ORGANIC, ORIGINAL artwork inspired by the scan: sweeping curves (C/Q/S commands), ribbons,
+   arcs, waves, corner flourishes, diagonal blades, layered blobs. Do NOT limit yourself to rectangles
+   or circles, do NOT trace text or logos, and keep the drawing behind the content area so the text stays readable.
  "tagline": a generic services/slogan line describing the business WITHOUT any contact data, or null,
  "notes": one sentence on how to modernise the layout
 }
@@ -123,6 +144,20 @@ export const analyzeCardImage = createServerFn({ method: "POST" })
             : "square",
       direction: parsed.direction === "rtl" ? "rtl" : "ltr",
       logoPosition: parsed.logoPosition ?? "right",
+      vectors: Array.isArray(parsed.vectors)
+        ? (parsed.vectors as AiVector[])
+            .filter((v) => v && typeof v.d === "string" && /^[Mm]/.test(v.d.trim()))
+            .slice(0, 10)
+            .map((v, i) => ({
+              name: v.name || `Vector ${i + 1}`,
+              d: v.d.trim(),
+              fill: v.fill ?? null,
+              stroke: v.stroke ?? null,
+              strokeWidth: typeof v.strokeWidth === "number" ? v.strokeWidth : 1.2,
+              opacity: typeof v.opacity === "number" ? Math.min(1, Math.max(0.05, v.opacity)) : 0.9,
+              blur: typeof v.blur === "number" ? v.blur : 0,
+            }))
+        : [],
       tagline: parsed.tagline ?? null,
       notes: parsed.notes ?? "Increase whitespace and strengthen the type hierarchy.",
     };
