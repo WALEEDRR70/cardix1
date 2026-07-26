@@ -598,7 +598,29 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
             style={marqueeBox}
           />
         )}
+
+        {tool === "pen" && !spaceDown && (
+          <PenLayer
+            zoom={zoom}
+            toDoc={toDoc}
+            onExit={() => dispatch({ t: "tool", value: "select" })}
+            onCommit={(r) => {
+              addNode("path", {
+                name: "Pen path",
+                x: Math.round(r.x),
+                y: Math.round(r.y),
+                w: Math.round(r.w),
+                h: Math.round(r.h),
+                path: r.path,
+                style: r.closed
+                  ? { fill: "#7c34ff", stroke: null, strokeWidth: 0 }
+                  : { fill: "transparent", stroke: "#7c34ff", strokeWidth: 3, cap: "round" },
+              });
+            }}
+          />
+        )}
       </div>
+
 
       <div className="pointer-events-none absolute bottom-3 end-3 rounded-full border border-border/60 bg-card/80 px-3 py-1 text-[10px] text-muted-foreground backdrop-blur">
         {Math.round(zoom * 100)}%
