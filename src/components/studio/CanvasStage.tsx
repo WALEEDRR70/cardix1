@@ -1,5 +1,5 @@
-// The visual canvas: renders the document and handles drag / resize / rotate / snap.
-import { useCallback, useEffect, useRef, useState } from "react";
+// The visual canvas: renders the document and handles pan / zoom / marquee / drag / resize / rotate / snap.
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { useStudio } from "@/lib/studio/store";
 import { resolveImageSrc, resolvePlaceholders, type StudioNode } from "@/lib/studio/types";
@@ -20,7 +20,6 @@ function ImageNode({ n, values }: { n: StudioNode; values?: Record<string, strin
   });
 
   const svg = isSvgSrc(src) && s.svgInline !== false ? inline : null;
-
 
   if (!src) {
     return (
@@ -46,7 +45,6 @@ function ImageNode({ n, values }: { n: StudioNode; values?: Record<string, strin
   return <img src={src} alt="" className="h-full w-full object-cover" style={{ borderRadius: s.radius }} />;
 }
 
-
 export function NodeContent({ n, values }: { n: StudioNode; values?: Record<string, string> }) {
   const s = n.style;
   switch (n.type) {
@@ -56,6 +54,7 @@ export function NodeContent({ n, values }: { n: StudioNode; values?: Record<stri
           className="h-full w-full whitespace-pre-wrap break-words"
           style={{
             color: s.color,
+            fontFamily: s.fontFamily,
             fontSize: s.fontSize,
             fontWeight: s.fontWeight,
             letterSpacing: s.letterSpacing,
@@ -156,25 +155,88 @@ export function NodeContent({ n, values }: { n: StudioNode; values?: Record<stri
 
 type Drag =
   | { mode: "move"; ids: string[]; startX: number; startY: number; origin: { id: string; x: number; y: number }[] }
-  | { mode: "resize"; id: string; handle: string; startX: number; startY: number; box: { x: number; y: number; w: number; h: number } }
+  | { mode: "resize"; id: string; handle: string; startX: number; startY: number; box: { x: number; y: number; w: number; h: number }; ratio: number }
   | { mode: "rotate"; id: string; cx: number; cy: number };
+
+type Marquee = { x0: number; y0: number; x1: number; y1: number };
 
 export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivElement | null> }) {
   const { state, dispatch, selected } = useStudio();
-  const { doc, zoom, grid, snap, guides } = state;
+  const { doc, zoom, pan, grid, snap, guides, fitTick } = state;
+  const viewportRef = useRef<HTMLDivElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [drag, setDrag] = useState<Drag | null>(null);
+  const [marquee, setMarquee] = useState<Marquee | null>(null);
+  const [spaceDown, setSpaceDown] = useState(false);
+  const [panning, setPanning] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [snapLines, setSnapLines] = useState<{ x: number[]; y: number[] }>({ x: [], y: [] });
 
   const round = useCallback((v: number) => (snap ? Math.round(v / GRID) * GRID : Math.round(v)), [snap]);
 
+  /** Screen point -> document coordinates. */
+  const toDoc = useCallback(
+    (clientX: number, clientY: number) => {
+      const r = viewportRef.current?.getBoundingClientRect();
+      if (!r) return { x: 0, y: 0 };
+      return { x: (clientX - r.left - pan.x) / zoom, y: (clientY - r.top - pan.y) / zoom };
+    },
+    [pan.x, pan.y, zoom],
+  );
+
+  /** Alignment targets from the canvas and every unselected node. */
+  const snapTargets = useMemo(() => {
+    const xs: number[] = [0, doc.w / 2, doc.w];
+    const ys: number[] = [0, doc.h / 2, doc.h];
+    for (const n of doc.nodes) {
+      xs.push(n.x, n.x + n.w / 2, n.x + n.w);
+      ys.push(n.y, n.y + n.h / 2, n.y + n.h);
+    }
+    return { xs, ys };
+  }, [doc]);
+
+  // Fit the artboard into the viewport (on mount, on resize, and on demand).
+  useEffect(() => {
+    const r = viewportRef.current?.getBoundingClientRect();
+    if (!r || !r.width) return;
+    const z = Math.min((r.width - 96) / doc.w, (r.height - 96) / doc.h);
+    const next = Math.max(0.05, Math.min(5, z));
+    dispatch({ t: "zoom", value: next });
+    dispatch({ t: "pan", x: (r.width - doc.w * next) / 2, y: (r.height - doc.h * next) / 2 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fitTick, doc.w, doc.h]);
+
+  // Trackpad / wheel: pinch or ctrl+wheel zooms around the cursor, plain wheel pans.
+  useEffect(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+    function onWheel(e: WheelEvent) {
+      e.preventDefault();
+      const r = el!.getBoundingClientRect();
+      if (e.ctrlKey || e.metaKey) {
+        const nz = Math.max(0.05, Math.min(5, zoom * Math.exp(-e.deltaY / 300)));
+        const px = e.clientX - r.left;
+        const py = e.clientY - r.top;
+        dispatch({ t: "zoom", value: nz });
+        dispatch({ t: "pan", x: px - ((px - pan.x) * nz) / zoom, y: py - ((py - pan.y) * nz) / zoom });
+      } else {
+        dispatch({ t: "pan", x: pan.x - e.deltaX, y: pan.y - e.deltaY });
+      }
+    }
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [dispatch, pan.x, pan.y, zoom]);
+
   const onPointerDownNode = (e: React.PointerEvent, n: StudioNode) => {
+    if (spaceDown || e.button === 1) return;
     if (n.locked) return;
     e.stopPropagation();
     const ids = e.shiftKey
       ? state.selection.includes(n.id) ? state.selection : [...state.selection, n.id]
       : state.selection.includes(n.id) ? state.selection : [n.id];
     dispatch({ t: "select", ids });
+    if (editingId && editingId !== n.id) setEditingId(null);
+    if (editingId === n.id) return;
     setDrag({
       mode: "move",
       ids,
@@ -186,6 +248,61 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
       }),
     });
   };
+
+  // Background pointer: pan (space / middle button) or marquee-select.
+  const onPointerDownViewport = (e: React.PointerEvent) => {
+    if (spaceDown || e.button === 1) {
+      e.preventDefault();
+      const startX = e.clientX - pan.x;
+      const startY = e.clientY - pan.y;
+      setPanning(true);
+      const move = (ev: PointerEvent) => dispatch({ t: "pan", x: ev.clientX - startX, y: ev.clientY - startY });
+      const up = () => {
+        setPanning(false);
+        window.removeEventListener("pointermove", move);
+      };
+      window.addEventListener("pointermove", move);
+      window.addEventListener("pointerup", up, { once: true });
+      return;
+    }
+    if (e.button !== 0) return;
+    setEditingId(null);
+    dispatch({ t: "select", ids: [] });
+    const start = toDoc(e.clientX, e.clientY);
+    setMarquee({ x0: start.x, y0: start.y, x1: start.x, y1: start.y });
+  };
+
+  // Marquee selection lifecycle.
+  useEffect(() => {
+    if (!marquee) return;
+    function onMove(e: PointerEvent) {
+      const p = toDoc(e.clientX, e.clientY);
+      setMarquee((m) => (m ? { ...m, x1: p.x, y1: p.y } : m));
+    }
+    function onUp() {
+      setMarquee((m) => {
+        if (m) {
+          const x = Math.min(m.x0, m.x1);
+          const y = Math.min(m.y0, m.y1);
+          const w = Math.abs(m.x1 - m.x0);
+          const h = Math.abs(m.y1 - m.y0);
+          if (w > 4 && h > 4) {
+            const hits = doc.nodes
+              .filter((n) => !n.locked && !n.hidden && n.x < x + w && n.x + n.w > x && n.y < y + h && n.y + n.h > y)
+              .map((n) => n.id);
+            dispatch({ t: "select", ids: hits });
+          }
+        }
+        return null;
+      });
+    }
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp, { once: true });
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+    };
+  }, [marquee, toDoc, doc.nodes, dispatch]);
 
   useEffect(() => {
     if (!drag) return;
@@ -200,11 +317,26 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
           if (!target) continue;
           let nx = round(o.x + dx);
           let ny = round(o.y + dy);
-          if (guides) {
-            const cx = nx + target.w / 2;
-            const cy = ny + target.h / 2;
-            if (Math.abs(cx - doc.w / 2) < SNAP_TOLERANCE) { nx = doc.w / 2 - target.w / 2; lines.x.push(doc.w / 2); }
-            if (Math.abs(cy - doc.h / 2) < SNAP_TOLERANCE) { ny = doc.h / 2 - target.h / 2; lines.y.push(doc.h / 2); }
+          if (guides && !e.altKey) {
+            const others = snapTargets;
+            const candX = [nx, nx + target.w / 2, nx + target.w];
+            for (let i = 0; i < candX.length; i++) {
+              const hit = others.xs.find((t) => Math.abs(candX[i] - t) < SNAP_TOLERANCE && !drag.origin.some((oo) => oo.id === o.id && false));
+              if (hit !== undefined) {
+                nx = hit - (i === 0 ? 0 : i === 1 ? target.w / 2 : target.w);
+                lines.x.push(hit);
+                break;
+              }
+            }
+            const candY = [ny, ny + target.h / 2, ny + target.h];
+            for (let i = 0; i < candY.length; i++) {
+              const hit = others.ys.find((t) => Math.abs(candY[i] - t) < SNAP_TOLERANCE);
+              if (hit !== undefined) {
+                ny = hit - (i === 0 ? 0 : i === 1 ? target.h / 2 : target.h);
+                lines.y.push(hit);
+                break;
+              }
+            }
           }
           dispatch({ t: "update", ids: [o.id], patch: { x: nx, y: ny }, transient: true });
         }
@@ -218,6 +350,11 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
         if (drag.handle.includes("s")) h = Math.max(16, b.h + dy);
         if (drag.handle.includes("w")) { w = Math.max(16, b.w - dx); x = b.x + (b.w - w); }
         if (drag.handle.includes("n")) { h = Math.max(16, b.h - dy); y = b.y + (b.h - h); }
+        // Shift keeps the original aspect ratio on corner handles.
+        if (e.shiftKey && drag.handle.length === 2) {
+          h = Math.max(16, w / drag.ratio);
+          if (drag.handle.includes("n")) y = b.y + b.h - h;
+        }
         dispatch({
           t: "update", ids: [drag.id], transient: true,
           patch: { x: round(x), y: round(y), w: round(w), h: round(h) },
@@ -227,7 +364,8 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
         if (!rect) return;
         const cx = rect.left + drag.cx * zoom;
         const cy = rect.top + drag.cy * zoom;
-        const deg = (Math.atan2(e.clientY - cy, e.clientX - cx) * 180) / Math.PI + 90;
+        let deg = (Math.atan2(e.clientY - cy, e.clientX - cx) * 180) / Math.PI + 90;
+        if (e.shiftKey) deg = Math.round(deg / 15) * 15;
         dispatch({ t: "update", ids: [drag.id], patch: { rot: Math.round(deg) }, transient: true });
       }
     }
@@ -243,19 +381,52 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
     };
-  }, [drag, dispatch, doc, zoom, round, guides]);
+  }, [drag, dispatch, doc, zoom, round, guides, snapTargets]);
 
+  // Keyboard: shortcuts + space-to-pan.
   useEffect(() => {
+    function editable(t: EventTarget | null) {
+      const el = t as HTMLElement | null;
+      const tag = el?.tagName;
+      return tag === "INPUT" || tag === "TEXTAREA" || el?.isContentEditable === true;
+    }
     function onKey(e: KeyboardEvent) {
-      const tag = (e.target as HTMLElement)?.tagName;
-      if (tag === "INPUT" || tag === "TEXTAREA") return;
+      if (e.code === "Space" && !editable(e.target)) { e.preventDefault(); setSpaceDown(true); }
+      if (editable(e.target)) return;
       const meta = e.metaKey || e.ctrlKey;
-      if (meta && e.key.toLowerCase() === "z") {
+      const key = e.key.toLowerCase();
+      if (meta && key === "z") {
         e.preventDefault();
         dispatch({ t: e.shiftKey ? "redo" : "undo" });
-      } else if (meta && e.key.toLowerCase() === "d") {
+      } else if (meta && key === "y") {
+        e.preventDefault();
+        dispatch({ t: "redo" });
+      } else if (meta && key === "d") {
         e.preventDefault();
         dispatch({ t: "duplicate", ids: state.selection });
+      } else if (meta && key === "c") {
+        dispatch({ t: "copy", ids: state.selection });
+      } else if (meta && key === "v") {
+        dispatch({ t: "paste" });
+      } else if (meta && key === "a") {
+        e.preventDefault();
+        dispatch({ t: "select", ids: doc.nodes.filter((n) => !n.locked).map((n) => n.id) });
+      } else if (meta && key === "g") {
+        e.preventDefault();
+        if (e.shiftKey) { if (state.selection[0]) dispatch({ t: "ungroup", id: state.selection[0] }); }
+        else dispatch({ t: "group", ids: state.selection });
+      } else if (meta && key === "0") {
+        e.preventDefault();
+        dispatch({ t: "fit" });
+      } else if (meta && (key === "=" || key === "+")) {
+        e.preventDefault();
+        dispatch({ t: "zoom", value: zoom + 0.1 });
+      } else if (meta && key === "-") {
+        e.preventDefault();
+        dispatch({ t: "zoom", value: zoom - 0.1 });
+      } else if (key === "escape") {
+        setEditingId(null);
+        dispatch({ t: "select", ids: [] });
       } else if (e.key === "Delete" || e.key === "Backspace") {
         if (state.selection.length) { e.preventDefault(); dispatch({ t: "remove", ids: state.selection }); }
       } else if (e.key.startsWith("Arrow") && state.selection.length) {
@@ -269,19 +440,34 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
         }
       }
     }
+    function onKeyUp(e: KeyboardEvent) {
+      if (e.code === "Space") setSpaceDown(false);
+    }
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [dispatch, state.selection, doc]);
+    window.addEventListener("keyup", onKeyUp);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("keyup", onKeyUp);
+    };
+  }, [dispatch, state.selection, doc, zoom]);
+
+  const marqueeBox = marquee && {
+    left: Math.min(marquee.x0, marquee.x1) * zoom,
+    top: Math.min(marquee.y0, marquee.y1) * zoom,
+    width: Math.abs(marquee.x1 - marquee.x0) * zoom,
+    height: Math.abs(marquee.y1 - marquee.y0) * zoom,
+  };
 
   return (
     <div
-      className="relative grid flex-1 place-items-center overflow-auto bg-[#07050d] p-10"
-      onPointerDown={() => dispatch({ t: "select", ids: [] })}
+      ref={viewportRef}
+      className="relative flex-1 overflow-hidden bg-[#07050d]"
+      style={{ cursor: panning ? "grabbing" : spaceDown ? "grab" : "default" }}
+      onPointerDown={onPointerDownViewport}
     >
       <div
         ref={wrapRef}
-        style={{ width: doc.w * zoom, height: doc.h * zoom }}
-        className="relative"
+        style={{ position: "absolute", left: pan.x, top: pan.y, width: doc.w * zoom, height: doc.h * zoom }}
       >
         <div
           ref={stageRef}
@@ -328,6 +514,9 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
             <div
               key={n.id}
               onPointerDown={(e) => onPointerDownNode(e, n)}
+              onDoubleClick={(e) => {
+                if (n.type === "text" || n.type === "button") { e.stopPropagation(); setEditingId(n.id); }
+              }}
               style={{
                 position: "absolute",
                 left: n.x, top: n.y, width: n.w, height: n.h,
@@ -338,7 +527,11 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
                 filter: n.style.glow ? `drop-shadow(0 0 18px ${n.style.glow})` : undefined,
               }}
             >
-              <NodeContent n={n} />
+              {editingId === n.id ? (
+                <TextEditor node={n} onDone={(text) => { dispatch({ t: "update", ids: [n.id], patch: { text } }); setEditingId(null); }} />
+              ) : (
+                <NodeContent n={n} />
+              )}
             </div>
           ))}
 
@@ -360,14 +553,17 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
               transform: `rotate(${n.rot}deg)`,
             }}
           >
-            {selected.length === 1 && !n.locked && (
+            <span className="absolute -top-5 start-0 whitespace-nowrap rounded bg-accent px-1.5 py-0.5 text-[9px] font-medium text-accent-foreground">
+              {Math.round(n.w)} × {Math.round(n.h)}
+            </span>
+            {selected.length === 1 && !n.locked && editingId !== n.id && (
               <>
                 {["nw", "ne", "sw", "se", "n", "s", "e", "w"].map((h) => (
                   <span
                     key={h}
                     onPointerDown={(e) => {
                       e.stopPropagation();
-                      setDrag({ mode: "resize", id: n.id, handle: h, startX: e.clientX, startY: e.clientY, box: { x: n.x, y: n.y, w: n.w, h: n.h } });
+                      setDrag({ mode: "resize", id: n.id, handle: h, startX: e.clientX, startY: e.clientY, box: { x: n.x, y: n.y, w: n.w, h: n.h }, ratio: n.w / Math.max(1, n.h) });
                     }}
                     className="pointer-events-auto absolute h-2.5 w-2.5 rounded-full border border-accent bg-background"
                     style={handleStyle(h)}
@@ -385,8 +581,67 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
             )}
           </div>
         ))}
+
+        {marqueeBox && (
+          <div
+            className="pointer-events-none absolute border border-accent bg-accent/10"
+            style={marqueeBox}
+          />
+        )}
+      </div>
+
+      <div className="pointer-events-none absolute bottom-3 end-3 rounded-full border border-border/60 bg-card/80 px-3 py-1 text-[10px] text-muted-foreground backdrop-blur">
+        {Math.round(zoom * 100)}%
       </div>
     </div>
+  );
+}
+
+/** Inline text editing directly on the canvas (double-click a text node). */
+function TextEditor({ node, onDone }: { node: StudioNode; onDone: (text: string) => void }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const s = node.style;
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.textContent = node.text ?? "";
+    el.focus();
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    const sel = window.getSelection();
+    sel?.removeAllRanges();
+    sel?.addRange(range);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      contentEditable
+      suppressContentEditableWarning
+      onPointerDown={(e) => e.stopPropagation()}
+      onBlur={(e) => onDone(e.currentTarget.textContent ?? "")}
+      onKeyDown={(e) => {
+        e.stopPropagation();
+        if (e.key === "Escape" || (e.key === "Enter" && !e.shiftKey)) {
+          e.preventDefault();
+          onDone(e.currentTarget.textContent ?? "");
+        }
+      }}
+      className="h-full w-full whitespace-pre-wrap break-words outline-none ring-1 ring-accent"
+      style={{
+        color: s.color,
+        fontFamily: s.fontFamily,
+        fontSize: s.fontSize,
+        fontWeight: s.fontWeight,
+        letterSpacing: s.letterSpacing,
+        lineHeight: s.lineHeight,
+        textAlign: s.align,
+        padding: s.padding,
+        cursor: "text",
+      }}
+    />
   );
 }
 
