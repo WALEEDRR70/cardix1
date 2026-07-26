@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CompanyShell, SectionPlaceholder } from "@/components/company/CompanyShell";
+import { CompanyShell } from "@/components/company/CompanyShell";
+import { InvitationsTab } from "@/components/company/reach";
 import { useCompany } from "@/lib/company-context";
-import { useWs } from "@/lib/workspace";
+import { canManageCompany, useWs } from "@/lib/workspace";
 
 export const Route = createFileRoute("/$lang/_authenticated/co/$slug/invitations")({ component: Page });
 
@@ -10,7 +11,7 @@ function Page() {
   const { w } = useWs();
   return (
     <CompanyShell company={company} role={role} title={w.invite} subtitle={company.name}>
-      <SectionPlaceholder label={w.pendingInvites} />
+      <InvitationsTab company={company} canEdit={canManageCompany(role)} />
     </CompanyShell>
   );
 }
