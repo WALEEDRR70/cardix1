@@ -5,7 +5,7 @@ import {
   AlignStartVertical, AlignCenterVertical, AlignEndVertical,
   AlignStartHorizontal, AlignCenterHorizontal, AlignEndHorizontal,
   AlignHorizontalSpaceAround, AlignVerticalSpaceAround,
-  Group, Ungroup, CopyPlus, Trash2, Maximize, MousePointer2, PenTool,
+  Group, Ungroup, CopyPlus, Trash2, Maximize, MousePointer2, PenTool, Spline,
 } from "lucide-react";
 
 import { toPng, toJpeg, toSvg } from "html-to-image";
@@ -58,6 +58,11 @@ export function StudioToolbar({
         active={state.tool === "pen"}
         onClick={() => dispatch({ t: "tool", value: state.tool === "pen" ? "select" : "pen" })}
       ><PenTool className="h-4 w-4" /></Btn>
+      <Btn
+        title={ar ? "تعديل المسار (A) — اسحب النقاط والمقابض، Alt للتبديل بين ناعم/زاوية، نقر مزدوج لعكس اتجاه المقابض" : "Edit path (A) — drag anchors & handles, Alt toggles smooth/corner, double-click flips handle direction"}
+        active={state.tool === "node"}
+        onClick={() => dispatch({ t: "tool", value: state.tool === "node" ? "select" : "node" })}
+      ><Spline className="h-4 w-4" /></Btn>
 
       <span className="mx-1 h-5 w-px bg-border/60" />
 

@@ -23,7 +23,7 @@ export type StudioState = {
   tool: StudioTool;
 };
 
-export type StudioTool = "select" | "pen";
+export type StudioTool = "select" | "pen" | "node";
 
 export type AlignHow = "left" | "hcenter" | "right" | "top" | "vcenter" | "bottom";
 
