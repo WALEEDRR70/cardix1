@@ -264,6 +264,12 @@ function reducer(state: StudioState, a: Action): StudioState {
         selection: clones.map((c) => c.id),
       };
     }
+    case "seal": {
+      // Seals a burst of transient edits (drag/resize/slider) into a single
+      // history entry using the document as it was before the burst started.
+      if (!a.before || a.before === state.doc) return state;
+      return { ...state, past: [...state.past, a.before].slice(-MAX_HISTORY), future: [] };
+    }
     case "undo": {
       const prev = state.past[state.past.length - 1];
       if (!prev) return state;
