@@ -48,11 +48,6 @@ import { Route as LangAuthenticatedCoSlugIndexRouteImport } from './routes/$lang
 import { Route as LangAuthenticatedCoSlugTemplatesRouteImport } from './routes/$lang/_authenticated/co/$slug/templates'
 import { Route as LangAuthenticatedCoSlugStudioRouteImport } from './routes/$lang/_authenticated/co/$slug/studio'
 import { Route as LangAuthenticatedCoSlugSettingsRouteImport } from './routes/$lang/_authenticated/co/$slug/settings'
-import { Route as LangAuthenticatedCoSlugSeoRouteImport } from './routes/$lang/_authenticated/co/$slug/seo'
-import { Route as LangAuthenticatedCoSlugQrRouteImport } from './routes/$lang/_authenticated/co/$slug/qr'
-import { Route as LangAuthenticatedCoSlugPermissionsRouteImport } from './routes/$lang/_authenticated/co/$slug/permissions'
-import { Route as LangAuthenticatedCoSlugPageRouteImport } from './routes/$lang/_authenticated/co/$slug/page'
-import { Route as LangAuthenticatedCoSlugNfcRouteImport } from './routes/$lang/_authenticated/co/$slug/nfc'
 import { Route as LangAuthenticatedCoSlugMediaRouteImport } from './routes/$lang/_authenticated/co/$slug/media'
 import { Route as LangAuthenticatedCoSlugEmployeesRouteImport } from './routes/$lang/_authenticated/co/$slug/employees'
 import { Route as LangAuthenticatedCoSlugCardRouteImport } from './routes/$lang/_authenticated/co/$slug/card'
@@ -267,36 +262,6 @@ const LangAuthenticatedCoSlugSettingsRoute =
     path: '/settings',
     getParentRoute: () => LangAuthenticatedCoSlugRouteRoute,
   } as any)
-const LangAuthenticatedCoSlugSeoRoute =
-  LangAuthenticatedCoSlugSeoRouteImport.update({
-    id: '/seo',
-    path: '/seo',
-    getParentRoute: () => LangAuthenticatedCoSlugRouteRoute,
-  } as any)
-const LangAuthenticatedCoSlugQrRoute =
-  LangAuthenticatedCoSlugQrRouteImport.update({
-    id: '/qr',
-    path: '/qr',
-    getParentRoute: () => LangAuthenticatedCoSlugRouteRoute,
-  } as any)
-const LangAuthenticatedCoSlugPermissionsRoute =
-  LangAuthenticatedCoSlugPermissionsRouteImport.update({
-    id: '/permissions',
-    path: '/permissions',
-    getParentRoute: () => LangAuthenticatedCoSlugRouteRoute,
-  } as any)
-const LangAuthenticatedCoSlugPageRoute =
-  LangAuthenticatedCoSlugPageRouteImport.update({
-    id: '/page',
-    path: '/page',
-    getParentRoute: () => LangAuthenticatedCoSlugRouteRoute,
-  } as any)
-const LangAuthenticatedCoSlugNfcRoute =
-  LangAuthenticatedCoSlugNfcRouteImport.update({
-    id: '/nfc',
-    path: '/nfc',
-    getParentRoute: () => LangAuthenticatedCoSlugRouteRoute,
-  } as any)
 const LangAuthenticatedCoSlugMediaRoute =
   LangAuthenticatedCoSlugMediaRouteImport.update({
     id: '/media',
@@ -382,11 +347,6 @@ export interface FileRoutesByFullPath {
   '/$lang/co/$slug/card': typeof LangAuthenticatedCoSlugCardRoute
   '/$lang/co/$slug/employees': typeof LangAuthenticatedCoSlugEmployeesRoute
   '/$lang/co/$slug/media': typeof LangAuthenticatedCoSlugMediaRoute
-  '/$lang/co/$slug/nfc': typeof LangAuthenticatedCoSlugNfcRoute
-  '/$lang/co/$slug/page': typeof LangAuthenticatedCoSlugPageRoute
-  '/$lang/co/$slug/permissions': typeof LangAuthenticatedCoSlugPermissionsRoute
-  '/$lang/co/$slug/qr': typeof LangAuthenticatedCoSlugQrRoute
-  '/$lang/co/$slug/seo': typeof LangAuthenticatedCoSlugSeoRoute
   '/$lang/co/$slug/settings': typeof LangAuthenticatedCoSlugSettingsRoute
   '/$lang/co/$slug/studio': typeof LangAuthenticatedCoSlugStudioRoute
   '/$lang/co/$slug/templates': typeof LangAuthenticatedCoSlugTemplatesRoute
@@ -432,11 +392,6 @@ export interface FileRoutesByTo {
   '/$lang/co/$slug/card': typeof LangAuthenticatedCoSlugCardRoute
   '/$lang/co/$slug/employees': typeof LangAuthenticatedCoSlugEmployeesRoute
   '/$lang/co/$slug/media': typeof LangAuthenticatedCoSlugMediaRoute
-  '/$lang/co/$slug/nfc': typeof LangAuthenticatedCoSlugNfcRoute
-  '/$lang/co/$slug/page': typeof LangAuthenticatedCoSlugPageRoute
-  '/$lang/co/$slug/permissions': typeof LangAuthenticatedCoSlugPermissionsRoute
-  '/$lang/co/$slug/qr': typeof LangAuthenticatedCoSlugQrRoute
-  '/$lang/co/$slug/seo': typeof LangAuthenticatedCoSlugSeoRoute
   '/$lang/co/$slug/settings': typeof LangAuthenticatedCoSlugSettingsRoute
   '/$lang/co/$slug/studio': typeof LangAuthenticatedCoSlugStudioRoute
   '/$lang/co/$slug/templates': typeof LangAuthenticatedCoSlugTemplatesRoute
@@ -486,11 +441,6 @@ export interface FileRoutesById {
   '/$lang/_authenticated/co/$slug/card': typeof LangAuthenticatedCoSlugCardRoute
   '/$lang/_authenticated/co/$slug/employees': typeof LangAuthenticatedCoSlugEmployeesRoute
   '/$lang/_authenticated/co/$slug/media': typeof LangAuthenticatedCoSlugMediaRoute
-  '/$lang/_authenticated/co/$slug/nfc': typeof LangAuthenticatedCoSlugNfcRoute
-  '/$lang/_authenticated/co/$slug/page': typeof LangAuthenticatedCoSlugPageRoute
-  '/$lang/_authenticated/co/$slug/permissions': typeof LangAuthenticatedCoSlugPermissionsRoute
-  '/$lang/_authenticated/co/$slug/qr': typeof LangAuthenticatedCoSlugQrRoute
-  '/$lang/_authenticated/co/$slug/seo': typeof LangAuthenticatedCoSlugSeoRoute
   '/$lang/_authenticated/co/$slug/settings': typeof LangAuthenticatedCoSlugSettingsRoute
   '/$lang/_authenticated/co/$slug/studio': typeof LangAuthenticatedCoSlugStudioRoute
   '/$lang/_authenticated/co/$slug/templates': typeof LangAuthenticatedCoSlugTemplatesRoute
@@ -540,11 +490,6 @@ export interface FileRouteTypes {
     | '/$lang/co/$slug/card'
     | '/$lang/co/$slug/employees'
     | '/$lang/co/$slug/media'
-    | '/$lang/co/$slug/nfc'
-    | '/$lang/co/$slug/page'
-    | '/$lang/co/$slug/permissions'
-    | '/$lang/co/$slug/qr'
-    | '/$lang/co/$slug/seo'
     | '/$lang/co/$slug/settings'
     | '/$lang/co/$slug/studio'
     | '/$lang/co/$slug/templates'
@@ -590,11 +535,6 @@ export interface FileRouteTypes {
     | '/$lang/co/$slug/card'
     | '/$lang/co/$slug/employees'
     | '/$lang/co/$slug/media'
-    | '/$lang/co/$slug/nfc'
-    | '/$lang/co/$slug/page'
-    | '/$lang/co/$slug/permissions'
-    | '/$lang/co/$slug/qr'
-    | '/$lang/co/$slug/seo'
     | '/$lang/co/$slug/settings'
     | '/$lang/co/$slug/studio'
     | '/$lang/co/$slug/templates'
@@ -643,11 +583,6 @@ export interface FileRouteTypes {
     | '/$lang/_authenticated/co/$slug/card'
     | '/$lang/_authenticated/co/$slug/employees'
     | '/$lang/_authenticated/co/$slug/media'
-    | '/$lang/_authenticated/co/$slug/nfc'
-    | '/$lang/_authenticated/co/$slug/page'
-    | '/$lang/_authenticated/co/$slug/permissions'
-    | '/$lang/_authenticated/co/$slug/qr'
-    | '/$lang/_authenticated/co/$slug/seo'
     | '/$lang/_authenticated/co/$slug/settings'
     | '/$lang/_authenticated/co/$slug/studio'
     | '/$lang/_authenticated/co/$slug/templates'
@@ -941,41 +876,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangAuthenticatedCoSlugSettingsRouteImport
       parentRoute: typeof LangAuthenticatedCoSlugRouteRoute
     }
-    '/$lang/_authenticated/co/$slug/seo': {
-      id: '/$lang/_authenticated/co/$slug/seo'
-      path: '/seo'
-      fullPath: '/$lang/co/$slug/seo'
-      preLoaderRoute: typeof LangAuthenticatedCoSlugSeoRouteImport
-      parentRoute: typeof LangAuthenticatedCoSlugRouteRoute
-    }
-    '/$lang/_authenticated/co/$slug/qr': {
-      id: '/$lang/_authenticated/co/$slug/qr'
-      path: '/qr'
-      fullPath: '/$lang/co/$slug/qr'
-      preLoaderRoute: typeof LangAuthenticatedCoSlugQrRouteImport
-      parentRoute: typeof LangAuthenticatedCoSlugRouteRoute
-    }
-    '/$lang/_authenticated/co/$slug/permissions': {
-      id: '/$lang/_authenticated/co/$slug/permissions'
-      path: '/permissions'
-      fullPath: '/$lang/co/$slug/permissions'
-      preLoaderRoute: typeof LangAuthenticatedCoSlugPermissionsRouteImport
-      parentRoute: typeof LangAuthenticatedCoSlugRouteRoute
-    }
-    '/$lang/_authenticated/co/$slug/page': {
-      id: '/$lang/_authenticated/co/$slug/page'
-      path: '/page'
-      fullPath: '/$lang/co/$slug/page'
-      preLoaderRoute: typeof LangAuthenticatedCoSlugPageRouteImport
-      parentRoute: typeof LangAuthenticatedCoSlugRouteRoute
-    }
-    '/$lang/_authenticated/co/$slug/nfc': {
-      id: '/$lang/_authenticated/co/$slug/nfc'
-      path: '/nfc'
-      fullPath: '/$lang/co/$slug/nfc'
-      preLoaderRoute: typeof LangAuthenticatedCoSlugNfcRouteImport
-      parentRoute: typeof LangAuthenticatedCoSlugRouteRoute
-    }
     '/$lang/_authenticated/co/$slug/media': {
       id: '/$lang/_authenticated/co/$slug/media'
       path: '/media'
@@ -1049,11 +949,6 @@ interface LangAuthenticatedCoSlugRouteRouteChildren {
   LangAuthenticatedCoSlugCardRoute: typeof LangAuthenticatedCoSlugCardRoute
   LangAuthenticatedCoSlugEmployeesRoute: typeof LangAuthenticatedCoSlugEmployeesRoute
   LangAuthenticatedCoSlugMediaRoute: typeof LangAuthenticatedCoSlugMediaRoute
-  LangAuthenticatedCoSlugNfcRoute: typeof LangAuthenticatedCoSlugNfcRoute
-  LangAuthenticatedCoSlugPageRoute: typeof LangAuthenticatedCoSlugPageRoute
-  LangAuthenticatedCoSlugPermissionsRoute: typeof LangAuthenticatedCoSlugPermissionsRoute
-  LangAuthenticatedCoSlugQrRoute: typeof LangAuthenticatedCoSlugQrRoute
-  LangAuthenticatedCoSlugSeoRoute: typeof LangAuthenticatedCoSlugSeoRoute
   LangAuthenticatedCoSlugSettingsRoute: typeof LangAuthenticatedCoSlugSettingsRoute
   LangAuthenticatedCoSlugStudioRoute: typeof LangAuthenticatedCoSlugStudioRoute
   LangAuthenticatedCoSlugTemplatesRoute: typeof LangAuthenticatedCoSlugTemplatesRoute
@@ -1070,12 +965,6 @@ const LangAuthenticatedCoSlugRouteRouteChildren: LangAuthenticatedCoSlugRouteRou
     LangAuthenticatedCoSlugEmployeesRoute:
       LangAuthenticatedCoSlugEmployeesRoute,
     LangAuthenticatedCoSlugMediaRoute: LangAuthenticatedCoSlugMediaRoute,
-    LangAuthenticatedCoSlugNfcRoute: LangAuthenticatedCoSlugNfcRoute,
-    LangAuthenticatedCoSlugPageRoute: LangAuthenticatedCoSlugPageRoute,
-    LangAuthenticatedCoSlugPermissionsRoute:
-      LangAuthenticatedCoSlugPermissionsRoute,
-    LangAuthenticatedCoSlugQrRoute: LangAuthenticatedCoSlugQrRoute,
-    LangAuthenticatedCoSlugSeoRoute: LangAuthenticatedCoSlugSeoRoute,
     LangAuthenticatedCoSlugSettingsRoute: LangAuthenticatedCoSlugSettingsRoute,
     LangAuthenticatedCoSlugStudioRoute: LangAuthenticatedCoSlugStudioRoute,
     LangAuthenticatedCoSlugTemplatesRoute:
