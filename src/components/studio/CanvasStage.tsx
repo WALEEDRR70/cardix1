@@ -614,6 +614,19 @@ export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<H
     height: Math.abs(marquee.y1 - marquee.y0) * zoom,
   };
 
+  // Bounding box of a multi-selection (used for group scaling).
+  const groupBox = useMemo(() => {
+    const items = selected.filter((n) => !n.locked);
+    if (items.length < 2) return null;
+    const x = Math.min(...items.map((n) => n.x));
+    const y = Math.min(...items.map((n) => n.y));
+    const w = Math.max(...items.map((n) => n.x + n.w)) - x;
+    const h = Math.max(...items.map((n) => n.y + n.h)) - y;
+    return { x, y, w: Math.max(1, w), h: Math.max(1, h) };
+  }, [selected]);
+
+
+
   return (
     <div
       ref={viewportRef}
