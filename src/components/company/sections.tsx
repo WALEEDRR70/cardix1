@@ -300,6 +300,10 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
   const [inv, setInv] = useState({ name: "", email: "", job_title: "", department_id: "", phone: "", role: "employee" as CompanyRole, template_id: "" });
   const [busy, setBusy] = useState(false);
   const [lastLink, setLastLink] = useState<string | null>(null);
+  // Single-use join link: copying it immediately mints a fresh one.
+  const [linkInv, setLinkInv] = useState<{ id: string; token: string; url: string } | null>(null);
+  const [linkBusy, setLinkBusy] = useState(false);
+  const [linkCfg, setLinkCfg] = useState({ department_id: "", role: "employee" as CompanyRole, template_id: "" });
 
   const { data: members } = useQuery({
     queryKey: ["company-members", company.id],
@@ -430,6 +434,41 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
     toast.success(w.saved);
   }
 
+  /** Mint a fresh single-use join link (optionally discarding the previous unused one). */
+  async function mintLink(cfg = linkCfg, discardId?: string) {
+    setLinkBusy(true);
+    try {
+      if (discardId) {
+        await supabase.from("company_invitations").update({ status: "revoked" }).eq("id", discardId);
+      }
+      const created = await createInvite({
+        name: "", email: "", job_title: "", phone: "",
+        department_id: cfg.department_id, role: cfg.role, template_id: cfg.template_id,
+      });
+      setLinkInv(created);
+      qc.invalidateQueries({ queryKey: ["company-invites", company.id] });
+      return created;
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Error");
+      return null;
+    } finally {
+      setLinkBusy(false);
+    }
+  }
+
+  useEffect(() => {
+    if (canEdit && !linkInv && !linkBusy) void mintLink();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canEdit, company.id]);
+
+  async function copyLink() {
+    if (!linkInv) return;
+    await navigator.clipboard.writeText(linkInv.url);
+    toast.success(w.copied);
+    // The copied link stays valid for exactly one join; a new one is ready instantly.
+    await mintLink();
+  }
+
   async function setRole(memberId: string, role: CompanyRole) {
     const { error } = await supabase.from("company_members").update({ role }).eq("id", memberId);
     if (error) { toast.error(error.message); return; }
@@ -455,6 +494,59 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
             <Upload className="h-4 w-4" /> {w.bulkImport}
           </button>
         </div>
+      )}
+
+      {canEdit && (
+        <Card className="space-y-3">
+          <div>
+            <p className="text-sm font-semibold">{ar ? "رابط دعوة سريع" : "Quick invite link"}</p>
+            <p className="text-xs text-muted-foreground">
+              {ar
+                ? "شارك الرابط مع الموظف — يعمل مرة واحدة فقط، ويتجدد تلقائيًا بعد كل نسخ."
+                : "Share this link with an employee — it works once and renews automatically after each copy."}
+            </p>
+          </div>
+          <div className="grid gap-2 sm:grid-cols-3">
+            <select
+              value={linkCfg.department_id}
+              onChange={(e) => { const c = { ...linkCfg, department_id: e.target.value }; setLinkCfg(c); void mintLink(c, linkInv?.id); }}
+              className="rounded-2xl border border-input bg-card px-3 py-2.5 text-xs outline-none"
+            >
+              <option value="">{w.department} —</option>
+              {(departments ?? []).map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
+            </select>
+            <select
+              value={linkCfg.role}
+              onChange={(e) => { const c = { ...linkCfg, role: e.target.value as CompanyRole }; setLinkCfg(c); void mintLink(c, linkInv?.id); }}
+              className="rounded-2xl border border-input bg-card px-3 py-2.5 text-xs outline-none"
+            >
+              {(["admin", "manager", "employee", "viewer"] as CompanyRole[]).map((r) => (
+                <option key={r} value={r}>{roleLabel(r, w)}</option>
+              ))}
+            </select>
+            <select
+              value={linkCfg.template_id}
+              onChange={(e) => { const c = { ...linkCfg, template_id: e.target.value }; setLinkCfg(c); void mintLink(c, linkInv?.id); }}
+              className="rounded-2xl border border-input bg-card px-3 py-2.5 text-xs outline-none"
+            >
+              <option value="">{w.templates} —</option>
+              {(cardDesigns ?? []).map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
+            </select>
+          </div>
+          <div className="flex items-center gap-2 rounded-2xl bg-secondary px-3 py-2">
+            <span className="min-w-0 flex-1 truncate text-[11px] text-muted-foreground">
+              {linkBusy ? "…" : linkInv?.url ?? "—"}
+            </span>
+            <button
+              type="button"
+              onClick={copyLink}
+              disabled={!linkInv || linkBusy}
+              className="shrink-0 rounded-xl bg-card px-3 py-1.5 text-xs font-medium disabled:opacity-50"
+            >
+              <Copy className="me-1 inline h-3.5 w-3.5" /> {w.copyLink}
+            </button>
+          </div>
+        </Card>
       )}
 
       {importing && (
