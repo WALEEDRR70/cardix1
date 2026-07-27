@@ -4,7 +4,7 @@ import { CardPreview, TEMPLATE_META, type TemplateId } from "@/components/CardPr
 import { useServerFn } from "@tanstack/react-start";
 import { generateBio } from "@/lib/bio.functions";
 import { supabase } from "@/integrations/supabase/client";
-import { Sparkles, Upload, X, Check, Plus, Lock, RotateCcw } from "lucide-react";
+import { Sparkles, Upload, X, Check, Plus, Lock, RotateCcw, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 import { SOCIALS } from "@/lib/socials";
 import { useDragScroll } from "@/lib/use-drag-scroll";
@@ -63,6 +63,7 @@ export function CardForm({
   const [saving, setSaving] = useState(false);
   const [genBusy, setGenBusy] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [more, setMore] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const genBio = useServerFn(generateBio);
   const tplScrollRef = useDragScroll<HTMLDivElement>();
