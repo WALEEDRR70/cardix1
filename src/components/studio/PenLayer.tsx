@@ -168,9 +168,12 @@ export function PenLayer({
   const [dragging, setDragging] = useState(false);
   const [smoothOn, setSmoothOn] = useState(true);
   const [smoothness, setSmoothness] = useState(0.5);
+  const [handleMode, setHandleMode] = useState<"symmetric" | "independent">("symmetric");
   const mods = useRef({ shift: false, alt: false });
   const ptsRef = useRef(pts);
   ptsRef.current = pts;
+  const modeRef = useRef(handleMode);
+  modeRef.current = handleMode;
   const smoothRef = useRef({ on: smoothOn, amount: smoothness });
   smoothRef.current = { on: smoothOn, amount: smoothness };
 
