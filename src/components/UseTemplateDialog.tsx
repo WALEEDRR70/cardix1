@@ -40,7 +40,7 @@ export function UseTemplateDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-h-[85vh] w-[calc(100vw-2rem)] max-w-2xl overflow-y-auto overflow-x-hidden p-4 sm:p-6">
         <DialogHeader>
           <DialogTitle>{ar ? "استخدام القالب" : "Use template"}</DialogTitle>
           <DialogDescription>
@@ -72,7 +72,7 @@ export function UseTemplateDialog({
                     type="button"
                     onClick={() => setPicked(c.id)}
                     className={
-                      "relative w-[190px] shrink-0 rounded-2xl border p-2 text-start transition " +
+                      "relative w-[150px] shrink-0 rounded-2xl border p-2 text-start transition sm:w-[190px] " +
                       (active ? "border-accent bg-accent/10" : "border-border/60 hover:border-accent/50")
                     }
                   >
@@ -112,12 +112,12 @@ export function UseTemplateDialog({
           )}
         </div>
 
-        <div className="mt-2 flex flex-wrap items-center gap-2">
+        <div className="mt-2 flex flex-col-reverse gap-2 sm:flex-row sm:items-center">
           <button
             type="button"
             disabled={!picked || busy}
             onClick={() => picked && onApply(picked)}
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-accent px-4 py-2.5 text-xs font-semibold text-accent-foreground disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-1.5 rounded-full bg-accent px-4 py-2.5 sm:flex-1 text-xs font-semibold text-accent-foreground disabled:opacity-50"
           >
             {busy && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
             {ar ? "تطبيق على البطاقة المختارة" : "Apply to selected card"}
@@ -126,7 +126,7 @@ export function UseTemplateDialog({
             type="button"
             disabled={busy}
             onClick={onCreate}
-            className="flex items-center justify-center gap-1.5 rounded-full border border-border/60 px-4 py-2.5 text-xs font-semibold disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-1.5 rounded-full border border-border/60 px-4 py-2.5 sm:w-auto text-xs font-semibold disabled:opacity-50"
           >
             <Plus className="h-3.5 w-3.5" />
             {ar ? "إنشاء بطاقة جديدة" : "Create new card"}
