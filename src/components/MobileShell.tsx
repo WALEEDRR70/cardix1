@@ -1,6 +1,6 @@
 import { useRouterState } from "@tanstack/react-router";
 import { Link } from "@/lib/nav";
-import { Home, Layers, Plus, ScanLine, BookmarkCheck, Building2 } from "lucide-react";
+import { Home, Layers, Plus, ScanLine, BookmarkCheck, Building2, LayoutTemplate, Wrench } from "lucide-react";
 import type { ReactNode } from "react";
 import { useI18n } from "@/lib/i18n";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
