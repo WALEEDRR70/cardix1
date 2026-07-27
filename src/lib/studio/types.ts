@@ -14,6 +14,8 @@ export type NodeStyle = {
   letterSpacing?: number;
   lineHeight?: number;
   align?: "left" | "center" | "right";
+  textTransform?: "none" | "uppercase";
+
   radius?: number;
   borderWidth?: number;
   borderColor?: string;
