@@ -626,7 +626,7 @@ export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<H
               {editingId === n.id ? (
                 <TextEditor node={n} onDone={(text) => { dispatch({ t: "update", ids: [n.id], patch: { text } }); setEditingId(null); }} />
               ) : (
-                <NodeContent n={n} />
+                <NodeContent n={n} values={values} />
               )}
             </div>
           ))}
