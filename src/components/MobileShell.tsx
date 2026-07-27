@@ -1,6 +1,6 @@
 import { useRouterState } from "@tanstack/react-router";
 import { Link } from "@/lib/nav";
-import { Home, Layers, Plus, ScanLine, BookmarkCheck, Building2, LayoutTemplate, Wrench } from "lucide-react";
+import { Home, Plus, ScanLine, BookmarkCheck, Building2, LayoutTemplate, Wrench, Settings as SettingsIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { useI18n } from "@/lib/i18n";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
@@ -8,6 +8,7 @@ import { getReadableText } from "@/lib/contrast";
 import { stripLocalePrefix } from "@/lib/locale-routing";
 import { wsDict } from "@/i18n/workspace";
 import { useAccount } from "@/lib/account";
+import { SiteTopBar } from "@/components/SiteTopBar";
 
 
 export function MobileShell({
@@ -23,15 +24,21 @@ export function MobileShell({
     <div className="relative min-h-[100dvh] bg-background lg:flex">
       {!hideNav && <DesktopSidebar />}
 
-      <div className={"relative flex min-h-[100dvh] w-full flex-col " + (hideNav ? "" : "lg:pl-64")}>
+      <div className={"relative flex min-h-[100dvh] w-full flex-col " + (hideNav ? "" : "lg:pl-64 rtl:lg:pl-0 rtl:lg:pr-64")}>
         {/* Ambient background for desktop */}
         <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 hidden opacity-60 lg:block" style={{ backgroundImage: "var(--gradient-mesh)" }} />
 
-        <div className="mx-auto w-full max-w-[440px] lg:max-w-[1200px]">
+        {!hideNav && (
+          <div className="sticky top-0 z-30 hidden lg:block">
+            <SiteTopBar />
+          </div>
+        )}
+
+        <div className="mx-auto w-full max-w-[440px] lg:max-w-[1180px]">
           {topBar}
         </div>
         <main className={"flex-1 " + (hideNav ? "" : "pb-nav lg:pb-16")}>
-          <div className="mx-auto w-full max-w-[440px] lg:max-w-[1200px]">
+          <div className="mx-auto w-full max-w-[440px] lg:max-w-[1180px]">
             {children}
           </div>
         </main>
@@ -41,6 +48,7 @@ export function MobileShell({
     </div>
   );
 }
+
 
 /* -------------------- Desktop sidebar -------------------- */
 function DesktopSidebar() {
@@ -53,12 +61,12 @@ function DesktopSidebar() {
     { to: "/scan", icon: ScanLine, label: t.scanCard },
     { to: "/templates", icon: LayoutTemplate, label: lang === "ar" ? "معرض القوالب" : "Templates" },
     { to: "/tools", icon: Wrench, label: lang === "ar" ? "الأدوات" : "Tools" },
-    { to: "/settings", icon: Layers, label: t.settings },
+    { to: "/settings", icon: SettingsIcon, label: t.settings },
   ] as const;
 
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-border/60 bg-card/40 backdrop-blur-xl lg:flex">
+    <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-border/60 bg-card/40 backdrop-blur-xl lg:flex rtl:left-auto rtl:right-0 rtl:border-l rtl:border-r-0">
       <Link to="/dashboard" className="flex items-center gap-2.5 px-6 pt-6">
         <img src={logoAsset.url} alt="" className="h-9 w-9 object-contain" />
         <span className="text-base font-semibold tracking-tight">{t.brand}</span>
@@ -161,7 +169,7 @@ export function MobileBottomNav({ accent }: { accent?: string } = {}) {
     { to: "/dashboard", icon: Home, label: t.home },
     { to: "/vault", icon: BookmarkCheck, label: t.vault },
     { to: "/cards/new", icon: Plus, label: t.newCard },
-    { to: "/settings", icon: Layers, label: t.settingsShort },
+    { to: "/settings", icon: SettingsIcon, label: t.settingsShort },
   ] as const;
 
   const fabColor = accent ? getReadableText(accent) : undefined;
