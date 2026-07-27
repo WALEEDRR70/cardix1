@@ -66,7 +66,7 @@ function DesktopSidebar() {
 
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-border/60 bg-card/40 backdrop-blur-xl lg:flex">
+    <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-border/60 bg-card/40 backdrop-blur-xl lg:flex rtl:left-auto rtl:right-0 rtl:border-l rtl:border-r-0">
       <Link to="/dashboard" className="flex items-center gap-2.5 px-6 pt-6">
         <img src={logoAsset.url} alt="" className="h-9 w-9 object-contain" />
         <span className="text-base font-semibold tracking-tight">{t.brand}</span>
