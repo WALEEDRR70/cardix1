@@ -291,7 +291,9 @@ type MemberRow = {
 };
 
 export function EmployeesTab({ company, canEdit, userId }: { company: Company; canEdit: boolean; userId: string }) {
-  const { w } = useWs();
+  const { w, lang } = useWs();
+  const ar = lang === "ar";
+
   const qc = useQueryClient();
   const [inviting, setInviting] = useState(false);
   const [importing, setImporting] = useState(false);
