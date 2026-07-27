@@ -2,13 +2,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Link, useNavigate } from "@/lib/nav";
 import { useQuery } from "@tanstack/react-query";
-import { Wand2, Plus, Loader2 } from "lucide-react";
+import { Wand2, Plus, Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { CompanyShell } from "@/components/company/CompanyShell";
 import { Card, EmptyState } from "@/components/company/sections";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
-import { useWs } from "@/lib/workspace";
+import { canManageCompany, useWs } from "@/lib/workspace";
 
 export const Route = createFileRoute("/$lang/_authenticated/co/$slug/studio")({ component: Page });
 
@@ -17,11 +17,15 @@ const T = {
     desc: "Open any company card in the visual designer: drag & drop canvas, layers, elements, AI style rebuild and export.",
     open: "Open designer", none: "No cards yet", cards: "Company cards",
     newDesign: "New drag & drop design", creating: "Creating…", failed: "Could not create the design",
+    del: "Delete card", confirm: "Delete this card permanently?", deleted: "Card deleted",
+    delFailed: "Could not delete the card",
   },
   ar: {
     desc: "افتح أي بطاقة للشركة داخل المصمم البصري: لوحة سحب وإفلات، طبقات، عناصر، إعادة بناء النمط بالذكاء الاصطناعي والتصدير.",
     open: "فتح المصمم", none: "لا توجد بطاقات بعد", cards: "بطاقات الشركة",
     newDesign: "تصميم جديد بالسحب والإفلات", creating: "جارٍ الإنشاء…", failed: "تعذّر إنشاء التصميم",
+    del: "حذف البطاقة", confirm: "هل تريد حذف هذه البطاقة نهائيًا؟", deleted: "تم حذف البطاقة",
+    delFailed: "تعذّر حذف البطاقة",
   },
 };
 
@@ -31,6 +35,24 @@ function Page() {
   const t = T[lang === "ar" ? "ar" : "en"];
   const navigate = useNavigate();
   const [creating, setCreating] = useState(false);
+  const [deleting, setDeleting] = useState<string | null>(null);
+  const canDelete = canManageCompany(role);
+
+  async function deleteCard(id: string) {
+    if (!window.confirm(t.confirm)) return;
+    setDeleting(id);
+    try {
+      const { error } = await supabase.from("cards").delete().eq("id", id);
+      if (error) throw error;
+      toast.success(t.deleted);
+      await refetch();
+    } catch {
+      toast.error(t.delFailed);
+    } finally {
+      setDeleting(null);
+    }
+  }
+
 
   async function createDesign() {
     setCreating(true);
@@ -60,7 +82,7 @@ function Page() {
     }
   }
 
-  const { data: cards = [] } = useQuery({
+  const { data: cards = [], refetch } = useQuery({
     queryKey: ["company-studio-cards", company.id],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -96,11 +118,11 @@ function Page() {
         ) : (
           <ul className="grid gap-3 sm:grid-cols-2">
             {cards.map((c) => (
-              <li key={c.id}>
+              <li key={c.id} className="relative">
                 <Link
                   to="/studio/$id"
                   params={{ id: c.id }}
-                  className="flex items-center gap-3 rounded-2xl border border-border bg-card/60 p-4 transition hover:border-primary/50"
+                  className="flex items-center gap-3 rounded-2xl border border-border bg-card/60 p-4 pe-14 transition hover:border-primary/50"
                 >
                   <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/15 text-primary">
                     <Wand2 className="h-5 w-5" />
@@ -112,6 +134,22 @@ function Page() {
                     <span className="block truncate text-xs text-muted-foreground">{c.title || t.open}</span>
                   </span>
                 </Link>
+                {canDelete && (
+                  <button
+                    type="button"
+                    title={t.del}
+                    aria-label={t.del}
+                    onClick={() => deleteCard(c.id)}
+                    disabled={deleting === c.id}
+                    className="absolute end-3 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-border/60 bg-card/80 text-muted-foreground transition hover:border-destructive/60 hover:text-destructive disabled:opacity-60"
+                  >
+                    {deleting === c.id ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Trash2 className="h-4 w-4" />
+                    )}
+                  </button>
+                )}
               </li>
             ))}
           </ul>
