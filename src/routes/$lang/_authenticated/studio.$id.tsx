@@ -34,7 +34,7 @@ function StudioRoute() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("cards")
-        .select("id, title, name, design, accent_color")
+        .select("id, title, name, design, accent_color, avatar_url, company_id, companies:company_id(logo_url, name)")
         .eq("id", id)
         .maybeSingle();
       if (error) throw error;
@@ -61,10 +61,15 @@ function StudioRoute() {
   }
 
   const initial = (data.design as StudioDoc | null) ?? emptyDoc((data.accent_color as string) || "#7c34ff");
-  return <Studio cardId={data.id} title={(data.title as string) || (data.name as string) || ""} initial={initial} />;
+  const company = (data as { companies?: { logo_url: string | null; name: string | null } | null }).companies ?? null;
+  const values: Record<string, string> = {};
+  if (company?.logo_url) values["{{Logo}}"] = company.logo_url;
+  if (data.avatar_url) values["{{Photo}}"] = data.avatar_url as string;
+  if (company?.name) values["{{Company}}"] = company.name;
+  return <Studio cardId={data.id} title={(data.title as string) || (data.name as string) || ""} initial={initial} values={values} />;
 }
 
-function Studio({ cardId, title, initial }: { cardId: string; title: string; initial: StudioDoc }) {
+function Studio({ cardId, title, initial, values }: { cardId: string; title: string; initial: StudioDoc; values?: Record<string, string> }) {
   const { lang } = useI18n();
   const ar = lang === "ar";
   const api = useStudioState(initial);
@@ -110,7 +115,7 @@ function Studio({ cardId, title, initial }: { cardId: string; title: string; ini
         <StudioToolbar ar={ar} title={title} saving={saving} onSave={() => void save(false)} />
         <div className="flex min-h-0 flex-1">
           <ElementsPanel ar={ar} />
-          <CanvasStage stageRef={stageRef} />
+          <CanvasStage stageRef={stageRef} values={values} />
           <PropertiesPanel ar={ar} />
         </div>
       </div>

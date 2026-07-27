@@ -202,7 +202,7 @@ type Drag =
 
 type Marquee = { x0: number; y0: number; x1: number; y1: number };
 
-export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivElement | null> }) {
+export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<HTMLDivElement | null>; values?: Record<string, string> }) {
   const { state, dispatch, selected, addNode } = useStudio();
   const { doc, zoom, pan, grid, snap, guides, fitTick, tool } = state;
 
@@ -626,7 +626,7 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
               {editingId === n.id ? (
                 <TextEditor node={n} onDone={(text) => { dispatch({ t: "update", ids: [n.id], patch: { text } }); setEditingId(null); }} />
               ) : (
-                <NodeContent n={n} />
+                <NodeContent n={n} values={values} />
               )}
             </div>
           ))}
