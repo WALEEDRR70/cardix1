@@ -472,7 +472,21 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
                   ))}
                 </select>
               </div>
+              <div className="sm:col-span-2">
+                <label className="mb-1 block px-1 text-xs text-muted-foreground">{w.templates}</label>
+                <select
+                  value={inv.template_id}
+                  onChange={(e) => setInv({ ...inv, template_id: e.target.value })}
+                  className="w-full rounded-2xl border border-input bg-card px-4 py-3 text-sm outline-none"
+                >
+                  <option value="">—</option>
+                  {(cardDesigns ?? []).map((d) => (
+                    <option key={d.id} value={d.id}>{d.name}</option>
+                  ))}
+                </select>
+              </div>
             </div>
+
             <SaveBar busy={busy} label={w.sendInvitation} onSave={() => { /* submit via form */ }} />
           </form>
           {lastLink && (
