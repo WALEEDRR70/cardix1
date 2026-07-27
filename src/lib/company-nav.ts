@@ -38,12 +38,9 @@ export const COMPANY_SECTIONS: CompanySection[] = [
     path: "/employees",
     icon: Users,
     label: (w) => w.employees,
-    tabs: [
-      { path: "/employees", icon: Users, label: (w) => w.employees },
-      { path: "/departments", icon: Building, label: (w) => w.departments },
-      { path: "/invitations", icon: MailPlus, label: (w) => w.invite },
-    ],
+    tabs: [{ path: "/employees", icon: Users, label: (w) => w.employees }],
   },
+
   {
     path: "/templates",
     icon: LayoutTemplate,
