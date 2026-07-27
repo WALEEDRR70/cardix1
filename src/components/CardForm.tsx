@@ -214,8 +214,26 @@ export function CardForm({
               className="w-[72px] bg-transparent text-[11px] font-mono uppercase outline-none"
             />
           </div>
+          {accentChanged && (
+            <button
+              type="button"
+              onClick={() => set("accent_color", initial.accent_color)}
+              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-[11px] font-medium text-muted-foreground hover:text-foreground"
+            >
+              <RotateCcw className="h-3 w-3" />
+              {lang === "ar" ? "إعادة الألوان الأصلية" : "Reset original colors"}
+            </button>
+          )}
         </div>
+        {!!design && (
+          <p className="mt-2 px-1 text-[11px] text-muted-foreground">
+            {lang === "ar"
+              ? "تغيير اللون المميز يعيد تلوين تصميم البطاقة بالكامل."
+              : "Changing the accent recolors the whole card design."}
+          </p>
+        )}
       </section>
+
 
 
       {/* Form fields */}
