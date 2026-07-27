@@ -58,6 +58,8 @@ export function CardForm({
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const genBio = useServerFn(generateBio);
+  const tplScrollRef = useDragScroll<HTMLDivElement>();
+
 
   async function uploadAvatar(file: File) {
     const { data: { user } } = await supabase.auth.getUser();
