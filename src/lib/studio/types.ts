@@ -88,18 +88,29 @@ export type StudioDoc = {
 
 /** Dynamic placeholders resolved when an employee card is rendered. */
 export const PLACEHOLDERS = [
-  "{{Employee Name}}", "{{Job Title}}", "{{Company}}", "{{Phone}}",
-  "{{Email}}", "{{Website}}", "{{Address}}", "{{QR}}", "{{Logo}}", "{{Photo}}",
+  "{{Employee Name}}", "{{Job Title}}", "{{Department}}", "{{Company}}", "{{Tagline}}",
+  "{{Bio}}", "{{Phone}}", "{{Mobile}}", "{{WhatsApp}}", "{{Email}}", "{{Website}}",
+  "{{Address}}", "{{Hours}}", "{{LinkedIn}}", "{{Instagram}}", "{{X}}", "{{QR}}",
+  "{{Logo}}", "{{Photo}}",
 ] as const;
 
 export const SAMPLE_VALUES: Record<string, string> = {
   "{{Employee Name}}": "Sara Al-Amin",
   "{{Job Title}}": "Creative Director",
+  "{{Department}}": "Brand Studio",
   "{{Company}}": "Cardixn",
+  "{{Tagline}}": "Design that introduces you.",
+  "{{Bio}}": "Creative director with 10+ years building premium brand identities for teams across the Gulf region.",
   "{{Phone}}": "+971 50 000 0000",
+  "{{Mobile}}": "+971 55 111 2222",
+  "{{WhatsApp}}": "+971 55 111 2222",
   "{{Email}}": "hello@cardixn.com",
   "{{Website}}": "cardixn.com",
   "{{Address}}": "Dubai, UAE",
+  "{{Hours}}": "Sun–Thu · 9:00–18:00",
+  "{{LinkedIn}}": "linkedin.com/in/cardixn",
+  "{{Instagram}}": "@cardixn",
+  "{{X}}": "@cardixn",
 };
 
 export function resolvePlaceholders(text: string, values?: Record<string, string>): string {
