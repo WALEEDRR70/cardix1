@@ -2,13 +2,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Link, useNavigate } from "@/lib/nav";
 import { useQuery } from "@tanstack/react-query";
-import { Wand2, Plus, Loader2 } from "lucide-react";
+import { Wand2, Plus, Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { CompanyShell } from "@/components/company/CompanyShell";
 import { Card, EmptyState } from "@/components/company/sections";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
-import { useWs } from "@/lib/workspace";
+import { canManageCompany, useWs } from "@/lib/workspace";
 
 export const Route = createFileRoute("/$lang/_authenticated/co/$slug/studio")({ component: Page });
 
@@ -17,11 +17,15 @@ const T = {
     desc: "Open any company card in the visual designer: drag & drop canvas, layers, elements, AI style rebuild and export.",
     open: "Open designer", none: "No cards yet", cards: "Company cards",
     newDesign: "New drag & drop design", creating: "Creating…", failed: "Could not create the design",
+    del: "Delete card", confirm: "Delete this card permanently?", deleted: "Card deleted",
+    delFailed: "Could not delete the card",
   },
   ar: {
     desc: "افتح أي بطاقة للشركة داخل المصمم البصري: لوحة سحب وإفلات، طبقات، عناصر، إعادة بناء النمط بالذكاء الاصطناعي والتصدير.",
     open: "فتح المصمم", none: "لا توجد بطاقات بعد", cards: "بطاقات الشركة",
     newDesign: "تصميم جديد بالسحب والإفلات", creating: "جارٍ الإنشاء…", failed: "تعذّر إنشاء التصميم",
+    del: "حذف البطاقة", confirm: "هل تريد حذف هذه البطاقة نهائيًا؟", deleted: "تم حذف البطاقة",
+    delFailed: "تعذّر حذف البطاقة",
   },
 };
 
