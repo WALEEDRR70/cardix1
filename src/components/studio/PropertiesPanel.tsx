@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { useStudio } from "@/lib/studio/store";
-import { CARD_SIZES, PLACEHOLDERS, type ImageSource, type NodeType } from "@/lib/studio/types";
+import { CARD_SIZES, type ImageSource, type NodeType } from "@/lib/studio/types";
 import { uploadStudioImage } from "@/lib/studio/upload";
 import { isSvgSrc } from "@/lib/studio/svg";
 import { SvgPalette } from "@/components/studio/SvgPalette";
