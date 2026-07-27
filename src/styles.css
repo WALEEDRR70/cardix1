@@ -3,8 +3,8 @@
 @import "tw-animate-css";
 
 @theme inline {
-  --font-sans: "Inter", "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
-  --font-arabic: "IBM Plex Sans Arabic", "Inter", sans-serif;
+  --font-sans: "Inter", "Cairo", ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: "Cairo", "IBM Plex Sans Arabic", "Inter", sans-serif;
   --font-display: "Instrument Serif", "Inter", serif;
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
