@@ -80,7 +80,9 @@ export function NodeContent({ n, values }: { n: StudioNode; values?: Record<stri
             letterSpacing: s.letterSpacing,
             lineHeight: s.lineHeight,
             textAlign: s.align,
+            textTransform: s.textTransform,
             padding: s.padding,
+
           }}
         >
           {resolvePlaceholders(n.text ?? "", values)}
