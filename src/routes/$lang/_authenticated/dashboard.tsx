@@ -10,6 +10,8 @@ import { Eye, Sparkles, Trash2, Pencil, QrCode, X, Copy, Share2, ChevronLeft, Ch
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
+import { TemplatesStrip } from "@/components/TemplatesStrip";
+
 import { QRCodeSVG } from "qrcode.react";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 
@@ -131,10 +133,15 @@ function Dashboard() {
                 )}
               </section>
             </div>
+            <TemplatesStrip />
           </>
         ) : (
-          <EmptyHome t={t} />
+          <>
+            <EmptyHome t={t} />
+            <TemplatesStrip />
+          </>
         )}
+
       </div>
 
       <ConfirmDeleteDialog
