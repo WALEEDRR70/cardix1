@@ -8,7 +8,17 @@ import { StaticCardPreview } from "@/components/studio/StaticCardPreview";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "@/lib/nav";
 import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } from "@/i18n/config";
-import { deleteTemplate, listMyTemplates, listPublicTemplates, useTemplate, type DesignTemplate } from "@/lib/templates";
+import { useAccount } from "@/lib/account";
+import { audienceLabel } from "@/components/CommunityTemplates";
+import {
+  deleteTemplate,
+  listMyTemplates,
+  listPublicTemplates,
+  useTemplate,
+  type DesignTemplate,
+  type TemplateAudience,
+  type TemplateTarget,
+} from "@/lib/templates";
 import type { StudioDoc } from "@/lib/studio/types";
 
 export const Route = createFileRoute("/$lang/templates")({
