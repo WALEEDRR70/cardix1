@@ -1,9 +1,12 @@
 import { Phone, Mail, Globe, MessageCircle, MapPin, Briefcase } from "lucide-react";
 import { SOCIALS_BY_ID } from "@/lib/socials";
 import { useI18n } from "@/lib/i18n";
+import { DesignPreview, cardDesignValues } from "@/components/DesignPreview";
+import type { StudioDoc } from "@/lib/studio/types";
 
 export interface CardData {
   name: string;
+  slug?: string | null;
   title?: string | null;
   company?: string | null;
   bio?: string | null;
@@ -15,6 +18,8 @@ export interface CardData {
   avatar_url?: string | null;
   accent_color: string;
   template?: string | null;
+  /** Custom Studio design — takes precedence over the classic template. */
+  design?: unknown;
   socials?: Record<string, string> | null | unknown;
 }
 
@@ -25,8 +30,16 @@ export const TEMPLATES = [
 ] as const;
 export type TemplateId = (typeof TEMPLATES)[number];
 
+function asDoc(design: unknown): StudioDoc | null {
+  const d = design as StudioDoc | null;
+  return d && typeof d === "object" && Array.isArray(d.nodes) && d.w > 0 && d.h > 0 ? d : null;
+}
+
 export function CardPreview({ card, size = "md" }: { card: CardData; size?: "xs" | "sm" | "md" | "lg" | "xl" }) {
   const tpl = (card.template as TemplateId) || "luxury";
+  const doc = asDoc(card.design);
+  const maxW =
+    size === "xs" ? "max-w-[360px]" : size === "sm" ? "max-w-[320px]" : size === "lg" ? "max-w-[440px]" : size === "xl" ? "max-w-[600px]" : "max-w-[400px]";
   const cls =
     size === "xs"
       ? "aspect-[2.05/1] w-full max-w-[360px]"
@@ -37,12 +50,22 @@ export function CardPreview({ card, size = "md" }: { card: CardData; size?: "xs"
           : size === "xl"
             ? "aspect-[1.62/1] w-full max-w-[600px]"
             : "aspect-[1.62/1] w-full max-w-[400px]";
+
+  if (doc) {
+    return (
+      <div className={`card-lift shadow-luxe w-full ${maxW}`}>
+        <DesignPreview doc={doc} values={cardDesignValues(card)} />
+      </div>
+    );
+  }
+
   return (
     <div className={cls + " card-lift shadow-luxe rounded-3xl overflow-hidden"}>
       <TemplateSwitch tpl={tpl} card={card} />
     </div>
   );
 }
+
 
 export function CardFull({ card }: { card: CardData }) {
   return (
