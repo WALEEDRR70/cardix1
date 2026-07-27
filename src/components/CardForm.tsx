@@ -7,6 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Sparkles, Upload, X, Check, Plus, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { SOCIALS } from "@/lib/socials";
+import { useDragScroll } from "@/lib/use-drag-scroll";
+
 
 export interface CardFormData {
   name: string;
