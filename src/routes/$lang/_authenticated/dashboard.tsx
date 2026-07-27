@@ -109,6 +109,7 @@ function Dashboard() {
               <section className="glass rounded-3xl border border-border/40 p-4 lg:p-6">
                 <MyCards
                   cards={cards!}
+                  companyMap={companyMap as Record<string, { name: string; logo_url: string | null }>}
                   onQr={(slug) => setQrSlug(slug)}
                   onEdit={(id) => navigate({ to: "/cards/$id", params: { id } })}
                   onDelete={(id) => setDeleteId(id)}
@@ -191,7 +192,10 @@ type CardActions = {
   onOpen: (slug: string) => void;
 };
 
-function MyCards({ cards, onQr, onEdit, onDelete, onOpen, t }: CardActions & { t: ReturnType<typeof useI18n>["t"] }) {
+function MyCards({ cards, companyMap, onQr, onEdit, onDelete, onOpen, t }: CardActions & {
+  companyMap: Record<string, { name: string; logo_url: string | null }>;
+  t: ReturnType<typeof useI18n>["t"];
+}) {
   const [mode, setMode] = useState<"stack" | "list">("stack");
   // rotation offset: current top card index into `cards`
   const [offset, setOffset] = useState(0);
