@@ -42,7 +42,34 @@ export function CompanyShell({
     ["--brand-2" as string]: company.brand_secondary,
   } as React.CSSProperties;
 
+  const [openGroups, setOpenGroups] = useState<Partial<Record<CompanySection["group"], boolean>>>({});
+
+  const isActive = (s: CompanySection) => {
+    const to = `${base}${s.path}`;
+    return s.path === "" ? path === base || path === `${base}/` : path.startsWith(to);
+  };
+
+  const renderItem = (s: CompanySection) => {
+    const active = isActive(s);
+    return (
+      <Link
+        key={s.path || "overview"}
+        to={`/co/$slug${s.path}`}
+        params={{ slug: company.slug }}
+        onClick={() => setOpen(false)}
+        className={
+          "flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition " +
+          (active ? "bg-secondary text-foreground" : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground")
+        }
+      >
+        <s.icon className="h-4 w-4 shrink-0" style={active ? { color: company.brand_primary } : undefined} />
+        <span className="truncate">{s.label(w)}</span>
+      </Link>
+    );
+  };
+
   const nav = (
+
     <nav className="flex h-full flex-col">
       <Link to="/co/$slug" params={{ slug: company.slug }} className="flex items-center gap-3 px-5 pt-6">
         <span
