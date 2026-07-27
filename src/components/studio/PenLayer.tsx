@@ -425,8 +425,15 @@ export function PenLayer({
     else if (last && Math.hypot(raw.x - last.x, raw.y - last.y) < hit) setHover("last");
     else setHover(null);
 
-    if (e.shiftKey && last) setLive(constrain(last.x, last.y, raw.x, raw.y));
-    else setLive({ x: snapped(raw.x), y: snapped(raw.y) });
+    if (e.shiftKey && last) {
+      const c = constrain(last.x, last.y, raw.x, raw.y);
+      setLive(c);
+      setSnapHit(null);
+    } else {
+      const s = resolveSnap(raw);
+      setLive({ x: s.x, y: s.y });
+      setSnapHit(s.kind === "pixel" ? null : s);
+    }
   }
 
   const map = (x: number, y: number): [number, number] => [x * zoom, y * zoom];
