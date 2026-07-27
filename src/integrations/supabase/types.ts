@@ -224,7 +224,6 @@ export type Database = {
           brand_secondary: string
           city: string | null
           company_size: string | null
-          contact_person: string | null
           country: string | null
           cover_url: string | null
           created_at: string
@@ -239,20 +238,17 @@ export type Database = {
           industry: string | null
           is_published: boolean
           is_verified: boolean
-          legal_address: string | null
           legal_name: string | null
           logo_url: string | null
           name: string
           onboarded_at: string | null
           owner_id: string
           phone: string | null
-          registration_number: string | null
           services: Json
           show_employees: boolean
           slug: string
           socials: Json
           tagline: string | null
-          tax_number: string | null
           theme: string
           timezone: string | null
           updated_at: string
@@ -266,7 +262,6 @@ export type Database = {
           brand_secondary?: string
           city?: string | null
           company_size?: string | null
-          contact_person?: string | null
           country?: string | null
           cover_url?: string | null
           created_at?: string
@@ -281,20 +276,17 @@ export type Database = {
           industry?: string | null
           is_published?: boolean
           is_verified?: boolean
-          legal_address?: string | null
           legal_name?: string | null
           logo_url?: string | null
           name: string
           onboarded_at?: string | null
           owner_id: string
           phone?: string | null
-          registration_number?: string | null
           services?: Json
           show_employees?: boolean
           slug: string
           socials?: Json
           tagline?: string | null
-          tax_number?: string | null
           theme?: string
           timezone?: string | null
           updated_at?: string
@@ -308,7 +300,6 @@ export type Database = {
           brand_secondary?: string
           city?: string | null
           company_size?: string | null
-          contact_person?: string | null
           country?: string | null
           cover_url?: string | null
           created_at?: string
@@ -323,20 +314,17 @@ export type Database = {
           industry?: string | null
           is_published?: boolean
           is_verified?: boolean
-          legal_address?: string | null
           legal_name?: string | null
           logo_url?: string | null
           name?: string
           onboarded_at?: string | null
           owner_id?: string
           phone?: string | null
-          registration_number?: string | null
           services?: Json
           show_employees?: boolean
           slug?: string
           socials?: Json
           tagline?: string | null
-          tax_number?: string | null
           theme?: string
           timezone?: string | null
           updated_at?: string
@@ -641,6 +629,44 @@ export type Database = {
             columns: ["template_id"]
             isOneToOne: false
             referencedRelation: "company_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      company_legal: {
+        Row: {
+          company_id: string
+          contact_person: string | null
+          created_at: string
+          legal_address: string | null
+          registration_number: string | null
+          tax_number: string | null
+          updated_at: string
+        }
+        Insert: {
+          company_id: string
+          contact_person?: string | null
+          created_at?: string
+          legal_address?: string | null
+          registration_number?: string | null
+          tax_number?: string | null
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string
+          contact_person?: string | null
+          created_at?: string
+          legal_address?: string | null
+          registration_number?: string | null
+          tax_number?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "company_legal_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: true
+            referencedRelation: "companies"
             referencedColumns: ["id"]
           },
         ]
