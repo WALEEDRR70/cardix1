@@ -51,9 +51,12 @@ export const acceptInvitation = createServerFn({ method: "POST" })
     if (!invite || invite.status !== "pending" || new Date(invite.expires_at).getTime() < Date.now()) {
       throw new Error("INVALID_INVITATION");
     }
-    if (invite.email.toLowerCase() !== userEmail) {
+    // Link-only invitations have no email: anyone holding the (single-use) link joins.
+    if (invite.email && invite.email.toLowerCase() !== userEmail) {
       throw new Error("EMAIL_MISMATCH");
     }
+    const memberEmail = invite.email ?? userEmail;
+
 
     const { data: company } = await supabaseAdmin
       .from("companies")
@@ -70,7 +73,7 @@ export const acceptInvitation = createServerFn({ method: "POST" })
         status: "active",
         department_id: invite.department_id,
         job_title: invite.job_title,
-        corporate_email: invite.email,
+        corporate_email: memberEmail || null,
         phone: invite.phone,
       },
       { onConflict: "company_id,user_id" },
@@ -101,7 +104,7 @@ export const acceptInvitation = createServerFn({ method: "POST" })
     let cardSlug = existing?.slug ?? null;
     if (!existing) {
       const base =
-        (invite.name ?? invite.email.split("@")[0])
+        (invite.name ?? (memberEmail || "employee").split("@")[0])
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, "-")
           .replace(/^-+|-+$/g, "") || "employee";
@@ -115,10 +118,10 @@ export const acceptInvitation = createServerFn({ method: "POST" })
           company_template_id: tpl?.id ?? null,
           card_type: "employee",
           slug,
-          name: invite.name ?? invite.email.split("@")[0],
+          name: invite.name ?? (memberEmail || "employee").split("@")[0],
           title: invite.job_title,
           company: company.name,
-          email: invite.email,
+          email: memberEmail || null,
           phone: invite.phone,
           website: company.website,
           address: company.address,
@@ -156,7 +159,7 @@ export const acceptInvitation = createServerFn({ method: "POST" })
       actor_id: context.userId,
       action: "invitation.accepted",
       entity: "company_members",
-      metadata: { email: invite.email },
+      metadata: { email: memberEmail },
     });
 
     return { ok: true as const, companySlug: company.slug, cardSlug };

@@ -1,11 +1,11 @@
 // Assign a studio card's design to a department (and optionally a staff role)
 // by creating a company card-design rule, then re-syncing employee cards.
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { createCardDesign } from "@/lib/company-designs";
+import { createCardDesign, updateCardDesign } from "@/lib/company-designs";
 import { syncCompanyCardDesigns } from "@/lib/company-designs.functions";
 import type { CompanyRole } from "@/lib/workspace";
 import {
@@ -67,6 +67,7 @@ export function AssignDesignDialog({
   const [role, setRole] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [saving, setSaving] = useState(false);
+  const qc = useQueryClient();
 
   const { data: departments = [] } = useQuery({
     queryKey: ["assign-departments", companyId],
@@ -85,7 +86,7 @@ export function AssignDesignDialog({
     if (!card) return;
     setSaving(true);
     try {
-      await createCardDesign({
+      const created = await createCardDesign({
         companyId,
         name: name.trim() || card.name || "Card design",
         template: card.template,
@@ -94,7 +95,16 @@ export function AssignDesignDialog({
         targetRole: (role || null) as CompanyRole | null,
         design: card.design ?? null,
       });
+      // Make sure the new rule is live immediately for the targeted people.
+      if (!created.is_auto_assign) {
+        await updateCardDesign(created.id, { is_auto_assign: true } as never);
+      }
       await syncCompanyCardDesigns({ data: { companyId } });
+      qc.invalidateQueries({ queryKey: ["company-card-designs", companyId] });
+      qc.invalidateQueries({ queryKey: ["company-templates", companyId] });
+      qc.invalidateQueries({ queryKey: ["company-departments", companyId] });
+      qc.invalidateQueries({ queryKey: ["department-designs", companyId] });
+      qc.invalidateQueries({ queryKey: ["company-members", companyId] });
       toast.success(t.ok);
       onOpenChange(false);
       setDept("");

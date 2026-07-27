@@ -1,7 +1,7 @@
 // Shared enterprise workspace modules, used by /co/$slug/* routes and the
 // legacy /workspace/$id admin screen.
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import {
@@ -300,6 +300,10 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
   const [inv, setInv] = useState({ name: "", email: "", job_title: "", department_id: "", phone: "", role: "employee" as CompanyRole, template_id: "" });
   const [busy, setBusy] = useState(false);
   const [lastLink, setLastLink] = useState<string | null>(null);
+  // Single-use join link: copying it immediately mints a fresh one.
+  const [linkInv, setLinkInv] = useState<{ id: string; token: string; url: string } | null>(null);
+  const [linkBusy, setLinkBusy] = useState(false);
+  const [linkCfg, setLinkCfg] = useState({ department_id: "", role: "employee" as CompanyRole, template_id: "" });
 
   const { data: members } = useQuery({
     queryKey: ["company-members", company.id],
@@ -358,7 +362,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
       .from("company_invitations")
       .insert({
         company_id: company.id,
-        email: payload.email.trim().toLowerCase(),
+        email: payload.email.trim() ? payload.email.trim().toLowerCase() : null,
         name: payload.name || null,
         job_title: payload.job_title || null,
         phone: payload.phone || null,
@@ -369,13 +373,13 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
         invited_by: userId,
         expires_at: new Date(Date.now() + 14 * 864e5).toISOString(),
       })
-      .select("token")
+      .select("id, token")
       .single();
     if (error) throw error;
     void logCompanyAction(company.id, userId, "invitation.created", "company_invitations", {
-      label: payload.email || payload.name,
+      label: payload.email || payload.name || "link",
     });
-    return inviteUrl(data.token);
+    return { id: data.id, token: data.token, url: inviteUrl(data.token) };
   }
 
 
@@ -383,8 +387,8 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
     e.preventDefault();
     setBusy(true);
     try {
-      const url = await createInvite(inv);
-      setLastLink(url);
+      const created = await createInvite(inv);
+      setLastLink(created.url);
       setInv({ name: "", email: "", job_title: "", department_id: "", phone: "", role: "employee", template_id: "" });
       qc.invalidateQueries({ queryKey: ["company-invites", company.id] });
       toast.success(w.invitationCreated);
@@ -430,6 +434,41 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
     toast.success(w.saved);
   }
 
+  /** Mint a fresh single-use join link (optionally discarding the previous unused one). */
+  async function mintLink(cfg = linkCfg, discardId?: string) {
+    setLinkBusy(true);
+    try {
+      if (discardId) {
+        await supabase.from("company_invitations").update({ status: "revoked" }).eq("id", discardId);
+      }
+      const created = await createInvite({
+        name: "", email: "", job_title: "", phone: "",
+        department_id: cfg.department_id, role: cfg.role, template_id: cfg.template_id,
+      });
+      setLinkInv(created);
+      qc.invalidateQueries({ queryKey: ["company-invites", company.id] });
+      return created;
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Error");
+      return null;
+    } finally {
+      setLinkBusy(false);
+    }
+  }
+
+  useEffect(() => {
+    if (canEdit && !linkInv && !linkBusy) void mintLink();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canEdit, company.id]);
+
+  async function copyLink() {
+    if (!linkInv) return;
+    await navigator.clipboard.writeText(linkInv.url);
+    toast.success(w.copied);
+    // The copied link stays valid for exactly one join; a new one is ready instantly.
+    await mintLink();
+  }
+
   async function setRole(memberId: string, role: CompanyRole) {
     const { error } = await supabase.from("company_members").update({ role }).eq("id", memberId);
     if (error) { toast.error(error.message); return; }
@@ -457,6 +496,59 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
         </div>
       )}
 
+      {canEdit && (
+        <Card className="space-y-3">
+          <div>
+            <p className="text-sm font-semibold">{ar ? "رابط دعوة سريع" : "Quick invite link"}</p>
+            <p className="text-xs text-muted-foreground">
+              {ar
+                ? "شارك الرابط مع الموظف — يعمل مرة واحدة فقط، ويتجدد تلقائيًا بعد كل نسخ."
+                : "Share this link with an employee — it works once and renews automatically after each copy."}
+            </p>
+          </div>
+          <div className="grid gap-2 sm:grid-cols-3">
+            <select
+              value={linkCfg.department_id}
+              onChange={(e) => { const c = { ...linkCfg, department_id: e.target.value }; setLinkCfg(c); void mintLink(c, linkInv?.id); }}
+              className="rounded-2xl border border-input bg-card px-3 py-2.5 text-xs outline-none"
+            >
+              <option value="">{w.department} —</option>
+              {(departments ?? []).map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
+            </select>
+            <select
+              value={linkCfg.role}
+              onChange={(e) => { const c = { ...linkCfg, role: e.target.value as CompanyRole }; setLinkCfg(c); void mintLink(c, linkInv?.id); }}
+              className="rounded-2xl border border-input bg-card px-3 py-2.5 text-xs outline-none"
+            >
+              {(["admin", "manager", "employee", "viewer"] as CompanyRole[]).map((r) => (
+                <option key={r} value={r}>{roleLabel(r, w)}</option>
+              ))}
+            </select>
+            <select
+              value={linkCfg.template_id}
+              onChange={(e) => { const c = { ...linkCfg, template_id: e.target.value }; setLinkCfg(c); void mintLink(c, linkInv?.id); }}
+              className="rounded-2xl border border-input bg-card px-3 py-2.5 text-xs outline-none"
+            >
+              <option value="">{w.templates} —</option>
+              {(cardDesigns ?? []).map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
+            </select>
+          </div>
+          <div className="flex items-center gap-2 rounded-2xl bg-secondary px-3 py-2">
+            <span className="min-w-0 flex-1 truncate text-[11px] text-muted-foreground">
+              {linkBusy ? "…" : linkInv?.url ?? "—"}
+            </span>
+            <button
+              type="button"
+              onClick={copyLink}
+              disabled={!linkInv || linkBusy}
+              className="shrink-0 rounded-xl bg-card px-3 py-1.5 text-xs font-medium disabled:opacity-50"
+            >
+              <Copy className="me-1 inline h-3.5 w-3.5" /> {w.copyLink}
+            </button>
+          </div>
+        </Card>
+      )}
+
       {importing && (
         <Card className="space-y-2">
           <p className="text-sm font-semibold">{w.bulkImport}</p>
@@ -476,8 +568,8 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
           <form onSubmit={submitInvite} className="space-y-3">
             <p className="text-sm font-semibold">{w.inviteEmployee}</p>
             <div className="grid gap-3 sm:grid-cols-2">
-              <TextField label={w.employeeName} value={inv.name} onChange={(v) => setInv({ ...inv, name: v })} />
-              <TextField label={w.corporateEmail} type="email" value={inv.email} onChange={(v) => setInv({ ...inv, email: v })} />
+              <TextField label={`${w.employeeName} (${ar ? "اختياري" : "optional"})`} value={inv.name} onChange={(v) => setInv({ ...inv, name: v })} />
+              <TextField label={`${w.corporateEmail} (${ar ? "اختياري" : "optional"})`} type="email" value={inv.email} onChange={(v) => setInv({ ...inv, email: v })} />
               <TextField label={w.jobTitle} value={inv.job_title} onChange={(v) => setInv({ ...inv, job_title: v })} />
               <TextField label={w.phone} value={inv.phone} onChange={(v) => setInv({ ...inv, phone: v })} />
               <div>
@@ -592,8 +684,8 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
         {(invites ?? []).map((i) => (
           <div key={i.id} className="flex items-center gap-2 rounded-2xl border border-border/60 bg-card/60 px-3 py-2.5">
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium">{i.name || i.email}</p>
-              <p className="truncate text-[11px] text-muted-foreground">{i.email}</p>
+              <p className="truncate text-sm font-medium">{i.name || i.email || (ar ? "رابط دعوة" : "Invite link")}</p>
+              <p className="truncate text-[11px] text-muted-foreground">{i.email || inviteUrl(i.token)}</p>
             </div>
             <button onClick={() => { navigator.clipboard.writeText(inviteUrl(i.token)); toast.success(w.copied); }} className="rounded-lg p-2 hover:bg-secondary" aria-label={w.copyLink}>
               <Copy className="h-3.5 w-3.5" />
@@ -634,6 +726,19 @@ export function DepartmentsTab({ company, canEdit }: { company: Company; canEdit
     },
   });
 
+  // Card designs assigned to each department (created from the Studio "assign" action).
+  const { data: designs } = useQuery({
+    queryKey: ["department-designs", company.id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("company_templates")
+        .select("id, name, department_id, target_role, accent_color")
+        .eq("company_id", company.id)
+        .order("sort_order");
+      return data ?? [];
+    },
+  });
+
   async function add() {
     if (!name.trim()) return;
     const { error } = await supabase.from("company_departments").insert({ company_id: company.id, name: name.trim(), slug: slugify(name) });
@@ -653,23 +758,59 @@ export function DepartmentsTab({ company, canEdit }: { company: Company; canEdit
         />
       )}
 
-      <div className="flex flex-wrap gap-2">
-        {(data ?? []).map((d) => (
-          <span key={d.id} className="flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-xs">
-            {d.name}
-            {canEdit && (
-              <button
-                onClick={async () => {
-                  await supabase.from("company_departments").delete().eq("id", d.id);
-                  qc.invalidateQueries({ queryKey: ["company-departments", company.id] });
-                }}
-                className="text-muted-foreground hover:text-destructive"
-              >
-                <Trash2 className="h-3 w-3" />
-              </button>
-            )}
-          </span>
-        ))}
+      <div className="space-y-2">
+        {(data ?? []).map((d) => {
+          const assigned = (designs ?? []).filter((t) => t.department_id === d.id);
+          return (
+            <div key={d.id} className="rounded-2xl border border-border/60 bg-card/60 px-3 py-2.5">
+              <div className="flex items-center gap-2">
+                <p className="min-w-0 flex-1 truncate text-sm font-medium">{d.name}</p>
+                {canEdit && (
+                  <button
+                    onClick={async () => {
+                      await supabase.from("company_departments").delete().eq("id", d.id);
+                      qc.invalidateQueries({ queryKey: ["company-departments", company.id] });
+                    }}
+                    className="text-muted-foreground hover:text-destructive"
+                    aria-label={w.remove}
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
+                )}
+              </div>
+              <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                {assigned.length === 0 ? (
+                  <span className="text-[11px] text-muted-foreground">
+                    {ar ? "لا يوجد تصميم معيّن" : "No design assigned"}
+                  </span>
+                ) : (
+                  assigned.map((t) => (
+                    <span
+                      key={t.id}
+                      className="flex items-center gap-1.5 rounded-full border border-border bg-secondary px-2.5 py-1 text-[11px]"
+                    >
+                      <span className="h-2.5 w-2.5 rounded-full" style={{ background: t.accent_color }} />
+                      {t.name}
+                      {t.target_role ? ` · ${roleLabel(t.target_role as CompanyRole, w)}` : ""}
+                      {canEdit && (
+                        <button
+                          onClick={async () => {
+                            await supabase.from("company_templates").delete().eq("id", t.id);
+                            qc.invalidateQueries({ queryKey: ["department-designs", company.id] });
+                          }}
+                          className="text-muted-foreground hover:text-destructive"
+                          aria-label={w.remove}
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </button>
+                      )}
+                    </span>
+                  ))
+                )}
+              </div>
+            </div>
+          );
+        })}
       </div>
       {canEdit && (
         <div className="flex gap-2">
