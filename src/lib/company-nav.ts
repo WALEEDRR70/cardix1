@@ -56,22 +56,13 @@ export const COMPANY_SECTIONS: CompanySection[] = [
     path: "/analytics",
     icon: BarChart3,
     label: (w) => w.analytics,
-    tabs: [
-      { path: "/analytics", icon: BarChart3, label: (w) => w.analytics },
-      { path: "/qr", icon: QrCode, label: (w) => w.qrManager },
-      { path: "/page", icon: Globe, label: (w) => w.publicPage },
-      { path: "/nfc", icon: Nfc, label: (w) => w.nfcManager, advanced: true },
-    ],
+    tabs: [{ path: "/analytics", icon: BarChart3, label: (w) => w.analytics }],
   },
   {
     path: "/settings",
     icon: Settings,
     label: (w) => w.settings,
-    tabs: [
-      { path: "/settings", icon: Settings, label: (w) => w.settings },
-      { path: "/permissions", icon: ShieldCheck, label: (w) => w.permissions, advanced: true },
-      { path: "/seo", icon: Search, label: (w) => w.seo, advanced: true },
-    ],
+    tabs: [{ path: "/settings", icon: Settings, label: (w) => w.settings }],
   },
 ];
 
