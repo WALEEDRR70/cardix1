@@ -145,3 +145,41 @@ export async function useTemplate(
 
   return data.id as string;
 }
+
+/** Card row shown in the "use template on an existing card" picker. */
+export type TemplateTargetCard = {
+  id: string;
+  name: string;
+  title: string | null;
+  slug: string;
+  design: unknown;
+  updated_at: string;
+};
+
+/** Cards the signed-in user can repaint with a template, scoped to the active context. */
+export async function listTargetCards(userId: string, companyId?: string | null): Promise<TemplateTargetCard[]> {
+  let q = supabase
+    .from("cards")
+    .select("id,name,title,slug,design,updated_at")
+    .eq("user_id", userId)
+    .order("updated_at", { ascending: false })
+    .limit(40);
+  q = companyId ? q.eq("company_id", companyId) : q.is("company_id", null);
+  const { data, error } = await q;
+  if (error) throw error;
+  return (data ?? []) as TemplateTargetCard[];
+}
+
+/** Replaces an existing card's design with a fresh copy of the template. */
+export async function applyTemplateToCard(tpl: DesignTemplate, cardId: string): Promise<string> {
+  const design = cloneDesign(tpl.design as unknown as StudioDoc);
+  const { error } = await supabase.from("cards").update({ design: design as never }).eq("id", cardId);
+  if (error) throw error;
+  try {
+    const { bumpTemplateUse } = await import("@/lib/templates.functions");
+    await bumpTemplateUse({ data: { templateId: tpl.id } });
+  } catch {
+    /* counter is best-effort */
+  }
+  return cardId;
+}
