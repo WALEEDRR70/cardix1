@@ -748,6 +748,42 @@ export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<H
           </div>
         ))}
 
+        {/* group bounding box: scale the whole selection at once */}
+        {groupBox && (
+          <div
+            className="pointer-events-none absolute border border-dashed border-accent/80"
+            style={{
+              left: groupBox.x * zoom, top: groupBox.y * zoom,
+              width: groupBox.w * zoom, height: groupBox.h * zoom,
+            }}
+          >
+            <span className="absolute -top-5 start-0 whitespace-nowrap rounded bg-accent px-1.5 py-0.5 text-[9px] font-medium text-accent-foreground">
+              {Math.round(groupBox.w)} × {Math.round(groupBox.h)}
+            </span>
+            {["nw", "ne", "sw", "se", "n", "s", "e", "w"].map((h) => (
+              <span
+                key={h}
+                onPointerDown={(e) => {
+                  e.stopPropagation();
+                  setDrag({
+                    mode: "gresize", handle: h, startX: e.clientX, startY: e.clientY,
+                    box: groupBox,
+                    items: selected.filter((n) => !n.locked).map((n) => ({
+                      id: n.id, x: n.x, y: n.y, w: n.w, h: n.h,
+                      fontSize: n.style?.fontSize,
+                      strokeWidth: typeof n.style?.strokeWidth === "number" ? n.style.strokeWidth : undefined,
+                      radius: n.style?.radius,
+                    })),
+                  });
+                }}
+                className="pointer-events-auto absolute h-2.5 w-2.5 rounded-sm border border-accent bg-background"
+                style={handleStyle(h)}
+              />
+            ))}
+          </div>
+        )}
+
+
         {marqueeBox && (
           <div
             className="pointer-events-none absolute border border-accent bg-accent/10"
