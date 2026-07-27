@@ -9,6 +9,9 @@ import { stripLocalePrefix } from "@/lib/locale-routing";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 
 const GROUPS: CompanySection["group"][] = ["manage", "identity", "reach", "admin"];
+/** Always-visible essentials, matching the personal shell's density. */
+const PRIMARY: string[] = ["", "/card", "/employees", "/analytics"];
+
 
 /**
  * Enterprise shell for the Company workspace — a desktop-first SaaS layout,
