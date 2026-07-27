@@ -469,8 +469,10 @@ export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<H
     function onUp() {
       setDrag(null);
       setSnapLines({ x: [], y: [] });
-      // seal the transient edits into one history entry
-      dispatch({ t: "replace", doc });
+      // seal the transient edits into one history entry (pre-drag snapshot)
+      const before = dragBaseRef.current;
+      dragBaseRef.current = null;
+      if (before) dispatch({ t: "seal", before });
     }
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
