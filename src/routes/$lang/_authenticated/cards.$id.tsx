@@ -148,6 +148,7 @@ function EditCard() {
       <div className="px-5 lg:px-8">
         <CardForm
           initial={initial}
+          design={card.design}
           onSubmit={onSubmit}
           submitLabel={t.save}
           slugPrefix={corp?.company ? `/company/${corp.company.slug}/` : "/c/"}
