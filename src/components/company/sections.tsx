@@ -779,36 +779,26 @@ export function DepartmentsTab({ company, canEdit }: { company: Company; canEdit
                   </button>
                 )}
               </div>
-              <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+              <div className="mt-2 space-y-2">
                 {assigned.length === 0 ? (
                   <span className="text-[11px] text-muted-foreground">
                     {ar ? "لا يوجد تصميم معيّن" : "No design assigned"}
                   </span>
                 ) : (
                   assigned.map((t) => (
-                    <span
+                    <DepartmentDesignCard
                       key={t.id}
-                      className="flex items-center gap-1.5 rounded-full border border-border bg-secondary px-2.5 py-1 text-[11px]"
-                    >
-                      <span className="h-2.5 w-2.5 rounded-full" style={{ background: t.accent_color }} />
-                      {t.name}
-                      {t.target_role ? ` · ${roleLabel(t.target_role as CompanyRole, w)}` : ""}
-                      {canEdit && (
-                        <button
-                          onClick={async () => {
-                            await supabase.from("company_templates").delete().eq("id", t.id);
-                            qc.invalidateQueries({ queryKey: ["department-designs", company.id] });
-                          }}
-                          className="text-muted-foreground hover:text-destructive"
-                          aria-label={w.remove}
-                        >
-                          <Trash2 className="h-3 w-3" />
-                        </button>
-                      )}
-                    </span>
+                      design={t}
+                      companyId={company.id}
+                      companySlug={company.slug}
+                      canEdit={canEdit}
+                      ar={ar}
+                      roleLabel={t.target_role ? roleLabel(t.target_role as CompanyRole, w) : null}
+                    />
                   ))
                 )}
               </div>
+
             </div>
           );
         })}
