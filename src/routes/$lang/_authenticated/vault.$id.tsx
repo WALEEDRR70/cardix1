@@ -43,7 +43,7 @@ function VaultDetail() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("saved_cards")
-        .select("*, source_card:cards!saved_cards_source_card_id_fkey(slug,name,title,company,bio,phone,whatsapp,email,website,address,avatar_url,cover_url,accent_color,template,socials,is_published)")
+        .select("*, source_card:cards!saved_cards_source_card_id_fkey(slug,name,title,company,bio,phone,whatsapp,email,website,address,avatar_url,cover_url,accent_color,template,design,socials,is_published)")
         .eq("id", id)
         .eq("user_id", user.id)
         .maybeSingle();
@@ -53,7 +53,7 @@ function VaultDetail() {
       if (s && s.is_published) {
         // Overlay latest source-card values so owner edits sync automatically.
         const overlay: Record<string, unknown> = {};
-        for (const k of ["name","title","company","bio","phone","whatsapp","email","website","address","avatar_url","accent_color","template","socials"]) {
+        for (const k of ["name","title","company","bio","phone","whatsapp","email","website","address","avatar_url","accent_color","template","design","socials"]) {
           if (s[k] !== null && s[k] !== undefined) overlay[k] = s[k];
         }
         return { ...data, ...overlay };

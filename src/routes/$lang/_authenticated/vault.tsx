@@ -40,7 +40,7 @@ function Vault() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("saved_cards")
-        .select("*, source_card:cards!saved_cards_source_card_id_fkey(slug,name,title,company,phone,whatsapp,email,website,address,avatar_url,is_published)")
+        .select("*, source_card:cards!saved_cards_source_card_id_fkey(slug,name,title,company,phone,whatsapp,email,website,address,avatar_url,accent_color,template,design,is_published)")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
       if (error) throw error;
@@ -52,6 +52,7 @@ function Vault() {
           slug: string; name: string; title: string | null; company: string | null;
           phone: string | null; whatsapp: string | null; email: string | null;
           website: string | null; address: string | null; avatar_url: string | null;
+          accent_color?: string | null; template?: string | null; design?: unknown;
           is_published: boolean;
         } | null;
       };
@@ -68,6 +69,9 @@ function Vault() {
           phone: s.phone ?? c.phone,
           email: s.email ?? c.email,
           website: s.website ?? c.website,
+          accent_color: s.accent_color ?? (c as any).accent_color,
+          template: s.template ?? (c as any).template,
+          design: s.design ?? (c as any).design,
         };
       });
     },
