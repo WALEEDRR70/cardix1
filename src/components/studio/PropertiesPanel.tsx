@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { useStudio } from "@/lib/studio/store";
-import { CARD_SIZES, PLACEHOLDERS, type ImageSource, type NodeType } from "@/lib/studio/types";
+import { CARD_SIZES, type ImageSource, type NodeType } from "@/lib/studio/types";
 import { uploadStudioImage } from "@/lib/studio/upload";
 import { isSvgSrc } from "@/lib/studio/svg";
 import { SvgPalette } from "@/components/studio/SvgPalette";
@@ -166,28 +166,20 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
 
       {(n.type === "text" || n.type === "button") && (
         <PanelSection title={ar ? "النص" : "Text"}>
-          <textarea
-            value={n.text ?? ""}
-            onChange={(e) => up({ text: e.target.value })}
-            rows={2}
-            className={`${fieldCls} h-auto resize-y py-1.5 leading-relaxed`}
-          />
-          <details className="pt-0.5">
-            <summary className="cursor-pointer list-none text-[10px] text-muted-foreground transition hover:text-foreground">
-              {ar ? "+ إدراج حقل ديناميكي" : "+ Insert dynamic field"}
-            </summary>
-            <div className="flex flex-wrap gap-1 pt-1.5">
-              {PLACEHOLDERS.map((p) => (
-                <button
-                  key={p}
-                  onClick={() => up({ text: `${n.text ?? ""}${p}` })}
-                  className="rounded border border-border/50 px-1.5 py-0.5 text-[10px] text-muted-foreground transition hover:border-accent/50 hover:text-foreground"
-                >
-                  {p.replace(/[{}]/g, "")}
-                </button>
-              ))}
-            </div>
-          </details>
+          {/\{\{[^}]+\}\}/.test(n.text ?? "") ? (
+            <p className="rounded-md border border-border/50 bg-background/40 px-2 py-1.5 text-[11px] text-muted-foreground">
+              {ar
+                ? "هذا الحقل يُعبّأ تلقائيًا من بيانات الموظف."
+                : "This field fills automatically from the employee data."}
+            </p>
+          ) : (
+            <textarea
+              value={n.text ?? ""}
+              onChange={(e) => up({ text: e.target.value })}
+              rows={2}
+              className={`${fieldCls} h-auto resize-y py-1.5 leading-relaxed`}
+            />
+          )}
           <div className="grid grid-cols-2 gap-1.5 pt-1">
             <NumInput badge="Aa" value={s.fontSize ?? 20} onChange={(v) => st({ fontSize: v })} />
             <NumInput badge="W" step={100} value={s.fontWeight ?? 500} onChange={(v) => st({ fontWeight: v })} />
