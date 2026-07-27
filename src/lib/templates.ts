@@ -151,7 +151,18 @@ export type TemplateTargetCard = {
   id: string;
   name: string;
   title: string | null;
+  company: string | null;
   slug: string;
+  phone: string | null;
+  whatsapp: string | null;
+  email: string | null;
+  website: string | null;
+  address: string | null;
+  avatar_url: string | null;
+  bio: string | null;
+  accent_color: string;
+  template: string | null;
+  socials: unknown;
   design: unknown;
   updated_at: string;
 };
@@ -160,7 +171,7 @@ export type TemplateTargetCard = {
 export async function listTargetCards(userId: string, companyId?: string | null): Promise<TemplateTargetCard[]> {
   let q = supabase
     .from("cards")
-    .select("id,name,title,slug,design,updated_at")
+    .select("id,name,title,company,slug,phone,whatsapp,email,website,address,avatar_url,bio,accent_color,template,socials,design,updated_at")
     .eq("user_id", userId)
     .order("updated_at", { ascending: false })
     .limit(40);

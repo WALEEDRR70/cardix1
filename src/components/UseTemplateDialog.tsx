@@ -4,10 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import { Loader2, Plus, Check } from "lucide-react";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { StaticCardPreview } from "@/components/studio/StaticCardPreview";
+import { CardPreview } from "@/components/CardPreview";
 import { useDragScroll } from "@/lib/use-drag-scroll";
 import { listTargetCards, type DesignTemplate } from "@/lib/templates";
-import type { StudioDoc } from "@/lib/studio/types";
 
 export function UseTemplateDialog({
   tpl,
@@ -77,14 +76,27 @@ export function UseTemplateDialog({
                       (active ? "border-accent bg-accent/10" : "border-border/60 hover:border-accent/50")
                     }
                   >
-                    <div className="grid place-items-center overflow-hidden rounded-xl bg-muted/20">
-                      {c.design ? (
-                        <StaticCardPreview doc={c.design as unknown as StudioDoc} width={170} />
-                      ) : (
-                        <div className="grid h-[95px] w-[170px] place-items-center text-[11px] text-muted-foreground">
-                          {ar ? "قالب كلاسيكي" : "Classic template"}
-                        </div>
-                      )}
+                    <div className="grid place-items-center overflow-hidden rounded-xl bg-muted/20 p-1">
+                      <CardPreview
+                        card={{
+                          name: c.name,
+                          slug: c.slug,
+                          title: c.title,
+                          company: c.company,
+                          bio: c.bio,
+                          phone: c.phone,
+                          whatsapp: c.whatsapp,
+                          email: c.email,
+                          website: c.website,
+                          address: c.address,
+                          avatar_url: c.avatar_url,
+                          accent_color: c.accent_color,
+                          template: c.template,
+                          design: c.design,
+                          socials: c.socials,
+                        }}
+                        size="sm"
+                      />
                     </div>
                     <p className="mt-2 truncate text-xs font-semibold">{c.name}</p>
                     <p className="truncate text-[10px] text-muted-foreground">{c.title ?? `/c/${c.slug}`}</p>
