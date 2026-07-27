@@ -1,7 +1,7 @@
 // Free-form pen tool (Illustrator/Figma grade):
 // click = corner anchor, drag = bezier handle, Alt-drag = break symmetry,
 // Shift = 45° constraints, click first anchor = close, click last anchor = retract handle.
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export type PenPoint = {
   x: number;
