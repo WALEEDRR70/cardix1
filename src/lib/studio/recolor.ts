@@ -29,7 +29,7 @@ function hslToHex({ h, s, l }: HSL): string {
   return `#${f(0)}${f(8)}${f(4)}`;
 }
 
-/** Shifts a single color toward the new accent, preserving lightness and neutrals. */
+/** Maps a single color onto the target accent hue, preserving lightness and neutrals. */
 function shift(color: string, from: HSL, to: HSL): string {
   const m = /^#?([0-9a-f]{6}|[0-9a-f]{3})([0-9a-f]{2})?$/i.exec(color.trim());
   if (!m) return color;
@@ -37,10 +37,11 @@ function shift(color: string, from: HSL, to: HSL): string {
   const [r, g, b] = rgb(hex(color));
   const c = rgbToHsl(r, g, b);
   if (c.s < 0.08) return color; // neutral gray / black / white stays untouched
-  const dh = to.h - from.h;
+  // Every saturated color adopts the target hue directly (no relative rotation),
+  // so the picked accent is always the color that actually shows on the card.
   const next: HSL = {
-    h: (c.h + dh + 1) % 1,
-    s: Math.min(1, Math.max(0, c.s * (to.s <= 0.02 ? 0.15 : to.s / Math.max(0.05, from.s)))),
+    h: to.h,
+    s: to.s <= 0.02 ? Math.min(c.s, 0.06) : Math.min(1, to.s * (0.55 + 0.45 * (c.s / Math.max(0.2, from.s || 1)))),
     l: c.l,
   };
   return hslToHex(next) + suffix;
