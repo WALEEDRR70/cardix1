@@ -2,7 +2,7 @@ import { useRouterState } from "@tanstack/react-router";
 import { Link } from "@/lib/nav";
 import type { ReactNode } from "react";
 import { useState } from "react";
-import { BadgeCheck, ChevronLeft, Menu, X } from "lucide-react";
+import { BadgeCheck, Menu, X } from "lucide-react";
 import { AccountSwitcher } from "@/components/AccountSwitcher";
 import { COMPANY_SECTIONS, findCompanySection, type CompanySection, type CompanyTab } from "@/lib/company-nav";
 import { useWs, type Company, type CompanyRole, roleLabel } from "@/lib/workspace";
