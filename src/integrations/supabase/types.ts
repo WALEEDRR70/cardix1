@@ -909,30 +909,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      company_role_of: {
-        Args: { _company_id: string; _user_id: string }
-        Returns: Database["public"]["Enums"]["company_role"]
-      }
-      increment_template_use: {
-        Args: { _template_id: string }
-        Returns: undefined
-      }
-      is_company_admin: {
-        Args: { _company_id: string; _user_id: string }
-        Returns: boolean
-      }
-      is_company_manager: {
-        Args: { _company_id: string; _user_id: string }
-        Returns: boolean
-      }
-      is_company_member: {
-        Args: { _company_id: string; _user_id: string }
-        Returns: boolean
-      }
-      my_department: {
-        Args: { _company_id: string; _user_id: string }
-        Returns: string
-      }
+      [_ in never]: never
     }
     Enums: {
       card_type: "personal" | "company" | "employee"
