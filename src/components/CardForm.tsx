@@ -90,6 +90,34 @@ export function CardForm({
     }
   }
 
+  /** Previously uploaded photos of this user (reusable across cards). */
+  async function openLibrary() {
+    const next = !libOpen;
+    setLibOpen(next);
+    if (!next || library.length > 0) return;
+    setLibLoading(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data: files, error } = await supabase.storage
+        .from("avatars")
+        .list(user.id, { limit: 60, sortBy: { column: "created_at", order: "desc" } });
+      if (error) throw error;
+      const paths = (files ?? []).filter((f) => f.id).map((f) => `${user.id}/${f.name}`);
+      if (paths.length === 0) return setLibrary([]);
+      const { data: signed } = await supabase.storage
+        .from("avatars")
+        .createSignedUrls(paths, 60 * 60 * 24 * 365 * 10);
+      setLibrary((signed ?? []).map((s) => s.signedUrl).filter(Boolean) as string[]);
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : t.uploadFailed);
+    } finally {
+      setLibLoading(false);
+    }
+  }
+
+
+
   async function aiBio() {
     if (!data.name.trim()) return toast.error(t.name);
     setGenBusy(true);
