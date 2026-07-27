@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Wand2, Plus, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { CompanyShell } from "@/components/company/CompanyShell";
-import { Card } from "@/components/company/sections";
+import { Card, EmptyState } from "@/components/company/sections";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
 import { useWs } from "@/lib/workspace";
@@ -92,7 +92,7 @@ function Page() {
           </button>
         </div>
         {cards.length === 0 ? (
-          <p className="py-6 text-sm text-muted-foreground">{t.none}</p>
+          <EmptyState icon={Wand2} title={t.none} hint={t.desc} actionLabel={t.newDesign} onAction={createDesign} />
         ) : (
           <ul className="grid gap-3 sm:grid-cols-2">
             {cards.map((c) => (

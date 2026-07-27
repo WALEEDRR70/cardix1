@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import {
-  BadgeCheck, Building2, Plus, Copy, Trash2, Upload, Lock, Sparkles, MapPin,
+  BadgeCheck, Building2, Plus, Copy, Trash2, Upload, Lock, Sparkles, MapPin, Users, MailPlus, BarChart3,
 } from "lucide-react";
 import {
   useWs, roleLabel, statusLabel, slugify,
@@ -19,6 +19,35 @@ import { logCompanyAction } from "@/components/company/audit";
 export function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return <div className={"glass rounded-3xl border border-border/60 p-5 " + className}>{children}</div>;
 }
+
+/** Calm, actionable empty state — replaces bare "nothing here" lines. */
+export function EmptyState({ icon: Icon, title, hint, actionLabel, onAction }: {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  hint?: string;
+  actionLabel?: string;
+  onAction?: () => void;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-2 px-4 py-10 text-center">
+      <span className="grid h-11 w-11 place-items-center rounded-2xl bg-secondary text-muted-foreground">
+        <Icon className="h-5 w-5" />
+      </span>
+      <p className="text-sm font-medium text-foreground">{title}</p>
+      {hint && <p className="max-w-xs text-xs text-muted-foreground">{hint}</p>}
+      {actionLabel && onAction && (
+        <button
+          type="button"
+          onClick={onAction}
+          className="mt-2 rounded-full bg-primary px-4 py-2 text-xs font-medium text-primary-foreground"
+        >
+          {actionLabel}
+        </button>
+      )}
+    </div>
+  );
+}
+
 
 export function TextField({ label, value, onChange, disabled, placeholder, type = "text" }: {
   label: string; value: string; onChange: (v: string) => void; disabled?: boolean; placeholder?: string; type?: string;
@@ -262,7 +291,9 @@ type MemberRow = {
 };
 
 export function EmployeesTab({ company, canEdit, userId }: { company: Company; canEdit: boolean; userId: string }) {
-  const { w } = useWs();
+  const { w, lang } = useWs();
+  const ar = lang === "ar";
+
   const qc = useQueryClient();
   const [inviting, setInviting] = useState(false);
   const [importing, setImporting] = useState(false);
@@ -502,7 +533,16 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
 
       <Card className="space-y-2">
         <p className="text-sm font-semibold">{w.employees}</p>
-        {(members ?? []).length === 0 && <p className="py-6 text-center text-xs text-muted-foreground">{w.noEmployees}</p>}
+        {(members ?? []).length === 0 && (
+          <EmptyState
+            icon={Users}
+            title={w.noEmployees}
+            hint={ar ? "ادعُ أول موظف ليحصل على بطاقته تلقائيًا بهوية الشركة." : "Invite your first employee to get a branded card automatically."}
+            actionLabel={canEdit ? w.inviteEmployee : undefined}
+            onAction={canEdit ? () => { setInviting(true); setImporting(false); } : undefined}
+          />
+        )}
+
         {(members ?? []).map((m) => (
           <div key={m.id} className="flex flex-wrap items-center gap-2 rounded-2xl border border-border/60 bg-card/60 px-3 py-2.5">
             <div className="min-w-0 flex-1">
@@ -541,7 +581,14 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
 
       <Card className="space-y-2">
         <p className="text-sm font-semibold">{w.pendingInvites}</p>
-        {(invites ?? []).length === 0 && <p className="py-4 text-center text-xs text-muted-foreground">{w.noInvites}</p>}
+        {(invites ?? []).length === 0 && (
+          <EmptyState
+            icon={MailPlus}
+            title={w.noInvites}
+            hint={ar ? "الدعوات المعلّقة ستظهر هنا مع رابط الانضمام." : "Pending invitations appear here with their join link."}
+          />
+        )}
+
         {(invites ?? []).map((i) => (
           <div key={i.id} className="flex items-center gap-2 rounded-2xl border border-border/60 bg-card/60 px-3 py-2.5">
             <div className="min-w-0 flex-1">
@@ -573,7 +620,9 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
 /* ----------------------------- departments ---------------------------- */
 
 export function DepartmentsTab({ company, canEdit }: { company: Company; canEdit: boolean }) {
-  const { w } = useWs();
+  const { w, lang } = useWs();
+  const ar = lang === "ar";
+
   const qc = useQueryClient();
   const [name, setName] = useState("");
 
@@ -596,7 +645,14 @@ export function DepartmentsTab({ company, canEdit }: { company: Company; canEdit
   return (
     <Card className="space-y-3">
       <p className="text-sm font-semibold">{w.departments}</p>
-      {(data ?? []).length === 0 && <p className="py-4 text-center text-xs text-muted-foreground">{w.noDepartments}</p>}
+      {(data ?? []).length === 0 && (
+        <EmptyState
+          icon={Building2}
+          title={w.noDepartments}
+          hint={ar ? "أنشئ قسمًا مثل «المبيعات» لتخصيص تصميم بطاقة له." : "Create a department like “Sales” to assign it a card design."}
+        />
+      )}
+
       <div className="flex flex-wrap gap-2">
         {(data ?? []).map((d) => (
           <span key={d.id} className="flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-xs">
@@ -890,7 +946,7 @@ export function AnalyticsTab({ company }: { company: Company }) {
       </div>
       <Card className="space-y-2">
         <p className="text-sm font-semibold">{w.topEmployees}</p>
-        {top.length === 0 && <p className="py-4 text-center text-xs text-muted-foreground">{w.noAnalytics}</p>}
+        {top.length === 0 && <EmptyState icon={BarChart3} title={w.noAnalytics} />}
         {top.map((c) => (
           <div key={c.id} className="flex items-center justify-between rounded-2xl border border-border/60 bg-card/60 px-3 py-2.5 text-sm">
             <span className="truncate">{c.name}</span>
