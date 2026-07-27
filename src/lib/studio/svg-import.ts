@@ -90,15 +90,14 @@ export function toAbsoluteCubics(d: string): string {
   const out: string[] = [];
   const cur: Pt = { x: 0, y: 0 };
   const start: Pt = { x: 0, y: 0 };
-  let lastCtrl: Pt | null = null;
-  let lastQCtrl: Pt | null = null;
+  const st: { ctrl: Pt | null; q: Pt | null } = { ctrl: null, q: null };
   const f = (v: number) => (Math.round(v * 1000) / 1000).toString();
   const num = () => Number(tokens[i++]);
 
-  const line = (p: Pt) => { out.push(`L ${f(p.x)} ${f(p.y)}`); cur.x = p.x; cur.y = p.y; lastCtrl = null; lastQCtrl = null; };
+  const line = (p: Pt) => { out.push(`L ${f(p.x)} ${f(p.y)}`); cur.x = p.x; cur.y = p.y; st.ctrl = null; st.q = null; };
   const cubic = (c1: Pt, c2: Pt, p: Pt) => {
     out.push(`C ${f(c1.x)} ${f(c1.y)}, ${f(c2.x)} ${f(c2.y)}, ${f(p.x)} ${f(p.y)}`);
-    cur.x = p.x; cur.y = p.y; lastCtrl = c2; lastQCtrl = null;
+    cur.x = p.x; cur.y = p.y; st.ctrl = c2; st.q = null;
   };
 
   while (i < tokens.length) {
@@ -114,7 +113,7 @@ export function toAbsoluteCubics(d: string): string {
         const p = { x: bx + num(), y: by + num() };
         out.push(`M ${f(p.x)} ${f(p.y)}`);
         cur.x = p.x; cur.y = p.y; start.x = p.x; start.y = p.y;
-        lastCtrl = null; lastQCtrl = null;
+        st.ctrl = null; st.q = null;
         cmd = rel ? "l" : "L";
         break;
       }
@@ -128,7 +127,7 @@ export function toAbsoluteCubics(d: string): string {
         break;
       }
       case "S": {
-        const c1 = lastCtrl ? { x: 2 * cur.x - lastCtrl.x, y: 2 * cur.y - lastCtrl.y } : { ...cur };
+        const c1 = st.ctrl ? { x: 2 * cur.x - st.ctrl.x, y: 2 * cur.y - st.ctrl.y } : { ...cur };
         const c2 = { x: bx + num(), y: by + num() };
         cubic(c1, c2, { x: bx + num(), y: by + num() });
         break;
@@ -139,16 +138,16 @@ export function toAbsoluteCubics(d: string): string {
         const c1 = { x: cur.x + (2 / 3) * (q.x - cur.x), y: cur.y + (2 / 3) * (q.y - cur.y) };
         const c2 = { x: p.x + (2 / 3) * (q.x - p.x), y: p.y + (2 / 3) * (q.y - p.y) };
         cubic(c1, c2, p);
-        lastQCtrl = q;
+        st.q = qc;
         break;
       }
       case "T": {
-        const q = lastQCtrl ? { x: 2 * cur.x - lastQCtrl.x, y: 2 * cur.y - lastQCtrl.y } : { ...cur };
+        const qc = st.q ? { x: 2 * cur.x - st.q.x, y: 2 * cur.y - st.q.y } : { ...cur };
         const p = { x: bx + num(), y: by + num() };
         const c1 = { x: cur.x + (2 / 3) * (q.x - cur.x), y: cur.y + (2 / 3) * (q.y - cur.y) };
         const c2 = { x: p.x + (2 / 3) * (q.x - p.x), y: p.y + (2 / 3) * (q.y - p.y) };
         cubic(c1, c2, p);
-        lastQCtrl = q;
+        st.q = qc;
         break;
       }
       case "A": {
@@ -160,7 +159,7 @@ export function toAbsoluteCubics(d: string): string {
       case "Z": {
         out.push("Z");
         cur.x = start.x; cur.y = start.y;
-        lastCtrl = null; lastQCtrl = null;
+        st.ctrl = null; st.q = null;
         break;
       }
       default:
