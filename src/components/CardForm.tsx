@@ -1,13 +1,15 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import { useI18n } from "@/lib/i18n";
 import { CardPreview, TEMPLATE_META, type TemplateId } from "@/components/CardPreview";
 import { useServerFn } from "@tanstack/react-start";
 import { generateBio } from "@/lib/bio.functions";
 import { supabase } from "@/integrations/supabase/client";
-import { Sparkles, Upload, X, Check, Plus, Lock } from "lucide-react";
+import { Sparkles, Upload, X, Check, Plus, Lock, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { SOCIALS } from "@/lib/socials";
 import { useDragScroll } from "@/lib/use-drag-scroll";
+import { recolorDesign } from "@/lib/studio/recolor";
+import type { StudioDoc } from "@/lib/studio/types";
 
 
 export interface CardFormData {
@@ -45,7 +47,7 @@ export function CardForm({
   slugPrefix = "/c/",
 }: {
   initial: CardFormData;
-  onSubmit: (data: CardFormData) => Promise<void>;
+  onSubmit: (data: CardFormData, extra?: { design?: unknown }) => Promise<void>;
   submitLabel: string;
   /** Fields owned by the company that the employee cannot change. */
   locked?: Partial<Record<keyof CardFormData, boolean>>;
@@ -99,10 +101,25 @@ export function CardForm({
 
   const set = <K extends keyof CardFormData>(k: K, v: CardFormData[K]) => setData((d) => ({ ...d, [k]: v }));
 
+  /** Studio design re-tinted live with the picked accent color. */
+  const accentChanged = !!design && data.accent_color !== initial.accent_color;
+  const previewDesign = useMemo(() => {
+    if (!design || !accentChanged) return design;
+    try {
+      return recolorDesign(design as StudioDoc, initial.accent_color, data.accent_color);
+    } catch {
+      return design;
+    }
+  }, [design, accentChanged, initial.accent_color, data.accent_color]);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    try { await onSubmit(data); } finally { setSaving(false); }
+    try {
+      await onSubmit(data, accentChanged ? { design: previewDesign } : undefined);
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -110,7 +127,7 @@ export function CardForm({
       <div className="space-y-6 lg:order-1">
         {/* Live preview (mobile: inline top) */}
         <div className="flex justify-center lg:hidden">
-          <CardPreview card={{ ...data, design }} size="md" />
+          <CardPreview card={{ ...data, design: previewDesign }} size="md" />
         </div>
 
 
@@ -197,8 +214,26 @@ export function CardForm({
               className="w-[72px] bg-transparent text-[11px] font-mono uppercase outline-none"
             />
           </div>
+          {accentChanged && (
+            <button
+              type="button"
+              onClick={() => set("accent_color", initial.accent_color)}
+              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-[11px] font-medium text-muted-foreground hover:text-foreground"
+            >
+              <RotateCcw className="h-3 w-3" />
+              {lang === "ar" ? "إعادة الألوان الأصلية" : "Reset original colors"}
+            </button>
+          )}
         </div>
+        {!!design && (
+          <p className="mt-2 px-1 text-[11px] text-muted-foreground">
+            {lang === "ar"
+              ? "تغيير اللون المميز يعيد تلوين تصميم البطاقة بالكامل."
+              : "Changing the accent recolors the whole card design."}
+          </p>
+        )}
       </section>
+
 
 
       {/* Form fields */}
@@ -297,7 +332,7 @@ export function CardForm({
           <div className="relative">
             <div className="absolute -inset-6 rounded-[2.5rem] opacity-40 blur-2xl" style={{ background: "var(--gradient-mesh)" }} />
             <div className="relative flex justify-center">
-              <CardPreview card={{ ...data, design }} size="lg" />
+              <CardPreview card={{ ...data, design: previewDesign }} size="lg" />
             </div>
           </div>
           <p className="text-center text-[11px] uppercase tracking-[0.25em] text-muted-foreground">{t.livePreview}</p>

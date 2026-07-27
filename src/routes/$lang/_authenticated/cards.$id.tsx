@@ -77,8 +77,9 @@ function EditCard() {
     socials: (card.socials as Record<string, string>) ?? {},
   };
 
-  async function onSubmit(d: CardFormData): Promise<void> {
-    const { error } = await supabase.from("cards").update(d).eq("id", id).eq("user_id", user.id);
+  async function onSubmit(d: CardFormData, extra?: { design?: unknown }): Promise<void> {
+    const patch = extra?.design ? { ...d, design: extra.design as never } : d;
+    const { error } = await supabase.from("cards").update(patch).eq("id", id).eq("user_id", user.id);
     if (error) { toast.error(error.message); return; }
     qc.invalidateQueries({ queryKey: ["card", id, user.id] });
     qc.invalidateQueries({ queryKey: ["cards"] });
