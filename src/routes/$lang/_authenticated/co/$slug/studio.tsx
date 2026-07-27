@@ -1,11 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "@/lib/nav";
 import { useQuery } from "@tanstack/react-query";
 import { Wand2, Plus, Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { CompanyShell } from "@/components/company/CompanyShell";
 import { Card, EmptyState } from "@/components/company/sections";
+import { DesignPreview, cardDesignValues } from "@/components/DesignPreview";
+import type { StudioDoc } from "@/lib/studio/types";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
 import { canManageCompany, useWs } from "@/lib/workspace";
@@ -87,13 +89,27 @@ function Page() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("cards")
-        .select("id, name, title, slug, updated_at")
+        .select("id, name, title, slug, updated_at, design, template, accent_color, avatar_url, phone, email, website, company")
         .eq("company_id", company.id)
         .order("updated_at", { ascending: false });
       if (error) throw error;
       return data ?? [];
     },
   });
+
+  // Live stream: any edit saved in the designer (or by a teammate) re-renders here instantly.
+  useEffect(() => {
+    const channel = supabase
+      .channel(`studio-cards-${company.id}`)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "cards", filter: `company_id=eq.${company.id}` },
+        () => { refetch(); },
+      )
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [company.id, refetch]);
+
 
   return (
     <CompanyShell company={company} role={role} title={w.designStudio} subtitle={company.name}>
@@ -116,23 +132,30 @@ function Page() {
         {cards.length === 0 ? (
           <EmptyState icon={Wand2} title={t.none} hint={t.desc} actionLabel={t.newDesign} onAction={createDesign} />
         ) : (
-          <ul className="grid gap-3 sm:grid-cols-2">
+          <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {cards.map((c) => (
               <li key={c.id} className="relative">
                 <Link
                   to="/studio/$id"
                   params={{ id: c.id }}
-                  className="flex items-center gap-3 rounded-2xl border border-border bg-card/60 p-4 pe-14 transition hover:border-primary/50"
+                  className="block rounded-3xl border border-border bg-card/60 p-3 transition hover:border-primary/50"
                 >
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/15 text-primary">
-                    <Wand2 className="h-5 w-5" />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-sm font-medium text-foreground">
-                      {c.name || c.slug}
-                    </span>
-                    <span className="block truncate text-xs text-muted-foreground">{c.title || t.open}</span>
-                  </span>
+                  <div className="overflow-hidden rounded-2xl bg-secondary/40">
+                    {c.design ? (
+                      <DesignPreview
+                        doc={c.design as unknown as StudioDoc}
+                        values={cardDesignValues(c as any)}
+                      />
+                    ) : (
+                      <div className="grid aspect-[1.75/1] place-items-center text-muted-foreground">
+                        <Wand2 className="h-6 w-6" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="mt-3 min-w-0 px-1 pb-1 pe-10">
+                    <p className="truncate text-sm font-medium text-foreground">{c.name || c.slug}</p>
+                    <p className="truncate text-xs text-muted-foreground">{c.title || t.open}</p>
+                  </div>
                 </Link>
                 {canDelete && (
                   <button
@@ -141,7 +164,7 @@ function Page() {
                     aria-label={t.del}
                     onClick={() => deleteCard(c.id)}
                     disabled={deleting === c.id}
-                    className="absolute end-3 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-border/60 bg-card/80 text-muted-foreground transition hover:border-destructive/60 hover:text-destructive disabled:opacity-60"
+                    className="absolute bottom-4 end-4 grid h-9 w-9 place-items-center rounded-full border border-border/60 bg-card/80 text-muted-foreground transition hover:border-destructive/60 hover:text-destructive disabled:opacity-60"
                   >
                     {deleting === c.id ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
