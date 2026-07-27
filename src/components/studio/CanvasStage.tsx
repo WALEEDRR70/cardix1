@@ -618,6 +618,7 @@ export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<H
             <div
               key={n.id}
               draggable={false}
+              className={editingId === n.id ? undefined : "select-none"}
               onDragStart={(e) => e.preventDefault()}
               onPointerDown={(e) => onPointerDownNode(e, n)}
 
