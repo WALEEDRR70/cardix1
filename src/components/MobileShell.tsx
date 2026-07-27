@@ -1,6 +1,6 @@
 import { useRouterState } from "@tanstack/react-router";
 import { Link } from "@/lib/nav";
-import { Home, Plus, ScanLine, BookmarkCheck, Building2, LayoutTemplate, Wrench, Settings as SettingsIcon } from "lucide-react";
+import { Home, Plus, ScanLine, BookmarkCheck, LayoutTemplate, Wrench, Settings as SettingsIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { useI18n } from "@/lib/i18n";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
@@ -9,6 +9,7 @@ import { stripLocalePrefix } from "@/lib/locale-routing";
 import { wsDict } from "@/i18n/workspace";
 import { useAccount } from "@/lib/account";
 import { SiteTopBar } from "@/components/SiteTopBar";
+import { AccountSwitcher } from "@/components/AccountSwitcher";
 
 
 export function MobileShell({
@@ -109,44 +110,6 @@ function DesktopSidebar() {
         © {new Date().getFullYear()} {t.brand}
       </div>
     </aside>
-  );
-}
-
-/** Direct links to the company workspaces the signed-in user belongs to. */
-function WorkspaceLinks() {
-  const { lang } = useI18n();
-  const { data } = useAccount();
-  const memberships = data?.memberships ?? [];
-  if (memberships.length === 0) return null;
-
-  return (
-    <div className="px-3 pb-1">
-      <p className="px-3 pb-1.5 text-[10px] font-medium uppercase tracking-[0.22em] text-muted-foreground/70">
-        {lang === "ar" ? "مساحات الشركة" : "Company workspaces"}
-      </p>
-      <div className="space-y-0.5">
-        {memberships.map((m) => (
-          <Link
-            key={m.company_id}
-            to="/co/$slug"
-            params={{ slug: m.company.slug }}
-            className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-[13px] font-medium text-muted-foreground transition hover:bg-secondary/70 hover:text-foreground"
-          >
-            <span
-              className="grid h-6 w-6 shrink-0 place-items-center overflow-hidden rounded-md border border-border/60 text-[9px] font-bold text-white"
-              style={{ background: `linear-gradient(135deg, ${m.company.brand_primary}, ${m.company.brand_secondary})` }}
-            >
-              {m.company.logo_url ? (
-                <img src={m.company.logo_url} alt="" className="h-full w-full object-cover" />
-              ) : (
-                m.company.name.slice(0, 2).toUpperCase()
-              )}
-            </span>
-            <span className="truncate">{m.company.name}</span>
-          </Link>
-        ))}
-      </div>
-    </div>
   );
 }
 
