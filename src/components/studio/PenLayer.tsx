@@ -260,6 +260,8 @@ export function PenLayer({
   const [smoothOn, setSmoothOn] = useState(true);
   const [smoothness, setSmoothness] = useState(0.5);
   const [handleMode, setHandleMode] = useState<"symmetric" | "independent">("symmetric");
+  const [smartOn, setSmartOn] = useState(true);
+  const [snapHit, setSnapHit] = useState<SnapHit | null>(null);
   const mods = useRef({ shift: false, alt: false });
   const ptsRef = useRef(pts);
   ptsRef.current = pts;
@@ -269,7 +271,25 @@ export function PenLayer({
   smoothRef.current = { on: smoothOn, amount: smoothness };
 
   const g = snap && grid && grid > 1 ? grid : 0;
-  const snapped = (v: number) => (g ? Math.round(v / g) * g : v);
+  const intersections = useMemo(
+    () => (smartOn && pts.length > 2 ? pathIntersections(smoothOn ? autoSmooth(pts, false, smoothness) : pts, false) : []),
+    [pts, smartOn, smoothOn, smoothness],
+  );
+  const interRef = useRef(intersections);
+  interRef.current = intersections;
+  const smartRef = useRef(smartOn);
+  smartRef.current = smartOn;
+
+  /** Resolves a raw doc point to its smart-snapped position. */
+  const resolveSnap = (raw: { x: number; y: number }): SnapHit =>
+    smartSnap(raw, {
+      pts: ptsRef.current,
+      intersections: interRef.current,
+      tol: 7 / zoom,
+      grid: g,
+      enabled: smartRef.current && !mods.current.alt,
+    });
+
 
   const shape = (list: PenPoint[], closed: boolean) =>
     smoothRef.current.on ? autoSmooth(list, closed, smoothRef.current.amount) : list;
