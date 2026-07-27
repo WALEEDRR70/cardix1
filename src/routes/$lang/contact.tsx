@@ -25,8 +25,8 @@ export const Route = createFileRoute("/$lang/contact")({
       ],
       links: [
         { rel: "canonical", href: url },
-        ...SUPPORTED_LOCALES.map((l) => ({ rel: "alternate", hreflang: l, href: `${SITE_ORIGIN}/${l}/contact` })),
-        { rel: "alternate", hreflang: "x-default", href: `${SITE_ORIGIN}/en/contact` },
+        ...SUPPORTED_LOCALES.map((l) => ({ rel: "alternate", hrefLang: l, href: `${SITE_ORIGIN}/${l}/contact` })),
+        { rel: "alternate", hrefLang: "x-default", href: `${SITE_ORIGIN}/en/contact` },
       ],
     };
   },

@@ -15,7 +15,7 @@ export const Route = createFileRoute("/$lang/l/$slug")({
     const copy = getLandingCopy(page, lang);
     const url = `${SITE_ORIGIN}/${lang}/l/${page.slug}`;
     const alternates = SUPPORTED_LOCALES.map((l) => ({
-      rel: "alternate", hreflang: l, href: `${SITE_ORIGIN}/${l}/l/${page.slug}`,
+      rel: "alternate", hrefLang: l, href: `${SITE_ORIGIN}/${l}/l/${page.slug}`,
     }));
     return {
       meta: [
@@ -33,7 +33,7 @@ export const Route = createFileRoute("/$lang/l/$slug")({
       links: [
         { rel: "canonical", href: url },
         ...alternates,
-        { rel: "alternate", hreflang: "x-default", href: `${SITE_ORIGIN}/en/l/${page.slug}` },
+        { rel: "alternate", hrefLang: "x-default", href: `${SITE_ORIGIN}/en/l/${page.slug}` },
       ],
       scripts: [
         {

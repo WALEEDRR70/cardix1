@@ -24,8 +24,8 @@ export const Route = createFileRoute("/$lang/about")({
       ],
       links: [
         { rel: "canonical", href: url },
-        ...SUPPORTED_LOCALES.map((l) => ({ rel: "alternate", hreflang: l, href: `${SITE_ORIGIN}/${l}/about` })),
-        { rel: "alternate", hreflang: "x-default", href: `${SITE_ORIGIN}/en/about` },
+        ...SUPPORTED_LOCALES.map((l) => ({ rel: "alternate", hrefLang: l, href: `${SITE_ORIGIN}/${l}/about` })),
+        { rel: "alternate", hrefLang: "x-default", href: `${SITE_ORIGIN}/en/about` },
       ],
     };
   },

@@ -31,8 +31,8 @@ export const Route = createFileRoute("/$lang/tools/$slug")({
       ],
       links: [
         { rel: "canonical", href: url },
-        ...SUPPORTED_LOCALES.map((l) => ({ rel: "alternate", hreflang: l, href: `${SITE_ORIGIN}/${l}/tools/${tool.slug}` })),
-        { rel: "alternate", hreflang: "x-default", href: `${SITE_ORIGIN}/en/tools/${tool.slug}` },
+        ...SUPPORTED_LOCALES.map((l) => ({ rel: "alternate", hrefLang: l, href: `${SITE_ORIGIN}/${l}/tools/${tool.slug}` })),
+        { rel: "alternate", hrefLang: "x-default", href: `${SITE_ORIGIN}/en/tools/${tool.slug}` },
       ],
       scripts: [{
         type: "application/ld+json",
