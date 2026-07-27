@@ -51,16 +51,32 @@ function TemplatesGallery() {
   const [uid, setUid] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [tab, setTab] = useState<"all" | "mine">("all");
+  const [audience, setAudience] = useState<TemplateAudience | "all">("all");
+  const [targetId, setTargetId] = useState<string>("personal");
+  const { data: account } = useAccount();
+  const workspaces = account?.managed ?? [];
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setUid(data.session?.user.id ?? null));
   }, []);
 
   const { data: templates = [], isLoading } = useQuery({
-    queryKey: tab === "mine" ? ["my-templates", uid] : ["public-templates", search],
-    queryFn: () => (tab === "mine" ? listMyTemplates(uid!) : listPublicTemplates(search)),
+    queryKey: tab === "mine" ? ["my-templates", uid] : ["public-templates", search, audience],
+    queryFn: () => (tab === "mine" ? listMyTemplates(uid!) : listPublicTemplates(search, audience)),
     enabled: tab === "all" || !!uid,
   });
+
+  function currentTarget(): TemplateTarget {
+    const ws = workspaces.find((m) => m.company_id === targetId);
+    if (!ws) return { kind: "personal" };
+    return {
+      kind: "company",
+      companyId: ws.company.id,
+      companyName: ws.company.name,
+      companySlug: ws.company.slug,
+      accent: ws.company.brand_primary,
+    };
+  }
 
   async function onUse(tpl: DesignTemplate) {
     if (!uid) {
@@ -69,8 +85,13 @@ function TemplatesGallery() {
     }
     setBusyId(tpl.id);
     try {
-      const cardId = await useTemplate(tpl);
-      toast.success(ar ? "تم حفظ نسخة خاصة بك" : "Saved your own copy");
+      const target = currentTarget();
+      const cardId = await useTemplate(tpl, target);
+      toast.success(
+        target.kind === "company"
+          ? ar ? "تمت إضافة نسخة إلى مساحة العمل" : "Copy added to the workspace"
+          : ar ? "تم حفظ نسخة في ملفك الشخصي" : "Saved a copy to your personal profile",
+      );
       navigate({ to: "/studio/$id", params: { id: cardId } });
     } catch (e) {
       toast.error((e as Error).message);
