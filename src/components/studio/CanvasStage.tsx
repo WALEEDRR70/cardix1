@@ -48,9 +48,11 @@ function ImageNode({ n, values }: { n: StudioNode; values?: Record<string, strin
         <img
           src={employeePlaceholder.url}
           alt=""
-          className="h-full w-full object-cover"
+          draggable={false}
+          className="pointer-events-none h-full w-full select-none object-cover"
           style={{ borderRadius: s.radius }}
         />
+
       );
     }
     return (
@@ -73,7 +75,7 @@ function ImageNode({ n, values }: { n: StudioNode; values?: Record<string, strin
     );
   }
 
-  return <img src={src} alt="" className="h-full w-full object-cover" style={{ borderRadius: s.radius }} />;
+  return <img src={src} alt="" draggable={false} className="pointer-events-none h-full w-full select-none object-cover" style={{ borderRadius: s.radius }} />;
 }
 
 export function NodeContent({ n, values }: { n: StudioNode; values?: Record<string, string> }) {
@@ -601,7 +603,10 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
           {doc.nodes.map((n) => (
             <div
               key={n.id}
+              draggable={false}
+              onDragStart={(e) => e.preventDefault()}
               onPointerDown={(e) => onPointerDownNode(e, n)}
+
               onDoubleClick={(e) => {
                 if (n.type === "text" || n.type === "button") { e.stopPropagation(); setEditingId(n.id); }
               }}
