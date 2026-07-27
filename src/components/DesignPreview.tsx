@@ -41,13 +41,18 @@ export function DesignPreview({
       }}
     >
       <div
+        dir="ltr"
         style={{
           width: doc.w,
           height: doc.h,
           transform: `scale(${scale})`,
           transformOrigin: "top left",
-          position: "relative",
+          position: "absolute",
+          insetInlineStart: "auto",
+          left: 0,
+          top: 0,
           background: doc.background?.gradient ?? doc.background?.color,
+
         }}
       >
         {doc.background?.image && (
@@ -99,22 +104,41 @@ export function cardDesignValues(card: {
   address?: string | null;
   avatar_url?: string | null;
   slug?: string | null;
+  socials?: Record<string, string> | null | unknown;
+  logo_url?: string | null;
+  department?: string | null;
+  tagline?: string | null;
+  working_hours?: string | null;
 }): Record<string, string> {
   const v: Record<string, string> = {};
+  // Always define known tokens (even as an empty string) so real cards never
+  // fall back to the studio's demo sample text.
   const put = (k: string, val?: string | null) => {
-    if (val) v[k] = val;
+    v[k] = val ?? "";
   };
+  const socials = (card.socials && typeof card.socials === "object" ? card.socials : {}) as Record<string, string>;
+
   put("{{Name}}", card.name);
+  put("{{Employee Name}}", card.name);
   put("{{Title}}", card.title);
+  put("{{Job Title}}", card.title);
+  put("{{Department}}", card.department);
   put("{{Company}}", card.company);
+  put("{{Tagline}}", card.tagline);
   put("{{Bio}}", card.bio);
   put("{{Phone}}", card.phone);
   put("{{Mobile}}", card.phone);
-  put("{{WhatsApp}}", card.whatsapp);
+  put("{{WhatsApp}}", card.whatsapp || card.phone);
   put("{{Email}}", card.email);
   put("{{Website}}", card.website);
   put("{{Address}}", card.address);
-  put("{{Photo}}", card.avatar_url);
+  put("{{Hours}}", card.working_hours);
+  put("{{LinkedIn}}", socials.linkedin);
+  put("{{Instagram}}", socials.instagram);
+  put("{{X}}", socials.x || socials.twitter);
+  if (card.avatar_url) v["{{Photo}}"] = card.avatar_url;
+  if (card.logo_url) v["{{Logo}}"] = card.logo_url;
   if (card.slug && typeof window !== "undefined") v["{{QR}}"] = `${window.location.origin}/c/${card.slug}`;
   return v;
 }
+
