@@ -44,7 +44,7 @@ export const syncCompanyCardDesigns = createServerFn({ method: "POST" })
       if (tpl.design) patch.design = tpl.design;
       const { error } = await supabaseAdmin
         .from("cards")
-        .update(patch)
+        .update(patch as never)
         .eq("company_id", data.companyId)
         .eq("user_id", m.user_id)
         .eq("card_type", "employee");
