@@ -645,7 +645,14 @@ export function DepartmentsTab({ company, canEdit }: { company: Company; canEdit
   return (
     <Card className="space-y-3">
       <p className="text-sm font-semibold">{w.departments}</p>
-      {(data ?? []).length === 0 && <p className="py-4 text-center text-xs text-muted-foreground">{w.noDepartments}</p>}
+      {(data ?? []).length === 0 && (
+        <EmptyState
+          icon={Building2}
+          title={w.noDepartments}
+          hint={ar ? "أنشئ قسمًا مثل «المبيعات» لتخصيص تصميم بطاقة له." : "Create a department like “Sales” to assign it a card design."}
+        />
+      )}
+
       <div className="flex flex-wrap gap-2">
         {(data ?? []).map((d) => (
           <span key={d.id} className="flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-xs">
