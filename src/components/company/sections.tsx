@@ -266,7 +266,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
   const qc = useQueryClient();
   const [inviting, setInviting] = useState(false);
   const [importing, setImporting] = useState(false);
-  const [inv, setInv] = useState({ name: "", email: "", job_title: "", department_id: "", phone: "", role: "employee" as CompanyRole });
+  const [inv, setInv] = useState({ name: "", email: "", job_title: "", department_id: "", phone: "", role: "employee" as CompanyRole, template_id: "" });
   const [busy, setBusy] = useState(false);
   const [lastLink, setLastLink] = useState<string | null>(null);
 
@@ -304,12 +304,24 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
     },
   });
 
+  const { data: cardDesigns } = useQuery({
+    queryKey: ["company-card-designs", company.id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("company_templates")
+        .select("id, name, department_id, target_role")
+        .eq("company_id", company.id)
+        .order("sort_order");
+      return data ?? [];
+    },
+  });
+
   function inviteUrl(token: string) {
     const origin = typeof window !== "undefined" ? window.location.origin : "https://cardixn.com";
     return `${origin}/join/${token}`;
   }
 
-  async function createInvite(payload: { name: string; email: string; job_title: string; department_id: string; phone: string; role: CompanyRole }) {
+  async function createInvite(payload: { name: string; email: string; job_title: string; department_id: string; phone: string; role: CompanyRole; template_id?: string }) {
     const token = (crypto.randomUUID() + crypto.randomUUID()).replace(/-/g, "");
     const { data, error } = await supabase
       .from("company_invitations")
@@ -320,6 +332,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
         job_title: payload.job_title || null,
         phone: payload.phone || null,
         department_id: payload.department_id || null,
+        template_id: payload.template_id || null,
         role: payload.role,
         token,
         invited_by: userId,
@@ -334,13 +347,14 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
     return inviteUrl(data.token);
   }
 
+
   async function submitInvite(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
     try {
       const url = await createInvite(inv);
       setLastLink(url);
-      setInv({ name: "", email: "", job_title: "", department_id: "", phone: "", role: "employee" });
+      setInv({ name: "", email: "", job_title: "", department_id: "", phone: "", role: "employee", template_id: "" });
       qc.invalidateQueries({ queryKey: ["company-invites", company.id] });
       toast.success(w.invitationCreated);
     } catch (err: unknown) {
@@ -458,7 +472,21 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
                   ))}
                 </select>
               </div>
+              <div className="sm:col-span-2">
+                <label className="mb-1 block px-1 text-xs text-muted-foreground">{w.templates}</label>
+                <select
+                  value={inv.template_id}
+                  onChange={(e) => setInv({ ...inv, template_id: e.target.value })}
+                  className="w-full rounded-2xl border border-input bg-card px-4 py-3 text-sm outline-none"
+                >
+                  <option value="">—</option>
+                  {(cardDesigns ?? []).map((d) => (
+                    <option key={d.id} value={d.id}>{d.name}</option>
+                  ))}
+                </select>
+              </div>
             </div>
+
             <SaveBar busy={busy} label={w.sendInvitation} onSave={() => { /* submit via form */ }} />
           </form>
           {lastLink && (

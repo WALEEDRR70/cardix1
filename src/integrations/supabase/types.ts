@@ -99,6 +99,7 @@ export type Database = {
           card_type: Database["public"]["Enums"]["card_type"]
           company: string | null
           company_id: string | null
+          company_template_id: string | null
           cover_url: string | null
           created_at: string
           custom_values: Json
@@ -132,6 +133,7 @@ export type Database = {
           card_type?: Database["public"]["Enums"]["card_type"]
           company?: string | null
           company_id?: string | null
+          company_template_id?: string | null
           cover_url?: string | null
           created_at?: string
           custom_values?: Json
@@ -165,6 +167,7 @@ export type Database = {
           card_type?: Database["public"]["Enums"]["card_type"]
           company?: string | null
           company_id?: string | null
+          company_template_id?: string | null
           cover_url?: string | null
           created_at?: string
           custom_values?: Json
@@ -196,6 +199,13 @@ export type Database = {
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cards_company_template_id_fkey"
+            columns: ["company_template_id"]
+            isOneToOne: false
+            referencedRelation: "company_templates"
             referencedColumns: ["id"]
           },
           {
@@ -571,6 +581,7 @@ export type Database = {
           phone: string | null
           role: Database["public"]["Enums"]["company_role"]
           status: Database["public"]["Enums"]["invitation_status"]
+          template_id: string | null
           token: string
           updated_at: string
         }
@@ -588,6 +599,7 @@ export type Database = {
           phone?: string | null
           role?: Database["public"]["Enums"]["company_role"]
           status?: Database["public"]["Enums"]["invitation_status"]
+          template_id?: string | null
           token?: string
           updated_at?: string
         }
@@ -605,6 +617,7 @@ export type Database = {
           phone?: string | null
           role?: Database["public"]["Enums"]["company_role"]
           status?: Database["public"]["Enums"]["invitation_status"]
+          template_id?: string | null
           token?: string
           updated_at?: string
         }
@@ -621,6 +634,13 @@ export type Database = {
             columns: ["department_id"]
             isOneToOne: false
             referencedRelation: "company_departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_invitations_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "company_templates"
             referencedColumns: ["id"]
           },
         ]
@@ -690,11 +710,16 @@ export type Database = {
           accent_color: string
           company_id: string
           created_at: string
+          department_id: string | null
+          description: string | null
+          design: Json | null
           id: string
           is_approved: boolean
+          is_auto_assign: boolean
           is_default: boolean
           name: string
           sort_order: number
+          target_role: Database["public"]["Enums"]["company_role"] | null
           template: string
           updated_at: string
         }
@@ -702,11 +727,16 @@ export type Database = {
           accent_color?: string
           company_id: string
           created_at?: string
+          department_id?: string | null
+          description?: string | null
+          design?: Json | null
           id?: string
           is_approved?: boolean
+          is_auto_assign?: boolean
           is_default?: boolean
           name: string
           sort_order?: number
+          target_role?: Database["public"]["Enums"]["company_role"] | null
           template?: string
           updated_at?: string
         }
@@ -714,11 +744,16 @@ export type Database = {
           accent_color?: string
           company_id?: string
           created_at?: string
+          department_id?: string | null
+          description?: string | null
+          design?: Json | null
           id?: string
           is_approved?: boolean
+          is_auto_assign?: boolean
           is_default?: boolean
           name?: string
           sort_order?: number
+          target_role?: Database["public"]["Enums"]["company_role"] | null
           template?: string
           updated_at?: string
         }
@@ -728,6 +763,13 @@ export type Database = {
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_templates_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "company_departments"
             referencedColumns: ["id"]
           },
         ]

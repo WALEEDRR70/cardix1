@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CompanyShell } from "@/components/company/CompanyShell";
 import { Card, TemplatesTab } from "@/components/company/sections";
+import { CardDesignsTab } from "@/components/company/card-designs";
 import { CommunityTemplates } from "@/components/CommunityTemplates";
 import { useCompany } from "@/lib/company-context";
 import { canManageCompany, useWs } from "@/lib/workspace";
@@ -13,7 +14,12 @@ function Page() {
   const ar = lang === "ar";
   return (
     <CompanyShell company={company} role={role} title={w.templates} subtitle={company.name}>
-      <TemplatesTab company={company} canEdit={canManageCompany(role)} />
+      <CardDesignsTab company={company} canEdit={canManageCompany(role)} />
+
+      <div className="mt-4">
+        <TemplatesTab company={company} canEdit={canManageCompany(role)} />
+      </div>
+
 
       <Card className="mt-4 space-y-3">
         <div>
