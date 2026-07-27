@@ -215,7 +215,14 @@ export function CardDesignsTab({ company, canEdit }: { company: Company; canEdit
         </div>
       )}
 
-      {designs.length === 0 && <p className="py-6 text-center text-xs text-muted-foreground">{t.none}</p>}
+      {designs.length === 0 && (
+        <EmptyState
+          icon={Wand2}
+          title={t.none}
+          hint={ar ? "أضف تصميمًا واربطه بقسم أو دور، وسيُطبَّق على بطاقات موظفيه تلقائيًا." : "Add a design tied to a department or role — it applies to those employees automatically."}
+        />
+      )}
+
 
       <div className="space-y-3">
         {designs.map((d) => (
