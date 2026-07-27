@@ -155,7 +155,7 @@ function DeepFeatures({ c }: { c: SeoContent }) {
         <div className="rounded-2xl bg-white p-5 shadow-inner">
           <div className="grid h-40 w-40 grid-cols-8 grid-rows-8 gap-[3px]">
             {Array.from({ length: 64 }).map((_, i) => (
-              <div key={i} className="rounded-sm" style={{ background: Math.random() > 0.45 ? "#0a0a0a" : "transparent" }} />
+              <div key={i} className="rounded-sm" style={{ background: QR_PATTERN[i] ? "#0a0a0a" : "transparent" }} />
             ))}
           </div>
         </div>
