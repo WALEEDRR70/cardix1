@@ -10,7 +10,9 @@ import { useNavigate } from "@/lib/nav";
 import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } from "@/i18n/config";
 import { useAccount } from "@/lib/account";
 import { audienceLabel } from "@/components/CommunityTemplates";
+import { UseTemplateDialog } from "@/components/UseTemplateDialog";
 import {
+  applyTemplateToCard,
   deleteTemplate,
   listMyTemplates,
   listPublicTemplates,
@@ -62,6 +64,7 @@ function TemplatesGallery() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [tab, setTab] = useState<"all" | "mine">("all");
   const [audience, setAudience] = useState<TemplateAudience | "all">("all");
+  const [pending, setPending] = useState<DesignTemplate | null>(null);
   const { data: account } = useAccount();
   /** Active context decides the destination: inside a workspace → workspace, otherwise personal. */
   const activeWorkspace =
@@ -91,20 +94,46 @@ function TemplatesGallery() {
     };
   }
 
-  async function onUse(tpl: DesignTemplate) {
+  function onUse(tpl: DesignTemplate) {
     if (!uid) {
       navigate({ to: "/auth" });
       return;
     }
+    setPending(tpl);
+  }
+
+  /** Creates a brand-new card from the pending template. */
+  async function onCreateFromTemplate() {
+    const tpl = pending;
+    if (!tpl) return;
     setBusyId(tpl.id);
     try {
       const target = currentTarget();
       const cardId = await useTemplate(tpl, target);
       toast.success(
         target.kind === "company"
-          ? ar ? "تمت إضافة نسخة إلى مساحة العمل" : "Copy added to the workspace"
-          : ar ? "تم حفظ نسخة في ملفك الشخصي" : "Saved a copy to your personal profile",
+          ? ar ? "تمت إضافة بطاقة جديدة إلى مساحة العمل" : "New card added to the workspace"
+          : ar ? "تم إنشاء بطاقة جديدة بهذا التصميم" : "New card created with this design",
       );
+      setPending(null);
+      navigate({ to: "/studio/$id", params: { id: cardId } });
+    } catch (e) {
+      toast.error((e as Error).message);
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  /** Replaces an existing card's design with the pending template. */
+  async function onApplyToCard(cardId: string) {
+    const tpl = pending;
+    if (!tpl) return;
+    setBusyId(tpl.id);
+    try {
+      await applyTemplateToCard(tpl, cardId);
+      await qc.invalidateQueries({ queryKey: ["template-target-cards"] });
+      toast.success(ar ? "تم تطبيق التصميم على البطاقة" : "Design applied to the card");
+      setPending(null);
       navigate({ to: "/studio/$id", params: { id: cardId } });
     } catch (e) {
       toast.error((e as Error).message);
@@ -255,7 +284,7 @@ function TemplatesGallery() {
                       className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-accent px-3 py-2 text-xs font-semibold text-accent-foreground disabled:opacity-60"
                     >
                       {busyId === tpl.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Wand2 className="h-3.5 w-3.5" />}
-                      {ar ? "احفظ وعدّل نسختي" : "Save & edit my copy"}
+                      {ar ? "استخدام القالب" : "Use template"}
                     </button>
                     {uid === tpl.author_id && (
                       <button
@@ -273,6 +302,18 @@ function TemplatesGallery() {
           </ul>
         )}
       </section>
+
+      <UseTemplateDialog
+        tpl={pending}
+        open={!!pending}
+        onOpenChange={(v) => !v && setPending(null)}
+        ar={ar}
+        userId={uid}
+        companyId={activeWorkspace?.company.id ?? null}
+        busy={!!busyId}
+        onApply={onApplyToCard}
+        onCreate={onCreateFromTemplate}
+      />
     </MarketingLayout>
   );
 }
