@@ -734,8 +734,10 @@ export type Database = {
       }
       design_templates: {
         Row: {
+          audience: string
           author_id: string
           author_name: string | null
+          company_id: string | null
           created_at: string
           description: string | null
           design: Json
@@ -748,8 +750,10 @@ export type Database = {
           use_count: number
         }
         Insert: {
+          audience?: string
           author_id: string
           author_name?: string | null
+          company_id?: string | null
           created_at?: string
           description?: string | null
           design: Json
@@ -762,8 +766,10 @@ export type Database = {
           use_count?: number
         }
         Update: {
+          audience?: string
           author_id?: string
           author_name?: string | null
+          company_id?: string | null
           created_at?: string
           description?: string | null
           design?: Json
@@ -775,7 +781,15 @@ export type Database = {
           updated_at?: string
           use_count?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "design_templates_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
