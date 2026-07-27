@@ -35,6 +35,24 @@ function Page() {
   const t = T[lang === "ar" ? "ar" : "en"];
   const navigate = useNavigate();
   const [creating, setCreating] = useState(false);
+  const [deleting, setDeleting] = useState<string | null>(null);
+  const canDelete = canManageCompany(role);
+
+  async function deleteCard(id: string) {
+    if (!window.confirm(t.confirm)) return;
+    setDeleting(id);
+    try {
+      const { error } = await supabase.from("cards").delete().eq("id", id);
+      if (error) throw error;
+      toast.success(t.deleted);
+      await refetch();
+    } catch {
+      toast.error(t.delFailed);
+    } finally {
+      setDeleting(null);
+    }
+  }
+
 
   async function createDesign() {
     setCreating(true);
