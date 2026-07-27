@@ -1,7 +1,7 @@
 // Free-form pen tool (Illustrator/Figma grade):
 // click = corner anchor, drag = bezier handle, Alt-drag = break symmetry,
 // Shift = 45° constraints, click first anchor = close, click last anchor = retract handle.
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export type PenPoint = {
   x: number;
@@ -132,6 +132,97 @@ function contourArrows(pts: PenPoint[], closed: boolean) {
   return out;
 }
 
+/* ---------- smart snapping ---------- */
+
+export type SnapKind = "anchor" | "handle" | "intersection" | "grid" | "pixel";
+export type SnapHit = { x: number; y: number; kind: SnapKind };
+
+/** Flattens the path into a polyline for geometric tests. */
+function flatten(pts: PenPoint[], closed: boolean, steps = 14) {
+  const poly: { x: number; y: number }[] = [];
+  const n = pts.length;
+  if (!n) return poly;
+  const segs = closed ? n : n - 1;
+  poly.push({ x: pts[0].x, y: pts[0].y });
+  for (let i = 0; i < segs; i++) {
+    const a = pts[i];
+    const b = pts[(i + 1) % n];
+    for (let s = 1; s <= steps; s++) poly.push(cubicAt(a, b, s / steps));
+  }
+  return poly;
+}
+
+function segCross(
+  p1: { x: number; y: number }, p2: { x: number; y: number },
+  p3: { x: number; y: number }, p4: { x: number; y: number },
+) {
+  const d1x = p2.x - p1.x, d1y = p2.y - p1.y;
+  const d2x = p4.x - p3.x, d2y = p4.y - p3.y;
+  const den = d1x * d2y - d1y * d2x;
+  if (Math.abs(den) < 1e-9) return null;
+  const t = ((p3.x - p1.x) * d2y - (p3.y - p1.y) * d2x) / den;
+  const u = ((p3.x - p1.x) * d1y - (p3.y - p1.y) * d1x) / den;
+  if (t < 0 || t > 1 || u < 0 || u > 1) return null;
+  return { x: p1.x + d1x * t, y: p1.y + d1y * t };
+}
+
+/** Self-intersections of the current contour (snap targets). */
+export function pathIntersections(pts: PenPoint[], closed: boolean) {
+  const poly = flatten(pts, closed);
+  const out: { x: number; y: number }[] = [];
+  for (let i = 0; i < poly.length - 1; i++) {
+    for (let j = i + 2; j < poly.length - 1; j++) {
+      if (i === 0 && j === poly.length - 2 && closed) continue;
+      const hit = segCross(poly[i], poly[i + 1], poly[j], poly[j + 1]);
+      if (hit && !out.some((o) => Math.hypot(o.x - hit.x, o.y - hit.y) < 1)) out.push(hit);
+    }
+  }
+  return out;
+}
+
+/**
+ * Smart snap: anchors/endpoints and contour intersections win over the grid,
+ * and pixel snapping always applies as a floor so vectors stay crisp.
+ */
+export function smartSnap(
+  raw: { x: number; y: number },
+  opts: {
+    pts: PenPoint[];
+    intersections: { x: number; y: number }[];
+    tol: number;
+    grid: number;
+    enabled: boolean;
+  },
+): SnapHit {
+  const { pts, intersections, tol, grid, enabled } = opts;
+  if (!enabled) return { x: raw.x, y: raw.y, kind: "pixel" };
+
+  let best: SnapHit | null = null;
+  let bestD = tol;
+  const consider = (x: number, y: number, kind: SnapKind) => {
+    const d = Math.hypot(x - raw.x, y - raw.y);
+    if (d < bestD) { bestD = d; best = { x, y, kind }; }
+  };
+
+  // endpoints / anchors and their handle tips
+  pts.forEach((p) => {
+    consider(p.x, p.y, "anchor");
+    if (Math.hypot(p.hx - p.x, p.hy - p.y) > 0.5) consider(p.hx, p.hy, "handle");
+    if (Math.hypot(p.ix - p.x, p.iy - p.y) > 0.5) consider(p.ix, p.iy, "handle");
+  });
+  intersections.forEach((p) => consider(p.x, p.y, "intersection"));
+  if (best) return best;
+
+  if (grid > 1) {
+    const gx = Math.round(raw.x / grid) * grid;
+    const gy = Math.round(raw.y / grid) * grid;
+    if (Math.hypot(gx - raw.x, gy - raw.y) < tol) return { x: gx, y: gy, kind: "grid" };
+  }
+  // pixel floor: keeps points on whole pixels even with no grid
+  return { x: Math.round(raw.x), y: Math.round(raw.y), kind: "pixel" };
+}
+
+
 function bbox(pts: PenPoint[], closed: boolean) {
   const xs: number[] = [];
   const ys: number[] = [];
@@ -169,6 +260,8 @@ export function PenLayer({
   const [smoothOn, setSmoothOn] = useState(true);
   const [smoothness, setSmoothness] = useState(0.5);
   const [handleMode, setHandleMode] = useState<"symmetric" | "independent">("symmetric");
+  const [smartOn, setSmartOn] = useState(true);
+  const [snapHit, setSnapHit] = useState<SnapHit | null>(null);
   const mods = useRef({ shift: false, alt: false });
   const ptsRef = useRef(pts);
   ptsRef.current = pts;
@@ -178,7 +271,25 @@ export function PenLayer({
   smoothRef.current = { on: smoothOn, amount: smoothness };
 
   const g = snap && grid && grid > 1 ? grid : 0;
-  const snapped = (v: number) => (g ? Math.round(v / g) * g : v);
+  const intersections = useMemo(
+    () => (smartOn && pts.length > 2 ? pathIntersections(smoothOn ? autoSmooth(pts, false, smoothness) : pts, false) : []),
+    [pts, smartOn, smoothOn, smoothness],
+  );
+  const interRef = useRef(intersections);
+  interRef.current = intersections;
+  const smartRef = useRef(smartOn);
+  smartRef.current = smartOn;
+
+  /** Resolves a raw doc point to its smart-snapped position. */
+  const resolveSnap = (raw: { x: number; y: number }): SnapHit =>
+    smartSnap(raw, {
+      pts: ptsRef.current,
+      intersections: interRef.current,
+      tol: 7 / zoom,
+      grid: g,
+      enabled: smartRef.current && !mods.current.alt,
+    });
+
 
   const shape = (list: PenPoint[], closed: boolean) =>
     smoothRef.current.on ? autoSmooth(list, closed, smoothRef.current.amount) : list;
@@ -256,8 +367,9 @@ export function PenLayer({
       return;
     }
 
-    let px = snapped(raw.x);
-    let py = snapped(raw.y);
+    const s = resolveSnap(raw);
+    let px = s.x;
+    let py = s.y;
     // Shift constrains the new anchor to 22.5° from the previous one
     if (mods.current.shift && last) {
       const c = constrain(last.x, last.y, raw.x, raw.y);
@@ -313,8 +425,15 @@ export function PenLayer({
     else if (last && Math.hypot(raw.x - last.x, raw.y - last.y) < hit) setHover("last");
     else setHover(null);
 
-    if (e.shiftKey && last) setLive(constrain(last.x, last.y, raw.x, raw.y));
-    else setLive({ x: snapped(raw.x), y: snapped(raw.y) });
+    if (e.shiftKey && last) {
+      const c = constrain(last.x, last.y, raw.x, raw.y);
+      setLive(c);
+      setSnapHit(null);
+    } else {
+      const s = resolveSnap(raw);
+      setLive({ x: s.x, y: s.y });
+      setSnapHit(s.kind === "pixel" ? null : s);
+    }
   }
 
   const map = (x: number, y: number): [number, number] => [x * zoom, y * zoom];
@@ -418,6 +537,30 @@ export function PenLayer({
             </g>
           );
         })}
+
+        {/* intersection snap targets (faint) */}
+        {smartOn && !dragging && intersections.map((p, i) => (
+          <circle key={`x-${i}`} cx={p.x * zoom} cy={p.y * zoom} r={2} fill="var(--accent)" opacity={0.35} />
+        ))}
+
+        {/* smart snap indicator */}
+        {snapHit && !dragging && (
+          <g transform={`translate(${snapHit.x * zoom} ${snapHit.y * zoom})`}>
+            {snapHit.kind === "intersection" ? (
+              <>
+                <line x1={-7} y1={-7} x2={7} y2={7} stroke="#22d3ee" strokeWidth={1.5} />
+                <line x1={-7} y1={7} x2={7} y2={-7} stroke="#22d3ee" strokeWidth={1.5} />
+              </>
+            ) : snapHit.kind === "grid" ? (
+              <>
+                <line x1={-6} y1={0} x2={6} y2={0} stroke="#22d3ee" strokeWidth={1.25} opacity={0.9} />
+                <line x1={0} y1={-6} x2={0} y2={6} stroke="#22d3ee" strokeWidth={1.25} opacity={0.9} />
+              </>
+            ) : (
+              <circle r={6} fill="none" stroke="#22d3ee" strokeWidth={1.75} />
+            )}
+          </g>
+        )}
 
         {/* ghost anchor under the cursor */}
         {live && !dragging && !hover && (
