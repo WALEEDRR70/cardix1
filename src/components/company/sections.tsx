@@ -354,7 +354,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
     try {
       const url = await createInvite(inv);
       setLastLink(url);
-      setInv({ name: "", email: "", job_title: "", department_id: "", phone: "", role: "employee" });
+      setInv({ name: "", email: "", job_title: "", department_id: "", phone: "", role: "employee", template_id: "" });
       qc.invalidateQueries({ queryKey: ["company-invites", company.id] });
       toast.success(w.invitationCreated);
     } catch (err: unknown) {
