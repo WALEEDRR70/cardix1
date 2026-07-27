@@ -5,40 +5,85 @@ import {
 import type { LucideIcon } from "lucide-react";
 import type { WsDict } from "@/i18n/workspace";
 
-export type CompanySection = {
+export type CompanyTab = {
   /** Path suffix appended to /co/$slug */
   path: string;
   icon: LucideIcon;
   label: (w: WsDict) => string;
-  group: "manage" | "identity" | "reach" | "admin";
+  /** Rarely used — shown last, visually quieter. */
+  advanced?: boolean;
 };
 
+export type CompanySection = CompanyTab & {
+  /** Sub-pages surfaced as tabs inside this section (includes the section itself). */
+  tabs: CompanyTab[];
+};
+
+/**
+ * Five top-level sections. Everything else lives as a tab inside one of them,
+ * so the sidebar stays calm while no feature is lost.
+ */
 export const COMPANY_SECTIONS: CompanySection[] = [
-  { path: "", icon: LayoutDashboard, label: (w) => w.overview, group: "manage" },
-  { path: "/card", icon: IdCard, label: (w) => w.companyCard, group: "manage" },
-  { path: "/employees", icon: Users, label: (w) => w.employees, group: "manage" },
-  { path: "/departments", icon: Building, label: (w) => w.departments, group: "manage" },
-  { path: "/invitations", icon: MailPlus, label: (w) => w.invite, group: "manage" },
-
-  { path: "/brand", icon: Palette, label: (w) => w.brand, group: "identity" },
-  { path: "/templates", icon: LayoutTemplate, label: (w) => w.templates, group: "identity" },
-  { path: "/studio", icon: Wand2, label: (w) => w.designStudio, group: "identity" },
-  { path: "/media", icon: Images, label: (w) => w.mediaLibrary, group: "identity" },
-
-  { path: "/analytics", icon: BarChart3, label: (w) => w.analytics, group: "reach" },
-  { path: "/qr", icon: QrCode, label: (w) => w.qrManager, group: "reach" },
-  { path: "/nfc", icon: Nfc, label: (w) => w.nfcManager, group: "reach" },
-  { path: "/page", icon: Globe, label: (w) => w.publicPage, group: "reach" },
-  { path: "/seo", icon: Search, label: (w) => w.seo, group: "reach" },
-
-  { path: "/activity", icon: ScrollText, label: (w) => w.auditLog, group: "admin" },
-  { path: "/permissions", icon: ShieldCheck, label: (w) => w.permissions, group: "admin" },
-  { path: "/settings", icon: Settings, label: (w) => w.settings, group: "admin" },
+  {
+    path: "",
+    icon: LayoutDashboard,
+    label: (w) => w.overview,
+    tabs: [
+      { path: "", icon: LayoutDashboard, label: (w) => w.overview },
+      { path: "/card", icon: IdCard, label: (w) => w.companyCard },
+      { path: "/activity", icon: ScrollText, label: (w) => w.auditLog, advanced: true },
+    ],
+  },
+  {
+    path: "/employees",
+    icon: Users,
+    label: (w) => w.employees,
+    tabs: [
+      { path: "/employees", icon: Users, label: (w) => w.employees },
+      { path: "/departments", icon: Building, label: (w) => w.departments },
+      { path: "/invitations", icon: MailPlus, label: (w) => w.invite },
+    ],
+  },
+  {
+    path: "/templates",
+    icon: LayoutTemplate,
+    label: (w) => w.templates,
+    tabs: [
+      { path: "/templates", icon: LayoutTemplate, label: (w) => w.templates },
+      { path: "/studio", icon: Wand2, label: (w) => w.designStudio },
+      { path: "/brand", icon: Palette, label: (w) => w.brand },
+      { path: "/media", icon: Images, label: (w) => w.mediaLibrary },
+    ],
+  },
+  {
+    path: "/analytics",
+    icon: BarChart3,
+    label: (w) => w.analytics,
+    tabs: [
+      { path: "/analytics", icon: BarChart3, label: (w) => w.analytics },
+      { path: "/qr", icon: QrCode, label: (w) => w.qrManager },
+      { path: "/page", icon: Globe, label: (w) => w.publicPage },
+      { path: "/nfc", icon: Nfc, label: (w) => w.nfcManager, advanced: true },
+    ],
+  },
+  {
+    path: "/settings",
+    icon: Settings,
+    label: (w) => w.settings,
+    tabs: [
+      { path: "/settings", icon: Settings, label: (w) => w.settings },
+      { path: "/permissions", icon: ShieldCheck, label: (w) => w.permissions, advanced: true },
+      { path: "/seo", icon: Search, label: (w) => w.seo, advanced: true },
+    ],
+  },
 ];
 
-export const COMPANY_GROUP_LABEL: Record<CompanySection["group"], (w: WsDict) => string> = {
-  manage: (w) => w.groupManage,
-  identity: (w) => w.groupIdentity,
-  reach: (w) => w.groupReach,
-  admin: (w) => w.groupAdmin,
-};
+/** Section that owns a given path suffix (e.g. "/qr" -> the Reach section). */
+export function findCompanySection(pathSuffix: string): CompanySection {
+  const clean = pathSuffix.replace(/\/$/, "");
+  return (
+    COMPANY_SECTIONS.find((s) => s.tabs.some((t) => t.path === clean)) ??
+    COMPANY_SECTIONS.find((s) => s.tabs.some((t) => t.path !== "" && clean.startsWith(t.path))) ??
+    COMPANY_SECTIONS[0]
+  );
+}
