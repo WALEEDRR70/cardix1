@@ -273,16 +273,20 @@ export function PenLayer({
       setPts((prev) =>
         prev.map((pt, i) =>
           i === index
-            ? {
-                ...pt,
-                // dragging a handle opts this anchor out of auto-smoothing
-                manual: Math.hypot(out.x - pt.x, out.y - pt.y) > 1.5,
-                hx: out.x,
-                hy: out.y,
-                // Alt breaks symmetry: incoming handle stays on the anchor
-                ix: mods.current.alt ? pt.x : 2 * pt.x - out.x,
-                iy: mods.current.alt ? pt.y : 2 * pt.y - out.y,
-              }
+            ? (() => {
+                // Alt temporarily inverts the active handle mode
+                const symmetric =
+                  modeRef.current === "symmetric" ? !mods.current.alt : mods.current.alt;
+                return {
+                  ...pt,
+                  // dragging a handle opts this anchor out of auto-smoothing
+                  manual: Math.hypot(out.x - pt.x, out.y - pt.y) > 1.5,
+                  hx: out.x,
+                  hy: out.y,
+                  ix: symmetric ? 2 * pt.x - out.x : pt.x,
+                  iy: symmetric ? 2 * pt.y - out.y : pt.y,
+                };
+              })()
             : pt,
         ),
       );
