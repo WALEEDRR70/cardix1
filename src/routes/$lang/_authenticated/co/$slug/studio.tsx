@@ -118,7 +118,7 @@ function Page() {
         ) : (
           <ul className="grid gap-3 sm:grid-cols-2">
             {cards.map((c) => (
-              <li key={c.id}>
+              <li key={c.id} className="relative">
                 <Link
                   to="/studio/$id"
                   params={{ id: c.id }}
