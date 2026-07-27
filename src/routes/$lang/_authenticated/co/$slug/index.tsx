@@ -87,16 +87,26 @@ function CompanyOverview() {
         </div>
 
         <div className="glass rounded-3xl border border-border/50 p-6">
-          <p className="text-sm font-semibold">{w.legacyAdmin}</p>
-          <p className="mt-1 text-xs text-muted-foreground">{w.comingSoonDesc}</p>
-          <Link
-            to="/workspace/$id"
-            params={{ id: company.id }}
-            className="mt-4 inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm"
-          >
-            {w.legacyAdmin} <ArrowRight className="h-3.5 w-3.5 rtl:rotate-180" />
-          </Link>
+          <p className="text-sm font-semibold">{w.companyCard}</p>
+          <p className="mt-1 text-xs text-muted-foreground">{company.name}</p>
+          <div className="mt-4 flex flex-col gap-2">
+            <Link
+              to="/co/$slug/card"
+              params={{ slug: company.slug }}
+              className="inline-flex items-center justify-between gap-2 rounded-full border border-border px-4 py-2 text-sm"
+            >
+              {w.companyCard} <ArrowRight className="h-3.5 w-3.5 rtl:rotate-180" />
+            </Link>
+            <Link
+              to="/co/$slug/templates"
+              params={{ slug: company.slug }}
+              className="inline-flex items-center justify-between gap-2 rounded-full border border-border px-4 py-2 text-sm"
+            >
+              {w.templates} <ArrowRight className="h-3.5 w-3.5 rtl:rotate-180" />
+            </Link>
+          </div>
         </div>
+
       </div>
     </CompanyShell>
   );
