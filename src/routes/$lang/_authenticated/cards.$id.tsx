@@ -177,6 +177,21 @@ function EditCard() {
       }
     >
       <div className="px-5 lg:px-8">
+        {card.company_id && (corp?.department || corp?.jobTitle) && (
+          <div className="mb-4 flex flex-wrap items-center gap-2 rounded-2xl border border-border/70 bg-secondary/50 px-4 py-3 text-xs text-muted-foreground">
+            <span>{lang === "ar" ? "محدَّد من الشركة:" : "Set by your company:"}</span>
+            {corp?.department && (
+              <span className="rounded-full border border-border bg-card px-2.5 py-1 text-foreground">
+                {(lang === "ar" ? "القسم: " : "Department: ") + corp.department}
+              </span>
+            )}
+            {corp?.jobTitle && (
+              <span className="rounded-full border border-border bg-card px-2.5 py-1 text-foreground">
+                {(lang === "ar" ? "المسمى الوظيفي: " : "Job title: ") + corp.jobTitle}
+              </span>
+            )}
+          </div>
+        )}
         <CardForm
           initial={initial}
           design={card.design}
