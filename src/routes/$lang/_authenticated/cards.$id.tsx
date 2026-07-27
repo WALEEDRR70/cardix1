@@ -70,13 +70,30 @@ function EditCard() {
             .eq("id", card!.company_template_id)
             .maybeSingle()
         : { data: null };
+      // Job title + department are owned by the company, never typed by the employee.
+      const { data: member } = await supabase
+        .from("company_members")
+        .select("job_title, department_id")
+        .eq("company_id", card!.company_id!)
+        .eq("user_id", user.id)
+        .maybeSingle();
+      const { data: dept } = member?.department_id
+        ? await supabase
+            .from("company_departments")
+            .select("name")
+            .eq("id", member.department_id)
+            .maybeSingle()
+        : { data: null };
       return {
         company,
         templates: (tpls ?? []).map((t) => t.template),
+        jobTitle: member?.job_title ?? null,
+        department: dept?.name ?? null,
         locked: card!.company_id ? lockedFieldsFromDesign(assigned?.design ?? null) : undefined,
       };
     },
   });
+
 
   if (isLoading) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">{t.loading}</div>;
   if (!card) return <NotFoundView />;
