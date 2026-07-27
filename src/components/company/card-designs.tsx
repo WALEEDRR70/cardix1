@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Plus, Trash2, RefreshCw, Wand2, Loader2, BadgeCheck } from "lucide-react";
 import { toast } from "sonner";
-import { Card, TextField } from "@/components/company/sections";
+import { Card, EmptyState, TextField } from "@/components/company/sections";
 import { StaticCardPreview } from "@/components/studio/StaticCardPreview";
 import { TEMPLATE_META } from "@/components/CardPreview";
 import { supabase } from "@/integrations/supabase/client";
