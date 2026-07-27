@@ -601,7 +601,10 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
           {doc.nodes.map((n) => (
             <div
               key={n.id}
+              draggable={false}
+              onDragStart={(e) => e.preventDefault()}
               onPointerDown={(e) => onPointerDownNode(e, n)}
+
               onDoubleClick={(e) => {
                 if (n.type === "text" || n.type === "button") { e.stopPropagation(); setEditingId(n.id); }
               }}
