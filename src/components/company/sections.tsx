@@ -266,7 +266,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
   const qc = useQueryClient();
   const [inviting, setInviting] = useState(false);
   const [importing, setImporting] = useState(false);
-  const [inv, setInv] = useState({ name: "", email: "", job_title: "", department_id: "", phone: "", role: "employee" as CompanyRole });
+  const [inv, setInv] = useState({ name: "", email: "", job_title: "", department_id: "", phone: "", role: "employee" as CompanyRole, template_id: "" });
   const [busy, setBusy] = useState(false);
   const [lastLink, setLastLink] = useState<string | null>(null);
 
