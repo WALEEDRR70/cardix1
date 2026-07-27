@@ -5,6 +5,14 @@ import type { Tables } from "@/integrations/supabase/types";
 
 export type DesignTemplate = Tables<"design_templates">;
 
+/** Who a shared template is meant for. */
+export type TemplateAudience = "personal" | "employee" | "mixed";
+
+/** Where a used template should be saved: the personal profile or a company workspace. */
+export type TemplateTarget =
+  | { kind: "personal" }
+  | { kind: "company"; companyId: string; companyName: string; companySlug: string; accent?: string | null };
+
 /** Deep copy of a design with fresh node ids so edits never touch the original template. */
 export function cloneDesign(doc: StudioDoc): StudioDoc {
   const newId = () =>
