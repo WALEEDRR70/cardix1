@@ -533,7 +533,16 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
 
       <Card className="space-y-2">
         <p className="text-sm font-semibold">{w.employees}</p>
-        {(members ?? []).length === 0 && <p className="py-6 text-center text-xs text-muted-foreground">{w.noEmployees}</p>}
+        {(members ?? []).length === 0 && (
+          <EmptyState
+            icon={Users}
+            title={w.noEmployees}
+            hint={ar ? "ادعُ أول موظف ليحصل على بطاقته تلقائيًا بهوية الشركة." : "Invite your first employee to get a branded card automatically."}
+            actionLabel={canEdit ? w.inviteEmployee : undefined}
+            onAction={canEdit ? () => { setInviting(true); setImporting(false); } : undefined}
+          />
+        )}
+
         {(members ?? []).map((m) => (
           <div key={m.id} className="flex flex-wrap items-center gap-2 rounded-2xl border border-border/60 bg-card/60 px-3 py-2.5">
             <div className="min-w-0 flex-1">
