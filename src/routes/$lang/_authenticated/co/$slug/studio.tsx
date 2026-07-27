@@ -92,7 +92,7 @@ function Page() {
           </button>
         </div>
         {cards.length === 0 ? (
-          <p className="py-6 text-sm text-muted-foreground">{t.none}</p>
+          <EmptyState icon={Wand2} title={t.none} hint={t.desc} actionLabel={t.newDesign} onAction={createDesign} />
         ) : (
           <ul className="grid gap-3 sm:grid-cols-2">
             {cards.map((c) => (
