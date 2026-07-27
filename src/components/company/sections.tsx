@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import {
-  BadgeCheck, Building2, Plus, Copy, Trash2, Upload, Lock, Sparkles, MapPin,
+  BadgeCheck, Building2, Plus, Copy, Trash2, Upload, Lock, Sparkles, MapPin, Users, MailPlus, BarChart3,
 } from "lucide-react";
 import {
   useWs, roleLabel, statusLabel, slugify,
