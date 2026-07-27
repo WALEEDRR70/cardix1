@@ -311,8 +311,17 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
 
       <PanelSection title={ar ? "التعبئة" : "Fill"} defaultOpen={n.type !== "text"}>
         <Row label={ar ? "اللون" : "Color"}>
-          <ColorInput value={s.fill} fallback="#7c34ff" onChange={(v) => st({ fill: v })} />
+          <div className="flex items-center gap-1">
+            <ColorInput value={s.fill} fallback="#7c34ff" onChange={(v) => st({ fill: v })} />
+            <MiniBtn
+              className={s.fill === "transparent" ? "border-accent/60 text-accent" : ""}
+              onClick={() => st({ fill: "transparent", gradient: null })}
+            >
+              {ar ? "شفاف" : "None"}
+            </MiniBtn>
+          </div>
         </Row>
+
         <div className="grid grid-cols-6 gap-1 pt-0.5">
           {BG_PRESETS.map((g) => (
             <button
