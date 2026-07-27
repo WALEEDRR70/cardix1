@@ -17,6 +17,7 @@ import { Route as SitemapChar123langChar125DotxmlRouteImport } from './routes/si
 import { Route as JoinTokenRouteImport } from './routes/join.$token'
 import { Route as CSlugRouteImport } from './routes/c.$slug'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as LangTemplatesRouteImport } from './routes/$lang/templates'
 import { Route as LangPricingRouteImport } from './routes/$lang/pricing'
 import { Route as LangFeaturesRouteImport } from './routes/$lang/features'
 import { Route as LangContactRouteImport } from './routes/$lang/contact'
@@ -104,6 +105,11 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/auth/callback',
   path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
+} as any)
+const LangTemplatesRoute = LangTemplatesRouteImport.update({
+  id: '/templates',
+  path: '/templates',
+  getParentRoute: () => LangRouteRoute,
 } as any)
 const LangPricingRoute = LangPricingRouteImport.update({
   id: '/pricing',
@@ -371,6 +377,7 @@ export interface FileRoutesByFullPath {
   '/$lang/contact': typeof LangContactRoute
   '/$lang/features': typeof LangFeaturesRoute
   '/$lang/pricing': typeof LangPricingRoute
+  '/$lang/templates': typeof LangTemplatesRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/c/$slug': typeof CSlugRoute
   '/join/$token': typeof JoinTokenRoute
@@ -426,6 +433,7 @@ export interface FileRoutesByTo {
   '/$lang/contact': typeof LangContactRoute
   '/$lang/features': typeof LangFeaturesRoute
   '/$lang/pricing': typeof LangPricingRoute
+  '/$lang/templates': typeof LangTemplatesRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/c/$slug': typeof CSlugRoute
   '/join/$token': typeof JoinTokenRoute
@@ -481,6 +489,7 @@ export interface FileRoutesById {
   '/$lang/contact': typeof LangContactRoute
   '/$lang/features': typeof LangFeaturesRoute
   '/$lang/pricing': typeof LangPricingRoute
+  '/$lang/templates': typeof LangTemplatesRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/c/$slug': typeof CSlugRoute
   '/join/$token': typeof JoinTokenRoute
@@ -538,6 +547,7 @@ export interface FileRouteTypes {
     | '/$lang/contact'
     | '/$lang/features'
     | '/$lang/pricing'
+    | '/$lang/templates'
     | '/auth/callback'
     | '/c/$slug'
     | '/join/$token'
@@ -593,6 +603,7 @@ export interface FileRouteTypes {
     | '/$lang/contact'
     | '/$lang/features'
     | '/$lang/pricing'
+    | '/$lang/templates'
     | '/auth/callback'
     | '/c/$slug'
     | '/join/$token'
@@ -647,6 +658,7 @@ export interface FileRouteTypes {
     | '/$lang/contact'
     | '/$lang/features'
     | '/$lang/pricing'
+    | '/$lang/templates'
     | '/auth/callback'
     | '/c/$slug'
     | '/join/$token'
@@ -763,6 +775,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/callback'
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/$lang/templates': {
+      id: '/$lang/templates'
+      path: '/templates'
+      fullPath: '/$lang/templates'
+      preLoaderRoute: typeof LangTemplatesRouteImport
+      parentRoute: typeof LangRouteRoute
     }
     '/$lang/pricing': {
       id: '/$lang/pricing'
@@ -1216,6 +1235,7 @@ interface LangRouteRouteChildren {
   LangContactRoute: typeof LangContactRoute
   LangFeaturesRoute: typeof LangFeaturesRoute
   LangPricingRoute: typeof LangPricingRoute
+  LangTemplatesRoute: typeof LangTemplatesRoute
   LangIndexRoute: typeof LangIndexRoute
   LangBlogSlugRoute: typeof LangBlogSlugRoute
   LangLSlugRoute: typeof LangLSlugRoute
@@ -1232,6 +1252,7 @@ const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangContactRoute: LangContactRoute,
   LangFeaturesRoute: LangFeaturesRoute,
   LangPricingRoute: LangPricingRoute,
+  LangTemplatesRoute: LangTemplatesRoute,
   LangIndexRoute: LangIndexRoute,
   LangBlogSlugRoute: LangBlogSlugRoute,
   LangLSlugRoute: LangLSlugRoute,
@@ -1259,13 +1280,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

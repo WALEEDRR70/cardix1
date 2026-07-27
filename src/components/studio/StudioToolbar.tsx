@@ -10,6 +10,7 @@ import {
 
 import { toPng, toJpeg, toSvg } from "html-to-image";
 import { useStudio } from "@/lib/studio/store";
+import { PublishTemplateDialog } from "@/components/studio/PublishTemplateDialog";
 import { cn } from "@/lib/utils";
 
 const PRESETS = [25, 50, 75, 100, 150, 200, 300];
@@ -118,6 +119,8 @@ export function StudioToolbar({
 
 
       <div className="flex-1" />
+
+      <PublishTemplateDialog ar={ar} defaultTitle={title} />
 
       <details ref={menuRef} className="relative">
         <summary className="flex cursor-pointer list-none items-center gap-1.5 rounded-lg border border-border/60 px-3 py-1.5 text-xs hover:border-accent/60">

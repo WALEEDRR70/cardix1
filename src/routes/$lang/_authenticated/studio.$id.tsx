@@ -11,7 +11,7 @@ import { CanvasStage } from "@/components/studio/CanvasStage";
 import { ElementsPanel } from "@/components/studio/ElementsPanel";
 import { PropertiesPanel } from "@/components/studio/PropertiesPanel";
 import { StudioToolbar } from "@/components/studio/StudioToolbar";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, LayoutTemplate, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/$lang/_authenticated/studio/$id")({
   head: () => ({
@@ -110,6 +110,11 @@ function Studio({ cardId, title, initial, values }: { cardId: string; title: str
           <Link to={`/cards/${cardId}`} className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
             <ArrowLeft className="h-3.5 w-3.5 rtl:rotate-180" />
             {ar ? "رجوع إلى البطاقة" : "Back to card"}
+          </Link>
+          <span className="mx-1 h-3 w-px bg-border/60" />
+          <Link to="/templates" className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
+            <LayoutTemplate className="h-3.5 w-3.5" />
+            {ar ? "معرض القوالب" : "Template gallery"}
           </Link>
         </div>
         <StudioToolbar ar={ar} title={title} saving={saving} onSave={() => void save(false)} />
