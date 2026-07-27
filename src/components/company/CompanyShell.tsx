@@ -9,6 +9,9 @@ import { stripLocalePrefix } from "@/lib/locale-routing";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 
 const GROUPS: CompanySection["group"][] = ["manage", "identity", "reach", "admin"];
+/** Always-visible essentials, matching the personal shell's density. */
+const PRIMARY: string[] = ["", "/card", "/employees", "/analytics"];
+
 
 /**
  * Enterprise shell for the Company workspace — a desktop-first SaaS layout,
@@ -39,7 +42,34 @@ export function CompanyShell({
     ["--brand-2" as string]: company.brand_secondary,
   } as React.CSSProperties;
 
+  const [openGroups, setOpenGroups] = useState<Partial<Record<CompanySection["group"], boolean>>>({});
+
+  const isActive = (s: CompanySection) => {
+    const to = `${base}${s.path}`;
+    return s.path === "" ? path === base || path === `${base}/` : path.startsWith(to);
+  };
+
+  const renderItem = (s: CompanySection) => {
+    const active = isActive(s);
+    return (
+      <Link
+        key={s.path || "overview"}
+        to={`/co/$slug${s.path}`}
+        params={{ slug: company.slug }}
+        onClick={() => setOpen(false)}
+        className={
+          "flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition " +
+          (active ? "bg-secondary text-foreground" : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground")
+        }
+      >
+        <s.icon className="h-4 w-4 shrink-0" style={active ? { color: company.brand_primary } : undefined} />
+        <span className="truncate">{s.label(w)}</span>
+      </Link>
+    );
+  };
+
   const nav = (
+
     <nav className="flex h-full flex-col">
       <Link to="/co/$slug" params={{ slug: company.slug }} className="flex items-center gap-3 px-5 pt-6">
         <span
@@ -63,41 +93,34 @@ export function CompanyShell({
         </span>
       </Link>
 
-      <div className="mt-6 flex-1 space-y-6 overflow-y-auto px-3 pb-6">
-        {GROUPS.map((group) => (
-          <div key={group}>
-            <p className="px-3 pb-1.5 text-[10px] font-medium uppercase tracking-[0.22em] text-muted-foreground/70">
-              {COMPANY_GROUP_LABEL[group](w)}
-            </p>
-            <div className="space-y-0.5">
-              {COMPANY_SECTIONS.filter((s) => s.group === group).map((s) => {
-                const to = `${base}${s.path}`;
-                const active = s.path === "" ? path === base || path === `${base}/` : path.startsWith(to);
-                return (
-                  <Link
-                    key={s.path || "overview"}
-                    to={`/co/$slug${s.path}`}
-                    params={{ slug: company.slug }}
-                    onClick={() => setOpen(false)}
-                    className={
-                      "flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition " +
-                      (active
-                        ? "bg-secondary text-foreground"
-                        : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground")
-                    }
-                  >
-                    <s.icon
-                      className="h-4 w-4 shrink-0"
-                      style={active ? { color: company.brand_primary } : undefined}
-                    />
-                    <span className="truncate">{s.label(w)}</span>
-                  </Link>
-                );
-              })}
+      <div className="mt-6 flex-1 space-y-4 overflow-y-auto px-3 pb-6">
+        {/* Pinned essentials — same density as the personal shell */}
+        <div className="space-y-0.5">
+          {COMPANY_SECTIONS.filter((s) => PRIMARY.includes(s.path)).map(renderItem)}
+        </div>
+
+        {/* Everything else lives in collapsible groups to keep the sidebar calm */}
+        {GROUPS.map((group) => {
+          const items = COMPANY_SECTIONS.filter((s) => s.group === group && !PRIMARY.includes(s.path));
+          if (items.length === 0) return null;
+          const isOpen = openGroups[group] ?? items.some(isActive);
+          return (
+            <div key={group}>
+              <button
+                type="button"
+                onClick={() => setOpenGroups((g) => ({ ...g, [group]: !isOpen }))}
+                className="flex w-full items-center gap-1.5 rounded-md px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.22em] text-muted-foreground/70 transition hover:text-foreground"
+              >
+                <ChevronLeft className={"h-3 w-3 shrink-0 transition-transform " + (isOpen ? "-rotate-90" : "rtl:rotate-180")} />
+                <span className="truncate">{COMPANY_GROUP_LABEL[group](w)}</span>
+                {!isOpen && <span className="ms-auto text-[10px] tracking-normal opacity-60">{items.length}</span>}
+              </button>
+              {isOpen && <div className="space-y-0.5">{items.map(renderItem)}</div>}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
+
 
       <div className="space-y-1 border-t border-border/50 px-3 py-3">
         <Link
