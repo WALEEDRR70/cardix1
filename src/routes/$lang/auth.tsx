@@ -135,8 +135,9 @@ function AuthPage() {
         </form>
 
         <button onClick={() => setMode(mode === "signin" ? "signup" : "signin")} className="mt-6 text-center text-sm text-muted-foreground hover:text-foreground">
-          {mode === "signin" ? `→ ${t.signUp}` : `→ ${t.signIn}`}
+          {`${lang === "ar" ? "←" : "→"} ${mode === "signin" ? t.signUp : t.signIn}`}
         </button>
+
       </main>
     </div>
   );
