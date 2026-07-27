@@ -84,6 +84,20 @@ export const acceptInvitation = createServerFn({ method: "POST" })
       .eq("user_id", context.userId)
       .maybeSingle();
 
+    // Resolve which company card design this employee should receive:
+    // the design attached to the invitation link, otherwise the best match
+    // for their department + role.
+    const { resolveCompanyTemplate } = await import("@/lib/company-designs");
+    const { data: allDesigns } = await supabaseAdmin
+      .from("company_templates")
+      .select("*")
+      .eq("company_id", invite.company_id)
+      .order("sort_order");
+    const designs = allDesigns ?? [];
+    const tpl =
+      (invite.template_id ? designs.find((d) => d.id === invite.template_id) : null) ??
+      resolveCompanyTemplate(designs as never, invite.department_id, invite.role);
+
     let cardSlug = existing?.slug ?? null;
     if (!existing) {
       const base =
@@ -98,6 +112,7 @@ export const acceptInvitation = createServerFn({ method: "POST" })
           user_id: context.userId,
           company_id: invite.company_id,
           department_id: invite.department_id,
+          company_template_id: tpl?.id ?? null,
           card_type: "employee",
           slug,
           name: invite.name ?? invite.email.split("@")[0],
@@ -108,14 +123,28 @@ export const acceptInvitation = createServerFn({ method: "POST" })
           website: company.website,
           address: company.address,
           avatar_url: null,
-          accent_color: company.brand_primary,
-          template: company.default_template,
+          accent_color: tpl?.accent_color ?? company.brand_primary,
+          template: tpl?.template ?? company.default_template,
+          design: (tpl?.design ?? null) as never,
           is_verified: company.is_verified,
         })
         .select("slug")
         .single();
       cardSlug = card?.slug ?? null;
+    } else if (tpl) {
+      await supabaseAdmin
+        .from("cards")
+        .update({
+          company_template_id: tpl.id,
+          department_id: invite.department_id,
+          accent_color: tpl.accent_color,
+          template: tpl.template,
+          is_verified: company.is_verified,
+          ...(tpl.design ? { design: tpl.design as never } : {}),
+        })
+        .eq("id", existing.id);
     }
+
 
     await supabaseAdmin
       .from("company_invitations")
