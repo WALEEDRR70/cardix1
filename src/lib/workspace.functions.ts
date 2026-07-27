@@ -65,6 +65,31 @@ export const acceptInvitation = createServerFn({ method: "POST" })
       .maybeSingle();
     if (!company) throw new Error("INVALID_INVITATION");
 
+    // Resolve which company card design this employee should receive:
+    // the design attached to the invitation link, otherwise the best match
+    // for their department + role.
+    const { resolveCompanyTemplate } = await import("@/lib/company-designs");
+    const { data: allDesigns } = await supabaseAdmin
+      .from("company_templates")
+      .select("*")
+      .eq("company_id", invite.company_id)
+      .order("sort_order");
+    const designs = allDesigns ?? [];
+    const tpl =
+      (invite.template_id ? designs.find((d) => d.id === invite.template_id) : null) ??
+      resolveCompanyTemplate(designs as never, invite.department_id, invite.role);
+
+    // Job title + department come from the company assignment — never typed by
+    // the employee. Fall back to the assigned design name, then the department.
+    const { data: dept } = invite.department_id
+      ? await supabaseAdmin
+          .from("company_departments")
+          .select("name")
+          .eq("id", invite.department_id)
+          .maybeSingle()
+      : { data: null };
+    const jobTitle = invite.job_title ?? tpl?.name ?? dept?.name ?? null;
+
     await supabaseAdmin.from("company_members").upsert(
       {
         company_id: invite.company_id,
@@ -72,7 +97,7 @@ export const acceptInvitation = createServerFn({ method: "POST" })
         role: invite.role,
         status: "active",
         department_id: invite.department_id,
-        job_title: invite.job_title,
+        job_title: jobTitle,
         corporate_email: memberEmail || null,
         phone: invite.phone,
       },
@@ -89,20 +114,6 @@ export const acceptInvitation = createServerFn({ method: "POST" })
       .eq("user_id", context.userId)
       .eq("card_type", "employee")
       .maybeSingle();
-
-    // Resolve which company card design this employee should receive:
-    // the design attached to the invitation link, otherwise the best match
-    // for their department + role.
-    const { resolveCompanyTemplate } = await import("@/lib/company-designs");
-    const { data: allDesigns } = await supabaseAdmin
-      .from("company_templates")
-      .select("*")
-      .eq("company_id", invite.company_id)
-      .order("sort_order");
-    const designs = allDesigns ?? [];
-    const tpl =
-      (invite.template_id ? designs.find((d) => d.id === invite.template_id) : null) ??
-      resolveCompanyTemplate(designs as never, invite.department_id, invite.role);
 
     let cardSlug = existing?.slug ?? null;
     if (!existing) {
@@ -122,7 +133,7 @@ export const acceptInvitation = createServerFn({ method: "POST" })
           card_type: "employee",
           slug,
           name: invite.name ?? (memberEmail || "employee").split("@")[0],
-          title: invite.job_title,
+          title: jobTitle,
           company: company.name,
           email: memberEmail || null,
           phone: invite.phone,
@@ -143,6 +154,7 @@ export const acceptInvitation = createServerFn({ method: "POST" })
         .update({
           company_template_id: tpl.id,
           department_id: invite.department_id,
+          ...(jobTitle ? { title: jobTitle } : {}),
           accent_color: tpl.accent_color,
           template: tpl.template,
           is_verified: company.is_verified,

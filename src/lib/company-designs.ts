@@ -107,10 +107,10 @@ export const EDITABLE_FIELD_KEYS = [
 ] as const;
 export type EditableFieldKey = (typeof EDITABLE_FIELD_KEYS)[number];
 
-/** Sensible default: personal contact details are editable, company data is locked. */
+/** Sensible default: personal contact details are editable, company data
+ * (job title, department, branding) is owned by the company and locked. */
 export const DEFAULT_EDITABLE_FIELDS: EditableFieldKey[] = [
   "name",
-  "title",
   "avatar_url",
   "phone",
   "whatsapp",
