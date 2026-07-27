@@ -77,6 +77,7 @@ function MarketingNav() {
 
 
         <div className="flex items-center gap-2">
+          <MobileNav links={navLinks} authed={authed} />
           <div className="hidden md:flex items-center gap-2">
             <ThemeToggle compact />
             <LocaleSwitcher compact />
