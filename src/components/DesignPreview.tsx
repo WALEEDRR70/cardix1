@@ -41,13 +41,18 @@ export function DesignPreview({
       }}
     >
       <div
+        dir="ltr"
         style={{
           width: doc.w,
           height: doc.h,
           transform: `scale(${scale})`,
           transformOrigin: "top left",
-          position: "relative",
+          position: "absolute",
+          insetInlineStart: "auto",
+          left: 0,
+          top: 0,
           background: doc.background?.gradient ?? doc.background?.color,
+
         }}
       >
         {doc.background?.image && (
