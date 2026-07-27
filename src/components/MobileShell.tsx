@@ -6,8 +6,6 @@ import { useI18n } from "@/lib/i18n";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { getReadableText } from "@/lib/contrast";
 import { stripLocalePrefix } from "@/lib/locale-routing";
-import { wsDict } from "@/i18n/workspace";
-import { useAccount } from "@/lib/account";
 import { SiteTopBar } from "@/components/SiteTopBar";
 import { AccountSwitcher } from "@/components/AccountSwitcher";
 
