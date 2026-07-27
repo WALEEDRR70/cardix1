@@ -116,7 +116,8 @@ function TemplatesGallery() {
           : ar ? "تم إنشاء بطاقة جديدة بهذا التصميم" : "New card created with this design",
       );
       setPending(null);
-      navigate({ to: "/studio/$id", params: { id: cardId } });
+      // Personal users land on the simple card editor; workspace designers go to the Studio.
+      navigate({ to: target.kind === "company" ? "/studio/$id" : "/cards/$id", params: { id: cardId } });
     } catch (e) {
       toast.error((e as Error).message);
     } finally {
@@ -134,7 +135,7 @@ function TemplatesGallery() {
       await qc.invalidateQueries({ queryKey: ["template-target-cards"] });
       toast.success(ar ? "تم تطبيق التصميم على البطاقة" : "Design applied to the card");
       setPending(null);
-      navigate({ to: "/studio/$id", params: { id: cardId } });
+      navigate({ to: activeWorkspace ? "/studio/$id" : "/cards/$id", params: { id: cardId } });
     } catch (e) {
       toast.error((e as Error).message);
     } finally {
