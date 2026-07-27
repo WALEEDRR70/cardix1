@@ -1,6 +1,6 @@
 import { useRouterState } from "@tanstack/react-router";
 import { Link } from "@/lib/nav";
-import { Home, Layers, Plus, ScanLine, BookmarkCheck, Building2 } from "lucide-react";
+import { Home, Layers, Plus, ScanLine, BookmarkCheck, Building2, LayoutTemplate, Wrench } from "lucide-react";
 import type { ReactNode } from "react";
 import { useI18n } from "@/lib/i18n";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
@@ -50,8 +50,11 @@ function DesktopSidebar() {
     { to: "/dashboard", icon: Home, label: t.home },
     { to: "/vault", icon: BookmarkCheck, label: t.vault },
     { to: "/scan", icon: ScanLine, label: t.scanCard },
+    { to: "/templates", icon: LayoutTemplate, label: lang === "ar" ? "معرض القوالب" : "Templates" },
+    { to: "/tools", icon: Wrench, label: lang === "ar" ? "الأدوات" : "Tools" },
     { to: "/settings", icon: Layers, label: t.settings },
   ] as const;
+
 
   return (
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-border/60 bg-card/40 backdrop-blur-xl lg:flex">

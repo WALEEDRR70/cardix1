@@ -146,7 +146,11 @@ function FeatureBlock({ side, icon: Icon, eyebrow, title, body, bullets, illustr
   );
 }
 
+// Deterministic 8x8 QR-like pattern so SSR and client markup match exactly.
+const QR_PATTERN = Array.from({ length: 64 }, (_, i) => ((i * 2654435761) % 97) > 44);
+
 function DeepFeatures({ c }: { c: SeoContent }) {
+
   const icons = [QrCode, Radio, ScanLine, Sparkles];
   const sides: ("left" | "right")[] = ["left", "right", "left", "right"];
   const illustrations = [
@@ -155,7 +159,7 @@ function DeepFeatures({ c }: { c: SeoContent }) {
         <div className="rounded-2xl bg-white p-5 shadow-inner">
           <div className="grid h-40 w-40 grid-cols-8 grid-rows-8 gap-[3px]">
             {Array.from({ length: 64 }).map((_, i) => (
-              <div key={i} className="rounded-sm" style={{ background: Math.random() > 0.45 ? "#0a0a0a" : "transparent" }} />
+              <div key={i} className="rounded-sm" style={{ background: QR_PATTERN[i] ? "#0a0a0a" : "transparent" }} />
             ))}
           </div>
         </div>
@@ -404,7 +408,7 @@ function Analytics({ c }: { c: SeoContent }) {
         <div className="mt-10 rounded-3xl border border-border/70 bg-card/60 p-8 backdrop-blur-xl">
           <div className="grid items-end gap-1" style={{ gridTemplateColumns: "repeat(30, minmax(0, 1fr))" }}>
             {Array.from({ length: 30 }).map((_, i) => {
-              const h = 20 + Math.round(Math.sin(i / 2.7) * 30 + Math.random() * 40);
+              const h = 20 + Math.round(Math.sin(i / 2.7) * 30 + ((i * 37) % 41));
               return <div key={i} className="rounded-t bg-gradient-to-t from-accent/70 to-accent/20" style={{ height: h + 40 }} />;
             })}
           </div>
