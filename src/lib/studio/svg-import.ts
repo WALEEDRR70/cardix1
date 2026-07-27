@@ -138,14 +138,14 @@ export function toAbsoluteCubics(d: string): string {
         const c1 = { x: cur.x + (2 / 3) * (q.x - cur.x), y: cur.y + (2 / 3) * (q.y - cur.y) };
         const c2 = { x: p.x + (2 / 3) * (q.x - p.x), y: p.y + (2 / 3) * (q.y - p.y) };
         cubic(c1, c2, p);
-        st.q = qc;
+        st.q = q;
         break;
       }
       case "T": {
         const qc = st.q ? { x: 2 * cur.x - st.q.x, y: 2 * cur.y - st.q.y } : { ...cur };
         const p = { x: bx + num(), y: by + num() };
-        const c1 = { x: cur.x + (2 / 3) * (q.x - cur.x), y: cur.y + (2 / 3) * (q.y - cur.y) };
-        const c2 = { x: p.x + (2 / 3) * (q.x - p.x), y: p.y + (2 / 3) * (q.y - p.y) };
+        const c1 = { x: cur.x + (2 / 3) * (qc.x - cur.x), y: cur.y + (2 / 3) * (qc.y - cur.y) };
+        const c2 = { x: p.x + (2 / 3) * (qc.x - p.x), y: p.y + (2 / 3) * (qc.y - p.y) };
         cubic(c1, c2, p);
         st.q = qc;
         break;
