@@ -143,6 +143,14 @@ function Library({ ar }: { ar: boolean }) {
         </div>
       </div>
       <div className="flex-1 overflow-y-auto px-2 pb-3">
+        {(!term || "backgrounds".includes(term) || "خلفيات".includes(term)) && (
+          <div className="mb-3">
+            <p className="px-1 pb-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+              {ar ? "خلفيات SVG" : "SVG backgrounds"}
+            </p>
+            <SvgBackgrounds ar={ar} />
+          </div>
+        )}
         {GROUPS.map((g) => {
           const items = ITEMS.filter(
             (i) => i.group === g.key && (!term || i.label.toLowerCase().includes(term) || i.labelAr.includes(term)),
