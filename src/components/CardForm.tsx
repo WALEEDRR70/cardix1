@@ -41,6 +41,7 @@ export function CardForm({
   locked,
   lockedNote,
   allowedTemplates,
+  design,
   slugPrefix = "/c/",
 }: {
   initial: CardFormData;
@@ -51,6 +52,8 @@ export function CardForm({
   lockedNote?: string;
   /** When set, only these template ids may be picked. */
   allowedTemplates?: string[];
+  /** Saved Studio design for this card; when present the live preview shows it and the template picker is hidden. */
+  design?: unknown;
   slugPrefix?: string;
 }) {
   const { t, lang } = useI18n();
@@ -107,7 +110,7 @@ export function CardForm({
       <div className="space-y-6 lg:order-1">
         {/* Live preview (mobile: inline top) */}
         <div className="flex justify-center lg:hidden">
-          <CardPreview card={data} size="md" />
+          <CardPreview card={{ ...data, design }} size="md" />
         </div>
 
 
@@ -120,7 +123,7 @@ export function CardForm({
       )}
 
       {/* Template picker */}
-      <section hidden={!!locked?.template}>
+      <section hidden={!!locked?.template || !!design}>
         <label className="mb-2 block px-1 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{t.template}</label>
         <div ref={tplScrollRef} className="no-scrollbar -mx-4 flex cursor-grab gap-2.5 overflow-x-auto px-4 pb-1 lg:mx-0 lg:px-0">
           {TEMPLATE_META.filter((tpl) => !allowedTemplates || allowedTemplates.includes(tpl.id)).map((tpl) => {
@@ -294,7 +297,7 @@ export function CardForm({
           <div className="relative">
             <div className="absolute -inset-6 rounded-[2.5rem] opacity-40 blur-2xl" style={{ background: "var(--gradient-mesh)" }} />
             <div className="relative flex justify-center">
-              <CardPreview card={data} size="lg" />
+              <CardPreview card={{ ...data, design }} size="lg" />
             </div>
           </div>
           <p className="text-center text-[11px] uppercase tracking-[0.25em] text-muted-foreground">{t.livePreview}</p>
