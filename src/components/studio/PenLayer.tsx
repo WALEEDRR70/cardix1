@@ -12,8 +12,6 @@ export type PenPoint = {
   /** incoming handle (absolute doc coords) */
   ix: number;
   iy: number;
-  /** true once the user shaped this anchor's handles by hand */
-  manual?: boolean;
 };
 
 export type PenResult = {
@@ -36,47 +34,6 @@ function constrain(ax: number, ay: number, bx: number, by: number) {
   const a = Math.round(Math.atan2(dy, dx) / step) * step;
   return { x: ax + Math.cos(a) * len, y: ay + Math.sin(a) * len };
 }
-
-/**
- * Centripetal Catmull-Rom → cubic bezier handle fitting.
- * `amount` (0..1) scales handle length, so 0 = polyline, 1 = very round.
- * Anchors flagged `manual` keep the handles the user drew.
- */
-export function autoSmooth(pts: PenPoint[], closed: boolean, amount: number): PenPoint[] {
-  const n = pts.length;
-  if (n < 2 || amount <= 0) {
-    return pts.map((p) => (p.manual ? p : { ...p, hx: p.x, hy: p.y, ix: p.x, iy: p.y }));
-  }
-  const at = (i: number) => {
-    if (closed) return pts[(i + n) % n];
-    return pts[Math.min(n - 1, Math.max(0, i))];
-  };
-  return pts.map((p, i) => {
-    if (p.manual) return p;
-    const prev = at(i - 1);
-    const next = at(i + 1);
-    // centripetal parameterisation keeps loops and cusps from overshooting
-    const dPrev = Math.pow(Math.hypot(p.x - prev.x, p.y - prev.y), 0.5) || 1e-6;
-    const dNext = Math.pow(Math.hypot(next.x - p.x, next.y - p.y), 0.5) || 1e-6;
-    let tx = next.x - prev.x;
-    let ty = next.y - prev.y;
-    const len = Math.hypot(tx, ty) || 1;
-    tx /= len; ty /= len;
-    // handle length ~ 1/3 of the neighbouring segment, scaled by the smoothness dial
-    const k = (amount * 0.42) / 0.333;
-    const outLen = (Math.hypot(next.x - p.x, next.y - p.y) / 3) * k * (dNext / ((dPrev + dNext) / 2));
-    const inLen = (Math.hypot(p.x - prev.x, p.y - prev.y) / 3) * k * (dPrev / ((dPrev + dNext) / 2));
-    const isEnd = !closed && (i === 0 || i === n - 1);
-    return {
-      ...p,
-      hx: p.x + tx * (isEnd && i === n - 1 ? 0 : outLen),
-      hy: p.y + ty * (isEnd && i === n - 1 ? 0 : outLen),
-      ix: p.x - tx * (isEnd && i === 0 ? 0 : inLen),
-      iy: p.y - ty * (isEnd && i === 0 ? 0 : inLen),
-    };
-  });
-}
-
 
 /** Builds an SVG path from anchors, mapping doc coords through `map`. */
 export function penPath(
@@ -138,22 +95,15 @@ export function PenLayer({
   const [live, setLive] = useState<{ x: number; y: number } | null>(null);
   const [hover, setHover] = useState<"first" | "last" | null>(null);
   const [dragging, setDragging] = useState(false);
-  const [smoothOn, setSmoothOn] = useState(true);
-  const [smoothness, setSmoothness] = useState(0.5);
   const mods = useRef({ shift: false, alt: false });
   const ptsRef = useRef(pts);
   ptsRef.current = pts;
-  const smoothRef = useRef({ on: smoothOn, amount: smoothness });
-  smoothRef.current = { on: smoothOn, amount: smoothness };
 
   const g = snap && grid && grid > 1 ? grid : 0;
   const snapped = (v: number) => (g ? Math.round(v / g) * g : v);
 
-  const shape = (list: PenPoint[], closed: boolean) =>
-    smoothRef.current.on ? autoSmooth(list, closed, smoothRef.current.amount) : list;
-
   function finish(closed: boolean) {
-    const list = shape(ptsRef.current, closed);
+    const list = ptsRef.current;
     if (list.length < 2) {
       setPts([]); setLive(null);
       return;
@@ -163,7 +113,6 @@ export function PenLayer({
     setPts([]); setLive(null); setHover(null);
     onCommit({ path, ...b, closed });
   }
-
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -177,14 +126,7 @@ export function PenLayer({
         if (ptsRef.current.length) { e.preventDefault(); setPts((p) => p.slice(0, -1)); }
       } else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "z") {
         if (ptsRef.current.length) { e.preventDefault(); e.stopPropagation(); setPts((p) => p.slice(0, -1)); }
-      } else if (e.key === "[" || e.key === "]") {
-        e.preventDefault();
-        setSmoothness((v) => Math.min(1, Math.max(0, +(v + (e.key === "]" ? 0.05 : -0.05)).toFixed(2))));
-      } else if (e.key.toLowerCase() === "s" && !e.metaKey && !e.ctrlKey) {
-        e.preventDefault();
-        setSmoothOn((v) => !v);
       }
-
     }
     function onUp(e: KeyboardEvent) { mods.current.shift = e.shiftKey; mods.current.alt = e.altKey; }
     window.addEventListener("keydown", onKey, true);
@@ -216,9 +158,7 @@ export function PenLayer({
     }
     // click the last anchor: retract its outgoing handle (curve -> corner)
     if (last && Math.hypot(raw.x - last.x, raw.y - last.y) < hit) {
-      setPts((prev) =>
-        prev.map((p, i) => (i === prev.length - 1 ? { ...p, hx: p.x, hy: p.y, manual: true } : p)),
-      );
+      setPts((prev) => prev.map((p, i) => (i === prev.length - 1 ? { ...p, hx: p.x, hy: p.y } : p)));
       return;
     }
 
@@ -244,8 +184,6 @@ export function PenLayer({
           i === index
             ? {
                 ...pt,
-                // dragging a handle opts this anchor out of auto-smoothing
-                manual: Math.hypot(out.x - pt.x, out.y - pt.y) > 1.5,
                 hx: out.x,
                 hy: out.y,
                 // Alt breaks symmetry: incoming handle stays on the anchor
@@ -256,7 +194,6 @@ export function PenLayer({
         ),
       );
     };
-
     const up = () => {
       setDragging(false);
       window.removeEventListener("pointermove", move);
@@ -280,21 +217,13 @@ export function PenLayer({
   }
 
   const map = (x: number, y: number): [number, number] => [x * zoom, y * zoom];
-  const shaped = smoothOn ? autoSmooth(pts, false, smoothness) : pts;
-  const last = shaped[shaped.length - 1];
-  // preview the smoothed curve including the point under the cursor
-  const previewPts =
+  const last = pts[pts.length - 1];
+  const rubber =
     live && last && !dragging
-      ? (smoothOn
-          ? autoSmooth([...pts, { x: live.x, y: live.y, hx: live.x, hy: live.y, ix: live.x, iy: live.y }], false, smoothness)
-          : [...shaped, { x: live.x, y: live.y, hx: live.x, hy: live.y, ix: live.x, iy: live.y }])
-      : shaped;
-  const d = penPath(previewPts, false, map);
-  const closePreview =
-    hover === "first" && pts.length > 1
-      ? penPath(smoothOn ? autoSmooth(pts, true, smoothness) : pts, true, map)
-      : "";
-
+      ? { anchor: live, inX: live.x, inY: live.y }
+      : null;
+  const d = penPath(pts, false, map, rubber);
+  const closePreview = hover === "first" && pts.length > 1 ? penPath(pts, true, map) : "";
 
   return (
     <div
@@ -324,25 +253,23 @@ export function PenLayer({
           />
         )}
 
-        {shaped.map((p, i) => {
+        {pts.map((p, i) => {
           const hasOut = Math.hypot(p.hx - p.x, p.hy - p.y) > 0.5;
           const hasIn = Math.hypot(p.ix - p.x, p.iy - p.y) > 0.5;
           const isFirst = i === 0;
-          const auto = !p.manual;
-          const op = auto ? 0.35 : 0.8;
-          const highlight = (isFirst && hover === "first") || (i === shaped.length - 1 && hover === "last");
+          const highlight = (isFirst && hover === "first") || (i === pts.length - 1 && hover === "last");
           return (
             <g key={i}>
               {hasOut && (
                 <>
-                  <line x1={p.x * zoom} y1={p.y * zoom} x2={p.hx * zoom} y2={p.hy * zoom} stroke="var(--accent)" strokeWidth={1} opacity={op} />
-                  <circle cx={p.hx * zoom} cy={p.hy * zoom} r={3.5} fill="white" stroke="var(--accent)" strokeWidth={1.5} opacity={auto ? 0.6 : 1} />
+                  <line x1={p.x * zoom} y1={p.y * zoom} x2={p.hx * zoom} y2={p.hy * zoom} stroke="var(--accent)" strokeWidth={1} opacity={0.7} />
+                  <circle cx={p.hx * zoom} cy={p.hy * zoom} r={3.5} fill="white" stroke="var(--accent)" strokeWidth={1.5} />
                 </>
               )}
               {hasIn && (
                 <>
-                  <line x1={p.x * zoom} y1={p.y * zoom} x2={p.ix * zoom} y2={p.iy * zoom} stroke="var(--accent)" strokeWidth={1} opacity={op} />
-                  <circle cx={p.ix * zoom} cy={p.iy * zoom} r={3.5} fill="white" stroke="var(--accent)" strokeWidth={1.5} opacity={auto ? 0.6 : 1} />
+                  <line x1={p.x * zoom} y1={p.y * zoom} x2={p.ix * zoom} y2={p.iy * zoom} stroke="var(--accent)" strokeWidth={1} opacity={0.7} />
+                  <circle cx={p.ix * zoom} cy={p.iy * zoom} r={3.5} fill="white" stroke="var(--accent)" strokeWidth={1.5} />
                 </>
               )}
               {highlight && (
@@ -370,35 +297,6 @@ export function PenLayer({
           />
         )}
       </svg>
-
-      {/* smoothing control */}
-      <div
-        className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-3 rounded-full border border-border/60 bg-background/85 px-3 py-1.5 text-[11px] shadow-lg backdrop-blur"
-        onPointerDown={(e) => e.stopPropagation()}
-        onPointerMove={(e) => e.stopPropagation()}
-        onDoubleClick={(e) => e.stopPropagation()}
-      >
-        <button
-          onClick={() => setSmoothOn((v) => !v)}
-          className={`rounded-full px-2 py-0.5 font-medium transition ${
-            smoothOn ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          Auto-smooth
-        </button>
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.05}
-          value={smoothness}
-          disabled={!smoothOn}
-          onChange={(e) => setSmoothness(Number(e.target.value))}
-          className="w-32 accent-[var(--accent)] disabled:opacity-40"
-        />
-        <span className="w-7 text-end tabular-nums text-muted-foreground">{Math.round(smoothness * 100)}</span>
-      </div>
-
     </div>
   );
 }
