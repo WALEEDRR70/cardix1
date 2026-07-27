@@ -273,13 +273,21 @@ export function PenLayer({
   }
 
   const map = (x: number, y: number): [number, number] => [x * zoom, y * zoom];
-  const last = pts[pts.length - 1];
-  const rubber =
+  const shaped = smoothOn ? autoSmooth(pts, false, smoothness) : pts;
+  const last = shaped[shaped.length - 1];
+  // preview the smoothed curve including the point under the cursor
+  const previewPts =
     live && last && !dragging
-      ? { anchor: live, inX: live.x, inY: live.y }
-      : null;
-  const d = penPath(pts, false, map, rubber);
-  const closePreview = hover === "first" && pts.length > 1 ? penPath(pts, true, map) : "";
+      ? (smoothOn
+          ? autoSmooth([...pts, { x: live.x, y: live.y, hx: live.x, hy: live.y, ix: live.x, iy: live.y }], false, smoothness)
+          : [...shaped, { x: live.x, y: live.y, hx: live.x, hy: live.y, ix: live.x, iy: live.y }])
+      : shaped;
+  const d = penPath(previewPts, false, map);
+  const closePreview =
+    hover === "first" && pts.length > 1
+      ? penPath(smoothOn ? autoSmooth(pts, true, smoothness) : pts, true, map)
+      : "";
+
 
   return (
     <div
