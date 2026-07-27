@@ -1,6 +1,6 @@
 import { useRouterState } from "@tanstack/react-router";
 import { Link } from "@/lib/nav";
-import { Home, Layers, Plus, ScanLine, BookmarkCheck, Building2, LayoutTemplate, Wrench } from "lucide-react";
+import { Home, Plus, ScanLine, BookmarkCheck, Building2, LayoutTemplate, Wrench, Settings as SettingsIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { useI18n } from "@/lib/i18n";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
@@ -8,6 +8,7 @@ import { getReadableText } from "@/lib/contrast";
 import { stripLocalePrefix } from "@/lib/locale-routing";
 import { wsDict } from "@/i18n/workspace";
 import { useAccount } from "@/lib/account";
+import { SiteTopBar } from "@/components/SiteTopBar";
 
 
 export function MobileShell({
