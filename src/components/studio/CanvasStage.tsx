@@ -659,7 +659,7 @@ export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<H
                     key={h}
                     onPointerDown={(e) => {
                       e.stopPropagation();
-                      setDrag({ mode: "resize", id: n.id, handle: h, startX: e.clientX, startY: e.clientY, box: { x: n.x, y: n.y, w: n.w, h: n.h }, ratio: n.w / Math.max(1, n.h) });
+                      setDrag({ mode: "resize", id: n.id, handle: h, startX: e.clientX, startY: e.clientY, box: { x: n.x, y: n.y, w: n.w, h: n.h }, ratio: n.w / Math.max(1, n.h), rot: n.rot || 0 });
                     }}
                     className="pointer-events-auto absolute h-2.5 w-2.5 rounded-full border border-accent bg-background"
                     style={handleStyle(h)}
