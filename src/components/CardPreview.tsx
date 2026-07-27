@@ -53,7 +53,7 @@ export function CardPreview({ card, size = "md" }: { card: CardData; size?: "xs"
 
   if (doc) {
     return (
-      <div className={`card-lift shadow-luxe w-full ${maxW}`}>
+      <div className={`card-lift shadow-luxe w-full overflow-hidden rounded-[6%] ${maxW}`}>
         <DesignPreview doc={doc} values={cardDesignValues(card)} />
       </div>
     );

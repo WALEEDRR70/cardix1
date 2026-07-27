@@ -7,7 +7,7 @@ export function DesignPreview({
   doc,
   values,
   className,
-  radius = 20,
+  radius,
 }: {
   doc: StudioDoc;
   values?: Record<string, string>;
@@ -27,6 +27,8 @@ export function DesignPreview({
   }, []);
 
   const scale = w ? w / doc.w : 0;
+  // Keep corner rounding visually proportional to the rendered card size.
+  const r = radius ?? Math.max(12, Math.round((w || doc.w) * 0.045));
 
   return (
     <div
@@ -37,7 +39,8 @@ export function DesignPreview({
         aspectRatio: `${doc.w} / ${doc.h}`,
         overflow: "hidden",
         position: "relative",
-        borderRadius: radius,
+        borderRadius: r,
+        isolation: "isolate",
       }}
     >
       <div
