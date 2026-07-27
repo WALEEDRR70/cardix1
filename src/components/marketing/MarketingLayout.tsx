@@ -20,7 +20,17 @@ export function MarketingLayout({ children, lang }: { children: ReactNode; lang?
 }
 
 function MarketingNav() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
+  const ar = lang === "ar";
+  const navLinks = [
+    { to: "/features", label: ar ? "المميزات" : "Features" },
+    { to: "/templates", label: ar ? "القوالب" : "Templates" },
+    { to: "/pricing", label: ar ? "الأسعار" : "Pricing" },
+    { to: "/l", label: ar ? "الأدلة" : "Guides" },
+    { to: "/tools", label: ar ? "الأدوات" : "Tools" },
+    { to: "/blog", label: ar ? "المدونة" : "Blog" },
+  ] as const;
+
   const [scrolled, setScrolled] = useState(false);
   const [authed, setAuthed] = useState<boolean | null>(null);
 
