@@ -732,10 +732,11 @@ export function DepartmentsTab({ company, canEdit }: { company: Company; canEdit
     queryFn: async () => {
       const { data } = await supabase
         .from("company_templates")
-        .select("id, name, department_id, target_role, accent_color")
+        .select("id, name, department_id, target_role, accent_color, design")
         .eq("company_id", company.id)
         .order("sort_order");
       return data ?? [];
+
     },
   });
 
