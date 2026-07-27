@@ -198,7 +198,13 @@ export function NodeContent({ n, values }: { n: StudioNode; values?: Record<stri
 type Drag =
   | { mode: "move"; ids: string[]; startX: number; startY: number; origin: { id: string; x: number; y: number }[] }
   | { mode: "resize"; id: string; handle: string; startX: number; startY: number; box: { x: number; y: number; w: number; h: number }; ratio: number; rot: number }
+  | {
+      mode: "gresize"; handle: string; startX: number; startY: number;
+      box: { x: number; y: number; w: number; h: number };
+      items: { id: string; x: number; y: number; w: number; h: number; fontSize?: number; strokeWidth?: number; radius?: number }[];
+    }
   | { mode: "rotate"; id: string; cx: number; cy: number };
+
 
 type Marquee = { x0: number; y0: number; x1: number; y1: number };
 
@@ -453,7 +459,47 @@ export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<H
           t: "update", ids: [drag.id], transient: true,
           patch: { x: Math.round(cx - w / 2), y: Math.round(cy - h / 2), w, h },
         });
+      } else if (drag.mode === "gresize") {
+        // Scale the whole selection as one block around the opposite anchor.
+        const dx = (e.clientX - drag.startX) / zoom;
+        const dy = (e.clientY - drag.startY) / zoom;
+        const b = drag.box;
+        let w = b.w, h = b.h, ox = 0, oy = 0;
+        if (drag.handle.includes("e")) w = Math.max(16, b.w + dx);
+        if (drag.handle.includes("s")) h = Math.max(16, b.h + dy);
+        if (drag.handle.includes("w")) { w = Math.max(16, b.w - dx); ox = b.w - w; }
+        if (drag.handle.includes("n")) { h = Math.max(16, b.h - dy); oy = b.h - h; }
+        const corner = drag.handle.length === 2;
+        // Corners scale proportionally by default (Shift frees the ratio).
+        if (corner && !e.shiftKey) {
+          const k = Math.max(w / b.w, h / b.h);
+          w = b.w * k; h = b.h * k;
+          if (drag.handle.includes("w")) ox = b.w - w;
+          if (drag.handle.includes("n")) oy = b.h - h;
+        }
+        const sx = w / b.w;
+        const sy = h / b.h;
+        const nx = b.x + ox;
+        const ny = b.y + oy;
+        for (const it of drag.items) {
+          const patch: Partial<StudioNode> = {
+            x: Math.round(nx + (it.x - b.x) * sx),
+            y: Math.round(ny + (it.y - b.y) * sy),
+            w: Math.max(4, Math.round(it.w * sx)),
+            h: Math.max(4, Math.round(it.h * sy)),
+          };
+          dispatch({ t: "update", ids: [it.id], patch, transient: true });
+          const k = corner ? (sx + sy) / 2 : Math.min(sx, sy);
+          const stylePatch: Record<string, number> = {};
+          if (it.fontSize) stylePatch.fontSize = Math.max(4, Math.round(it.fontSize * k * 100) / 100);
+          if (it.strokeWidth) stylePatch.strokeWidth = Math.max(0.1, Math.round(it.strokeWidth * k * 100) / 100);
+          if (it.radius) stylePatch.radius = Math.max(0, Math.round(it.radius * k));
+          if (Object.keys(stylePatch).length) {
+            dispatch({ t: "style", ids: [it.id], patch: stylePatch, transient: true });
+          }
+        }
       } else if (drag.mode === "rotate") {
+
         const rect = wrapRef.current?.getBoundingClientRect();
         if (!rect) return;
         const cx = rect.left + drag.cx * zoom;
@@ -568,6 +614,19 @@ export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<H
     height: Math.abs(marquee.y1 - marquee.y0) * zoom,
   };
 
+  // Bounding box of a multi-selection (used for group scaling).
+  const groupBox = useMemo(() => {
+    const items = selected.filter((n) => !n.locked);
+    if (items.length < 2) return null;
+    const x = Math.min(...items.map((n) => n.x));
+    const y = Math.min(...items.map((n) => n.y));
+    const w = Math.max(...items.map((n) => n.x + n.w)) - x;
+    const h = Math.max(...items.map((n) => n.y + n.h)) - y;
+    return { x, y, w: Math.max(1, w), h: Math.max(1, h) };
+  }, [selected]);
+
+
+
   return (
     <div
       ref={viewportRef}
@@ -670,9 +729,12 @@ export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<H
               transform: `rotate(${n.rot}deg)`,
             }}
           >
-            <span className="absolute -top-5 start-0 whitespace-nowrap rounded bg-accent px-1.5 py-0.5 text-[9px] font-medium text-accent-foreground">
-              {Math.round(n.w)} × {Math.round(n.h)}
-            </span>
+            {selected.length === 1 && (
+              <span className="absolute -top-5 start-0 whitespace-nowrap rounded bg-accent px-1.5 py-0.5 text-[9px] font-medium text-accent-foreground">
+                {Math.round(n.w)} × {Math.round(n.h)}
+              </span>
+            )}
+
             {selected.length === 1 && !n.locked && editingId !== n.id && (
               <>
                 {["nw", "ne", "sw", "se", "n", "s", "e", "w"].map((h) => (
@@ -698,6 +760,42 @@ export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<H
             )}
           </div>
         ))}
+
+        {/* group bounding box: scale the whole selection at once */}
+        {groupBox && (
+          <div
+            className="pointer-events-none absolute border border-dashed border-accent/80"
+            style={{
+              left: groupBox.x * zoom, top: groupBox.y * zoom,
+              width: groupBox.w * zoom, height: groupBox.h * zoom,
+            }}
+          >
+            <span className="absolute -top-5 start-0 whitespace-nowrap rounded bg-accent px-1.5 py-0.5 text-[9px] font-medium text-accent-foreground">
+              {Math.round(groupBox.w)} × {Math.round(groupBox.h)}
+            </span>
+            {["nw", "ne", "sw", "se", "n", "s", "e", "w"].map((h) => (
+              <span
+                key={h}
+                onPointerDown={(e) => {
+                  e.stopPropagation();
+                  setDrag({
+                    mode: "gresize", handle: h, startX: e.clientX, startY: e.clientY,
+                    box: groupBox,
+                    items: selected.filter((n) => !n.locked).map((n) => ({
+                      id: n.id, x: n.x, y: n.y, w: n.w, h: n.h,
+                      fontSize: n.style?.fontSize,
+                      strokeWidth: typeof n.style?.strokeWidth === "number" ? n.style.strokeWidth : undefined,
+                      radius: n.style?.radius,
+                    })),
+                  });
+                }}
+                className="pointer-events-auto absolute h-2.5 w-2.5 rounded-sm border border-accent bg-background"
+                style={handleStyle(h)}
+              />
+            ))}
+          </div>
+        )}
+
 
         {marqueeBox && (
           <div
