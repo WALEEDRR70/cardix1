@@ -41,7 +41,7 @@ export function MobileNav({ links, authed }: { links: readonly MobileNavLink[]; 
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200" />
           <div
             onClick={(e) => e.stopPropagation()}
-            className="glass-strong absolute inset-x-0 top-0 safe-top rounded-b-3xl border-b border-border/60 px-5 pb-6 pt-4 shadow-luxe animate-in slide-in-from-top duration-200"
+            className="absolute inset-x-0 top-0 safe-top bg-background/95 backdrop-blur-2xl rounded-b-3xl border-b border-border/60 px-5 pb-6 pt-4 shadow-luxe animate-in slide-in-from-top duration-200"
           >
             <div className="flex items-center justify-between">
               <span className="flex items-center gap-2.5">
