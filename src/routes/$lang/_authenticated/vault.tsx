@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
-import { Trash2, StickyNote } from "lucide-react";
+import { Trash2, StickyNote, Search } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { NoteDialog } from "@/components/NoteDialog";
@@ -26,13 +26,14 @@ export const Route = createFileRoute("/$lang/_authenticated/vault")({
 });
 
 function Vault() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const qc = useQueryClient();
   const navigate = useNavigate();
   const { user } = Route.useRouteContext();
   const [noteTarget, setNoteTarget] = useState<{ id: string; notes: string } | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [q, setQ] = useState("");
 
   const { data: cards } = useQuery({
     queryKey: ["saved_cards", user.id],
@@ -107,16 +108,43 @@ function Vault() {
   }
 
 
+  const query = q.trim().toLowerCase();
+  const filtered = (cards ?? []).filter((c) =>
+    !query ||
+    [c.name, c.title, c.company, c.email, c.phone, c.notes]
+      .filter(Boolean)
+      .some((v) => String(v).toLowerCase().includes(query)),
+  );
+
   return (
     <MobileShell topBar={<PageHeader title={t.vault} subtitle={cards ? `${cards.length}` : undefined} />}>
       <div className="px-4 lg:px-8">
+        {cards && cards.length > 0 && (
+          <div className="relative mb-3">
+            <Search className="pointer-events-none absolute start-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              dir="auto"
+              placeholder={lang === "ar" ? "ابحث بالاسم أو الشركة…" : "Search name, company…"}
+              aria-label={lang === "ar" ? "بحث في المحفظة" : "Search vault"}
+              className="h-11 w-full rounded-2xl border border-border/60 bg-card/50 ps-10 pe-4 text-sm text-foreground outline-none backdrop-blur transition placeholder:text-muted-foreground focus:border-accent/60"
+            />
+          </div>
+        )}
         {!cards || cards.length === 0 ? (
           <div className="glass mt-4 rounded-3xl p-10 text-center lg:p-16">
             <p className="text-sm text-muted-foreground lg:text-base">{t.emptyVault}</p>
           </div>
+        ) : filtered.length === 0 ? (
+          <div className="glass mt-4 rounded-3xl p-10 text-center lg:p-16">
+            <p className="text-sm text-muted-foreground">
+              {lang === "ar" ? "لا توجد نتائج مطابقة" : "No matching cards"}
+            </p>
+          </div>
         ) : (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {cards.map((c) => (
+            {filtered.map((c) => (
               <div key={c.id} className="group relative">
                 <div
                   role="link"
@@ -150,7 +178,7 @@ function Vault() {
                   <button
                     type="button"
                     onClick={(e) => askDelete(e, c.id)}
-                    className="glass-strong grid h-7 w-7 place-items-center rounded-full text-foreground/70 backdrop-blur opacity-0 transition hover:text-destructive group-hover:opacity-100"
+                    className="glass-strong grid h-7 w-7 place-items-center rounded-full text-foreground/70 backdrop-blur transition hover:text-destructive lg:opacity-0 lg:group-hover:opacity-100"
                     aria-label={t.delete}
                   >
                     <Trash2 className="h-3.5 w-3.5" />
