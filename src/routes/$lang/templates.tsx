@@ -188,23 +188,12 @@ function TemplatesGallery() {
             ))}
           </div>
 
-          {uid && workspaces.length > 0 && (
-            <div className="mx-auto mb-8 flex w-fit max-w-full flex-wrap items-center justify-center gap-2 rounded-2xl border border-border/60 px-4 py-2.5">
-              <span className="text-[11px] text-muted-foreground">
-                {ar ? "حفظ القالب في:" : "Save template into:"}
+          {uid && (
+            <div className="mx-auto mb-8 flex w-fit max-w-full flex-wrap items-center justify-center gap-2 rounded-2xl border border-border/60 px-4 py-2.5 text-[11px]">
+              <span className="text-muted-foreground">{ar ? "سيتم الحفظ في:" : "Will be saved into:"}</span>
+              <span className="font-semibold">
+                {activeWorkspace ? activeWorkspace.company.name : ar ? "ملفي الشخصي" : "My personal profile"}
               </span>
-              <select
-                value={targetId}
-                onChange={(e) => setTargetId(e.target.value)}
-                className="rounded-full border border-border/60 bg-transparent px-3 py-1.5 text-xs font-semibold outline-none"
-              >
-                <option value="personal">{ar ? "ملفي الشخصي" : "My personal profile"}</option>
-                {workspaces.map((m) => (
-                  <option key={m.company_id} value={m.company_id}>
-                    {m.company.name}
-                  </option>
-                ))}
-              </select>
             </div>
           )}
         </div>
