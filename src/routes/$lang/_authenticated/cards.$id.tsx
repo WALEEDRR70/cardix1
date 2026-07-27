@@ -99,7 +99,7 @@ function EditCard() {
   if (!card) return <NotFoundView />;
 
   const initial: CardFormData = {
-    name: card.name, slug: card.slug, title: card.title ?? "", company: card.company ?? "",
+    name: card.name, slug: card.slug, title: corp?.jobTitle ?? card.title ?? "", company: card.company ?? "",
     bio: card.bio ?? "", phone: card.phone ?? "", whatsapp: card.whatsapp ?? "",
     email: card.email ?? "", website: card.website ?? "", address: card.address ?? "",
     avatar_url: card.avatar_url ?? "",
