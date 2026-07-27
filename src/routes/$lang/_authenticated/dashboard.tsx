@@ -36,13 +36,21 @@ function Dashboard() {
   const [qrSlug, setQrSlug] = useState<string | null>(null);
 
   const { data: cards } = useQuery({
-    queryKey: ["cards", user.id],
+    queryKey: ["cards", user.id, "personal"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("cards").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
+      // Personal profile shows ONLY personal cards — company/employee cards
+      // live inside their company workspace and must stay isolated.
+      const { data, error } = await supabase
+        .from("cards")
+        .select("*")
+        .eq("user_id", user.id)
+        .is("company_id", null)
+        .order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
   });
+
 
   const { data: saved } = useQuery({
     queryKey: ["saved_cards", user.id],
