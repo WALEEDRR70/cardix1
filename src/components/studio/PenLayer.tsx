@@ -364,6 +364,15 @@ export function PenLayer({
           </>
         )}
 
+
+        {/* contour direction preview */}
+        {arrows.map((a, i) => (
+          <g key={`dir-${i}`} transform={`translate(${a.x * zoom} ${a.y * zoom}) rotate(${a.angle})`}>
+            <path d="M -4 -3.4 L 4 0 L -4 3.4 Z" fill="var(--accent)" opacity={0.9} />
+            <path d="M -4 -3.4 L 4 0 L -4 3.4 Z" fill="none" stroke="black" strokeOpacity={0.25} strokeWidth={0.75} />
+          </g>
+        ))}
+
         {/* live crosshair guide from the last anchor */}
         {live && last && !dragging && (
           <line
