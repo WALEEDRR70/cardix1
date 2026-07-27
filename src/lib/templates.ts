@@ -38,6 +38,8 @@ export async function publishTemplate(input: {
   tags: string[];
   design: StudioDoc;
   isPublic: boolean;
+  audience?: TemplateAudience;
+  companyId?: string | null;
 }): Promise<DesignTemplate> {
   const { data: auth } = await supabase.auth.getSession();
   const uid = auth.session?.user.id;
@@ -59,6 +61,8 @@ export async function publishTemplate(input: {
       tags: input.tags,
       design: input.design as never,
       is_public: input.isPublic,
+      audience: input.audience ?? "mixed",
+      company_id: input.companyId ?? null,
     })
     .select("*")
     .single();
@@ -66,7 +70,10 @@ export async function publishTemplate(input: {
   return data as DesignTemplate;
 }
 
-export async function listPublicTemplates(search?: string): Promise<DesignTemplate[]> {
+export async function listPublicTemplates(
+  search?: string,
+  audience?: TemplateAudience | "all",
+): Promise<DesignTemplate[]> {
   let q = supabase
     .from("design_templates")
     .select("*")
@@ -74,6 +81,7 @@ export async function listPublicTemplates(search?: string): Promise<DesignTempla
     .order("created_at", { ascending: false })
     .limit(60);
   if (search?.trim()) q = q.ilike("title", `%${search.trim()}%`);
+  if (audience && audience !== "all") q = q.in("audience", [audience, "mixed"]);
   const { data, error } = await q;
   if (error) throw error;
   return (data ?? []) as DesignTemplate[];
@@ -95,27 +103,33 @@ export async function deleteTemplate(id: string): Promise<void> {
 }
 
 /**
- * Saves a public template as the signed-in user's own editable card design.
+ * Saves a public template as an editable copy — either in the signed-in user's
+ * personal profile or inside a company workspace, depending on `target`.
  * The template row itself is never modified — only its use counter.
  */
-export async function useTemplate(tpl: DesignTemplate): Promise<string> {
+export async function useTemplate(
+  tpl: DesignTemplate,
+  target: TemplateTarget = { kind: "personal" },
+): Promise<string> {
   const { data: auth } = await supabase.auth.getSession();
   const uid = auth.session?.user.id;
   if (!uid) throw new Error("not signed in");
 
   const design = cloneDesign(tpl.design as unknown as StudioDoc);
-  const slug = `tpl-${tpl.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 24) || "design"}-${Math.random()
-    .toString(36)
-    .slice(2, 7)}`;
+  const base = tpl.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 24) || "design";
+  const rand = Math.random().toString(36).slice(2, 7);
+  const isCompany = target.kind === "company";
+  const slug = isCompany ? `${target.companySlug}-${base}-${rand}` : `tpl-${base}-${rand}`;
 
   const { data, error } = await supabase
     .from("cards")
     .insert({
       user_id: uid,
-      name: tpl.title,
+      company_id: isCompany ? target.companyId : null,
+      name: isCompany ? target.companyName : tpl.title,
       slug,
-      card_type: "personal",
-      accent_color: design.background?.color || "#7c34ff",
+      card_type: isCompany ? "company" : "personal",
+      accent_color: (isCompany ? target.accent : null) || design.background?.color || "#7c34ff",
       design: design as never,
     })
     .select("id")
