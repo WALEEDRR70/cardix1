@@ -317,23 +317,25 @@ export function PenLayer({
           />
         )}
 
-        {pts.map((p, i) => {
+        {shaped.map((p, i) => {
           const hasOut = Math.hypot(p.hx - p.x, p.hy - p.y) > 0.5;
           const hasIn = Math.hypot(p.ix - p.x, p.iy - p.y) > 0.5;
           const isFirst = i === 0;
-          const highlight = (isFirst && hover === "first") || (i === pts.length - 1 && hover === "last");
+          const auto = !p.manual;
+          const op = auto ? 0.35 : 0.8;
+          const highlight = (isFirst && hover === "first") || (i === shaped.length - 1 && hover === "last");
           return (
             <g key={i}>
               {hasOut && (
                 <>
-                  <line x1={p.x * zoom} y1={p.y * zoom} x2={p.hx * zoom} y2={p.hy * zoom} stroke="var(--accent)" strokeWidth={1} opacity={0.7} />
-                  <circle cx={p.hx * zoom} cy={p.hy * zoom} r={3.5} fill="white" stroke="var(--accent)" strokeWidth={1.5} />
+                  <line x1={p.x * zoom} y1={p.y * zoom} x2={p.hx * zoom} y2={p.hy * zoom} stroke="var(--accent)" strokeWidth={1} opacity={op} />
+                  <circle cx={p.hx * zoom} cy={p.hy * zoom} r={3.5} fill="white" stroke="var(--accent)" strokeWidth={1.5} opacity={auto ? 0.6 : 1} />
                 </>
               )}
               {hasIn && (
                 <>
-                  <line x1={p.x * zoom} y1={p.y * zoom} x2={p.ix * zoom} y2={p.iy * zoom} stroke="var(--accent)" strokeWidth={1} opacity={0.7} />
-                  <circle cx={p.ix * zoom} cy={p.iy * zoom} r={3.5} fill="white" stroke="var(--accent)" strokeWidth={1.5} />
+                  <line x1={p.x * zoom} y1={p.y * zoom} x2={p.ix * zoom} y2={p.iy * zoom} stroke="var(--accent)" strokeWidth={1} opacity={op} />
+                  <circle cx={p.ix * zoom} cy={p.iy * zoom} r={3.5} fill="white" stroke="var(--accent)" strokeWidth={1.5} opacity={auto ? 0.6 : 1} />
                 </>
               )}
               {highlight && (
@@ -361,6 +363,35 @@ export function PenLayer({
           />
         )}
       </svg>
+
+      {/* smoothing control */}
+      <div
+        className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-3 rounded-full border border-border/60 bg-background/85 px-3 py-1.5 text-[11px] shadow-lg backdrop-blur"
+        onPointerDown={(e) => e.stopPropagation()}
+        onPointerMove={(e) => e.stopPropagation()}
+        onDoubleClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={() => setSmoothOn((v) => !v)}
+          className={`rounded-full px-2 py-0.5 font-medium transition ${
+            smoothOn ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          Auto-smooth
+        </button>
+        <input
+          type="range"
+          min={0}
+          max={1}
+          step={0.05}
+          value={smoothness}
+          disabled={!smoothOn}
+          onChange={(e) => setSmoothness(Number(e.target.value))}
+          className="w-32 accent-[var(--accent)] disabled:opacity-40"
+        />
+        <span className="w-7 text-end tabular-nums text-muted-foreground">{Math.round(smoothness * 100)}</span>
+      </div>
+
     </div>
   );
 }
