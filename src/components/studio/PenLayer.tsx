@@ -454,7 +454,25 @@ export function PenLayer({
           className="w-32 accent-[var(--accent)] disabled:opacity-40"
         />
         <span className="w-7 text-end tabular-nums text-muted-foreground">{Math.round(smoothness * 100)}</span>
+
+        <span className="mx-1 h-4 w-px bg-border/70" />
+
+        {/* handle mode (M) — Alt temporarily inverts */}
+        <div className="flex items-center rounded-full bg-muted/60 p-0.5" title="Handle mode (M) — hold Alt to invert">
+          {(["symmetric", "independent"] as const).map((m) => (
+            <button
+              key={m}
+              onClick={() => setHandleMode(m)}
+              className={`rounded-full px-2 py-0.5 font-medium transition ${
+                handleMode === m ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {m === "symmetric" ? "Symmetric" : "Independent"}
+            </button>
+          ))}
+        </div>
       </div>
+
 
     </div>
   );
