@@ -7,6 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Sparkles, Upload, X, Check, Plus, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { SOCIALS } from "@/lib/socials";
+import { useDragScroll } from "@/lib/use-drag-scroll";
+
 
 export interface CardFormData {
   name: string;
@@ -58,6 +60,8 @@ export function CardForm({
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const genBio = useServerFn(generateBio);
+  const tplScrollRef = useDragScroll<HTMLDivElement>();
+
 
   async function uploadAvatar(file: File) {
     const { data: { user } } = await supabase.auth.getUser();
@@ -118,7 +122,7 @@ export function CardForm({
       {/* Template picker */}
       <section hidden={!!locked?.template}>
         <label className="mb-2 block px-1 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{t.template}</label>
-        <div className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-2.5 overflow-x-auto px-4 pb-1 lg:mx-0 lg:px-0">
+        <div ref={tplScrollRef} className="no-scrollbar -mx-4 flex cursor-grab gap-2.5 overflow-x-auto px-4 pb-1 lg:mx-0 lg:px-0">
           {TEMPLATE_META.filter((tpl) => !allowedTemplates || allowedTemplates.includes(tpl.id)).map((tpl) => {
             const active = data.template === tpl.id;
             return (
