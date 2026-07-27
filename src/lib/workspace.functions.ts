@@ -51,9 +51,12 @@ export const acceptInvitation = createServerFn({ method: "POST" })
     if (!invite || invite.status !== "pending" || new Date(invite.expires_at).getTime() < Date.now()) {
       throw new Error("INVALID_INVITATION");
     }
-    if (invite.email.toLowerCase() !== userEmail) {
+    // Link-only invitations have no email: anyone holding the (single-use) link joins.
+    if (invite.email && invite.email.toLowerCase() !== userEmail) {
       throw new Error("EMAIL_MISMATCH");
     }
+    const memberEmail = invite.email ?? userEmail;
+
 
     const { data: company } = await supabaseAdmin
       .from("companies")
