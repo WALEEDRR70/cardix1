@@ -70,7 +70,7 @@ function Dashboard() {
   const hasCards = !!cards && cards.length > 0;
 
   return (
-    <MobileShell topBar={<PageHeader title={t.brand} subtitle={user.email ?? undefined} right={<ThemeToggle compact />} />}>
+    <MobileShell topBar={<PageHeader title={t.brand} subtitle={user.email ?? undefined} right={<span className="lg:hidden"><ThemeToggle compact /></span>} />}>
       <div className="px-4 lg:px-8">
         {hasCards ? (
           <>
