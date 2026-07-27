@@ -4,17 +4,17 @@ import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, LOCALE_META, type Local
  * Build hreflang alternate links for a canonical path template.
  * @param pathAfterLocale path without leading locale, e.g. "/features" or ""
  */
-export function buildHreflangLinks(pathAfterLocale: string): Array<{ rel: "alternate"; hreflang: string; href: string }> {
+export function buildHreflangLinks(pathAfterLocale: string): Array<{ rel: "alternate"; hrefLang: string; href: string }> {
   const clean = pathAfterLocale.startsWith("/") ? pathAfterLocale : `/${pathAfterLocale}`;
   const suffix = clean === "/" ? "" : clean;
-  const links: Array<{ rel: "alternate"; hreflang: string; href: string }> = SUPPORTED_LOCALES.map((loc) => ({
+  const links: Array<{ rel: "alternate"; hrefLang: string; href: string }> = SUPPORTED_LOCALES.map((loc) => ({
     rel: "alternate",
-    hreflang: loc,
+    hrefLang: loc,
     href: `${SITE_ORIGIN}/${loc}${suffix}`,
   }));
   links.push({
     rel: "alternate",
-    hreflang: "x-default",
+    hrefLang: "x-default",
     href: `${SITE_ORIGIN}/${DEFAULT_LOCALE}${suffix}`,
   });
   return links;

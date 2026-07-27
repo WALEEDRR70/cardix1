@@ -24,8 +24,8 @@ export const Route = createFileRoute("/$lang/about")({
       ],
       links: [
         { rel: "canonical", href: url },
-        ...SUPPORTED_LOCALES.map((l) => ({ rel: "alternate", hreflang: l, href: `${SITE_ORIGIN}/${l}/about` })),
-        { rel: "alternate", hreflang: "x-default", href: `${SITE_ORIGIN}/en/about` },
+        ...SUPPORTED_LOCALES.map((l) => ({ rel: "alternate", hrefLang: l, href: `${SITE_ORIGIN}/${l}/about` })),
+        { rel: "alternate", hrefLang: "x-default", href: `${SITE_ORIGIN}/en/about` },
       ],
     };
   },
@@ -48,7 +48,7 @@ function AboutPage() {
     <MarketingLayout lang={locale}>
       <section className="relative overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.18),transparent_60%)]" />
-        <div className="relative mx-auto max-w-4xl px-6 py-20 md:py-28">
+        <div className="relative mx-auto max-w-4xl px-5 py-12 sm:px-6 md:py-28">
           <span className="text-xs uppercase tracking-widest text-primary/80">Cardixn · {isAr ? "من نحن" : "About"}</span>
           <h1 className="mt-4 text-4xl md:text-6xl font-bold leading-tight tracking-tight bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-transparent">
             {isAr ? "نبني بديلاً فاخراً للبطاقة الورقية" : "We're building the luxury end of paper cards"}
@@ -61,7 +61,7 @@ function AboutPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-3xl px-6 py-16 space-y-6 text-[15px] leading-relaxed text-muted-foreground">
+      <section className="mx-auto max-w-3xl px-5 py-10 sm:px-6 md:py-16 space-y-6 text-[15px] leading-relaxed text-muted-foreground">
         <p>
           {isAr
             ? "بدأت الفكرة من موقف بسيط ومتكرر: تنتهي بطاقاتك المطبوعة في أسوأ لحظة، أو تتغير وظيفتك ورقمك فتصبح كل النسخ التي وزّعتها خاطئة. البطاقة الورقية جميلة لكنها ثابتة، بينما هويتك المهنية تتغير باستمرار."
@@ -80,7 +80,7 @@ function AboutPage() {
       </section>
 
       <section className="border-t border-border/40">
-        <div className="mx-auto max-w-6xl px-6 py-16 grid gap-6 md:grid-cols-2">
+        <div className="mx-auto max-w-6xl px-5 py-10 sm:px-6 md:py-16 grid gap-6 md:grid-cols-2">
           {VALUES.map((v) => {
             const [h, p] = isAr ? v.ar : v.en;
             const Icon = v.icon;

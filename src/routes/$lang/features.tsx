@@ -29,8 +29,8 @@ export const Route = createFileRoute("/$lang/features")({
       ],
       links: [
         { rel: "canonical", href: url },
-        ...SUPPORTED_LOCALES.map((l) => ({ rel: "alternate", hreflang: l, href: `${SITE_ORIGIN}/${l}/features` })),
-        { rel: "alternate", hreflang: "x-default", href: `${SITE_ORIGIN}/en/features` },
+        ...SUPPORTED_LOCALES.map((l) => ({ rel: "alternate", hrefLang: l, href: `${SITE_ORIGIN}/${l}/features` })),
+        { rel: "alternate", hrefLang: "x-default", href: `${SITE_ORIGIN}/en/features` },
       ],
     };
   },
@@ -61,7 +61,7 @@ function FeaturesPage() {
     <MarketingLayout lang={locale}>
       <section className="relative overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.18),transparent_60%)]" />
-        <div className="relative mx-auto max-w-5xl px-6 py-20 md:py-28">
+        <div className="relative mx-auto max-w-5xl px-5 py-12 sm:px-6 md:py-28">
           <span className="text-xs uppercase tracking-widest text-primary/80">Cardixn · {isAr ? "المميزات" : "Features"}</span>
           <h1 className="mt-4 text-4xl md:text-6xl font-bold leading-tight tracking-tight bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-transparent">
             {isAr ? "كل ما تحتاجه بطاقتك الرقمية" : "Everything your digital card should do"}
@@ -82,7 +82,7 @@ function FeaturesPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 py-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <section className="mx-auto max-w-6xl px-5 py-10 sm:px-6 md:py-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {FEATURES.map((f) => {
           const [h, p] = isAr ? f.ar : f.en;
           const Icon = f.icon;

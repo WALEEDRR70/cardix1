@@ -24,8 +24,8 @@ export const Route = createFileRoute("/$lang/pricing")({
       ],
       links: [
         { rel: "canonical", href: url },
-        ...SUPPORTED_LOCALES.map((l) => ({ rel: "alternate", hreflang: l, href: `${SITE_ORIGIN}/${l}/pricing` })),
-        { rel: "alternate", hreflang: "x-default", href: `${SITE_ORIGIN}/en/pricing` },
+        ...SUPPORTED_LOCALES.map((l) => ({ rel: "alternate", hrefLang: l, href: `${SITE_ORIGIN}/${l}/pricing` })),
+        { rel: "alternate", hrefLang: "x-default", href: `${SITE_ORIGIN}/en/pricing` },
       ],
     };
   },
@@ -65,7 +65,7 @@ function PricingPage() {
     <MarketingLayout lang={locale}>
       <section className="relative overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.18),transparent_60%)]" />
-        <div className="relative mx-auto max-w-5xl px-6 py-20 md:py-28 text-center">
+        <div className="relative mx-auto max-w-5xl px-5 py-12 sm:px-6 md:py-28 text-center">
           <span className="text-xs uppercase tracking-widest text-primary/80">Cardixn · {isAr ? "الأسعار" : "Pricing"}</span>
           <h1 className="mt-4 text-4xl md:text-6xl font-bold leading-tight tracking-tight bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-transparent">
             {isAr ? "تسعير بسيط وواضح" : "Simple, honest pricing"}
@@ -76,7 +76,7 @@ function PricingPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 py-16 grid gap-6 lg:grid-cols-3">
+      <section className="mx-auto max-w-6xl px-5 py-10 sm:px-6 md:py-16 grid gap-6 lg:grid-cols-3">
         {PLANS.map((plan) => {
           const c = isAr ? plan.ar : plan.en;
           return (
@@ -119,7 +119,7 @@ function PricingPage() {
       </section>
 
       <section className="border-t border-border/40">
-        <div className="mx-auto max-w-3xl px-6 py-16">
+        <div className="mx-auto max-w-3xl px-5 py-10 sm:px-6 md:py-16">
           <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{isAr ? "أسئلة شائعة" : "Common questions"}</h2>
           <div className="mt-8 space-y-6">
             {(isAr
