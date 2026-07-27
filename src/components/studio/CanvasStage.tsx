@@ -6,6 +6,7 @@ import { resolveImageSrc, resolvePlaceholders, type StudioNode } from "@/lib/stu
 import { isSvgSrc, useInlineSvg } from "@/lib/studio/svg";
 import { PenLayer } from "./PenLayer";
 import { PathEditLayer } from "./PathEditLayer";
+import employeePlaceholder from "@/assets/employee-placeholder.png.asset.json";
 
 
 const GRID = 8;
