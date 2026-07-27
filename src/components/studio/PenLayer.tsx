@@ -132,6 +132,97 @@ function contourArrows(pts: PenPoint[], closed: boolean) {
   return out;
 }
 
+/* ---------- smart snapping ---------- */
+
+export type SnapKind = "anchor" | "handle" | "intersection" | "grid" | "pixel";
+export type SnapHit = { x: number; y: number; kind: SnapKind };
+
+/** Flattens the path into a polyline for geometric tests. */
+function flatten(pts: PenPoint[], closed: boolean, steps = 14) {
+  const poly: { x: number; y: number }[] = [];
+  const n = pts.length;
+  if (!n) return poly;
+  const segs = closed ? n : n - 1;
+  poly.push({ x: pts[0].x, y: pts[0].y });
+  for (let i = 0; i < segs; i++) {
+    const a = pts[i];
+    const b = pts[(i + 1) % n];
+    for (let s = 1; s <= steps; s++) poly.push(cubicAt(a, b, s / steps));
+  }
+  return poly;
+}
+
+function segCross(
+  p1: { x: number; y: number }, p2: { x: number; y: number },
+  p3: { x: number; y: number }, p4: { x: number; y: number },
+) {
+  const d1x = p2.x - p1.x, d1y = p2.y - p1.y;
+  const d2x = p4.x - p3.x, d2y = p4.y - p3.y;
+  const den = d1x * d2y - d1y * d2x;
+  if (Math.abs(den) < 1e-9) return null;
+  const t = ((p3.x - p1.x) * d2y - (p3.y - p1.y) * d2x) / den;
+  const u = ((p3.x - p1.x) * d1y - (p3.y - p1.y) * d1x) / den;
+  if (t < 0 || t > 1 || u < 0 || u > 1) return null;
+  return { x: p1.x + d1x * t, y: p1.y + d1y * t };
+}
+
+/** Self-intersections of the current contour (snap targets). */
+export function pathIntersections(pts: PenPoint[], closed: boolean) {
+  const poly = flatten(pts, closed);
+  const out: { x: number; y: number }[] = [];
+  for (let i = 0; i < poly.length - 1; i++) {
+    for (let j = i + 2; j < poly.length - 1; j++) {
+      if (i === 0 && j === poly.length - 2 && closed) continue;
+      const hit = segCross(poly[i], poly[i + 1], poly[j], poly[j + 1]);
+      if (hit && !out.some((o) => Math.hypot(o.x - hit.x, o.y - hit.y) < 1)) out.push(hit);
+    }
+  }
+  return out;
+}
+
+/**
+ * Smart snap: anchors/endpoints and contour intersections win over the grid,
+ * and pixel snapping always applies as a floor so vectors stay crisp.
+ */
+export function smartSnap(
+  raw: { x: number; y: number },
+  opts: {
+    pts: PenPoint[];
+    intersections: { x: number; y: number }[];
+    tol: number;
+    grid: number;
+    enabled: boolean;
+  },
+): SnapHit {
+  const { pts, intersections, tol, grid, enabled } = opts;
+  if (!enabled) return { x: raw.x, y: raw.y, kind: "pixel" };
+
+  let best: SnapHit | null = null;
+  let bestD = tol;
+  const consider = (x: number, y: number, kind: SnapKind) => {
+    const d = Math.hypot(x - raw.x, y - raw.y);
+    if (d < bestD) { bestD = d; best = { x, y, kind }; }
+  };
+
+  // endpoints / anchors and their handle tips
+  pts.forEach((p) => {
+    consider(p.x, p.y, "anchor");
+    if (Math.hypot(p.hx - p.x, p.hy - p.y) > 0.5) consider(p.hx, p.hy, "handle");
+    if (Math.hypot(p.ix - p.x, p.iy - p.y) > 0.5) consider(p.ix, p.iy, "handle");
+  });
+  intersections.forEach((p) => consider(p.x, p.y, "intersection"));
+  if (best) return best;
+
+  if (grid > 1) {
+    const gx = Math.round(raw.x / grid) * grid;
+    const gy = Math.round(raw.y / grid) * grid;
+    if (Math.hypot(gx - raw.x, gy - raw.y) < tol) return { x: gx, y: gy, kind: "grid" };
+  }
+  // pixel floor: keeps points on whole pixels even with no grid
+  return { x: Math.round(raw.x), y: Math.round(raw.y), kind: "pixel" };
+}
+
+
 function bbox(pts: PenPoint[], closed: boolean) {
   const xs: number[] = [];
   const ys: number[] = [];
