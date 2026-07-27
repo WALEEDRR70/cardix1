@@ -8,7 +8,17 @@ import { StaticCardPreview } from "@/components/studio/StaticCardPreview";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "@/lib/nav";
 import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } from "@/i18n/config";
-import { deleteTemplate, listMyTemplates, listPublicTemplates, useTemplate, type DesignTemplate } from "@/lib/templates";
+import { useAccount } from "@/lib/account";
+import { audienceLabel } from "@/components/CommunityTemplates";
+import {
+  deleteTemplate,
+  listMyTemplates,
+  listPublicTemplates,
+  useTemplate,
+  type DesignTemplate,
+  type TemplateAudience,
+  type TemplateTarget,
+} from "@/lib/templates";
 import type { StudioDoc } from "@/lib/studio/types";
 
 export const Route = createFileRoute("/$lang/templates")({
@@ -51,16 +61,32 @@ function TemplatesGallery() {
   const [uid, setUid] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [tab, setTab] = useState<"all" | "mine">("all");
+  const [audience, setAudience] = useState<TemplateAudience | "all">("all");
+  const [targetId, setTargetId] = useState<string>("personal");
+  const { data: account } = useAccount();
+  const workspaces = account?.managed ?? [];
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setUid(data.session?.user.id ?? null));
   }, []);
 
   const { data: templates = [], isLoading } = useQuery({
-    queryKey: tab === "mine" ? ["my-templates", uid] : ["public-templates", search],
-    queryFn: () => (tab === "mine" ? listMyTemplates(uid!) : listPublicTemplates(search)),
+    queryKey: tab === "mine" ? ["my-templates", uid] : ["public-templates", search, audience],
+    queryFn: () => (tab === "mine" ? listMyTemplates(uid!) : listPublicTemplates(search, audience)),
     enabled: tab === "all" || !!uid,
   });
+
+  function currentTarget(): TemplateTarget {
+    const ws = workspaces.find((m) => m.company_id === targetId);
+    if (!ws) return { kind: "personal" };
+    return {
+      kind: "company",
+      companyId: ws.company.id,
+      companyName: ws.company.name,
+      companySlug: ws.company.slug,
+      accent: ws.company.brand_primary,
+    };
+  }
 
   async function onUse(tpl: DesignTemplate) {
     if (!uid) {
@@ -69,8 +95,13 @@ function TemplatesGallery() {
     }
     setBusyId(tpl.id);
     try {
-      const cardId = await useTemplate(tpl);
-      toast.success(ar ? "تم حفظ نسخة خاصة بك" : "Saved your own copy");
+      const target = currentTarget();
+      const cardId = await useTemplate(tpl, target);
+      toast.success(
+        target.kind === "company"
+          ? ar ? "تمت إضافة نسخة إلى مساحة العمل" : "Copy added to the workspace"
+          : ar ? "تم حفظ نسخة في ملفك الشخصي" : "Saved a copy to your personal profile",
+      );
       navigate({ to: "/studio/$id", params: { id: cardId } });
     } catch (e) {
       toast.error((e as Error).message);
@@ -128,15 +159,53 @@ function TemplatesGallery() {
           </div>
         )}
 
-        <div className={"mx-auto mb-8 flex max-w-md items-center gap-2 rounded-full border border-border/60 px-4 py-2 " + (tab === "mine" ? "hidden" : "")}>
-          <Search className="h-4 w-4 text-muted-foreground" />
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder={ar ? "ابحث عن قالب…" : "Search templates…"}
-            className="w-full bg-transparent text-sm outline-none"
-          />
+        <div className={tab === "mine" ? "hidden" : ""}>
+          <div className="mx-auto mb-4 flex max-w-md items-center gap-2 rounded-full border border-border/60 px-4 py-2">
+            <Search className="h-4 w-4 text-muted-foreground" />
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={ar ? "ابحث عن قالب…" : "Search templates…"}
+              className="w-full bg-transparent text-sm outline-none"
+            />
+          </div>
+
+          <div className="mx-auto mb-4 flex w-fit flex-wrap items-center justify-center gap-1 rounded-full border border-border/60 p-1">
+            {(["all", "personal", "employee", "mixed"] as const).map((k) => (
+              <button
+                key={k}
+                onClick={() => setAudience(k)}
+                className={
+                  "rounded-full px-3.5 py-1.5 text-[11px] font-semibold transition " +
+                  (audience === k ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground")
+                }
+              >
+                {k === "all" ? (ar ? "الكل" : "All") : audienceLabel(k, ar)}
+              </button>
+            ))}
+          </div>
+
+          {uid && workspaces.length > 0 && (
+            <div className="mx-auto mb-8 flex w-fit max-w-full flex-wrap items-center justify-center gap-2 rounded-2xl border border-border/60 px-4 py-2.5">
+              <span className="text-[11px] text-muted-foreground">
+                {ar ? "حفظ القالب في:" : "Save template into:"}
+              </span>
+              <select
+                value={targetId}
+                onChange={(e) => setTargetId(e.target.value)}
+                className="rounded-full border border-border/60 bg-transparent px-3 py-1.5 text-xs font-semibold outline-none"
+              >
+                <option value="personal">{ar ? "ملفي الشخصي" : "My personal profile"}</option>
+                {workspaces.map((m) => (
+                  <option key={m.company_id} value={m.company_id}>
+                    {m.company.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
+
 
         {isLoading ? (
           <div className="grid place-items-center py-20">

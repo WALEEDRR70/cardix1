@@ -3,7 +3,8 @@ import { useState } from "react";
 import { Loader2, Share2, X } from "lucide-react";
 import { toast } from "sonner";
 import { useStudio } from "@/lib/studio/store";
-import { publishTemplate } from "@/lib/templates";
+import { publishTemplate, type TemplateAudience } from "@/lib/templates";
+import { audienceLabel } from "@/components/CommunityTemplates";
 
 export function PublishTemplateDialog({ ar, defaultTitle }: { ar: boolean; defaultTitle?: string }) {
   const { state } = useStudio();
@@ -12,6 +13,7 @@ export function PublishTemplateDialog({ ar, defaultTitle }: { ar: boolean; defau
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
   const [isPublic, setIsPublic] = useState(true);
+  const [audience, setAudience] = useState<TemplateAudience>("mixed");
   const [busy, setBusy] = useState(false);
 
   async function submit() {
@@ -27,6 +29,7 @@ export function PublishTemplateDialog({ ar, defaultTitle }: { ar: boolean; defau
         tags: tags.split(",").map((t) => t.trim()).filter(Boolean).slice(0, 8),
         design: state.doc,
         isPublic,
+        audience,
       });
       toast.success(
         isPublic
@@ -95,6 +98,25 @@ export function PublishTemplateDialog({ ar, defaultTitle }: { ar: boolean; defau
               placeholder={ar ? "فاخر, داكن, شركات" : "luxury, dark, corporate"}
               className="mb-4 w-full rounded-lg border border-border/60 bg-transparent px-3 py-2 text-sm outline-none focus:border-accent"
             />
+
+            <label className="mb-1 block text-[11px] text-muted-foreground">
+              {ar ? "نوع القالب" : "Template kind"}
+            </label>
+            <div className="mb-4 flex gap-1 rounded-full border border-border/60 p-1">
+              {(["personal", "employee", "mixed"] as const).map((k) => (
+                <button
+                  key={k}
+                  type="button"
+                  onClick={() => setAudience(k)}
+                  className={
+                    "flex-1 rounded-full px-2 py-1.5 text-[11px] font-semibold transition " +
+                    (audience === k ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground")
+                  }
+                >
+                  {audienceLabel(k, ar)}
+                </button>
+              ))}
+            </div>
 
             <label className="mb-4 flex items-center gap-2 text-xs text-muted-foreground">
               <input type="checkbox" checked={isPublic} onChange={(e) => setIsPublic(e.target.checked)} />
