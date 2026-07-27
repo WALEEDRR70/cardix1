@@ -101,10 +101,25 @@ export function CardForm({
 
   const set = <K extends keyof CardFormData>(k: K, v: CardFormData[K]) => setData((d) => ({ ...d, [k]: v }));
 
+  /** Studio design re-tinted live with the picked accent color. */
+  const accentChanged = !!design && data.accent_color !== initial.accent_color;
+  const previewDesign = useMemo(() => {
+    if (!design || !accentChanged) return design;
+    try {
+      return recolorDesign(design as StudioDoc, initial.accent_color, data.accent_color);
+    } catch {
+      return design;
+    }
+  }, [design, accentChanged, initial.accent_color, data.accent_color]);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    try { await onSubmit(data); } finally { setSaving(false); }
+    try {
+      await onSubmit(data, accentChanged ? { design: previewDesign } : undefined);
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
