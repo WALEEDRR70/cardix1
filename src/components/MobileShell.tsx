@@ -54,7 +54,7 @@ function DesktopSidebar() {
     { to: "/scan", icon: ScanLine, label: t.scanCard },
     { to: "/templates", icon: LayoutTemplate, label: lang === "ar" ? "معرض القوالب" : "Templates" },
     { to: "/tools", icon: Wrench, label: lang === "ar" ? "الأدوات" : "Tools" },
-    { to: "/settings", icon: Layers, label: t.settings },
+    { to: "/settings", icon: SettingsIcon, label: t.settings },
   ] as const;
 
 
@@ -162,7 +162,7 @@ export function MobileBottomNav({ accent }: { accent?: string } = {}) {
     { to: "/dashboard", icon: Home, label: t.home },
     { to: "/vault", icon: BookmarkCheck, label: t.vault },
     { to: "/cards/new", icon: Plus, label: t.newCard },
-    { to: "/settings", icon: Layers, label: t.settingsShort },
+    { to: "/settings", icon: SettingsIcon, label: t.settingsShort },
   ] as const;
 
   const fabColor = accent ? getReadableText(accent) : undefined;
