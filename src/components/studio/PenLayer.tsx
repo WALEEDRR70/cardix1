@@ -367,8 +367,9 @@ export function PenLayer({
       return;
     }
 
-    let px = snapped(raw.x);
-    let py = snapped(raw.y);
+    const s = resolveSnap(raw);
+    let px = s.x;
+    let py = s.y;
     // Shift constrains the new anchor to 22.5° from the previous one
     if (mods.current.shift && last) {
       const c = constrain(last.x, last.y, raw.x, raw.y);
