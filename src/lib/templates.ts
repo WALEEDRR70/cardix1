@@ -114,6 +114,12 @@ export async function useTemplate(tpl: DesignTemplate): Promise<string> {
     .single();
   if (error) throw error;
 
-  await supabase.rpc("increment_template_use", { _template_id: tpl.id });
+  try {
+    const { bumpTemplateUse } = await import("@/lib/templates.functions");
+    await bumpTemplateUse({ data: { templateId: tpl.id } });
+  } catch {
+    /* counter is best-effort */
+  }
+
   return data.id as string;
 }
