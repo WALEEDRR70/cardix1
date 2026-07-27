@@ -572,7 +572,7 @@ export type Database = {
           company_id: string
           created_at: string
           department_id: string | null
-          email: string
+          email: string | null
           expires_at: string
           id: string
           invited_by: string | null
@@ -590,7 +590,7 @@ export type Database = {
           company_id: string
           created_at?: string
           department_id?: string | null
-          email: string
+          email?: string | null
           expires_at?: string
           id?: string
           invited_by?: string | null
@@ -608,7 +608,7 @@ export type Database = {
           company_id?: string
           created_at?: string
           department_id?: string | null
-          email?: string
+          email?: string | null
           expires_at?: string
           id?: string
           invited_by?: string | null
