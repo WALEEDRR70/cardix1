@@ -138,15 +138,22 @@ export function PenLayer({
   const [live, setLive] = useState<{ x: number; y: number } | null>(null);
   const [hover, setHover] = useState<"first" | "last" | null>(null);
   const [dragging, setDragging] = useState(false);
+  const [smoothOn, setSmoothOn] = useState(true);
+  const [smoothness, setSmoothness] = useState(0.5);
   const mods = useRef({ shift: false, alt: false });
   const ptsRef = useRef(pts);
   ptsRef.current = pts;
+  const smoothRef = useRef({ on: smoothOn, amount: smoothness });
+  smoothRef.current = { on: smoothOn, amount: smoothness };
 
   const g = snap && grid && grid > 1 ? grid : 0;
   const snapped = (v: number) => (g ? Math.round(v / g) * g : v);
 
+  const shape = (list: PenPoint[], closed: boolean) =>
+    smoothRef.current.on ? autoSmooth(list, closed, smoothRef.current.amount) : list;
+
   function finish(closed: boolean) {
-    const list = ptsRef.current;
+    const list = shape(ptsRef.current, closed);
     if (list.length < 2) {
       setPts([]); setLive(null);
       return;
@@ -156,6 +163,7 @@ export function PenLayer({
     setPts([]); setLive(null); setHover(null);
     onCommit({ path, ...b, closed });
   }
+
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
