@@ -209,6 +209,7 @@ export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<H
   const viewportRef = useRef<HTMLDivElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [drag, setDrag] = useState<Drag | null>(null);
+  const dragBaseRef = useRef<typeof state.doc | null>(null);
   const [marquee, setMarquee] = useState<Marquee | null>(null);
   const [spaceDown, setSpaceDown] = useState(false);
   const [panning, setPanning] = useState(false);
