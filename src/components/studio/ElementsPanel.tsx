@@ -11,6 +11,7 @@ import { useStudio } from "@/lib/studio/store";
 import type { NodeType, StudioNode } from "@/lib/studio/types";
 import { cn } from "@/lib/utils";
 import { AiPanel } from "./AiPanel";
+import { SvgBackgrounds } from "./SvgBackgrounds";
 
 type Item = {
   key: string; label: string; labelAr: string; icon: React.ElementType;
