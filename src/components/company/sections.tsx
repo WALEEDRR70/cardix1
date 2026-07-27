@@ -726,6 +726,19 @@ export function DepartmentsTab({ company, canEdit }: { company: Company; canEdit
     },
   });
 
+  // Card designs assigned to each department (created from the Studio "assign" action).
+  const { data: designs } = useQuery({
+    queryKey: ["department-designs", company.id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("company_templates")
+        .select("id, name, department_id, target_role, accent_color")
+        .eq("company_id", company.id)
+        .order("sort_order");
+      return data ?? [];
+    },
+  });
+
   async function add() {
     if (!name.trim()) return;
     const { error } = await supabase.from("company_departments").insert({ company_id: company.id, name: name.trim(), slug: slugify(name) });
@@ -745,23 +758,59 @@ export function DepartmentsTab({ company, canEdit }: { company: Company; canEdit
         />
       )}
 
-      <div className="flex flex-wrap gap-2">
-        {(data ?? []).map((d) => (
-          <span key={d.id} className="flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-xs">
-            {d.name}
-            {canEdit && (
-              <button
-                onClick={async () => {
-                  await supabase.from("company_departments").delete().eq("id", d.id);
-                  qc.invalidateQueries({ queryKey: ["company-departments", company.id] });
-                }}
-                className="text-muted-foreground hover:text-destructive"
-              >
-                <Trash2 className="h-3 w-3" />
-              </button>
-            )}
-          </span>
-        ))}
+      <div className="space-y-2">
+        {(data ?? []).map((d) => {
+          const assigned = (designs ?? []).filter((t) => t.department_id === d.id);
+          return (
+            <div key={d.id} className="rounded-2xl border border-border/60 bg-card/60 px-3 py-2.5">
+              <div className="flex items-center gap-2">
+                <p className="min-w-0 flex-1 truncate text-sm font-medium">{d.name}</p>
+                {canEdit && (
+                  <button
+                    onClick={async () => {
+                      await supabase.from("company_departments").delete().eq("id", d.id);
+                      qc.invalidateQueries({ queryKey: ["company-departments", company.id] });
+                    }}
+                    className="text-muted-foreground hover:text-destructive"
+                    aria-label={w.remove}
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
+                )}
+              </div>
+              <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                {assigned.length === 0 ? (
+                  <span className="text-[11px] text-muted-foreground">
+                    {ar ? "لا يوجد تصميم معيّن" : "No design assigned"}
+                  </span>
+                ) : (
+                  assigned.map((t) => (
+                    <span
+                      key={t.id}
+                      className="flex items-center gap-1.5 rounded-full border border-border bg-secondary px-2.5 py-1 text-[11px]"
+                    >
+                      <span className="h-2.5 w-2.5 rounded-full" style={{ background: t.accent_color }} />
+                      {t.name}
+                      {t.target_role ? ` · ${roleLabel(t.target_role as CompanyRole, w)}` : ""}
+                      {canEdit && (
+                        <button
+                          onClick={async () => {
+                            await supabase.from("company_templates").delete().eq("id", t.id);
+                            qc.invalidateQueries({ queryKey: ["department-designs", company.id] });
+                          }}
+                          className="text-muted-foreground hover:text-destructive"
+                          aria-label={w.remove}
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </button>
+                      )}
+                    </span>
+                  ))
+                )}
+              </div>
+            </div>
+          );
+        })}
       </div>
       {canEdit && (
         <div className="flex gap-2">
