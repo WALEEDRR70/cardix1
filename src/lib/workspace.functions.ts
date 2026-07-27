@@ -90,11 +90,13 @@ export const acceptInvitation = createServerFn({ method: "POST" })
       : { data: null };
     const jobTitle = invite.job_title ?? tpl?.name ?? dept?.name ?? null;
 
+    // The company owner must never be downgraded by accepting an invite link.
+    const isOwner = company.owner_id === context.userId;
     await supabaseAdmin.from("company_members").upsert(
       {
         company_id: invite.company_id,
         user_id: context.userId,
-        role: invite.role,
+        role: isOwner ? "owner" : invite.role,
         status: "active",
         department_id: invite.department_id,
         job_title: jobTitle,
