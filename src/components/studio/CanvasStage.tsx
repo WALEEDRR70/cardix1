@@ -716,9 +716,12 @@ export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<H
               transform: `rotate(${n.rot}deg)`,
             }}
           >
-            <span className="absolute -top-5 start-0 whitespace-nowrap rounded bg-accent px-1.5 py-0.5 text-[9px] font-medium text-accent-foreground">
-              {Math.round(n.w)} × {Math.round(n.h)}
-            </span>
+            {selected.length === 1 && (
+              <span className="absolute -top-5 start-0 whitespace-nowrap rounded bg-accent px-1.5 py-0.5 text-[9px] font-medium text-accent-foreground">
+                {Math.round(n.w)} × {Math.round(n.h)}
+              </span>
+            )}
+
             {selected.length === 1 && !n.locked && editingId !== n.id && (
               <>
                 {["nw", "ne", "sw", "se", "n", "s", "e", "w"].map((h) => (
