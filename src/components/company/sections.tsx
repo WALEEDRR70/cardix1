@@ -1,3 +1,4 @@
+import { DepartmentDesignCard } from "@/components/company/DepartmentDesignCard";
 // Shared enterprise workspace modules, used by /co/$slug/* routes and the
 // legacy /workspace/$id admin screen.
 import { useQuery, useQueryClient } from "@tanstack/react-query";
