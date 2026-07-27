@@ -8,7 +8,7 @@ import { StaticCardPreview } from "@/components/studio/StaticCardPreview";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "@/lib/nav";
 import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } from "@/i18n/config";
-import { deleteTemplate, listPublicTemplates, useTemplate, type DesignTemplate } from "@/lib/templates";
+import { deleteTemplate, listMyTemplates, listPublicTemplates, useTemplate, type DesignTemplate } from "@/lib/templates";
 import type { StudioDoc } from "@/lib/studio/types";
 
 export const Route = createFileRoute("/$lang/templates")({
@@ -50,6 +50,7 @@ function TemplatesGallery() {
   const [search, setSearch] = useState("");
   const [uid, setUid] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [tab, setTab] = useState<"all" | "mine">("all");
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setUid(data.session?.user.id ?? null));
@@ -83,6 +84,7 @@ function TemplatesGallery() {
     try {
       await deleteTemplate(tpl.id);
       await qc.invalidateQueries({ queryKey: ["public-templates"] });
+      await qc.invalidateQueries({ queryKey: ["my-templates"] });
     } catch (e) {
       toast.error((e as Error).message);
     } finally {
@@ -108,7 +110,24 @@ function TemplatesGallery() {
           </p>
         </div>
 
-        <div className="mx-auto mb-8 flex max-w-md items-center gap-2 rounded-full border border-border/60 px-4 py-2">
+        {uid && (
+          <div className="mx-auto mb-4 flex w-fit items-center gap-1 rounded-full border border-border/60 p-1">
+            {(["all", "mine"] as const).map((k) => (
+              <button
+                key={k}
+                onClick={() => setTab(k)}
+                className={
+                  "rounded-full px-4 py-1.5 text-xs font-semibold transition " +
+                  (tab === k ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground")
+                }
+              >
+                {k === "all" ? (ar ? "كل القوالب" : "All templates") : ar ? "قوالبي" : "My templates"}
+              </button>
+            ))}
+          </div>
+        )}
+
+        <div className={"mx-auto mb-8 flex max-w-md items-center gap-2 rounded-full border border-border/60 px-4 py-2 " + (tab === "mine" ? "hidden" : "")}>
           <Search className="h-4 w-4 text-muted-foreground" />
           <input
             value={search}
@@ -124,7 +143,13 @@ function TemplatesGallery() {
           </div>
         ) : templates.length === 0 ? (
           <p className="py-20 text-center text-sm text-muted-foreground">
-            {ar ? "لا توجد قوالب منشورة بعد." : "No templates published yet."}
+            {tab === "mine"
+              ? ar
+                ? "لم تنشر أي قالب بعد — افتح تصميمك في الاستوديو واضغط \"نشر كقالب\"."
+                : "You haven't published a template yet — open a design in the Studio and hit \"Publish as template\"."
+              : ar
+                ? "لا توجد قوالب منشورة بعد."
+                : "No templates published yet."}
           </p>
         ) : (
           <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -137,7 +162,14 @@ function TemplatesGallery() {
                   <StaticCardPreview doc={tpl.design as unknown as StudioDoc} width={240} />
                 </div>
                 <div className="mt-4">
-                  <h2 className="truncate text-sm font-semibold">{tpl.title}</h2>
+                  <h2 className="flex items-center gap-2 truncate text-sm font-semibold">
+                    <span className="truncate">{tpl.title}</span>
+                    {!tpl.is_public && (
+                      <span className="shrink-0 rounded-full border border-border/60 px-2 py-0.5 text-[9px] font-medium text-muted-foreground">
+                        {ar ? "خاص" : "Private"}
+                      </span>
+                    )}
+                  </h2>
                   <p className="mt-0.5 truncate text-xs text-muted-foreground">
                     {tpl.author_name ? (ar ? `بواسطة ${tpl.author_name}` : `by ${tpl.author_name}`) : ""}
                     {tpl.use_count > 0 ? ` · ${tpl.use_count} ${ar ? "استخدام" : "uses"}` : ""}
