@@ -1,77 +1,63 @@
-# Two Independent Products Inside Cardixn
+# تبسيط Cardixn — نسخة أبسط وأوضح
 
-Today the app has one dashboard with a "workspace" tab bolted on. This plan separates it into two products that share only auth and the public card renderer.
+المشكلة الحقيقية ليست في المزايا بل في **عددها الظاهر على الشاشة**. مساحة الشركة اليوم فيها ١٧ صفحة في القائمة الجانبية، والحساب الشخصي له صدَفة مختلفة تمامًا، وإنشاء البطاقة يمر عبر ٣ أماكن (قالب → نموذج → استوديو). الخطة تقلّص كل ذلك.
+
+## ١) مساحة الشركة: من ١٧ صفحة إلى ٥
 
 ```text
-                 sign in
-                    |
-        +-----------+-----------+
-        |                       |
-  PERSONAL ACCOUNT        COMPANY ACCOUNT
-  /{lang}/app/*           /{lang}/co/{slug}/*
-  mobile-app feel         enterprise SaaS feel
-  own nav + shell         own nav + shell
-                                |
-                          EMPLOYEE VIEW
-                          /{lang}/me/*  (card-only, no admin)
+قبل                                  بعد
+نظرة عامة                            الرئيسية      (نظرة عامة + بطاقة الشركة + النشاط)
+بطاقة الشركة                          الفريق        (الموظفون + الأقسام + الدعوات)
+الموظفون / الأقسام / الدعوات           التصاميم      (تصاميم الأقسام + القوالب + الاستوديو)
+الهوية / القوالب / الاستوديو / الوسائط   الوصول        (التحليلات + QR + NFC + الصفحة العامة)
+التحليلات / QR / NFC / الصفحة / SEO     الإعدادات     (الهوية + الوسائط + SEO + الصلاحيات + السجل)
+السجل / الصلاحيات / الإعدادات
 ```
 
-An account chooser after sign-in routes people to the right product. A user can hold both: personal cards always exist independently of any company.
+- قائمة جانبية بخمسة عناصر فقط، بلا مجموعات وبلا طيّ.
+- الصفحات القديمة تبقى موجودة لكن تتحول إلى **تبويبات داخل الصفحة الأم**، ومسارات الروابط القديمة تُعيد التوجيه تلقائيًا حتى لا يُكسر أي رابط محفوظ.
+- ما لا يُستخدم يوميًا (SEO، الصلاحيات، سجل النشاط، NFC) ينتقل تحت «الإعدادات» في قسم «متقدم» مطويّ.
 
-## Phase 1 — Account separation & shells
+## ٢) إنشاء بطاقة: مسار واحد
 
-- Account-type selection on first sign-in (Personal / Company), stored on the profile; `/{lang}/switch` to move between contexts.
-- Three route trees with three distinct layouts:
-  - `app/*` — Personal: bottom-nav mobile shell (Cards, Vault, Scan, Analytics, Settings). No company anything.
-  - `co/$slug/*` — Company: desktop sidebar + topbar enterprise shell.
-  - `me/*` — Employee: minimal shell (My Card, Edit, QR/NFC, Analytics, Share, Settings).
-- Routing guard picks the shell from membership + role; employees can never reach `co/*` admin routes.
-- Existing `/dashboard` and `/workspace` routes redirect into the new trees.
+اليوم: القالب في مكان، النموذج في مكان، الاستوديو في مكان ثالث، وحوار «استخدام القالب» يقرر أين تذهب.
 
-## Phase 2 — Company registration & data model
+بعد التبسيط — شاشة واحدة `+ بطاقة جديدة`:
 
-- Multi-step company onboarding wizard collecting all requested fields (identity, legal, location, contact, brand, domain, description, socials, business hours, verification docs), with save-and-resume.
-- Database: extend `companies` and add `company_settings`, `company_media`, `company_roles`, `company_permissions`, `company_business_hours`, `company_socials`, `company_verification_docs`, plus a `company_analytics` events stream. Personal tables (`cards` where `company_id is null`, `saved_cards`, `profiles`) stay free of company foreign keys.
-- Private storage buckets for logos, media library and verification documents, with company-scoped access rules.
+```text
+[ اختر تصميمًا ]  →  [ املأ بياناتك ]  →  [ تم ]
+   شريط قوالب         نموذج قصير        معاينة حية بجانبه
+                     "تعديل متقدم" ← الاستوديو (اختياري)
+```
 
-## Phase 3 — Company dashboard
+- الاستوديو يصبح **خيارًا** لا محطة إجبارية؛ زر واحد داخل محرّر البطاقة.
+- المعاينة الحية دائمًا بجانب النموذج على سطح المكتب، وأعلى النموذج على الجوال.
 
-Sections: Overview, Company Card, Employee Cards, Departments, Templates, Brand Manager, Media Library, Invitations, Analytics, QR Manager, NFC Manager, Settings, SEO, Public Page, Permissions. Each is its own route (not tabs in one file), sharing the enterprise shell.
+## ٣) صدَفة واحدة بدل ثلاث
 
-- Brand Center: logo variants (dark/light), primary/secondary/accent, typography, icons, backgrounds, card/button style, corner radius, animation preset, verification badge — applied as CSS variables across every company surface and card.
-- Media Library: shared, approved-asset flagging, employees see only approved items.
-- Employee management: invite, create card, assign department/template, activate/deactivate/suspend/archive, transfer department.
-- Permissions matrix: per-field locked/editable rules per template and role.
+بدل شكل «تطبيق جوال» للشخصي و«SaaS سطح مكتب» للشركة و«شكل ثالث» للموظف:
 
-## Phase 4 — Drag & drop card builder
+- **صدَفة واحدة** فيها شريط جانبي على سطح المكتب وشريط سفلي على الجوال، وتتبدّل عناصرها حسب السياق فقط.
+- **مُبدّل حساب واحد** في أعلى الشريط: «حسابي الشخصي» / «شركة كذا». لا صفحة `/switch` منفصلة، ولا اختيار نوع حساب عند أول دخول — كل مستخدم يبدأ شخصيًا وينشئ شركة عند الحاجة.
+- الموظف يرى نفس الصدَفة بعناصر أقل (بطاقتي، المسح، الخزنة) — لا منتج ثالث.
 
-Canvas editor (Canva/Figma-like) replacing the form for company templates:
+## ٤) تنظيف الواجهة
 
-- Element palette: logo, employee photo, company photo, background, gradient, glass layer, name, job title, company, department, phone, email, website, QR, NFC, buttons, social icons, divider, text, shapes, images, video, map, custom section.
-- Per-element: drag, resize, rotate, duplicate, delete, align guides, snap-to-grid, layer ordering, lock, hide, opacity, radius, shadow, glow, animation.
-- Layout stored as JSON; a shared renderer draws the same JSON on the public card page.
-- Employees open the same canvas in restricted mode: locked elements are non-selectable, only permitted fields are editable.
+- تقليل الحشو والحدود والتدرجات: بطاقة واحدة نظيفة بدل بطاقات داخل بطاقات.
+- عناوين موحّدة: عنوان + وصف سطر واحد + إجراء رئيسي واحد فقط لكل صفحة.
+- حالات فارغة حقيقية بدل جداول فاضية («لا يوجد موظفون بعد → دعوة أول موظف»).
+- توحيد أحجام الأزرار والحقول ونصف القطر عبر التطبيق (تايبوجرافي ومسافات من مقياس واحد).
+- الحفاظ الكامل على العربية RTL والإنجليزية LTR في كل شاشة جديدة.
 
-## Phase 5 — Templates, employee experience, public company page
+## ملاحظات تقنية
 
-- Unlimited company templates with starter presets (Corporate, Executive, Sales, Marketing, Creative, Luxury, Minimal, Premium, Modern); assignment per employee or department.
-- Employee product surface finalized — card-only, zero admin.
-- `/company/{slug}`: profile, company card, services, branches, optional employee directory, contact, socials, QR, NFC, with per-company SEO metadata.
+- لا تغييرات في قاعدة البيانات ولا في منطق الصلاحيات — التبسيط في طبقة الواجهة والتنقل فقط.
+- الصفحات المدمجة تُعاد استخدامها كمكوّنات تبويب، والمسارات القديمة تصبح `redirect` كي لا يتعطّل شيء.
+- الاستوديو ولوحة التصميم تبقى كما هي تمامًا (طلبك: بعيدًا عن لوحة تصاميم البطاقات).
 
-## Phase 6 — Analytics
+## التنفيذ
 
-Company analytics: total/active/inactive employees and cards, views, QR scans, NFC opens, contact saves, website clicks, country/city/device breakdowns, top employee cards, top departments. Personal analytics stays as-is, scoped to the individual.
-
-## Design
-
-Dark glassmorphism and purple gradient throughout. Personal = premium mobile app (large touch targets, bottom nav, card-stack motion). Company = premium desktop SaaS (dense sidebar, data tables, command palette). Company surfaces re-theme themselves from that company's brand tokens.
-
-## Technical notes
-
-- Company data access goes through server functions with role checks; RLS keeps company rows readable only by active members, personal rows only by their owner.
-- The builder JSON schema is versioned so old cards keep rendering after builder changes.
-- Bilingual AR/EN with RTL preserved on every new screen; all new strings go through the i18n dictionaries.
-
-## Delivery
-
-This is far too large for one pass. I will build phase by phase and check in after each, starting with Phase 1 so you can see the two shells side by side before the heavy work lands.
+على ثلاث دفعات، أعرض عليك النتيجة بعد كل دفعة:
+1. الصدَفة الموحّدة + مُبدّل الحساب + قائمة الشركة الخماسية وإعادة التوجيهات.
+2. دمج الصفحات في تبويبات + الحالات الفارغة.
+3. مسار إنشاء البطاقة الموحّد + تنظيف بصري شامل.
