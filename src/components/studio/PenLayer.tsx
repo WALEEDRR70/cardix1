@@ -104,6 +104,34 @@ export function penPath(
   return d;
 }
 
+/** Point + tangent on a cubic bezier at t (used for contour direction arrows). */
+function cubicAt(a: PenPoint, b: PenPoint, t: number) {
+  const p0 = [a.x, a.y], p1 = [a.hx, a.hy], p2 = [b.ix, b.iy], p3 = [b.x, b.y];
+  const mt = 1 - t;
+  const pos = [0, 1].map(
+    (k) => mt * mt * mt * p0[k] + 3 * mt * mt * t * p1[k] + 3 * mt * t * t * p2[k] + t * t * t * p3[k],
+  );
+  const tan = [0, 1].map(
+    (k) => 3 * mt * mt * (p1[k] - p0[k]) + 6 * mt * t * (p2[k] - p1[k]) + 3 * t * t * (p3[k] - p2[k]),
+  );
+  return { x: pos[0], y: pos[1], angle: (Math.atan2(tan[1], tan[0]) * 180) / Math.PI };
+}
+
+/** Arrow markers along the contour showing the drawing direction (winding). */
+function contourArrows(pts: PenPoint[], closed: boolean) {
+  const out: { x: number; y: number; angle: number }[] = [];
+  const n = pts.length;
+  const segs = closed ? n : n - 1;
+  for (let i = 0; i < segs; i++) {
+    const a = pts[i];
+    const b = pts[(i + 1) % n];
+    const len = Math.hypot(b.x - a.x, b.y - a.y);
+    if (len < 12) continue;
+    out.push(cubicAt(a, b, 0.5));
+  }
+  return out;
+}
+
 function bbox(pts: PenPoint[], closed: boolean) {
   const xs: number[] = [];
   const ys: number[] = [];
@@ -140,9 +168,12 @@ export function PenLayer({
   const [dragging, setDragging] = useState(false);
   const [smoothOn, setSmoothOn] = useState(true);
   const [smoothness, setSmoothness] = useState(0.5);
+  const [handleMode, setHandleMode] = useState<"symmetric" | "independent">("symmetric");
   const mods = useRef({ shift: false, alt: false });
   const ptsRef = useRef(pts);
   ptsRef.current = pts;
+  const modeRef = useRef(handleMode);
+  modeRef.current = handleMode;
   const smoothRef = useRef({ on: smoothOn, amount: smoothness });
   smoothRef.current = { on: smoothOn, amount: smoothness };
 
@@ -183,6 +214,9 @@ export function PenLayer({
       } else if (e.key.toLowerCase() === "s" && !e.metaKey && !e.ctrlKey) {
         e.preventDefault();
         setSmoothOn((v) => !v);
+      } else if (e.key.toLowerCase() === "m" && !e.metaKey && !e.ctrlKey) {
+        e.preventDefault();
+        setHandleMode((v) => (v === "symmetric" ? "independent" : "symmetric"));
       }
 
     }
@@ -242,16 +276,20 @@ export function PenLayer({
       setPts((prev) =>
         prev.map((pt, i) =>
           i === index
-            ? {
-                ...pt,
-                // dragging a handle opts this anchor out of auto-smoothing
-                manual: Math.hypot(out.x - pt.x, out.y - pt.y) > 1.5,
-                hx: out.x,
-                hy: out.y,
-                // Alt breaks symmetry: incoming handle stays on the anchor
-                ix: mods.current.alt ? pt.x : 2 * pt.x - out.x,
-                iy: mods.current.alt ? pt.y : 2 * pt.y - out.y,
-              }
+            ? (() => {
+                // Alt temporarily inverts the active handle mode
+                const symmetric =
+                  modeRef.current === "symmetric" ? !mods.current.alt : mods.current.alt;
+                return {
+                  ...pt,
+                  // dragging a handle opts this anchor out of auto-smoothing
+                  manual: Math.hypot(out.x - pt.x, out.y - pt.y) > 1.5,
+                  hx: out.x,
+                  hy: out.y,
+                  ix: symmetric ? 2 * pt.x - out.x : pt.x,
+                  iy: symmetric ? 2 * pt.y - out.y : pt.y,
+                };
+              })()
             : pt,
         ),
       );
@@ -294,6 +332,16 @@ export function PenLayer({
     hover === "first" && pts.length > 1
       ? penPath(smoothOn ? autoSmooth(pts, true, smoothness) : pts, true, map)
       : "";
+  // contour direction arrows: shown while dragging a handle or closing the shape
+  const showDirection = dragging || (hover === "first" && pts.length > 1);
+  const arrows = showDirection
+    ? contourArrows(
+        closePreview ? (smoothOn ? autoSmooth(pts, true, smoothness) : pts) : previewPts,
+        !!closePreview,
+      )
+    : [];
+
+
 
 
   return (
@@ -315,6 +363,15 @@ export function PenLayer({
             <path d={d} fill="none" stroke="var(--accent)" strokeWidth={1.5} />
           </>
         )}
+
+
+        {/* contour direction preview */}
+        {arrows.map((a, i) => (
+          <g key={`dir-${i}`} transform={`translate(${a.x * zoom} ${a.y * zoom}) rotate(${a.angle})`}>
+            <path d="M -4 -3.4 L 4 0 L -4 3.4 Z" fill="var(--accent)" opacity={0.9} />
+            <path d="M -4 -3.4 L 4 0 L -4 3.4 Z" fill="none" stroke="black" strokeOpacity={0.25} strokeWidth={0.75} />
+          </g>
+        ))}
 
         {/* live crosshair guide from the last anchor */}
         {live && last && !dragging && (
@@ -397,7 +454,25 @@ export function PenLayer({
           className="w-32 accent-[var(--accent)] disabled:opacity-40"
         />
         <span className="w-7 text-end tabular-nums text-muted-foreground">{Math.round(smoothness * 100)}</span>
+
+        <span className="mx-1 h-4 w-px bg-border/70" />
+
+        {/* handle mode (M) — Alt temporarily inverts */}
+        <div className="flex items-center rounded-full bg-muted/60 p-0.5" title="Handle mode (M) — hold Alt to invert">
+          {(["symmetric", "independent"] as const).map((m) => (
+            <button
+              key={m}
+              onClick={() => setHandleMode(m)}
+              className={`rounded-full px-2 py-0.5 font-medium transition ${
+                handleMode === m ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {m === "symmetric" ? "Symmetric" : "Independent"}
+            </button>
+          ))}
+        </div>
       </div>
+
 
     </div>
   );
