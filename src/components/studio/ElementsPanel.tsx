@@ -4,7 +4,8 @@ import {
   Type, Image as ImageIcon, Square, Circle, Triangle, Minus, QrCode, Nfc, Link2,
   Star, MapPin, Video, Sparkles, Eye, EyeOff, Lock, Unlock, Copy, Trash2,
   ChevronUp, ChevronDown, ChevronsUp, ChevronsDown, GripVertical, Group, Ungroup, User, Building2,
-  Shapes, Layers, Wand2, Search,
+  Shapes, Layers, Wand2, Search, Briefcase, Quote, FileText, Phone, Smartphone,
+  MessageCircle, Mail, Globe, Clock, Contact, Linkedin, Instagram, Twitter, Share2, Download,
 } from "lucide-react";
 import { useStudio } from "@/lib/studio/store";
 import type { NodeType, StudioNode } from "@/lib/studio/types";
