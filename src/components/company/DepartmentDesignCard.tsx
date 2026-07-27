@@ -2,7 +2,7 @@
 // fields an employee is allowed to personalise (everything else stays locked).
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Lock, Pencil, Trash2, Wand2, Unlock } from "lucide-react";
+import { Lock, Pencil, Trash2, Wand2, Unlock, Copy, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "@/lib/nav";
 import { supabase } from "@/integrations/supabase/client";
@@ -35,7 +35,14 @@ export function DepartmentDesignCard({
   ar,
   roleLabel,
 }: {
-  design: { id: string; name: string; accent_color: string; target_role: string | null; design: unknown };
+  design: {
+    id: string;
+    name: string;
+    accent_color: string;
+    target_role: string | null;
+    department_id?: string | null;
+    design: unknown;
+  };
   companySlug: string;
   companyId: string;
   canEdit: boolean;
@@ -46,6 +53,35 @@ export function DepartmentDesignCard({
   const [open, setOpen] = useState(false);
   const [fields, setFields] = useState<EditableFieldKey[]>(() => getEditableFields(design.design));
   const [saving, setSaving] = useState(false);
+  const [inviting, setInviting] = useState(false);
+
+  // One-time invite link that pre-assigns this department + role + design.
+  async function copyInviteLink() {
+    setInviting(true);
+    try {
+      const { data: auth } = await supabase.auth.getSession();
+      const token = (crypto.randomUUID() + crypto.randomUUID()).replace(/-/g, "");
+      const { error } = await supabase.from("company_invitations").insert({
+        company_id: companyId,
+        email: null,
+        department_id: design.department_id ?? null,
+        template_id: design.id,
+        role: (design.target_role as "employee") ?? "employee",
+        token,
+        invited_by: auth.session?.user.id ?? null,
+        expires_at: new Date(Date.now() + 14 * 864e5).toISOString(),
+      });
+      if (error) throw error;
+      const origin = typeof window !== "undefined" ? window.location.origin : "https://cardixn.com";
+      await navigator.clipboard.writeText(`${origin}/join/${token}`);
+      qc.invalidateQueries({ queryKey: ["company-invitations", companyId] });
+      toast.success(ar ? "تم نسخ رابط الدعوة" : "Invite link copied");
+    } catch {
+      toast.error(ar ? "تعذّر إنشاء الرابط" : "Could not create the link");
+    } finally {
+      setInviting(false);
+    }
+  }
 
   const doc = design.design as StudioDoc | null;
   const hasDoc = !!doc && Array.isArray((doc as { nodes?: unknown }).nodes);
@@ -104,6 +140,15 @@ export function DepartmentDesignCard({
               <Pencil className="h-3 w-3" />
               {ar ? "تعديل التصميم" : "Edit design"}
             </Link>
+            <button
+              type="button"
+              onClick={copyInviteLink}
+              disabled={inviting}
+              className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-[11px] hover:border-primary/60 hover:text-primary disabled:opacity-60"
+            >
+              {inviting ? <Loader2 className="h-3 w-3 animate-spin" /> : <Copy className="h-3 w-3" />}
+              {ar ? "نسخ رابط دعوة" : "Copy invite link"}
+            </button>
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
