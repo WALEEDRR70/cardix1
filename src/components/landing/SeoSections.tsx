@@ -146,7 +146,11 @@ function FeatureBlock({ side, icon: Icon, eyebrow, title, body, bullets, illustr
   );
 }
 
+// Deterministic 8x8 QR-like pattern so SSR and client markup match exactly.
+const QR_PATTERN = Array.from({ length: 64 }, (_, i) => ((i * 2654435761) % 97) > 44);
+
 function DeepFeatures({ c }: { c: SeoContent }) {
+
   const icons = [QrCode, Radio, ScanLine, Sparkles];
   const sides: ("left" | "right")[] = ["left", "right", "left", "right"];
   const illustrations = [
