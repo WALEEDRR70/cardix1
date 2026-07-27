@@ -42,12 +42,22 @@ function ImageNode({ n, values }: { n: StudioNode; values?: Record<string, strin
   const svg = isSvgSrc(src) && s.svgInline !== false ? inline : null;
 
   if (!src) {
+    if (n.imageSource === "employee") {
+      return (
+        <img
+          src={employeePlaceholder.url}
+          alt=""
+          className="h-full w-full object-cover"
+          style={{ borderRadius: s.radius }}
+        />
+      );
+    }
     return (
       <div
         className="grid h-full w-full place-items-center border border-dashed text-[10px] uppercase tracking-widest"
         style={{ borderRadius: s.radius, borderColor: "#ffffff40", color: "#ffffff80" }}
       >
-        {n.imageSource === "employee" ? "photo" : n.imageSource === "logo" ? "logo" : "image"}
+        {n.imageSource === "logo" ? "logo" : "image"}
       </div>
     );
   }
