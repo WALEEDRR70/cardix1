@@ -946,7 +946,7 @@ export function AnalyticsTab({ company }: { company: Company }) {
       </div>
       <Card className="space-y-2">
         <p className="text-sm font-semibold">{w.topEmployees}</p>
-        {top.length === 0 && <p className="py-4 text-center text-xs text-muted-foreground">{w.noAnalytics}</p>}
+        {top.length === 0 && <EmptyState icon={BarChart3} title={w.noAnalytics} />}
         {top.map((c) => (
           <div key={c.id} className="flex items-center justify-between rounded-2xl border border-border/60 bg-card/60 px-3 py-2.5 text-sm">
             <span className="truncate">{c.name}</span>
