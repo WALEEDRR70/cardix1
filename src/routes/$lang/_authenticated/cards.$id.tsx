@@ -32,7 +32,7 @@ function NotFoundView() {
 }
 
 function EditCard() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const { w } = useWs();
   const { id } = Route.useParams();
   const { user } = Route.useRouteContext();
