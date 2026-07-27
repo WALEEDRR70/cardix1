@@ -62,9 +62,12 @@ function TemplatesGallery() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [tab, setTab] = useState<"all" | "mine">("all");
   const [audience, setAudience] = useState<TemplateAudience | "all">("all");
-  const [targetId, setTargetId] = useState<string>("personal");
   const { data: account } = useAccount();
-  const workspaces = account?.managed ?? [];
+  /** Active context decides the destination: inside a workspace → workspace, otherwise personal. */
+  const activeWorkspace =
+    account?.accountType === "company"
+      ? (account.managed.find((m) => m.company_id === account.activeCompanyId) ?? account.managed[0] ?? null)
+      : null;
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setUid(data.session?.user.id ?? null));
