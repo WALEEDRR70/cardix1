@@ -154,6 +154,7 @@ export const acceptInvitation = createServerFn({ method: "POST" })
         .update({
           company_template_id: tpl.id,
           department_id: invite.department_id,
+          ...(jobTitle ? { title: jobTitle } : {}),
           accent_color: tpl.accent_color,
           template: tpl.template,
           is_verified: company.is_verified,
