@@ -30,7 +30,7 @@ export function MobileNav({ links, authed }: { links: readonly MobileNavLink[]; 
       <button
         type="button"
         onClick={() => setOpen(true)}
-        aria-label={t.menu ?? "Menu"}
+        aria-label="Menu"
         className="grid h-10 w-10 place-items-center rounded-full border border-border/60 bg-card/60 text-foreground backdrop-blur"
       >
         <Menu className="h-4.5 w-4.5" />
