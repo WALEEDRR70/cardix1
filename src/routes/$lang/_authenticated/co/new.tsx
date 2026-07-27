@@ -176,11 +176,8 @@ function OnboardingWizard() {
           country: form.country || null,
           city: form.city || null,
           address: form.address || null,
-          contact_person: form.contact_person || null,
           legal_name: form.legal_name || null,
-          registration_number: form.registration_number || null,
-          tax_number: form.tax_number || null,
-          legal_address: form.legal_address || null,
+
           founded_year: Number.isFinite(year as number) ? year : null,
           onboarded_at: new Date().toISOString(),
         })
