@@ -75,65 +75,68 @@ function Dashboard() {
         {hasCards ? (
           <>
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-2 lg:gap-4">
               <StatTile label={t.myCards} value={cards!.length} />
               <StatTile label={t.totalViews} value={totalViews} />
               <StatTile label={t.designs} value={new Set(cards!.map((c) => c.template)).size} icon={<Sparkles className="h-3.5 w-3.5" />} />
             </div>
 
-            {/* My cards — stack or list */}
-            <section className="mt-6">
-              <MyCards
-                cards={cards!}
-                onQr={(slug) => setQrSlug(slug)}
-                onEdit={(id) => navigate({ to: "/cards/$id", params: { id } })}
-                onDelete={(id) => setDeleteId(id)}
-                onOpen={(slug) => navigate({ to: "/c/$slug", params: { slug } })}
-                t={t}
-              />
-            </section>
+            <div className="mt-6 lg:mt-8 lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-8">
+              {/* My cards — stack or list */}
+              <section className="glass rounded-3xl border border-border/40 p-4 lg:p-6">
+                <MyCards
+                  cards={cards!}
+                  onQr={(slug) => setQrSlug(slug)}
+                  onEdit={(id) => navigate({ to: "/cards/$id", params: { id } })}
+                  onDelete={(id) => setDeleteId(id)}
+                  onOpen={(slug) => navigate({ to: "/c/$slug", params: { slug } })}
+                  t={t}
+                />
+              </section>
 
-            {/* Saved cards */}
-            <section className="mt-10">
-              <div className="mb-3 flex items-center justify-between px-1">
-                <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{t.vault}</h2>
-                {saved && saved.length > 0 && (
-                  <Link to="/vault" className="text-[11px] font-semibold text-primary">{saved.length}</Link>
-                )}
-              </div>
-              {saved && saved.length > 0 ? (
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {saved.map((s: any) => {
-                    const slug = s.cards?.slug as string | undefined;
-                    const dest = slug ? { to: "/c/$slug" as const, params: { slug } } : { to: "/vault/$id" as const, params: { id: s.id } };
-                    return (
-                      <Link
-                        key={s.id}
-                        {...dest}
-                        className="group block"
-                      >
-                        <CardPreview card={s as any} size="xs" />
-                      </Link>
-                    );
-                  })}
+              {/* Saved cards */}
+              <section className="mt-8 lg:mt-0">
+                <div className="mb-3 flex items-center justify-between px-1">
+                  <h2 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">{t.vault}</h2>
+                  {saved && saved.length > 0 && (
+                    <Link to="/vault" className="text-[11px] font-semibold text-primary">{saved.length}</Link>
+                  )}
                 </div>
-              ) : (
-                <Link
-                  to="/vault"
-                  className="glass flex flex-col items-center gap-2 rounded-2xl p-6 text-center"
-                >
-                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-secondary/60 text-foreground/70">
-                    <BookmarkPlus className="h-5 w-5" />
+                {saved && saved.length > 0 ? (
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+                    {saved.slice(0, 6).map((s: any) => {
+                      const slug = s.cards?.slug as string | undefined;
+                      const dest = slug ? { to: "/c/$slug" as const, params: { slug } } : { to: "/vault/$id" as const, params: { id: s.id } };
+                      return (
+                        <Link
+                          key={s.id}
+                          {...dest}
+                          className="group block"
+                        >
+                          <CardPreview card={s as any} size="xs" />
+                        </Link>
+                      );
+                    })}
                   </div>
-                  <p className="text-[12px] text-muted-foreground">{t.emptyVault}</p>
-                </Link>
-              )}
-            </section>
+                ) : (
+                  <Link
+                    to="/vault"
+                    className="glass flex flex-col items-center gap-2 rounded-2xl p-6 text-center"
+                  >
+                    <div className="grid h-10 w-10 place-items-center rounded-xl bg-secondary/60 text-foreground/70">
+                      <BookmarkPlus className="h-5 w-5" />
+                    </div>
+                    <p className="text-[12px] text-muted-foreground">{t.emptyVault}</p>
+                  </Link>
+                )}
+              </section>
+            </div>
           </>
         ) : (
           <EmptyHome t={t} />
         )}
       </div>
+
       <ConfirmDeleteDialog
         open={!!deleteId}
         loading={deleting}
