@@ -82,7 +82,7 @@ function Page() {
     }
   }
 
-  const { data: cards = [] } = useQuery({
+  const { data: cards = [], refetch } = useQuery({
     queryKey: ["company-studio-cards", company.id],
     queryFn: async () => {
       const { data, error } = await supabase
