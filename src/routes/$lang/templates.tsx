@@ -80,7 +80,7 @@ function TemplatesGallery() {
   });
 
   function currentTarget(): TemplateTarget {
-    const ws = workspaces.find((m) => m.company_id === targetId);
+    const ws = activeWorkspace;
     if (!ws) return { kind: "personal" };
     return {
       kind: "company",
