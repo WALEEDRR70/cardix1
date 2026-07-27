@@ -732,6 +732,51 @@ export type Database = {
           },
         ]
       }
+      design_templates: {
+        Row: {
+          author_id: string
+          author_name: string | null
+          created_at: string
+          description: string | null
+          design: Json
+          id: string
+          is_public: boolean
+          preview_url: string | null
+          tags: string[]
+          title: string
+          updated_at: string
+          use_count: number
+        }
+        Insert: {
+          author_id: string
+          author_name?: string | null
+          created_at?: string
+          description?: string | null
+          design: Json
+          id?: string
+          is_public?: boolean
+          preview_url?: string | null
+          tags?: string[]
+          title: string
+          updated_at?: string
+          use_count?: number
+        }
+        Update: {
+          author_id?: string
+          author_name?: string | null
+          created_at?: string
+          description?: string | null
+          design?: Json
+          id?: string
+          is_public?: boolean
+          preview_url?: string | null
+          tags?: string[]
+          title?: string
+          updated_at?: string
+          use_count?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           account_type: string
@@ -867,6 +912,10 @@ export type Database = {
       company_role_of: {
         Args: { _company_id: string; _user_id: string }
         Returns: Database["public"]["Enums"]["company_role"]
+      }
+      increment_template_use: {
+        Args: { _template_id: string }
+        Returns: undefined
       }
       is_company_admin: {
         Args: { _company_id: string; _user_id: string }
