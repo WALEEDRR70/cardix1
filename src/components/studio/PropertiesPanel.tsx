@@ -203,6 +203,14 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
           <Row label={ar ? "اللون" : "Color"}>
             <ColorInput value={s.color} onChange={(v) => st({ color: v })} />
           </Row>
+          {n.type === "text" && (
+            <Row label={ar ? "حد الأسطر" : "Max lines"}>
+              <div className="flex items-center gap-1.5">
+                <NumInput badge="≡" min={0} value={s.maxLines ?? 0} onChange={(v) => st({ maxLines: v > 0 ? Math.round(v) : null })} />
+                <span className="text-[10px] text-muted-foreground">{ar ? "٠ = بلا حد" : "0 = none"}</span>
+              </div>
+            </Row>
+          )}
         </PanelSection>
       )}
 
