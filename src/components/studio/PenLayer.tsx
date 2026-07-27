@@ -177,7 +177,14 @@ export function PenLayer({
         if (ptsRef.current.length) { e.preventDefault(); setPts((p) => p.slice(0, -1)); }
       } else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "z") {
         if (ptsRef.current.length) { e.preventDefault(); e.stopPropagation(); setPts((p) => p.slice(0, -1)); }
+      } else if (e.key === "[" || e.key === "]") {
+        e.preventDefault();
+        setSmoothness((v) => Math.min(1, Math.max(0, +(v + (e.key === "]" ? 0.05 : -0.05)).toFixed(2))));
+      } else if (e.key.toLowerCase() === "s" && !e.metaKey && !e.ctrlKey) {
+        e.preventDefault();
+        setSmoothOn((v) => !v);
       }
+
     }
     function onUp(e: KeyboardEvent) { mods.current.shift = e.shiftKey; mods.current.alt = e.altKey; }
     window.addEventListener("keydown", onKey, true);
