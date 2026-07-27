@@ -122,7 +122,7 @@ function Page() {
                 <Link
                   to="/studio/$id"
                   params={{ id: c.id }}
-                  className="flex items-center gap-3 rounded-2xl border border-border bg-card/60 p-4 transition hover:border-primary/50"
+                  className="flex items-center gap-3 rounded-2xl border border-border bg-card/60 p-4 pe-14 transition hover:border-primary/50"
                 >
                   <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/15 text-primary">
                     <Wand2 className="h-5 w-5" />
@@ -134,6 +134,22 @@ function Page() {
                     <span className="block truncate text-xs text-muted-foreground">{c.title || t.open}</span>
                   </span>
                 </Link>
+                {canDelete && (
+                  <button
+                    type="button"
+                    title={t.del}
+                    aria-label={t.del}
+                    onClick={() => deleteCard(c.id)}
+                    disabled={deleting === c.id}
+                    className="absolute end-3 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-border/60 bg-card/80 text-muted-foreground transition hover:border-destructive/60 hover:text-destructive disabled:opacity-60"
+                  >
+                    {deleting === c.id ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Trash2 className="h-4 w-4" />
+                    )}
+                  </button>
+                )}
               </li>
             ))}
           </ul>
