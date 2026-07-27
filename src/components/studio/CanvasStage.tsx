@@ -357,6 +357,9 @@ export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<H
 
   useEffect(() => {
     if (!drag) return;
+    // Remember the document as it was when this drag started so the whole
+    // gesture collapses into one undo step.
+    if (!dragBaseRef.current) dragBaseRef.current = doc;
     function onMove(e: PointerEvent) {
       if (!drag) return;
       if (drag.mode === "move") {
