@@ -109,19 +109,8 @@ export function CompanyShell({
         {COMPANY_SECTIONS.map(renderItem)}
       </div>
 
-      <div className="space-y-1 border-t border-border/50 px-3 py-3">
-        <Link
-          to="/switch"
-          className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] text-muted-foreground transition hover:bg-secondary/60 hover:text-foreground"
-        >
-          <ArrowLeftRight className="h-4 w-4" /> {w.switchAccount}
-        </Link>
-        <Link
-          to="/dashboard"
-          className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] text-muted-foreground transition hover:bg-secondary/60 hover:text-foreground"
-        >
-          <ChevronLeft className="h-4 w-4 rtl:rotate-180" /> {w.backToPersonal}
-        </Link>
+      <div className="border-t border-border/50 px-3 py-3">
+        <AccountSwitcher activeCompanySlug={company.slug} />
       </div>
     </nav>
   );
