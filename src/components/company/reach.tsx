@@ -458,8 +458,8 @@ export function InvitationsTab({ company, canEdit }: { company: Company; canEdit
         {invites?.map((i) => (
           <div key={i.id} className="flex items-center gap-2 rounded-2xl border border-border/60 bg-card px-4 py-3">
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium">{i.name || i.email}</p>
-              <p className="truncate text-[11px] text-muted-foreground">{i.job_title || i.email} · {i.status}</p>
+              <p className="truncate text-sm font-medium">{i.name || i.email || "Invite link"}</p>
+              <p className="truncate text-[11px] text-muted-foreground">{i.job_title || i.email || `${origin()}/join/${i.token}`} · {i.status}</p>
             </div>
             {i.status === "pending" && (
               <>
