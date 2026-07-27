@@ -15,6 +15,8 @@ export type NodeStyle = {
   lineHeight?: number;
   align?: "left" | "center" | "right";
   textTransform?: "none" | "uppercase";
+  /** Text nodes: clamp the paragraph to N lines (bio / about area). */
+  maxLines?: number | null;
 
   radius?: number;
   borderWidth?: number;
