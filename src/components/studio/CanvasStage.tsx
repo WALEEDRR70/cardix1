@@ -198,7 +198,13 @@ export function NodeContent({ n, values }: { n: StudioNode; values?: Record<stri
 type Drag =
   | { mode: "move"; ids: string[]; startX: number; startY: number; origin: { id: string; x: number; y: number }[] }
   | { mode: "resize"; id: string; handle: string; startX: number; startY: number; box: { x: number; y: number; w: number; h: number }; ratio: number; rot: number }
+  | {
+      mode: "gresize"; handle: string; startX: number; startY: number;
+      box: { x: number; y: number; w: number; h: number };
+      items: { id: string; x: number; y: number; w: number; h: number; fontSize?: number; strokeWidth?: number; radius?: number }[];
+    }
   | { mode: "rotate"; id: string; cx: number; cy: number };
+
 
 type Marquee = { x0: number; y0: number; x1: number; y1: number };
 
