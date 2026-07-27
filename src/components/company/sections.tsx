@@ -304,12 +304,24 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
     },
   });
 
+  const { data: cardDesigns } = useQuery({
+    queryKey: ["company-card-designs", company.id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("company_templates")
+        .select("id, name, department_id, target_role")
+        .eq("company_id", company.id)
+        .order("sort_order");
+      return data ?? [];
+    },
+  });
+
   function inviteUrl(token: string) {
     const origin = typeof window !== "undefined" ? window.location.origin : "https://cardixn.com";
     return `${origin}/join/${token}`;
   }
 
-  async function createInvite(payload: { name: string; email: string; job_title: string; department_id: string; phone: string; role: CompanyRole }) {
+  async function createInvite(payload: { name: string; email: string; job_title: string; department_id: string; phone: string; role: CompanyRole; template_id?: string }) {
     const token = (crypto.randomUUID() + crypto.randomUUID()).replace(/-/g, "");
     const { data, error } = await supabase
       .from("company_invitations")
@@ -320,6 +332,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
         job_title: payload.job_title || null,
         phone: payload.phone || null,
         department_id: payload.department_id || null,
+        template_id: payload.template_id || null,
         role: payload.role,
         token,
         invited_by: userId,
@@ -333,6 +346,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
     });
     return inviteUrl(data.token);
   }
+
 
   async function submitInvite(e: React.FormEvent) {
     e.preventDefault();
