@@ -267,53 +267,65 @@ export function CardForm({
         </section>
 
         <Field label={t.name} value={data.name} onChange={(v) => set("name", v)} required />
-        <Field label={t.slug} value={data.slug} onChange={(v) => set("slug", v.toLowerCase().replace(/[^a-z0-9-]/g, "-"))} required prefix={slugPrefix} locked={locked?.slug} />
 
         <div className="grid grid-cols-2 gap-3">
           <Field label={t.title} value={data.title} onChange={(v) => set("title", v)} />
           <Field label={t.company} value={data.company} onChange={(v) => set("company", v)} locked={locked?.company} />
         </div>
 
-        <section>
-          <div className="mb-1 flex items-center justify-between px-1">
-            <label className="text-xs font-medium text-muted-foreground">{t.bio}</label>
-            <button
-              type="button"
-              onClick={aiBio}
-              disabled={genBusy}
-              className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-[11px] font-medium text-muted-foreground hover:text-foreground disabled:opacity-60"
-            >
-              <Sparkles className="h-3 w-3" /> {genBusy ? t.generating : t.generateBio}
-            </button>
-          </div>
-          <textarea
-            value={data.bio}
-            onChange={(e) => set("bio", e.target.value)}
-            rows={3}
-            className="w-full resize-none rounded-2xl border border-input bg-card px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring"
-          />
-        </section>
-
         <div className="grid grid-cols-2 gap-3">
           <Field label={t.phone} value={data.phone} onChange={(v) => set("phone", v)} />
-          <Field label={t.whatsapp} value={data.whatsapp} onChange={(v) => set("whatsapp", v)} />
-        </div>
-        <div className="grid grid-cols-2 gap-3">
           <Field label={t.email} value={data.email} onChange={(v) => set("email", v)} type="email" />
-          <Field label={t.website} value={data.website} onChange={(v) => set("website", v)} locked={locked?.website} />
         </div>
-        <Field label={t.address} value={data.address} onChange={(v) => set("address", v)} locked={locked?.address} />
 
-        {/* Social accounts */}
-        <SocialsEditor
-          value={data.socials}
-          onChange={(next) => set("socials", next)}
-        />
+        {/* Everything optional lives behind one toggle so the first screen stays short */}
+        <button
+          type="button"
+          onClick={() => setMore((m) => !m)}
+          className="flex w-full items-center justify-between rounded-2xl border border-border/60 px-4 py-3 text-sm text-muted-foreground transition hover:text-foreground"
+        >
+          <span>{lang === "ar" ? "تفاصيل إضافية" : "More details"}</span>
+          <ChevronDown className={"h-4 w-4 transition-transform " + (more ? "rotate-180" : "")} />
+        </button>
 
-        <label className="flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-3 text-sm">
-          <input type="checkbox" checked={data.is_published} onChange={(e) => set("is_published", e.target.checked)} className="h-4 w-4 accent-accent" />
-          <span>{t.published}</span>
-        </label>
+        {more && (
+          <div className="space-y-3">
+            <Field label={t.slug} value={data.slug} onChange={(v) => set("slug", v.toLowerCase().replace(/[^a-z0-9-]/g, "-"))} required prefix={slugPrefix} locked={locked?.slug} />
+
+            <section>
+              <div className="mb-1 flex items-center justify-between px-1">
+                <label className="text-xs font-medium text-muted-foreground">{t.bio}</label>
+                <button
+                  type="button"
+                  onClick={aiBio}
+                  disabled={genBusy}
+                  className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-[11px] font-medium text-muted-foreground hover:text-foreground disabled:opacity-60"
+                >
+                  <Sparkles className="h-3 w-3" /> {genBusy ? t.generating : t.generateBio}
+                </button>
+              </div>
+              <textarea
+                value={data.bio}
+                onChange={(e) => set("bio", e.target.value)}
+                rows={3}
+                className="w-full resize-none rounded-2xl border border-input bg-card px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+              />
+            </section>
+
+            <div className="grid grid-cols-2 gap-3">
+              <Field label={t.whatsapp} value={data.whatsapp} onChange={(v) => set("whatsapp", v)} />
+              <Field label={t.website} value={data.website} onChange={(v) => set("website", v)} locked={locked?.website} />
+            </div>
+            <Field label={t.address} value={data.address} onChange={(v) => set("address", v)} locked={locked?.address} />
+
+            <SocialsEditor value={data.socials} onChange={(next) => set("socials", next)} />
+
+            <label className="flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-3 text-sm">
+              <input type="checkbox" checked={data.is_published} onChange={(e) => set("is_published", e.target.checked)} className="h-4 w-4 accent-accent" />
+              <span>{t.published}</span>
+            </label>
+          </div>
+        )}
 
         <button
           disabled={saving}
