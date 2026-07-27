@@ -209,7 +209,9 @@ export function PenLayer({
     }
     // click the last anchor: retract its outgoing handle (curve -> corner)
     if (last && Math.hypot(raw.x - last.x, raw.y - last.y) < hit) {
-      setPts((prev) => prev.map((p, i) => (i === prev.length - 1 ? { ...p, hx: p.x, hy: p.y } : p)));
+      setPts((prev) =>
+        prev.map((p, i) => (i === prev.length - 1 ? { ...p, hx: p.x, hy: p.y, manual: true } : p)),
+      );
       return;
     }
 
@@ -235,6 +237,8 @@ export function PenLayer({
           i === index
             ? {
                 ...pt,
+                // dragging a handle opts this anchor out of auto-smoothing
+                manual: Math.hypot(out.x - pt.x, out.y - pt.y) > 1.5,
                 hx: out.x,
                 hy: out.y,
                 // Alt breaks symmetry: incoming handle stays on the anchor
@@ -245,6 +249,7 @@ export function PenLayer({
         ),
       );
     };
+
     const up = () => {
       setDragging(false);
       window.removeEventListener("pointermove", move);
