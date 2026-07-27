@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 import { useWs } from "@/lib/workspace";
+import { lockedFieldsFromDesign } from "@/lib/company-designs";
 
 export const Route = createFileRoute("/$lang/_authenticated/cards/$id")({
   head: () => ({ meta: [{ title: "Edit card — Cardixn" }] }),
@@ -61,7 +62,19 @@ function EditCard() {
         .select("template")
         .eq("company_id", card!.company_id!)
         .eq("is_approved", true);
-      return { company, templates: (tpls ?? []).map((t) => t.template) };
+      // The design assigned to this employee decides which fields stay editable.
+      const { data: assigned } = card!.company_template_id
+        ? await supabase
+            .from("company_templates")
+            .select("design")
+            .eq("id", card!.company_template_id)
+            .maybeSingle()
+        : { data: null };
+      return {
+        company,
+        templates: (tpls ?? []).map((t) => t.template),
+        locked: card!.company_id ? lockedFieldsFromDesign(assigned?.design ?? null) : undefined,
+      };
     },
   });
 
@@ -154,11 +167,7 @@ function EditCard() {
           submitLabel={t.save}
           slugPrefix={corp?.company ? `/company/${corp.company.slug}/` : "/c/"}
           lockedNote={card.company_id ? w.lockedByCompanyDesc : undefined}
-          locked={
-            card.company_id
-              ? { company: true, accent_color: true, template: true, website: true, address: true, slug: true }
-              : undefined
-          }
+          locked={card.company_id ? (corp?.locked ?? { company: true, accent_color: true, template: true, slug: true }) : undefined}
           allowedTemplates={corp && corp.templates.length > 0 ? corp.templates : undefined}
         />
       </div>

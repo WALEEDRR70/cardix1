@@ -90,3 +90,62 @@ export async function listWorkspaceDesignSources(companyId: string) {
   if (error) throw error;
   return data ?? [];
 }
+
+/* ------------------- employee-editable field permissions ------------------ */
+
+/** Card fields a company can open up for employees to personalise. */
+export const EDITABLE_FIELD_KEYS = [
+  "name",
+  "title",
+  "avatar_url",
+  "phone",
+  "whatsapp",
+  "email",
+  "website",
+  "address",
+  "bio",
+] as const;
+export type EditableFieldKey = (typeof EDITABLE_FIELD_KEYS)[number];
+
+/** Sensible default: personal contact details are editable, company data is locked. */
+export const DEFAULT_EDITABLE_FIELDS: EditableFieldKey[] = [
+  "name",
+  "title",
+  "avatar_url",
+  "phone",
+  "whatsapp",
+  "email",
+  "bio",
+];
+
+/** Reads the allow-list stored alongside a design (`design.editableFields`). */
+export function getEditableFields(design: unknown): EditableFieldKey[] {
+  const raw = (design as { editableFields?: unknown } | null)?.editableFields;
+  if (!Array.isArray(raw)) return DEFAULT_EDITABLE_FIELDS;
+  return raw.filter((k): k is EditableFieldKey =>
+    (EDITABLE_FIELD_KEYS as readonly string[]).includes(k as string),
+  );
+}
+
+/** Turns the allow-list into the `locked` map used by CardForm. */
+export function lockedFieldsFromDesign(design: unknown): Record<string, boolean> {
+  const editable = new Set(getEditableFields(design));
+  const locked: Record<string, boolean> = {
+    company: true,
+    accent_color: true,
+    template: true,
+    slug: true,
+  };
+  for (const k of EDITABLE_FIELD_KEYS) locked[k] = !editable.has(k);
+  return locked;
+}
+
+/** Persists the allow-list inside the design payload of a company card design. */
+export async function setEditableFields(templateId: string, design: unknown, fields: EditableFieldKey[]) {
+  const next = { ...((design as Record<string, unknown>) ?? {}), editableFields: fields };
+  const { error } = await supabase
+    .from("company_templates")
+    .update({ design: next as never })
+    .eq("id", templateId);
+  if (error) throw error;
+}
