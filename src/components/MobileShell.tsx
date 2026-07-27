@@ -24,15 +24,21 @@ export function MobileShell({
     <div className="relative min-h-[100dvh] bg-background lg:flex">
       {!hideNav && <DesktopSidebar />}
 
-      <div className={"relative flex min-h-[100dvh] w-full flex-col " + (hideNav ? "" : "lg:pl-64")}>
+      <div className={"relative flex min-h-[100dvh] w-full flex-col " + (hideNav ? "" : "lg:pl-64 rtl:lg:pl-0 rtl:lg:pr-64")}>
         {/* Ambient background for desktop */}
         <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 hidden opacity-60 lg:block" style={{ backgroundImage: "var(--gradient-mesh)" }} />
 
-        <div className="mx-auto w-full max-w-[440px] lg:max-w-[1200px]">
+        {!hideNav && (
+          <div className="sticky top-0 z-30 hidden lg:block">
+            <SiteTopBar />
+          </div>
+        )}
+
+        <div className="mx-auto w-full max-w-[440px] lg:max-w-[1180px]">
           {topBar}
         </div>
         <main className={"flex-1 " + (hideNav ? "" : "pb-nav lg:pb-16")}>
-          <div className="mx-auto w-full max-w-[440px] lg:max-w-[1200px]">
+          <div className="mx-auto w-full max-w-[440px] lg:max-w-[1180px]">
             {children}
           </div>
         </main>
@@ -42,6 +48,7 @@ export function MobileShell({
     </div>
   );
 }
+
 
 /* -------------------- Desktop sidebar -------------------- */
 function DesktopSidebar() {
