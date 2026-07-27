@@ -104,6 +104,34 @@ export function penPath(
   return d;
 }
 
+/** Point + tangent on a cubic bezier at t (used for contour direction arrows). */
+function cubicAt(a: PenPoint, b: PenPoint, t: number) {
+  const p0 = [a.x, a.y], p1 = [a.hx, a.hy], p2 = [b.ix, b.iy], p3 = [b.x, b.y];
+  const mt = 1 - t;
+  const pos = [0, 1].map(
+    (k) => mt * mt * mt * p0[k] + 3 * mt * mt * t * p1[k] + 3 * mt * t * t * p2[k] + t * t * t * p3[k],
+  );
+  const tan = [0, 1].map(
+    (k) => 3 * mt * mt * (p1[k] - p0[k]) + 6 * mt * t * (p2[k] - p1[k]) + 3 * t * t * (p3[k] - p2[k]),
+  );
+  return { x: pos[0], y: pos[1], angle: (Math.atan2(tan[1], tan[0]) * 180) / Math.PI };
+}
+
+/** Arrow markers along the contour showing the drawing direction (winding). */
+function contourArrows(pts: PenPoint[], closed: boolean) {
+  const out: { x: number; y: number; angle: number }[] = [];
+  const n = pts.length;
+  const segs = closed ? n : n - 1;
+  for (let i = 0; i < segs; i++) {
+    const a = pts[i];
+    const b = pts[(i + 1) % n];
+    const len = Math.hypot(b.x - a.x, b.y - a.y);
+    if (len < 12) continue;
+    out.push(cubicAt(a, b, 0.5));
+  }
+  return out;
+}
+
 function bbox(pts: PenPoint[], closed: boolean) {
   const xs: number[] = [];
   const ys: number[] = [];
