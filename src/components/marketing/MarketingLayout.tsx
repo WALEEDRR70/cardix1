@@ -101,35 +101,36 @@ function MarketingNav() {
 }
 
 function MarketingFooter() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
+  const ar = lang === "ar";
   const productLinks = [
-    { to: "/features", label: "Features" },
-    { to: "/pricing", label: "Pricing" },
-    { to: "/l/digital-business-card", label: "Digital Business Card" },
-    { to: "/l/nfc-business-card", label: "NFC Business Card" },
-    { to: "/l/qr-business-card", label: "QR Business Card" },
-    { to: "/l/business-card-scanner", label: "Card Scanner (OCR)" },
-    { to: "/l/business-card-templates", label: "Templates" },
+    { to: "/features", label: ar ? "المميزات" : "Features" },
+    { to: "/pricing", label: ar ? "الأسعار" : "Pricing" },
+    { to: "/l/digital-business-card", label: ar ? "بطاقة أعمال رقمية" : "Digital Business Card" },
+    { to: "/l/nfc-business-card", label: ar ? "بطاقة NFC" : "NFC Business Card" },
+    { to: "/l/qr-business-card", label: ar ? "بطاقة QR" : "QR Business Card" },
+    { to: "/l/business-card-scanner", label: ar ? "ماسح البطاقات (OCR)" : "Card Scanner (OCR)" },
+    { to: "/l/business-card-templates", label: ar ? "القوالب" : "Templates" },
   ];
 
   const toolLinks = [
-    { to: "/tools/qr-generator", label: "QR Code Generator" },
-    { to: "/tools/vcard-generator", label: "vCard (.vcf) Generator" },
-    { to: "/tools/email-signature", label: "Email Signature Builder" },
-    { to: "/tools", label: "All Free Tools" },
+    { to: "/tools/qr-generator", label: ar ? "مولّد رمز QR" : "QR Code Generator" },
+    { to: "/tools/vcard-generator", label: ar ? "مولّد vCard (.vcf)" : "vCard (.vcf) Generator" },
+    { to: "/tools/email-signature", label: ar ? "منشئ توقيع البريد" : "Email Signature Builder" },
+    { to: "/tools", label: ar ? "كل الأدوات المجانية" : "All Free Tools" },
   ];
   const professionLinks = [
-    { to: "/l/for-real-estate-agents", label: "For Real Estate" },
-    { to: "/l/for-doctors", label: "For Doctors" },
-    { to: "/l/for-lawyers", label: "For Lawyers" },
-    { to: "/l/for-sales-teams", label: "For Sales Teams" },
+    { to: "/l/for-real-estate-agents", label: ar ? "للعقاريين" : "For Real Estate" },
+    { to: "/l/for-doctors", label: ar ? "للأطباء" : "For Doctors" },
+    { to: "/l/for-lawyers", label: ar ? "للمحامين" : "For Lawyers" },
+    { to: "/l/for-sales-teams", label: ar ? "لفرق المبيعات" : "For Sales Teams" },
   ];
   const learnLinks = [
-    { to: "/blog", label: "Blog" },
-    { to: "/l", label: "All Guides" },
-    { to: "/about", label: "About Cardixn" },
-    { to: "/contact", label: "Contact" },
-    { to: "/blog/nfc-vs-qr-which-is-better", label: "NFC vs QR" },
+    { to: "/blog", label: ar ? "المدونة" : "Blog" },
+    { to: "/l", label: ar ? "كل الأدلة" : "All Guides" },
+    { to: "/about", label: ar ? "عن كارديكس" : "About Cardixn" },
+    { to: "/contact", label: ar ? "تواصل معنا" : "Contact" },
+    { to: "/blog/nfc-vs-qr-which-is-better", label: ar ? "NFC مقابل QR" : "NFC vs QR" },
   ];
 
   return (
@@ -141,18 +142,21 @@ function MarketingFooter() {
             <span className="text-sm font-semibold">{t.brand}</span>
           </div>
           <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-            Premium digital business cards. Share with a tap, a scan, or a link.
+            {ar
+              ? "بطاقات أعمال رقمية فاخرة. شاركها بلمسة أو مسح أو رابط."
+              : "Premium digital business cards. Share with a tap, a scan, or a link."}
           </p>
           <div className="mt-4 flex items-center gap-2">
             <ThemeToggle compact />
             <LocaleSwitcher compact />
           </div>
         </div>
-        <FooterCol title="Product" items={productLinks} />
-        <FooterCol title="Free Tools" items={toolLinks} />
-        <FooterCol title="For Professionals" items={professionLinks} />
-        <FooterCol title="Learn" items={learnLinks} />
+        <FooterCol title={ar ? "المنتج" : "Product"} items={productLinks} />
+        <FooterCol title={ar ? "أدوات مجانية" : "Free Tools"} items={toolLinks} />
+        <FooterCol title={ar ? "للمحترفين" : "For Professionals"} items={professionLinks} />
+        <FooterCol title={ar ? "تعلّم" : "Learn"} items={learnLinks} />
       </div>
+
       <div className="border-t border-border/60">
         <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center justify-between gap-3 px-5 py-5 text-[11px] text-muted-foreground lg:flex-row lg:px-10">
           <span>© {new Date().getFullYear()} {t.brand}</span>
