@@ -47,7 +47,7 @@ export function CardForm({
   slugPrefix = "/c/",
 }: {
   initial: CardFormData;
-  onSubmit: (data: CardFormData) => Promise<void>;
+  onSubmit: (data: CardFormData, extra?: { design?: unknown }) => Promise<void>;
   submitLabel: string;
   /** Fields owned by the company that the employee cannot change. */
   locked?: Partial<Record<keyof CardFormData, boolean>>;
