@@ -319,6 +319,7 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
   useEffect(() => {
     if (!marquee) return;
     function onMove(e: PointerEvent) {
+      if (e.buttons === 0) { onUp(); return; }
       const p = toDoc(e.clientX, e.clientY);
       setMarquee((m) => (m ? { ...m, x1: p.x, y1: p.y } : m));
     }
@@ -340,12 +341,17 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
       });
     }
     window.addEventListener("pointermove", onMove);
-    window.addEventListener("pointerup", onUp, { once: true });
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onUp);
+    window.addEventListener("blur", onUp);
     return () => {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+      window.removeEventListener("blur", onUp);
     };
   }, [marquee, toDoc, doc.nodes, dispatch]);
+
 
   useEffect(() => {
     if (!drag) return;
