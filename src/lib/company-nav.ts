@@ -1,6 +1,6 @@
 import {
   LayoutDashboard, IdCard, Users, LayoutTemplate, Palette, Images,
-  BarChart3, QrCode, Nfc, Settings, Search, Globe, ShieldCheck, ScrollText, Wand2,
+  BarChart3, Settings, ScrollText, Wand2,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { WsDict } from "@/i18n/workspace";
