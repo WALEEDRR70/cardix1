@@ -332,6 +332,16 @@ export function PenLayer({
     hover === "first" && pts.length > 1
       ? penPath(smoothOn ? autoSmooth(pts, true, smoothness) : pts, true, map)
       : "";
+  // contour direction arrows: shown while dragging a handle or closing the shape
+  const showDirection = dragging || (hover === "first" && pts.length > 1);
+  const arrows = showDirection
+    ? contourArrows(
+        closePreview ? (smoothOn ? autoSmooth(pts, true, smoothness) : pts) : previewPts,
+        !!closePreview,
+      )
+    : [];
+
+
 
 
   return (
