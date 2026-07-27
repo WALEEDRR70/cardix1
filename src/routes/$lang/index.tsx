@@ -11,6 +11,7 @@ import {
   Smartphone, Star, Check, ChevronDown, Zap, Layers, Globe2,
 } from "lucide-react";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
+import { MobileNav } from "@/components/marketing/MobileNav";
 import { supabase } from "@/integrations/supabase/client";
 
 function useIsAuthed() {
@@ -183,6 +184,10 @@ function BackgroundFx() {
 
 /* ---------------- Nav ---------------- */
 function Nav({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy; authed: boolean | null }) {
+  const { lang } = useI18n();
+  const ar = lang === "ar";
+  const toolsLabel = ar ? "الأدوات" : "Tools";
+  const blogLabel = ar ? "المدونة" : "Blog";
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 8);
@@ -201,8 +206,8 @@ function Nav({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingC
         <nav className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
           <a href="#features" className="hover:text-foreground transition">{c.navFeatures}</a>
           <a href="#templates" className="hover:text-foreground transition">{c.navTemplates}</a>
-          <Link to="/tools" className="hover:text-foreground transition">{c.navTools}</Link>
-          <Link to="/blog" className="hover:text-foreground transition">{c.navBlog}</Link>
+          <Link to="/tools" className="hover:text-foreground transition">{toolsLabel}</Link>
+          <Link to="/blog" className="hover:text-foreground transition">{blogLabel}</Link>
           <a href="#pricing" className="hover:text-foreground transition">{c.navPricing}</a>
           <a href="#faq" className="hover:text-foreground transition">{c.navFaq}</a>
         </nav>
@@ -213,8 +218,8 @@ function Nav({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingC
             links={[
               { href: "#features", label: c.navFeatures },
               { href: "#templates", label: c.navTemplates },
-              { to: "/tools", label: c.navTools },
-              { to: "/blog", label: c.navBlog },
+              { to: "/tools", label: toolsLabel },
+              { to: "/blog", label: blogLabel },
               { href: "#pricing", label: c.navPricing },
               { href: "#faq", label: c.navFaq },
             ]}
