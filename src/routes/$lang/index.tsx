@@ -201,13 +201,24 @@ function Nav({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingC
         <nav className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
           <a href="#features" className="hover:text-foreground transition">{c.navFeatures}</a>
           <a href="#templates" className="hover:text-foreground transition">{c.navTemplates}</a>
-          <Link to="/tools" className="hover:text-foreground transition">Tools</Link>
-          <Link to="/blog" className="hover:text-foreground transition">Blog</Link>
+          <Link to="/tools" className="hover:text-foreground transition">{c.navTools}</Link>
+          <Link to="/blog" className="hover:text-foreground transition">{c.navBlog}</Link>
           <a href="#pricing" className="hover:text-foreground transition">{c.navPricing}</a>
           <a href="#faq" className="hover:text-foreground transition">{c.navFaq}</a>
         </nav>
 
         <div className="flex items-center gap-2">
+          <MobileNav
+            authed={authed}
+            links={[
+              { href: "#features", label: c.navFeatures },
+              { href: "#templates", label: c.navTemplates },
+              { to: "/tools", label: c.navTools },
+              { to: "/blog", label: c.navBlog },
+              { href: "#pricing", label: c.navPricing },
+              { href: "#faq", label: c.navFaq },
+            ]}
+          />
           <div className="hidden md:flex items-center gap-2">
             <ThemeToggle compact />
             <LocaleSwitcher compact />
