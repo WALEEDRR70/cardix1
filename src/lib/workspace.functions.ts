@@ -80,11 +80,14 @@ export const acceptInvitation = createServerFn({ method: "POST" })
     );
 
     // Create the employee card if the user does not have one for this company yet.
+    // Only employee cards count — company design/master cards (card_type = 'company')
+    // may belong to the same user and must not block creation.
     const { data: existing } = await supabaseAdmin
       .from("cards")
       .select("id, slug")
       .eq("company_id", invite.company_id)
       .eq("user_id", context.userId)
+      .eq("card_type", "employee")
       .maybeSingle();
 
     // Resolve which company card design this employee should receive:
