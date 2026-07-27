@@ -408,7 +408,7 @@ function Analytics({ c }: { c: SeoContent }) {
         <div className="mt-10 rounded-3xl border border-border/70 bg-card/60 p-8 backdrop-blur-xl">
           <div className="grid items-end gap-1" style={{ gridTemplateColumns: "repeat(30, minmax(0, 1fr))" }}>
             {Array.from({ length: 30 }).map((_, i) => {
-              const h = 20 + Math.round(Math.sin(i / 2.7) * 30 + Math.random() * 40);
+              const h = 20 + Math.round(Math.sin(i / 2.7) * 30 + ((i * 37) % 41));
               return <div key={i} className="rounded-t bg-gradient-to-t from-accent/70 to-accent/20" style={{ height: h + 40 }} />;
             })}
           </div>
