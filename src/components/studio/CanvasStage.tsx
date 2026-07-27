@@ -638,8 +638,11 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
         {tool === "pen" && !spaceDown && (
           <PenLayer
             zoom={zoom}
+            grid={grid}
+            snap={snap}
             toDoc={toDoc}
             onExit={() => dispatch({ t: "tool", value: "select" })}
+
             onCommit={(r) => {
               addNode("path", {
                 name: "Pen path",
