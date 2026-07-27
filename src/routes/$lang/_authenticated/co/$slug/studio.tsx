@@ -6,6 +6,8 @@ import { Wand2, Plus, Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { CompanyShell } from "@/components/company/CompanyShell";
 import { Card, EmptyState } from "@/components/company/sections";
+import { DesignPreview, cardDesignValues } from "@/components/DesignPreview";
+import type { StudioDoc } from "@/lib/studio/types";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
 import { canManageCompany, useWs } from "@/lib/workspace";
