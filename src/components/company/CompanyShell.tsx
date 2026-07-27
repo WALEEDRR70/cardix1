@@ -7,6 +7,7 @@ import { COMPANY_GROUP_LABEL, COMPANY_SECTIONS, type CompanySection } from "@/li
 import { useWs, type Company, type CompanyRole, roleLabel } from "@/lib/workspace";
 import { stripLocalePrefix } from "@/lib/locale-routing";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
+import { SiteTopBar } from "@/components/SiteTopBar";
 
 const GROUPS: CompanySection["group"][] = ["manage", "identity", "reach", "admin"];
 /** Always-visible essentials, matching the personal shell's density. */
@@ -173,6 +174,7 @@ export function CompanyShell({
       )}
 
       <div className="flex min-h-[100dvh] w-full flex-col lg:pl-[264px] rtl:lg:pl-0 rtl:lg:pr-[264px]">
+        <SiteTopBar />
         <header className="sticky top-0 z-20 border-b border-border/50 bg-background/70 backdrop-blur-xl">
           <div className="flex items-center gap-3 px-4 py-3.5 lg:px-8 lg:py-5">
             <button
