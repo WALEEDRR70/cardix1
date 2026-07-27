@@ -130,23 +130,30 @@ function Page() {
         {cards.length === 0 ? (
           <EmptyState icon={Wand2} title={t.none} hint={t.desc} actionLabel={t.newDesign} onAction={createDesign} />
         ) : (
-          <ul className="grid gap-3 sm:grid-cols-2">
+          <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {cards.map((c) => (
               <li key={c.id} className="relative">
                 <Link
                   to="/studio/$id"
                   params={{ id: c.id }}
-                  className="flex items-center gap-3 rounded-2xl border border-border bg-card/60 p-4 pe-14 transition hover:border-primary/50"
+                  className="block rounded-3xl border border-border bg-card/60 p-3 transition hover:border-primary/50"
                 >
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/15 text-primary">
-                    <Wand2 className="h-5 w-5" />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-sm font-medium text-foreground">
-                      {c.name || c.slug}
-                    </span>
-                    <span className="block truncate text-xs text-muted-foreground">{c.title || t.open}</span>
-                  </span>
+                  <div className="overflow-hidden rounded-2xl bg-secondary/40">
+                    {c.design ? (
+                      <DesignPreview
+                        doc={c.design as unknown as StudioDoc}
+                        values={cardDesignValues(c as any)}
+                      />
+                    ) : (
+                      <div className="grid aspect-[1.75/1] place-items-center text-muted-foreground">
+                        <Wand2 className="h-6 w-6" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="mt-3 min-w-0 px-1 pb-1 pe-10">
+                    <p className="truncate text-sm font-medium text-foreground">{c.name || c.slug}</p>
+                    <p className="truncate text-xs text-muted-foreground">{c.title || t.open}</p>
+                  </div>
                 </Link>
                 {canDelete && (
                   <button
@@ -155,7 +162,7 @@ function Page() {
                     aria-label={t.del}
                     onClick={() => deleteCard(c.id)}
                     disabled={deleting === c.id}
-                    className="absolute end-3 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-border/60 bg-card/80 text-muted-foreground transition hover:border-destructive/60 hover:text-destructive disabled:opacity-60"
+                    className="absolute bottom-4 end-4 grid h-9 w-9 place-items-center rounded-full border border-border/60 bg-card/80 text-muted-foreground transition hover:border-destructive/60 hover:text-destructive disabled:opacity-60"
                   >
                     {deleting === c.id ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
