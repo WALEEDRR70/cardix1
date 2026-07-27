@@ -4,7 +4,8 @@ import {
   Type, Image as ImageIcon, Square, Circle, Triangle, Minus, QrCode, Nfc, Link2,
   Star, MapPin, Video, Sparkles, Eye, EyeOff, Lock, Unlock, Copy, Trash2,
   ChevronUp, ChevronDown, ChevronsUp, ChevronsDown, GripVertical, Group, Ungroup, User, Building2,
-  Shapes, Layers, Wand2, Search,
+  Shapes, Layers, Wand2, Search, Briefcase, Quote, FileText, Phone, Smartphone,
+  MessageCircle, Mail, Globe, Clock, Contact, Linkedin, Instagram, Twitter, Share2, Download,
 } from "lucide-react";
 import { useStudio } from "@/lib/studio/store";
 import type { NodeType, StudioNode } from "@/lib/studio/types";
@@ -13,18 +14,57 @@ import { AiPanel } from "./AiPanel";
 
 type Item = {
   key: string; label: string; labelAr: string; icon: React.ElementType;
-  group: "content" | "shapes" | "vector" | "media";
+  group: "content" | "contact" | "social" | "shapes" | "vector" | "media";
   make: () => [NodeType, Partial<StudioNode>];
 };
 
+const field = (
+  key: string, label: string, labelAr: string, icon: React.ElementType,
+  group: Item["group"], token: string, o: Partial<StudioNode["style"]> = {}, w = 340, h = 34,
+): Item => ({
+  key, label, labelAr, icon, group,
+  make: () => ["text", { name: label, text: token, w, h, style: { fontSize: 18, color: "#c9c2d8", ...o } }],
+});
+
 const ITEMS: Item[] = [
   { key: "text", label: "Text", labelAr: "نص", icon: Type, group: "content", make: () => ["text", { name: "Text", text: "Your text", w: 300, h: 48 }] },
-  { key: "name", label: "Name", labelAr: "الاسم", icon: User, group: "content", make: () => ["text", { name: "Name", text: "{{Employee Name}}", w: 380, h: 56, style: { fontSize: 40, fontWeight: 700 } }] },
-  { key: "job", label: "Job title", labelAr: "المسمى", icon: Building2, group: "content", make: () => ["text", { name: "Job title", text: "{{Job Title}}", w: 340, h: 36, style: { fontSize: 20, color: "#c9c2d8" } }] },
+  field("name", "Name", "الاسم", User, "content", "{{Employee Name}}", { fontSize: 40, fontWeight: 700, color: "#ffffff" }, 380, 56),
+  field("job", "Job title", "المسمى", Briefcase, "content", "{{Job Title}}", { fontSize: 20 }, 340, 36),
+  field("dept", "Department", "القسم", Building2, "content", "{{Department}}", { fontSize: 16 }),
+  field("company", "Company", "الشركة", Building2, "content", "{{Company}}", { fontSize: 20, fontWeight: 600, color: "#ffffff" }),
+  field("tagline", "Tagline", "الشعار النصي", Quote, "content", "{{Tagline}}", { fontSize: 16 }),
+  {
+    key: "bio", label: "Short bio", labelAr: "نبذة قصيرة", icon: FileText, group: "content",
+    make: () => ["text", {
+      name: "Short bio", text: "{{Bio}}", w: 420, h: 96,
+      style: { fontSize: 15, lineHeight: 1.5, color: "#c9c2d8", maxLines: 4, align: "left" },
+    }],
+  },
   { key: "button", label: "Button", labelAr: "زر", icon: Link2, group: "content", make: () => ["button", { name: "Button", text: "Save contact", w: 240, h: 56 }] },
   { key: "badge", label: "Badge", labelAr: "شارة", icon: Star, group: "content", make: () => ["button", { name: "Badge", text: "Premium", w: 140, h: 40, style: { fontSize: 14, fill: "#ffffff1a", color: "#fff" } }] },
   { key: "qr", label: "QR", labelAr: "QR", icon: QrCode, group: "content", make: () => ["qr", { name: "QR", w: 160, h: 160 }] },
   { key: "nfc", label: "NFC", labelAr: "NFC", icon: Nfc, group: "content", make: () => ["icon", { name: "NFC", w: 48, h: 48, icon: "nfc" }] },
+
+  field("phone", "Phone", "الهاتف", Phone, "contact", "{{Phone}}", { fontSize: 18 }),
+  field("mobile", "Mobile", "الجوال", Smartphone, "contact", "{{Mobile}}", { fontSize: 18 }),
+  field("whatsapp", "WhatsApp", "واتساب", MessageCircle, "contact", "{{WhatsApp}}", { fontSize: 18 }),
+  field("email", "Email", "البريد", Mail, "contact", "{{Email}}", { fontSize: 18 }),
+  field("website", "Website", "الموقع", Globe, "contact", "{{Website}}", { fontSize: 18 }),
+  field("address", "Address", "العنوان", MapPin, "contact", "{{Address}}", { fontSize: 16 }, 360, 48),
+  field("hours", "Hours", "أوقات العمل", Clock, "contact", "{{Hours}}", { fontSize: 15 }),
+  {
+    key: "contactBlock", label: "Contact block", labelAr: "كتلة تواصل", icon: Contact, group: "contact",
+    make: () => ["text", {
+      name: "Contact block", text: "{{Phone}}\n{{Email}}\n{{Website}}\n{{Address}}", w: 380, h: 130,
+      style: { fontSize: 16, lineHeight: 1.6, color: "#c9c2d8" },
+    }],
+  },
+
+  field("linkedin", "LinkedIn", "لينكدإن", Linkedin, "social", "{{LinkedIn}}", { fontSize: 16 }),
+  field("instagram", "Instagram", "إنستغرام", Instagram, "social", "{{Instagram}}", { fontSize: 16 }),
+  field("x", "X / Twitter", "إكس", Twitter, "social", "{{X}}", { fontSize: 16 }),
+  { key: "socialRow", label: "Social row", labelAr: "صف التواصل", icon: Share2, group: "social", make: () => ["text", { name: "Social row", text: "{{LinkedIn}} · {{Instagram}} · {{X}}", w: 420, h: 34, style: { fontSize: 14, color: "#c9c2d8" } }] },
+  { key: "vcard", label: "Save contact", labelAr: "حفظ جهة الاتصال", icon: Download, group: "social", make: () => ["button", { name: "Save contact", text: "Save contact", w: 260, h: 56 }] },
 
   { key: "rect", label: "Rectangle", labelAr: "مستطيل", icon: Square, group: "shapes", make: () => ["shape", { name: "Rectangle", shape: "rect", w: 240, h: 160 }] },
   { key: "ellipse", label: "Ellipse", labelAr: "دائرة", icon: Circle, group: "shapes", make: () => ["shape", { name: "Ellipse", shape: "ellipse", w: 180, h: 180 }] },
@@ -36,14 +76,18 @@ const ITEMS: Item[] = [
   { key: "pen", label: "Free curve", labelAr: "منحنى حر", icon: Sparkles, group: "vector", make: () => ["path", { name: "Free curve", w: 320, h: 200, path: "M 4 78 C 26 18, 62 96, 96 22", style: { fill: "transparent", stroke: "#7c34ff", strokeWidth: 4, cap: "round" } }] },
   { key: "blade", label: "Vector blade", labelAr: "شريط متجهي", icon: Sparkles, group: "vector", make: () => ["path", { name: "Vector blade", w: 380, h: 260, path: "M 0 70 C 30 10, 70 90, 100 26 L 100 100 L 0 100 Z", style: { fill: "#7c34ff55", stroke: null, strokeWidth: 0 } }] },
 
+  { key: "employeePhoto", label: "Employee photo", labelAr: "صورة الموظف", icon: User, group: "media", make: () => ["image", { name: "Employee photo", w: 200, h: 200, imageSource: "employee", style: { radius: 999 } }] },
+  { key: "companyLogo", label: "Company logo", labelAr: "شعار الشركة", icon: Building2, group: "media", make: () => ["image", { name: "Company logo", w: 160, h: 64, imageSource: "logo", style: { radius: 8 } }] },
   { key: "photo", label: "Photo", labelAr: "الصورة", icon: ImageIcon, group: "media", make: () => ["image", { name: "Photo", w: 180, h: 180, style: { radius: 999 } }] },
-  { key: "logo", label: "Logo", labelAr: "الشعار", icon: Sparkles, group: "media", make: () => ["image", { name: "Logo", w: 140, h: 60, style: { radius: 8 } }] },
+  { key: "cover", label: "Cover image", labelAr: "صورة غلاف", icon: ImageIcon, group: "media", make: () => ["image", { name: "Cover", w: 560, h: 260, style: { radius: 24 } }] },
   { key: "map", label: "Map", labelAr: "خريطة", icon: MapPin, group: "media", make: () => ["image", { name: "Map", w: 300, h: 180, style: { radius: 20 } }] },
   { key: "video", label: "Video", labelAr: "فيديو", icon: Video, group: "media", make: () => ["image", { name: "Video", w: 320, h: 180, style: { radius: 20 } }] },
 ];
 
 const GROUPS: { key: Item["group"]; en: string; ar: string }[] = [
   { key: "content", en: "Card content", ar: "محتوى البطاقة" },
+  { key: "contact", en: "Contact details", ar: "بيانات التواصل" },
+  { key: "social", en: "Social & actions", ar: "التواصل والإجراءات" },
   { key: "shapes", en: "Shapes", ar: "الأشكال" },
   { key: "vector", en: "Vector", ar: "متجهات" },
   { key: "media", en: "Media", ar: "الوسائط" },

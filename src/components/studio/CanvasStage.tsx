@@ -93,7 +93,14 @@ export function NodeContent({ n, values }: { n: StudioNode; values?: Record<stri
             textAlign: s.align,
             textTransform: s.textTransform,
             padding: s.padding,
-
+            ...(s.maxLines
+              ? {
+                  display: "-webkit-box",
+                  WebkitBoxOrient: "vertical" as const,
+                  WebkitLineClamp: s.maxLines,
+                  overflow: "hidden",
+                }
+              : null),
           }}
         >
           {resolvePlaceholders(n.text ?? "", values)}
