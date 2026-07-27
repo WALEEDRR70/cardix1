@@ -477,14 +477,15 @@ function EmptyHome({ t }: { t: ReturnType<typeof useI18n>["t"] }) {
 
 function StatTile({ label, value, icon }: { label: string; value: number | string; icon?: React.ReactNode }) {
   return (
-    <div className="glass rounded-2xl p-2.5 lg:p-3">
-      <div className="flex items-center gap-1 text-[9px] uppercase tracking-wider text-muted-foreground lg:text-[10px]">
-        {icon} {label}
+    <div className="glass rounded-2xl border border-border/40 p-3 lg:p-5">
+      <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] text-muted-foreground lg:text-[11px]">
+        {icon} <span className="truncate">{label}</span>
       </div>
-      <p className="mt-0.5 text-xl font-semibold tracking-tight lg:text-2xl">{value}</p>
+      <p className="mt-1 text-2xl font-semibold tracking-tight lg:text-3xl">{value}</p>
     </div>
   );
 }
+
 
 function CardActionsMenu({ onEdit, onQr, onDelete }: { onEdit: () => void; onQr: () => void; onDelete: () => void }) {
   const { t } = useI18n();
