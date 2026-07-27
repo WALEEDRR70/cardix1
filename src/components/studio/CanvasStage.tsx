@@ -459,7 +459,47 @@ export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<H
           t: "update", ids: [drag.id], transient: true,
           patch: { x: Math.round(cx - w / 2), y: Math.round(cy - h / 2), w, h },
         });
+      } else if (drag.mode === "gresize") {
+        // Scale the whole selection as one block around the opposite anchor.
+        const dx = (e.clientX - drag.startX) / zoom;
+        const dy = (e.clientY - drag.startY) / zoom;
+        const b = drag.box;
+        let w = b.w, h = b.h, ox = 0, oy = 0;
+        if (drag.handle.includes("e")) w = Math.max(16, b.w + dx);
+        if (drag.handle.includes("s")) h = Math.max(16, b.h + dy);
+        if (drag.handle.includes("w")) { w = Math.max(16, b.w - dx); ox = b.w - w; }
+        if (drag.handle.includes("n")) { h = Math.max(16, b.h - dy); oy = b.h - h; }
+        const corner = drag.handle.length === 2;
+        // Corners scale proportionally by default (Shift frees the ratio).
+        if (corner && !e.shiftKey) {
+          const k = Math.max(w / b.w, h / b.h);
+          w = b.w * k; h = b.h * k;
+          if (drag.handle.includes("w")) ox = b.w - w;
+          if (drag.handle.includes("n")) oy = b.h - h;
+        }
+        const sx = w / b.w;
+        const sy = h / b.h;
+        const nx = b.x + ox;
+        const ny = b.y + oy;
+        for (const it of drag.items) {
+          const patch: Partial<StudioNode> = {
+            x: Math.round(nx + (it.x - b.x) * sx),
+            y: Math.round(ny + (it.y - b.y) * sy),
+            w: Math.max(4, Math.round(it.w * sx)),
+            h: Math.max(4, Math.round(it.h * sy)),
+          };
+          dispatch({ t: "update", ids: [it.id], patch, transient: true });
+          const k = corner ? (sx + sy) / 2 : Math.min(sx, sy);
+          const stylePatch: Record<string, number> = {};
+          if (it.fontSize) stylePatch.fontSize = Math.max(4, Math.round(it.fontSize * k * 100) / 100);
+          if (it.strokeWidth) stylePatch.strokeWidth = Math.max(0.1, Math.round(it.strokeWidth * k * 100) / 100);
+          if (it.radius) stylePatch.radius = Math.max(0, Math.round(it.radius * k));
+          if (Object.keys(stylePatch).length) {
+            dispatch({ t: "style", ids: [it.id], patch: stylePatch, transient: true });
+          }
+        }
       } else if (drag.mode === "rotate") {
+
         const rect = wrapRef.current?.getBoundingClientRect();
         if (!rect) return;
         const cx = rect.left + drag.cx * zoom;
