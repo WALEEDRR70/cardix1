@@ -38,16 +38,29 @@ function Dashboard() {
   const { data: cards } = useQuery({
     queryKey: ["cards", user.id, "personal"],
     queryFn: async () => {
-      // Personal profile shows ONLY personal cards — company/employee cards
-      // live inside their company workspace and must stay isolated.
+      // Personal profile shows the user's own cards plus the employee card
+      // they received from a company (company-owned design cards stay hidden).
       const { data, error } = await supabase
         .from("cards")
         .select("*")
         .eq("user_id", user.id)
-        .is("company_id", null)
+        .or("company_id.is.null,card_type.eq.employee")
         .order("created_at", { ascending: false });
       if (error) throw error;
       return data;
+    },
+  });
+
+  // Company branding shown as a badge on employee cards.
+  const companyIds = Array.from(new Set((cards ?? []).map((c) => c.company_id).filter(Boolean))) as string[];
+  const { data: companyMap = {} } = useQuery({
+    queryKey: ["dashboard-companies", companyIds.join(",")],
+    enabled: companyIds.length > 0,
+    queryFn: async () => {
+      const { data } = await supabase.from("companies").select("id, name, logo_url").in("id", companyIds);
+      const map: Record<string, { name: string; logo_url: string | null }> = {};
+      for (const c of data ?? []) map[c.id] = { name: c.name, logo_url: c.logo_url };
+      return map;
     },
   });
 
@@ -228,6 +241,7 @@ function MyCards({ cards, onQr, onEdit, onDelete, onOpen, t }: CardActions & { t
           onEdit={onEdit}
           onDelete={onDelete}
           onOpen={onOpen}
+          companyMap={companyMap}
           total={n}
           activeIndex={offset}
           setActiveIndex={(i) => setOffset(i)}
@@ -239,6 +253,7 @@ function MyCards({ cards, onQr, onEdit, onDelete, onOpen, t }: CardActions & { t
               <button onClick={() => onOpen(c.slug)} className="block w-full" aria-label={c.name}>
                 <CardPreview card={c as any} size="lg" />
               </button>
+              <CompanyBadge card={c as any} company={c.company_id ? companyMap[c.company_id] : undefined} />
               <CardActionsMenu
                 onEdit={() => onEdit(c.id)}
                 onQr={() => onQr(c.slug)}
@@ -260,6 +275,7 @@ function CardStack({
   onEdit,
   onDelete,
   onOpen,
+  companyMap,
   total,
   activeIndex,
   setActiveIndex,
@@ -271,6 +287,7 @@ function CardStack({
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
   onOpen: (slug: string) => void;
+  companyMap: Record<string, { name: string; logo_url: string | null }>;
   total: number;
   activeIndex: number;
   setActiveIndex: (i: number) => void;
@@ -367,6 +384,7 @@ function CardStack({
                 >
                   <CardPreview card={c as any} size="lg" />
                 </button>
+                <CompanyBadge card={c as any} company={c.company_id ? companyMap[c.company_id] : undefined} />
                 {isTop && (
                   <CardActionsMenu
                     onEdit={() => onEdit(c.id)}
@@ -409,6 +427,33 @@ function CardStack({
           </div>
         </>
       )}
+    </div>
+  );
+}
+
+/** Marks an employee card as company-issued: logo, company name and job title. */
+function CompanyBadge({
+  card,
+  company,
+}: {
+  card: { company_id?: string | null; title?: string | null; company?: string | null };
+  company?: { name: string; logo_url: string | null };
+}) {
+  if (!card.company_id) return null;
+  const name = company?.name ?? card.company ?? "";
+  return (
+    <div className="pointer-events-none absolute start-3 top-3 z-20 flex max-w-[75%] items-center gap-2 rounded-full border border-white/20 bg-black/45 px-2.5 py-1 backdrop-blur-md">
+      {company?.logo_url ? (
+        <img src={company.logo_url} alt={name} className="h-5 w-5 rounded-full object-cover" loading="lazy" />
+      ) : (
+        <span className="grid h-5 w-5 place-items-center rounded-full bg-primary/25">
+          <Building2 className="h-3 w-3 text-primary-foreground" />
+        </span>
+      )}
+      <span className="min-w-0 truncate text-[11px] font-medium text-white">
+        {name}
+        {card.title ? <span className="text-white/70"> · {card.title}</span> : null}
+      </span>
     </div>
   );
 }
