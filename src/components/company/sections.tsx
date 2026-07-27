@@ -20,6 +20,35 @@ export function Card({ children, className = "" }: { children: React.ReactNode; 
   return <div className={"glass rounded-3xl border border-border/60 p-5 " + className}>{children}</div>;
 }
 
+/** Calm, actionable empty state — replaces bare "nothing here" lines. */
+export function EmptyState({ icon: Icon, title, hint, actionLabel, onAction }: {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  hint?: string;
+  actionLabel?: string;
+  onAction?: () => void;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-2 px-4 py-10 text-center">
+      <span className="grid h-11 w-11 place-items-center rounded-2xl bg-secondary text-muted-foreground">
+        <Icon className="h-5 w-5" />
+      </span>
+      <p className="text-sm font-medium text-foreground">{title}</p>
+      {hint && <p className="max-w-xs text-xs text-muted-foreground">{hint}</p>}
+      {actionLabel && onAction && (
+        <button
+          type="button"
+          onClick={onAction}
+          className="mt-2 rounded-full bg-primary px-4 py-2 text-xs font-medium text-primary-foreground"
+        >
+          {actionLabel}
+        </button>
+      )}
+    </div>
+  );
+}
+
+
 export function TextField({ label, value, onChange, disabled, placeholder, type = "text" }: {
   label: string; value: string; onChange: (v: string) => void; disabled?: boolean; placeholder?: string; type?: string;
 }) {
