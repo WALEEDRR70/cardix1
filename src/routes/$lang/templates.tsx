@@ -56,8 +56,9 @@ function TemplatesGallery() {
   }, []);
 
   const { data: templates = [], isLoading } = useQuery({
-    queryKey: ["public-templates", search],
-    queryFn: () => listPublicTemplates(search),
+    queryKey: tab === "mine" ? ["my-templates", uid] : ["public-templates", search],
+    queryFn: () => (tab === "mine" ? listMyTemplates(uid!) : listPublicTemplates(search)),
+    enabled: tab === "all" || !!uid,
   });
 
   async function onUse(tpl: DesignTemplate) {
