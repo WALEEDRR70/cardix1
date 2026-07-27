@@ -538,6 +538,30 @@ export function PenLayer({
           );
         })}
 
+        {/* intersection snap targets (faint) */}
+        {smartOn && !dragging && intersections.map((p, i) => (
+          <circle key={`x-${i}`} cx={p.x * zoom} cy={p.y * zoom} r={2} fill="var(--accent)" opacity={0.35} />
+        ))}
+
+        {/* smart snap indicator */}
+        {snapHit && !dragging && (
+          <g transform={`translate(${snapHit.x * zoom} ${snapHit.y * zoom})`}>
+            {snapHit.kind === "intersection" ? (
+              <>
+                <line x1={-7} y1={-7} x2={7} y2={7} stroke="#22d3ee" strokeWidth={1.5} />
+                <line x1={-7} y1={7} x2={7} y2={-7} stroke="#22d3ee" strokeWidth={1.5} />
+              </>
+            ) : snapHit.kind === "grid" ? (
+              <>
+                <line x1={-6} y1={0} x2={6} y2={0} stroke="#22d3ee" strokeWidth={1.25} opacity={0.9} />
+                <line x1={0} y1={-6} x2={0} y2={6} stroke="#22d3ee" strokeWidth={1.25} opacity={0.9} />
+              </>
+            ) : (
+              <circle r={6} fill="none" stroke="#22d3ee" strokeWidth={1.75} />
+            )}
+          </g>
+        )}
+
         {/* ghost anchor under the cursor */}
         {live && !dragging && !hover && (
           <rect
