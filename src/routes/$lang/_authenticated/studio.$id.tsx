@@ -11,7 +11,7 @@ import { CanvasStage } from "@/components/studio/CanvasStage";
 import { ElementsPanel } from "@/components/studio/ElementsPanel";
 import { PropertiesPanel } from "@/components/studio/PropertiesPanel";
 import { StudioToolbar } from "@/components/studio/StudioToolbar";
-import { ArrowLeft, LayoutTemplate, Loader2 } from "lucide-react";
+import { ArrowLeft, Building2, LayoutTemplate, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/$lang/_authenticated/studio/$id")({
   head: () => ({
@@ -34,7 +34,7 @@ function StudioRoute() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("cards")
-        .select("id, title, name, design, accent_color, avatar_url, company_id, companies:company_id(logo_url, name)")
+        .select("id, title, name, design, accent_color, avatar_url, company_id, companies:company_id(logo_url, name, slug)")
         .eq("id", id)
         .maybeSingle();
       if (error) throw error;
@@ -61,15 +61,15 @@ function StudioRoute() {
   }
 
   const initial = (data.design as StudioDoc | null) ?? emptyDoc((data.accent_color as string) || "#7c34ff");
-  const company = (data as { companies?: { logo_url: string | null; name: string | null } | null }).companies ?? null;
+  const company = (data as { companies?: { logo_url: string | null; name: string | null; slug: string | null } | null }).companies ?? null;
   const values: Record<string, string> = {};
   if (company?.logo_url) values["{{Logo}}"] = company.logo_url;
   if (data.avatar_url) values["{{Photo}}"] = data.avatar_url as string;
   if (company?.name) values["{{Company}}"] = company.name;
-  return <Studio cardId={data.id} title={(data.title as string) || (data.name as string) || ""} initial={initial} values={values} />;
+  return <Studio cardId={data.id} title={(data.title as string) || (data.name as string) || ""} initial={initial} values={values} company={company ? { slug: company.slug, name: company.name } : null} />;
 }
 
-function Studio({ cardId, title, initial, values }: { cardId: string; title: string; initial: StudioDoc; values?: Record<string, string> }) {
+function Studio({ cardId, title, initial, values, company }: { cardId: string; title: string; initial: StudioDoc; values?: Record<string, string>; company?: { slug: string | null; name: string | null } | null }) {
   const { lang } = useI18n();
   const ar = lang === "ar";
   const api = useStudioState(initial);
@@ -116,6 +116,15 @@ function Studio({ cardId, title, initial, values }: { cardId: string; title: str
             <LayoutTemplate className="h-3.5 w-3.5" />
             {ar ? "معرض القوالب" : "Template gallery"}
           </Link>
+          {company?.slug && (
+            <>
+              <span className="mx-1 h-3 w-px bg-border/60" />
+              <Link to={`/co/${company.slug}`} className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
+                <Building2 className="h-3.5 w-3.5" />
+                {company.name || (ar ? "مساحة الشركة" : "Company workspace")}
+              </Link>
+            </>
+          )}
         </div>
         <StudioToolbar ar={ar} title={title} saving={saving} onSave={() => void save(false)} />
         <div className="flex min-h-0 flex-1">
