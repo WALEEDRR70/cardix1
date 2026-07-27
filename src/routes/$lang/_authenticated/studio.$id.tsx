@@ -107,10 +107,11 @@ function Studio({ cardId, title, initial, values, company }: { cardId: string; t
     <StudioProvider api={api}>
       <div className="flex h-[100dvh] flex-col bg-background" dir={ar ? "rtl" : "ltr"}>
         <div className="flex items-center gap-2 border-b border-border/60 bg-card/60 px-3 py-1.5 text-xs">
-          <Link to={`/cards/${cardId}`} className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
+          <Link to={company?.slug ? `/co/${company.slug}/studio` : `/cards/${cardId}`} className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
             <ArrowLeft className="h-3.5 w-3.5 rtl:rotate-180" />
-            {ar ? "رجوع إلى البطاقة" : "Back to card"}
+            {company?.slug ? (ar ? "رجوع إلى مساحة الشركة" : "Back to workspace") : ar ? "رجوع إلى البطاقة" : "Back to card"}
           </Link>
+
           <span className="mx-1 h-3 w-px bg-border/60" />
           <Link to="/templates" className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
             <LayoutTemplate className="h-3.5 w-3.5" />
