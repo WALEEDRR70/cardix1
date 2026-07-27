@@ -319,6 +319,7 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
   useEffect(() => {
     if (!marquee) return;
     function onMove(e: PointerEvent) {
+      if (e.buttons === 0) { onUp(); return; }
       const p = toDoc(e.clientX, e.clientY);
       setMarquee((m) => (m ? { ...m, x1: p.x, y1: p.y } : m));
     }
@@ -340,12 +341,17 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
       });
     }
     window.addEventListener("pointermove", onMove);
-    window.addEventListener("pointerup", onUp, { once: true });
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onUp);
+    window.addEventListener("blur", onUp);
     return () => {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+      window.removeEventListener("blur", onUp);
     };
   }, [marquee, toDoc, doc.nodes, dispatch]);
+
 
   useEffect(() => {
     if (!drag) return;
@@ -436,6 +442,9 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
         if (e.shiftKey) deg = Math.round(deg / 15) * 15;
         dispatch({ t: "update", ids: [drag.id], patch: { rot: Math.round(deg) }, transient: true });
       }
+      // Safety: if the button was released while the pointerup event was lost
+      // (pointer left the window/iframe), end the drag instead of sticking.
+      if (e.buttons === 0) onUp();
     }
     function onUp() {
       setDrag(null);
@@ -444,12 +453,17 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
       dispatch({ t: "replace", doc });
     }
     window.addEventListener("pointermove", onMove);
-    window.addEventListener("pointerup", onUp, { once: true });
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onUp);
+    window.addEventListener("blur", onUp);
     return () => {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+      window.removeEventListener("blur", onUp);
     };
   }, [drag, dispatch, doc, zoom, round, guides, snapTargets]);
+
 
   // Keyboard: shortcuts + space-to-pan.
   useEffect(() => {
