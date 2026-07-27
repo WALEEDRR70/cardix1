@@ -12,6 +12,8 @@ export type PenPoint = {
   /** incoming handle (absolute doc coords) */
   ix: number;
   iy: number;
+  /** true once the user shaped this anchor's handles by hand */
+  manual?: boolean;
 };
 
 export type PenResult = {
@@ -34,6 +36,47 @@ function constrain(ax: number, ay: number, bx: number, by: number) {
   const a = Math.round(Math.atan2(dy, dx) / step) * step;
   return { x: ax + Math.cos(a) * len, y: ay + Math.sin(a) * len };
 }
+
+/**
+ * Centripetal Catmull-Rom → cubic bezier handle fitting.
+ * `amount` (0..1) scales handle length, so 0 = polyline, 1 = very round.
+ * Anchors flagged `manual` keep the handles the user drew.
+ */
+export function autoSmooth(pts: PenPoint[], closed: boolean, amount: number): PenPoint[] {
+  const n = pts.length;
+  if (n < 2 || amount <= 0) {
+    return pts.map((p) => (p.manual ? p : { ...p, hx: p.x, hy: p.y, ix: p.x, iy: p.y }));
+  }
+  const at = (i: number) => {
+    if (closed) return pts[(i + n) % n];
+    return pts[Math.min(n - 1, Math.max(0, i))];
+  };
+  return pts.map((p, i) => {
+    if (p.manual) return p;
+    const prev = at(i - 1);
+    const next = at(i + 1);
+    // centripetal parameterisation keeps loops and cusps from overshooting
+    const dPrev = Math.pow(Math.hypot(p.x - prev.x, p.y - prev.y), 0.5) || 1e-6;
+    const dNext = Math.pow(Math.hypot(next.x - p.x, next.y - p.y), 0.5) || 1e-6;
+    let tx = next.x - prev.x;
+    let ty = next.y - prev.y;
+    const len = Math.hypot(tx, ty) || 1;
+    tx /= len; ty /= len;
+    // handle length ~ 1/3 of the neighbouring segment, scaled by the smoothness dial
+    const k = (amount * 0.42) / 0.333;
+    const outLen = (Math.hypot(next.x - p.x, next.y - p.y) / 3) * k * (dNext / ((dPrev + dNext) / 2));
+    const inLen = (Math.hypot(p.x - prev.x, p.y - prev.y) / 3) * k * (dPrev / ((dPrev + dNext) / 2));
+    const isEnd = !closed && (i === 0 || i === n - 1);
+    return {
+      ...p,
+      hx: p.x + tx * (isEnd && i === n - 1 ? 0 : outLen),
+      hy: p.y + ty * (isEnd && i === n - 1 ? 0 : outLen),
+      ix: p.x - tx * (isEnd && i === 0 ? 0 : inLen),
+      iy: p.y - ty * (isEnd && i === 0 ? 0 : inLen),
+    };
+  });
+}
+
 
 /** Builds an SVG path from anchors, mapping doc coords through `map`. */
 export function penPath(
