@@ -48,6 +48,7 @@ type Action =
   | { t: "paste" }
   | { t: "undo" }
   | { t: "redo" }
+  | { t: "seal"; before: StudioDoc }
   | { t: "zoom"; value: number }
   | { t: "pan"; x: number; y: number }
   | { t: "fit" }
