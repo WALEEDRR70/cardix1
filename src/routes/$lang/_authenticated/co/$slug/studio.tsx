@@ -87,13 +87,27 @@ function Page() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("cards")
-        .select("id, name, title, slug, updated_at")
+        .select("id, name, title, slug, updated_at, design, template, accent_color, avatar_url, phone, email, website, company")
         .eq("company_id", company.id)
         .order("updated_at", { ascending: false });
       if (error) throw error;
       return data ?? [];
     },
   });
+
+  // Live stream: any edit saved in the designer (or by a teammate) re-renders here instantly.
+  useEffect(() => {
+    const channel = supabase
+      .channel(`studio-cards-${company.id}`)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "cards", filter: `company_id=eq.${company.id}` },
+        () => { refetch(); },
+      )
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [company.id, refetch]);
+
 
   return (
     <CompanyShell company={company} role={role} title={w.designStudio} subtitle={company.name}>
