@@ -31,6 +31,7 @@ export type AlignHow = "left" | "hcenter" | "right" | "top" | "vcenter" | "botto
 type Action =
   | { t: "replace"; doc: StudioDoc; history?: boolean }
   | { t: "add"; node: StudioNode }
+  | { t: "addMany"; nodes: StudioNode[]; place?: "front" | "back" }
   | { t: "update"; ids: string[]; patch: Partial<StudioNode>; transient?: boolean }
   | { t: "style"; ids: string[]; patch: Partial<StudioNode["style"]>; transient?: boolean }
   | { t: "remove"; ids: string[] }
@@ -119,6 +120,11 @@ function reducer(state: StudioState, a: Action): StudioState {
       return commit(state, a.doc, a.history !== false);
     case "add":
       return { ...commit(state, { ...doc, nodes: [...doc.nodes, a.node] }), selection: [a.node.id] };
+    case "addMany": {
+      if (!a.nodes.length) return state;
+      const nodes = a.place === "back" ? [...a.nodes, ...doc.nodes] : [...doc.nodes, ...a.nodes];
+      return { ...commit(state, { ...doc, nodes }), selection: a.nodes.map((n) => n.id) };
+    }
     case "update":
       return commit(
         state,
