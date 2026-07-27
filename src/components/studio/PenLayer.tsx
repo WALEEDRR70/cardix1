@@ -214,6 +214,9 @@ export function PenLayer({
       } else if (e.key.toLowerCase() === "s" && !e.metaKey && !e.ctrlKey) {
         e.preventDefault();
         setSmoothOn((v) => !v);
+      } else if (e.key.toLowerCase() === "m" && !e.metaKey && !e.ctrlKey) {
+        e.preventDefault();
+        setHandleMode((v) => (v === "symmetric" ? "independent" : "symmetric"));
       }
 
     }
