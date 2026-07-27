@@ -65,6 +65,9 @@ export function CardForm({
   const [uploading, setUploading] = useState(false);
   const [more, setMore] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const [libOpen, setLibOpen] = useState(false);
+  const [libLoading, setLibLoading] = useState(false);
+  const [library, setLibrary] = useState<string[]>([]);
   const genBio = useServerFn(generateBio);
   const tplScrollRef = useDragScroll<HTMLDivElement>();
 
