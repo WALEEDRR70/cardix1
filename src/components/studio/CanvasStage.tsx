@@ -352,38 +352,63 @@ export function CanvasStage({ stageRef }: { stageRef?: React.RefObject<HTMLDivEl
     function onMove(e: PointerEvent) {
       if (!drag) return;
       if (drag.mode === "move") {
-        const dx = (e.clientX - drag.startX) / zoom;
-        const dy = (e.clientY - drag.startY) / zoom;
+        let dx = (e.clientX - drag.startX) / zoom;
+        let dy = (e.clientY - drag.startY) / zoom;
         const lines: { x: number[]; y: number[] } = { x: [], y: [] };
-        for (const o of drag.origin) {
-          const target = doc.nodes.find((m) => m.id === o.id);
-          if (!target) continue;
-          let nx = round(o.x + dx);
-          let ny = round(o.y + dy);
-          if (guides && !e.altKey) {
-            const others = snapTargets;
-            const candX = [nx, nx + target.w / 2, nx + target.w];
-            for (let i = 0; i < candX.length; i++) {
-              const hit = others.xs.find((t) => Math.abs(candX[i] - t) < SNAP_TOLERANCE && !drag.origin.some((oo) => oo.id === o.id && false));
-              if (hit !== undefined) {
-                nx = hit - (i === 0 ? 0 : i === 1 ? target.w / 2 : target.w);
-                lines.x.push(hit);
-                break;
-              }
-            }
-            const candY = [ny, ny + target.h / 2, ny + target.h];
-            for (let i = 0; i < candY.length; i++) {
-              const hit = others.ys.find((t) => Math.abs(candY[i] - t) < SNAP_TOLERANCE);
-              if (hit !== undefined) {
-                ny = hit - (i === 0 ? 0 : i === 1 ? target.h / 2 : target.h);
-                lines.y.push(hit);
-                break;
-              }
+        const moving = new Set(drag.origin.map((o) => o.id));
+        const boxes = drag.origin
+          .map((o) => {
+            const target = doc.nodes.find((m) => m.id === o.id);
+            return target ? { id: o.id, x: o.x, y: o.y, w: target.w, h: target.h } : null;
+          })
+          .filter(Boolean) as { id: string; x: number; y: number; w: number; h: number }[];
+        if (!boxes.length) return;
+
+        // Group bounding box: snap once so relative spacing is preserved
+        // and at most one guide per axis is drawn.
+        const gx0 = Math.min(...boxes.map((b) => b.x));
+        const gy0 = Math.min(...boxes.map((b) => b.y));
+        const gx1 = Math.max(...boxes.map((b) => b.x + b.w));
+        const gy1 = Math.max(...boxes.map((b) => b.y + b.h));
+        const gw = gx1 - gx0;
+        const gh = gy1 - gy0;
+
+        dx = round(gx0 + dx) - gx0;
+        dy = round(gy0 + dy) - gy0;
+
+        if (guides && !e.altKey) {
+          const staticNodes = doc.nodes.filter((n) => !moving.has(n.id));
+          const xs = [0, doc.w / 2, doc.w];
+          const ys = [0, doc.h / 2, doc.h];
+          for (const n of staticNodes) {
+            xs.push(n.x, n.x + n.w / 2, n.x + n.w);
+            ys.push(n.y, n.y + n.h / 2, n.y + n.h);
+          }
+          const candX = [gx0 + dx, gx0 + dx + gw / 2, gx0 + dx + gw];
+          for (let i = 0; i < candX.length; i++) {
+            const hit = xs.find((t) => Math.abs(candX[i] - t) < SNAP_TOLERANCE);
+            if (hit !== undefined) {
+              dx += hit - candX[i];
+              lines.x.push(hit);
+              break;
             }
           }
-          dispatch({ t: "update", ids: [o.id], patch: { x: nx, y: ny }, transient: true });
+          const candY = [gy0 + dy, gy0 + dy + gh / 2, gy0 + dy + gh];
+          for (let i = 0; i < candY.length; i++) {
+            const hit = ys.find((t) => Math.abs(candY[i] - t) < SNAP_TOLERANCE);
+            if (hit !== undefined) {
+              dy += hit - candY[i];
+              lines.y.push(hit);
+              break;
+            }
+          }
+        }
+
+        for (const b of boxes) {
+          dispatch({ t: "update", ids: [b.id], patch: { x: b.x + dx, y: b.y + dy }, transient: true });
         }
         setSnapLines(lines);
+
       } else if (drag.mode === "resize") {
         const dx = (e.clientX - drag.startX) / zoom;
         const dy = (e.clientY - drag.startY) / zoom;
