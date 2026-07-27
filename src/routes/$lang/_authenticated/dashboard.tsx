@@ -131,10 +131,15 @@ function Dashboard() {
                 )}
               </section>
             </div>
+            <TemplatesStrip />
           </>
         ) : (
-          <EmptyHome t={t} />
+          <>
+            <EmptyHome t={t} />
+            <TemplatesStrip />
+          </>
         )}
+
       </div>
 
       <ConfirmDeleteDialog
