@@ -3,7 +3,7 @@ import { useState } from "react";
 import {
   Type, Image as ImageIcon, Square, Circle, Triangle, Minus, QrCode, Nfc, Link2,
   Star, MapPin, Video, Sparkles, Eye, EyeOff, Lock, Unlock, Copy, Trash2,
-  ChevronUp, ChevronDown, ChevronsUp, ChevronsDown, GripVertical, Group, Ungroup, User, Building2,
+  ChevronUp, ChevronDown, ChevronsUp, ChevronsDown, ChevronRight, GripVertical, Group, Ungroup, User, Building2,
   Shapes, Layers, Wand2, Search, Briefcase, Quote, FileText, Phone, Smartphone,
   MessageCircle, Mail, Globe, Clock, Contact, Linkedin, Instagram, Twitter, Share2, Download,
 } from "lucide-react";
@@ -145,12 +145,9 @@ function Library({ ar }: { ar: boolean }) {
       </div>
       <div className="flex-1 overflow-y-auto px-2 pb-3">
         {(!term || "backgrounds".includes(term) || "خلفيات".includes(term)) && (
-          <div className="mb-3">
-            <p className="px-1 pb-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-              {ar ? "خلفيات SVG" : "SVG backgrounds"}
-            </p>
+          <Section title={ar ? "خلفيات SVG" : "SVG backgrounds"} defaultOpen={false} forceOpen={!!term}>
             <SvgBackgrounds ar={ar} />
-          </div>
+          </Section>
         )}
         {GROUPS.map((g) => {
           const items = ITEMS.filter(
@@ -158,10 +155,13 @@ function Library({ ar }: { ar: boolean }) {
           );
           if (!items.length) return null;
           return (
-            <div key={g.key} className="mb-3">
-              <p className="px-1 pb-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                {ar ? g.ar : g.en}
-              </p>
+            <Section
+              key={g.key}
+              title={ar ? g.ar : g.en}
+              count={items.length}
+              defaultOpen={g.key === "content"}
+              forceOpen={!!term}
+            >
               <div className="grid grid-cols-3 gap-1.5">
                 {items.map((it) => (
                   <button
@@ -175,13 +175,34 @@ function Library({ ar }: { ar: boolean }) {
                   </button>
                 ))}
               </div>
-            </div>
+            </Section>
           );
         })}
       </div>
     </div>
   );
 }
+
+function Section({
+  title, children, count, defaultOpen = true, forceOpen = false,
+}: { title: string; children: React.ReactNode; count?: number; defaultOpen?: boolean; forceOpen?: boolean }) {
+  const [open, setOpen] = useState(defaultOpen);
+  const isOpen = forceOpen || open;
+  return (
+    <div className="mb-2">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full items-center gap-1 rounded-md px-1 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground transition hover:text-foreground"
+      >
+        <ChevronRight className={cn("h-3 w-3 shrink-0 transition-transform rtl:-scale-x-100", isOpen && "rotate-90 rtl:rotate-90")} />
+        <span className="flex-1 truncate text-start">{title}</span>
+        {count != null && <span className="text-[9px] opacity-60">{count}</span>}
+      </button>
+      {isOpen && <div className="pt-0.5">{children}</div>}
+    </div>
+  );
+}
+
 
 function LayersPanel({ ar }: { ar: boolean }) {
   const { state, dispatch, list } = useStudio();

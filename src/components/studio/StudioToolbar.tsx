@@ -1,11 +1,12 @@
-// Top toolbar: history, alignment, zoom, grid toggles, export and save.
-import { useRef, useState } from "react";
+// Top toolbar: tools, history, view, arrange, zoom, export and save — grouped into compact clusters.
+import { useEffect, useRef, useState } from "react";
 import {
   Undo2, Redo2, Grid3x3, Magnet, Ruler, ZoomIn, ZoomOut, Download, Save, Loader2,
   AlignStartVertical, AlignCenterVertical, AlignEndVertical,
   AlignStartHorizontal, AlignCenterHorizontal, AlignEndHorizontal,
   AlignHorizontalSpaceAround, AlignVerticalSpaceAround,
   Group, Ungroup, CopyPlus, Trash2, Maximize, MousePointer2, PenTool, Spline,
+  Eye, LayoutGrid, ChevronDown,
 } from "lucide-react";
 
 import { toPng, toJpeg, toSvg } from "html-to-image";
@@ -26,7 +27,6 @@ export function StudioToolbar({
 
   const stage = () => document.querySelector<HTMLElement>("[data-studio-stage]");
 
-
   async function exportAs(kind: "png" | "jpg" | "svg" | "json") {
     if (kind === "json") {
       download(`${title || "card"}.cardix.json`, URL.createObjectURL(new Blob([JSON.stringify(state.doc, null, 2)], { type: "application/json" })));
@@ -46,77 +46,113 @@ export function StudioToolbar({
   }
 
   return (
-    <header className="flex items-center gap-2 border-b border-border/60 bg-card/50 px-3 py-2">
-      <span className="me-2 truncate text-sm font-semibold">{title || (ar ? "بطاقة بدون عنوان" : "Untitled card")}</span>
+    <header className="flex items-center gap-1.5 border-b border-border/60 bg-card/50 px-3 py-2">
+      <span className="me-1 max-w-[180px] truncate text-sm font-semibold">{title || (ar ? "بطاقة بدون عنوان" : "Untitled card")}</span>
 
-      <Btn
-        title={ar ? "أداة التحديد (V)" : "Select tool (V)"}
-        active={state.tool === "select"}
-        onClick={() => dispatch({ t: "tool", value: "select" })}
-      ><MousePointer2 className="h-4 w-4" /></Btn>
-      <Btn
-        title={ar ? "أداة البنتول (P) — انقر لإضافة نقطة، اسحب لمنحنى، Enter للإنهاء" : "Pen tool (P) — click to add a point, drag to curve, Enter to finish"}
-        active={state.tool === "pen"}
-        onClick={() => dispatch({ t: "tool", value: state.tool === "pen" ? "select" : "pen" })}
-      ><PenTool className="h-4 w-4" /></Btn>
-      <Btn
-        title={ar ? "تعديل المسار (A) — اسحب النقاط والمقابض، Alt للتبديل بين ناعم/زاوية، نقر مزدوج لعكس اتجاه المقابض" : "Edit path (A) — drag anchors & handles, Alt toggles smooth/corner, double-click flips handle direction"}
-        active={state.tool === "node"}
-        onClick={() => dispatch({ t: "tool", value: state.tool === "node" ? "select" : "node" })}
-      ><Spline className="h-4 w-4" /></Btn>
+      {/* Tools */}
+      <div className="flex items-center rounded-lg border border-border/50 bg-background/40 p-0.5">
+        <Btn
+          title={ar ? "أداة التحديد (V)" : "Select tool (V)"}
+          active={state.tool === "select"}
+          onClick={() => dispatch({ t: "tool", value: "select" })}
+        ><MousePointer2 className="h-4 w-4" /></Btn>
+        <Btn
+          title={ar ? "أداة القلم (P) — انقر لإضافة نقطة، اسحب لمنحنى، Enter للإنهاء" : "Pen tool (P) — click to add a point, drag to curve, Enter to finish"}
+          active={state.tool === "pen"}
+          onClick={() => dispatch({ t: "tool", value: state.tool === "pen" ? "select" : "pen" })}
+        ><PenTool className="h-4 w-4" /></Btn>
+        <Btn
+          title={ar ? "تعديل النقاط (A) — اسحب النقاط والمقابض، Alt للتبديل ناعم/زاوية" : "Edit points (A) — drag anchors & handles, Alt toggles smooth/corner"}
+          active={state.tool === "node"}
+          onClick={() => dispatch({ t: "tool", value: state.tool === "node" ? "select" : "node" })}
+        ><Spline className="h-4 w-4" /></Btn>
+      </div>
 
-      <span className="mx-1 h-5 w-px bg-border/60" />
+      {/* History */}
+      <div className="flex items-center rounded-lg border border-border/50 bg-background/40 p-0.5">
+        <Btn title={ar ? "تراجع (Ctrl+Z)" : "Undo (Ctrl+Z)"} disabled={!state.past.length} onClick={() => dispatch({ t: "undo" })}><Undo2 className="h-4 w-4" /></Btn>
+        <Btn title={ar ? "إعادة (Ctrl+Shift+Z)" : "Redo (Ctrl+Shift+Z)"} disabled={!state.future.length} onClick={() => dispatch({ t: "redo" })}><Redo2 className="h-4 w-4" /></Btn>
+      </div>
 
-      <Btn title={ar ? "تراجع" : "Undo"} disabled={!state.past.length} onClick={() => dispatch({ t: "undo" })}><Undo2 className="h-4 w-4" /></Btn>
-      <Btn title={ar ? "إعادة" : "Redo"} disabled={!state.future.length} onClick={() => dispatch({ t: "redo" })}><Redo2 className="h-4 w-4" /></Btn>
-
-      <span className="mx-1 h-5 w-px bg-border/60" />
-
-
-      <Btn title={ar ? "الشبكة" : "Grid"} active={state.grid} onClick={() => dispatch({ t: "toggle", key: "grid" })}><Grid3x3 className="h-4 w-4" /></Btn>
-      <Btn title={ar ? "المحاذاة" : "Snap"} active={state.snap} onClick={() => dispatch({ t: "toggle", key: "snap" })}><Magnet className="h-4 w-4" /></Btn>
-      <Btn title={ar ? "الأدلة" : "Guides"} active={state.guides} onClick={() => dispatch({ t: "toggle", key: "guides" })}><Ruler className="h-4 w-4" /></Btn>
-
-      <span className="mx-1 h-5 w-px bg-border/60" />
-
-      {/* alignment + distribution */}
-      {([
-        ["left", AlignStartVertical, ar ? "محاذاة لليسار" : "Align left"],
-        ["hcenter", AlignCenterVertical, ar ? "توسيط أفقي" : "Center horizontally"],
-        ["right", AlignEndVertical, ar ? "محاذاة لليمين" : "Align right"],
-        ["top", AlignStartHorizontal, ar ? "محاذاة للأعلى" : "Align top"],
-        ["vcenter", AlignCenterHorizontal, ar ? "توسيط عمودي" : "Center vertically"],
-        ["bottom", AlignEndHorizontal, ar ? "محاذاة للأسفل" : "Align bottom"],
-      ] as const).map(([how, Icon, label]) => (
-        <Btn key={how} title={label} disabled={!sel} onClick={() => dispatch({ t: "align", ids: state.selection, how })}>
-          <Icon className="h-4 w-4" />
-        </Btn>
-      ))}
-      <Btn title={ar ? "توزيع أفقي" : "Distribute horizontally"} disabled={state.selection.length < 3} onClick={() => dispatch({ t: "distribute", ids: state.selection, axis: "h" })}><AlignHorizontalSpaceAround className="h-4 w-4" /></Btn>
-      <Btn title={ar ? "توزيع عمودي" : "Distribute vertically"} disabled={state.selection.length < 3} onClick={() => dispatch({ t: "distribute", ids: state.selection, axis: "v" })}><AlignVerticalSpaceAround className="h-4 w-4" /></Btn>
-
-      <span className="mx-1 h-5 w-px bg-border/60" />
-
-      <Btn title={ar ? "تجميع" : "Group"} disabled={state.selection.length < 2} onClick={() => dispatch({ t: "group", ids: state.selection })}><Group className="h-4 w-4" /></Btn>
-      <Btn title={ar ? "فك التجميع" : "Ungroup"} disabled={!sel} onClick={() => state.selection[0] && dispatch({ t: "ungroup", id: state.selection[0] })}><Ungroup className="h-4 w-4" /></Btn>
-      <Btn title={ar ? "تكرار" : "Duplicate"} disabled={!sel} onClick={() => dispatch({ t: "duplicate", ids: state.selection })}><CopyPlus className="h-4 w-4" /></Btn>
-      <Btn title={ar ? "حذف" : "Delete"} disabled={!sel} onClick={() => dispatch({ t: "remove", ids: state.selection })}><Trash2 className="h-4 w-4" /></Btn>
-
-      <span className="mx-1 h-5 w-px bg-border/60" />
-
-      <Btn title="Zoom out" onClick={() => dispatch({ t: "zoom", value: state.zoom - 0.1 })}><ZoomOut className="h-4 w-4" /></Btn>
-      <select
-        value={zoomPreset}
-        onChange={(e) => (e.target.value === "fit" ? dispatch({ t: "fit" }) : dispatch({ t: "zoom", value: Number(e.target.value) }))}
-        className="rounded-md border border-border/60 bg-transparent px-1.5 py-1 text-[11px] text-muted-foreground outline-none"
+      {/* View menu */}
+      <Menu
+        label={ar ? "العرض" : "View"}
+        icon={Eye}
+        title={ar ? "الشبكة والمحاذاة والأدلة" : "Grid, snapping and guides"}
       >
-        {!PRESETS.includes(Math.round(state.zoom * 100)) && <option value={state.zoom}>{Math.round(state.zoom * 100)}%</option>}
-        {PRESETS.map((p) => <option key={p} value={p / 100}>{p}%</option>)}
-        <option value="fit">{ar ? "ملء الشاشة" : "Fit"}</option>
-      </select>
-      <Btn title="Zoom in" onClick={() => dispatch({ t: "zoom", value: state.zoom + 0.1 })}><ZoomIn className="h-4 w-4" /></Btn>
-      <Btn title={ar ? "ملاءمة" : "Fit to screen"} onClick={() => dispatch({ t: "fit" })}><Maximize className="h-4 w-4" /></Btn>
+        <MenuToggle on={state.grid} onClick={() => dispatch({ t: "toggle", key: "grid" })} icon={Grid3x3} label={ar ? "الشبكة" : "Grid"} />
+        <MenuToggle on={state.snap} onClick={() => dispatch({ t: "toggle", key: "snap" })} icon={Magnet} label={ar ? "الالتصاق" : "Snap"} />
+        <MenuToggle on={state.guides} onClick={() => dispatch({ t: "toggle", key: "guides" })} icon={Ruler} label={ar ? "أدلة المحاذاة" : "Guides"} />
+      </Menu>
 
+      {/* Arrange menu (align + distribute) */}
+      <Menu
+        label={ar ? "الترتيب" : "Arrange"}
+        icon={LayoutGrid}
+        disabled={!sel}
+        title={ar ? "المحاذاة والتوزيع" : "Align and distribute"}
+      >
+        <div className="grid grid-cols-3 gap-1 p-1.5">
+          {([
+            ["left", AlignStartVertical, ar ? "محاذاة لليسار" : "Align left"],
+            ["hcenter", AlignCenterVertical, ar ? "توسيط أفقي" : "Center horizontally"],
+            ["right", AlignEndVertical, ar ? "محاذاة لليمين" : "Align right"],
+            ["top", AlignStartHorizontal, ar ? "محاذاة للأعلى" : "Align top"],
+            ["vcenter", AlignCenterHorizontal, ar ? "توسيط عمودي" : "Center vertically"],
+            ["bottom", AlignEndHorizontal, ar ? "محاذاة للأسفل" : "Align bottom"],
+          ] as const).map(([how, Icon, label]) => (
+            <button
+              key={how}
+              title={label}
+              onClick={() => dispatch({ t: "align", ids: state.selection, how })}
+              className="flex items-center justify-center rounded-md border border-border/40 p-2 text-muted-foreground hover:border-accent/60 hover:text-foreground"
+            >
+              <Icon className="h-4 w-4" />
+            </button>
+          ))}
+        </div>
+        <div className="border-t border-border/50">
+          <MenuItem
+            disabled={state.selection.length < 3}
+            onClick={() => dispatch({ t: "distribute", ids: state.selection, axis: "h" })}
+            icon={AlignHorizontalSpaceAround}
+            label={ar ? "توزيع أفقي" : "Distribute horizontally"}
+          />
+          <MenuItem
+            disabled={state.selection.length < 3}
+            onClick={() => dispatch({ t: "distribute", ids: state.selection, axis: "v" })}
+            icon={AlignVerticalSpaceAround}
+            label={ar ? "توزيع عمودي" : "Distribute vertically"}
+          />
+        </div>
+      </Menu>
+
+      {/* Contextual object actions — only when something is selected */}
+      {sel && (
+        <div className="flex items-center rounded-lg border border-border/50 bg-background/40 p-0.5">
+          <Btn title={ar ? "تجميع (Ctrl+G)" : "Group (Ctrl+G)"} disabled={state.selection.length < 2} onClick={() => dispatch({ t: "group", ids: state.selection })}><Group className="h-4 w-4" /></Btn>
+          <Btn title={ar ? "فك التجميع" : "Ungroup"} onClick={() => state.selection[0] && dispatch({ t: "ungroup", id: state.selection[0] })}><Ungroup className="h-4 w-4" /></Btn>
+          <Btn title={ar ? "تكرار (Ctrl+D)" : "Duplicate (Ctrl+D)"} onClick={() => dispatch({ t: "duplicate", ids: state.selection })}><CopyPlus className="h-4 w-4" /></Btn>
+          <Btn title={ar ? "حذف" : "Delete"} onClick={() => dispatch({ t: "remove", ids: state.selection })}><Trash2 className="h-4 w-4" /></Btn>
+        </div>
+      )}
+
+      {/* Zoom */}
+      <div className="flex items-center gap-0.5 rounded-lg border border-border/50 bg-background/40 p-0.5">
+        <Btn title={ar ? "تصغير" : "Zoom out"} onClick={() => dispatch({ t: "zoom", value: state.zoom - 0.1 })}><ZoomOut className="h-4 w-4" /></Btn>
+        <select
+          title={ar ? "مستوى التكبير" : "Zoom level"}
+          value={zoomPreset}
+          onChange={(e) => (e.target.value === "fit" ? dispatch({ t: "fit" }) : dispatch({ t: "zoom", value: Number(e.target.value) }))}
+          className="rounded-md border border-border/60 bg-transparent px-1.5 py-1 text-[11px] text-muted-foreground outline-none"
+        >
+          {!PRESETS.includes(Math.round(state.zoom * 100)) && <option value={state.zoom}>{Math.round(state.zoom * 100)}%</option>}
+          {PRESETS.map((p) => <option key={p} value={p / 100}>{p}%</option>)}
+          <option value="fit">{ar ? "ملاءمة" : "Fit"}</option>
+        </select>
+        <Btn title={ar ? "تكبير" : "Zoom in"} onClick={() => dispatch({ t: "zoom", value: state.zoom + 0.1 })}><ZoomIn className="h-4 w-4" /></Btn>
+        <Btn title={ar ? "ملاءمة الشاشة" : "Fit to screen"} onClick={() => dispatch({ t: "fit" })}><Maximize className="h-4 w-4" /></Btn>
+      </div>
 
       <div className="flex-1" />
 
@@ -153,6 +189,75 @@ function download(name: string, url: string) {
   a.href = url;
   a.download = name;
   a.click();
+}
+
+function Menu({
+  label, icon: Icon, children, disabled, title,
+}: { label: string; icon: React.ElementType; children: React.ReactNode; disabled?: boolean; title?: string }) {
+  const ref = useRef<HTMLDetailsElement>(null);
+
+  useEffect(() => {
+    const close = (e: MouseEvent) => {
+      if (ref.current?.open && !ref.current.contains(e.target as Node)) ref.current.removeAttribute("open");
+    };
+    document.addEventListener("pointerdown", close);
+    return () => document.removeEventListener("pointerdown", close);
+  }, []);
+
+  if (disabled) {
+    return (
+      <span title={title} className="flex items-center gap-1 rounded-lg border border-border/50 px-2 py-1.5 text-[11px] text-muted-foreground/40">
+        <Icon className="h-4 w-4" />
+        {label}
+      </span>
+    );
+  }
+
+  return (
+    <details ref={ref} className="relative">
+      <summary
+        title={title}
+        className="flex cursor-pointer list-none items-center gap-1 rounded-lg border border-border/50 bg-background/40 px-2 py-1.5 text-[11px] text-muted-foreground hover:border-accent/60 hover:text-foreground"
+      >
+        <Icon className="h-4 w-4" />
+        {label}
+        <ChevronDown className="h-3 w-3 opacity-60" />
+      </summary>
+      <div
+        className="absolute start-0 z-30 mt-1 w-52 overflow-hidden rounded-lg border border-border/60 bg-card text-xs shadow-xl"
+        onClick={() => ref.current?.removeAttribute("open")}
+      >
+        {children}
+      </div>
+    </details>
+  );
+}
+
+function MenuItem({
+  icon: Icon, label, onClick, disabled,
+}: { icon: React.ElementType; label: string; onClick: () => void; disabled?: boolean }) {
+  return (
+    <button
+      disabled={disabled}
+      onClick={onClick}
+      className="flex w-full items-center gap-2 px-3 py-2 text-start hover:bg-muted/50 disabled:opacity-40 disabled:hover:bg-transparent"
+    >
+      <Icon className="h-3.5 w-3.5 shrink-0" />
+      <span className="truncate">{label}</span>
+    </button>
+  );
+}
+
+function MenuToggle({
+  icon: Icon, label, on, onClick,
+}: { icon: React.ElementType; label: string; on: boolean; onClick: () => void }) {
+  return (
+    <button onClick={onClick} className="flex w-full items-center gap-2 px-3 py-2 text-start hover:bg-muted/50">
+      <Icon className={cn("h-3.5 w-3.5 shrink-0", on && "text-accent")} />
+      <span className="flex-1 truncate">{label}</span>
+      <span className={cn("h-2 w-2 rounded-full", on ? "bg-accent" : "bg-border")} />
+    </button>
+  );
 }
 
 function Btn({ active, ...rest }: React.ButtonHTMLAttributes<HTMLButtonElement> & { active?: boolean }) {
