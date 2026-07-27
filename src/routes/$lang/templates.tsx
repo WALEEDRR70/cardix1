@@ -62,9 +62,12 @@ function TemplatesGallery() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [tab, setTab] = useState<"all" | "mine">("all");
   const [audience, setAudience] = useState<TemplateAudience | "all">("all");
-  const [targetId, setTargetId] = useState<string>("personal");
   const { data: account } = useAccount();
-  const workspaces = account?.managed ?? [];
+  /** Active context decides the destination: inside a workspace → workspace, otherwise personal. */
+  const activeWorkspace =
+    account?.accountType === "company"
+      ? (account.managed.find((m) => m.company_id === account.activeCompanyId) ?? account.managed[0] ?? null)
+      : null;
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setUid(data.session?.user.id ?? null));
@@ -77,7 +80,7 @@ function TemplatesGallery() {
   });
 
   function currentTarget(): TemplateTarget {
-    const ws = workspaces.find((m) => m.company_id === targetId);
+    const ws = activeWorkspace;
     if (!ws) return { kind: "personal" };
     return {
       kind: "company",
@@ -185,23 +188,12 @@ function TemplatesGallery() {
             ))}
           </div>
 
-          {uid && workspaces.length > 0 && (
-            <div className="mx-auto mb-8 flex w-fit max-w-full flex-wrap items-center justify-center gap-2 rounded-2xl border border-border/60 px-4 py-2.5">
-              <span className="text-[11px] text-muted-foreground">
-                {ar ? "حفظ القالب في:" : "Save template into:"}
+          {uid && (
+            <div className="mx-auto mb-8 flex w-fit max-w-full flex-wrap items-center justify-center gap-2 rounded-2xl border border-border/60 px-4 py-2.5 text-[11px]">
+              <span className="text-muted-foreground">{ar ? "سيتم الحفظ في:" : "Will be saved into:"}</span>
+              <span className="font-semibold">
+                {activeWorkspace ? activeWorkspace.company.name : ar ? "ملفي الشخصي" : "My personal profile"}
               </span>
-              <select
-                value={targetId}
-                onChange={(e) => setTargetId(e.target.value)}
-                className="rounded-full border border-border/60 bg-transparent px-3 py-1.5 text-xs font-semibold outline-none"
-              >
-                <option value="personal">{ar ? "ملفي الشخصي" : "My personal profile"}</option>
-                {workspaces.map((m) => (
-                  <option key={m.company_id} value={m.company_id}>
-                    {m.company.name}
-                  </option>
-                ))}
-              </select>
             </div>
           )}
         </div>
