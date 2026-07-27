@@ -197,7 +197,7 @@ export function NodeContent({ n, values }: { n: StudioNode; values?: Record<stri
 
 type Drag =
   | { mode: "move"; ids: string[]; startX: number; startY: number; origin: { id: string; x: number; y: number }[] }
-  | { mode: "resize"; id: string; handle: string; startX: number; startY: number; box: { x: number; y: number; w: number; h: number }; ratio: number }
+  | { mode: "resize"; id: string; handle: string; startX: number; startY: number; box: { x: number; y: number; w: number; h: number }; ratio: number; rot: number }
   | { mode: "rotate"; id: string; cx: number; cy: number };
 
 type Marquee = { x0: number; y0: number; x1: number; y1: number };
@@ -418,22 +418,36 @@ export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<H
         setSnapLines(lines);
 
       } else if (drag.mode === "resize") {
-        const dx = (e.clientX - drag.startX) / zoom;
-        const dy = (e.clientY - drag.startY) / zoom;
+        const sdx = (e.clientX - drag.startX) / zoom;
+        const sdy = (e.clientY - drag.startY) / zoom;
+        const rad = ((drag.rot || 0) * Math.PI) / 180;
+        const cos = Math.cos(rad), sin = Math.sin(rad);
+        // Work in the node's local (unrotated) frame so rotated elements resize
+        // along their own axes instead of skewing/jumping across the canvas.
+        const dx = sdx * cos + sdy * sin;
+        const dy = -sdx * sin + sdy * cos;
         const b = drag.box;
-        let { x, y, w, h } = b;
+        let w = b.w, h = b.h;
+        let ox = 0, oy = 0; // local top-left offset
         if (drag.handle.includes("e")) w = Math.max(16, b.w + dx);
         if (drag.handle.includes("s")) h = Math.max(16, b.h + dy);
-        if (drag.handle.includes("w")) { w = Math.max(16, b.w - dx); x = b.x + (b.w - w); }
-        if (drag.handle.includes("n")) { h = Math.max(16, b.h - dy); y = b.y + (b.h - h); }
+        if (drag.handle.includes("w")) { w = Math.max(16, b.w - dx); ox = b.w - w; }
+        if (drag.handle.includes("n")) { h = Math.max(16, b.h - dy); oy = b.h - h; }
         // Shift keeps the original aspect ratio on corner handles.
         if (e.shiftKey && drag.handle.length === 2) {
           h = Math.max(16, w / drag.ratio);
-          if (drag.handle.includes("n")) y = b.y + b.h - h;
+          if (drag.handle.includes("n")) oy = b.h - h;
         }
+        w = round(w); h = round(h);
+        // Keep the dragged element's opposite anchor visually fixed: compute the
+        // new centre from the local offset, rotated back into canvas space.
+        const lcx = ox + w / 2 - b.w / 2;
+        const lcy = oy + h / 2 - b.h / 2;
+        const cx = b.x + b.w / 2 + (lcx * cos - lcy * sin);
+        const cy = b.y + b.h / 2 + (lcx * sin + lcy * cos);
         dispatch({
           t: "update", ids: [drag.id], transient: true,
-          patch: { x: round(x), y: round(y), w: round(w), h: round(h) },
+          patch: { x: Math.round(cx - w / 2), y: Math.round(cy - h / 2), w, h },
         });
       } else if (drag.mode === "rotate") {
         const rect = wrapRef.current?.getBoundingClientRect();
@@ -659,7 +673,7 @@ export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<H
                     key={h}
                     onPointerDown={(e) => {
                       e.stopPropagation();
-                      setDrag({ mode: "resize", id: n.id, handle: h, startX: e.clientX, startY: e.clientY, box: { x: n.x, y: n.y, w: n.w, h: n.h }, ratio: n.w / Math.max(1, n.h) });
+                      setDrag({ mode: "resize", id: n.id, handle: h, startX: e.clientX, startY: e.clientY, box: { x: n.x, y: n.y, w: n.w, h: n.h }, ratio: n.w / Math.max(1, n.h), rot: n.rot || 0 });
                     }}
                     className="pointer-events-auto absolute h-2.5 w-2.5 rounded-full border border-accent bg-background"
                     style={handleStyle(h)}
