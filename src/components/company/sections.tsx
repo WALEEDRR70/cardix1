@@ -1,7 +1,7 @@
 // Shared enterprise workspace modules, used by /co/$slug/* routes and the
 // legacy /workspace/$id admin screen.
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import {
