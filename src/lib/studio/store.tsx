@@ -48,6 +48,7 @@ type Action =
   | { t: "paste" }
   | { t: "undo" }
   | { t: "redo" }
+  | { t: "seal"; before: StudioDoc }
   | { t: "zoom"; value: number }
   | { t: "pan"; x: number; y: number }
   | { t: "fit" }
@@ -262,6 +263,12 @@ function reducer(state: StudioState, a: Action): StudioState {
         clipboard: clones,
         selection: clones.map((c) => c.id),
       };
+    }
+    case "seal": {
+      // Seals a burst of transient edits (drag/resize/slider) into a single
+      // history entry using the document as it was before the burst started.
+      if (!a.before || a.before === state.doc) return state;
+      return { ...state, past: [...state.past, a.before].slice(-MAX_HISTORY), future: [] };
     }
     case "undo": {
       const prev = state.past[state.past.length - 1];

@@ -209,6 +209,7 @@ export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<H
   const viewportRef = useRef<HTMLDivElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [drag, setDrag] = useState<Drag | null>(null);
+  const dragBaseRef = useRef<typeof state.doc | null>(null);
   const [marquee, setMarquee] = useState<Marquee | null>(null);
   const [spaceDown, setSpaceDown] = useState(false);
   const [panning, setPanning] = useState(false);
@@ -357,6 +358,9 @@ export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<H
 
   useEffect(() => {
     if (!drag) return;
+    // Remember the document as it was when this drag started so the whole
+    // gesture collapses into one undo step.
+    if (!dragBaseRef.current) dragBaseRef.current = doc;
     function onMove(e: PointerEvent) {
       if (!drag) return;
       if (drag.mode === "move") {
@@ -465,8 +469,10 @@ export function CanvasStage({ stageRef, values }: { stageRef?: React.RefObject<H
     function onUp() {
       setDrag(null);
       setSnapLines({ x: [], y: [] });
-      // seal the transient edits into one history entry
-      dispatch({ t: "replace", doc });
+      // seal the transient edits into one history entry (pre-drag snapshot)
+      const before = dragBaseRef.current;
+      dragBaseRef.current = null;
+      if (before) dispatch({ t: "seal", before });
     }
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
