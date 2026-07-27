@@ -48,9 +48,11 @@ function ImageNode({ n, values }: { n: StudioNode; values?: Record<string, strin
         <img
           src={employeePlaceholder.url}
           alt=""
-          className="h-full w-full object-cover"
+          draggable={false}
+          className="pointer-events-none h-full w-full select-none object-cover"
           style={{ borderRadius: s.radius }}
         />
+
       );
     }
     return (
