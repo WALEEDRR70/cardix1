@@ -247,6 +247,7 @@ function Nav({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingC
 
 /* ---------------- Hero ---------------- */
 function Hero({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy; authed: boolean | null }) {
+  const heroAr = useI18n().lang === "ar";
   const wrapRef = useRef<HTMLDivElement>(null);
   const [mx, setMx] = useState(0);
   const [my, setMy] = useState(0);
@@ -296,8 +297,8 @@ function Hero({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: Landing
             {[
               { icon: QrCode, label: "QR" },
               { icon: Radio, label: "NFC" },
-              { icon: ScanLine, label: "AI scan" },
-              { icon: BarChart3, label: "Analytics" },
+              { icon: ScanLine, label: heroAr ? "مسح ذكي" : "AI scan" },
+              { icon: BarChart3, label: heroAr ? "تحليلات" : "Analytics" },
             ].map((f) => (
               <div key={f.label} className="glass flex items-center gap-2 rounded-2xl px-3 py-2.5 text-xs">
                 <f.icon className="h-4 w-4 text-accent" /> {f.label}
@@ -683,32 +684,33 @@ function FinalCta({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: Lan
 
 /* ---------------- Footer ---------------- */
 function Footer({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy }) {
+  const ar = useI18n().lang === "ar";
   const productLinks = [
-    { to: "/l/digital-business-card", label: "Digital Business Card" },
-    { to: "/l/nfc-business-card", label: "NFC Business Card" },
-    { to: "/l/qr-business-card", label: "QR Business Card" },
-    { to: "/l/business-card-scanner", label: "Card Scanner (OCR)" },
-    { to: "/l/business-card-templates", label: "Templates" },
-    { to: "/l/luxury-business-card", label: "Luxury Cards" },
+    { to: "/l/digital-business-card", label: ar ? "بطاقة أعمال رقمية" : "Digital Business Card" },
+    { to: "/l/nfc-business-card", label: ar ? "بطاقة NFC" : "NFC Business Card" },
+    { to: "/l/qr-business-card", label: ar ? "بطاقة QR" : "QR Business Card" },
+    { to: "/l/business-card-scanner", label: ar ? "ماسح البطاقات (OCR)" : "Card Scanner (OCR)" },
+    { to: "/l/business-card-templates", label: ar ? "القوالب" : "Templates" },
+    { to: "/l/luxury-business-card", label: ar ? "بطاقات فاخرة" : "Luxury Cards" },
   ];
   const toolLinks = [
-    { to: "/tools/qr-generator", label: "QR Code Generator" },
-    { to: "/tools/vcard-generator", label: "vCard (.vcf) Generator" },
-    { to: "/tools/email-signature", label: "Email Signature Builder" },
-    { to: "/tools", label: "All Free Tools" },
+    { to: "/tools/qr-generator", label: ar ? "مولّد رمز QR" : "QR Code Generator" },
+    { to: "/tools/vcard-generator", label: ar ? "مولّد vCard (.vcf)" : "vCard (.vcf) Generator" },
+    { to: "/tools/email-signature", label: ar ? "منشئ توقيع البريد" : "Email Signature Builder" },
+    { to: "/tools", label: ar ? "كل الأدوات المجانية" : "All Free Tools" },
   ];
   const professionLinks = [
-    { to: "/l/for-real-estate-agents", label: "For Real Estate" },
-    { to: "/l/for-doctors", label: "For Doctors" },
-    { to: "/l/for-lawyers", label: "For Lawyers" },
-    { to: "/l/for-sales-teams" as any, label: "For Sales Teams" },
+    { to: "/l/for-real-estate-agents", label: ar ? "للعقاريين" : "For Real Estate" },
+    { to: "/l/for-doctors", label: ar ? "للأطباء" : "For Doctors" },
+    { to: "/l/for-lawyers", label: ar ? "للمحامين" : "For Lawyers" },
+    { to: "/l/for-sales-teams" as any, label: ar ? "لفرق المبيعات" : "For Sales Teams" },
   ];
   const learnLinks = [
-    { to: "/blog", label: "Blog" },
-    { to: "/blog/digital-business-cards-2026-complete-guide", label: "2026 Complete Guide" },
-    { to: "/blog/nfc-vs-qr-which-is-better", label: "NFC vs QR" },
-    { to: "/blog/how-to-create-digital-business-card", label: "How to Create One" },
-    { to: "/blog/ai-ocr-scan-paper-cards", label: "AI OCR Explained" },
+    { to: "/blog", label: ar ? "المدونة" : "Blog" },
+    { to: "/blog/digital-business-cards-2026-complete-guide", label: ar ? "دليل 2026 الشامل" : "2026 Complete Guide" },
+    { to: "/blog/nfc-vs-qr-which-is-better", label: ar ? "NFC مقابل QR" : "NFC vs QR" },
+    { to: "/blog/how-to-create-digital-business-card", label: ar ? "كيف تنشئ بطاقتك" : "How to Create One" },
+    { to: "/blog/ai-ocr-scan-paper-cards", label: ar ? "شرح المسح الذكي" : "AI OCR Explained" },
   ];
   return (
     <footer className="border-t border-border/60">
@@ -724,10 +726,10 @@ function Footer({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy }
             <LocaleSwitcher compact />
           </div>
         </div>
-        <FooterCol title="Product" items={productLinks} />
-        <FooterCol title="Free Tools" items={toolLinks} />
-        <FooterCol title="For Professionals" items={professionLinks} />
-        <FooterCol title="Learn" items={learnLinks} />
+        <FooterCol title={ar ? "المنتج" : "Product"} items={productLinks} />
+        <FooterCol title={ar ? "أدوات مجانية" : "Free Tools"} items={toolLinks} />
+        <FooterCol title={ar ? "للمحترفين" : "For Professionals"} items={professionLinks} />
+        <FooterCol title={ar ? "تعلّم" : "Learn"} items={learnLinks} />
       </div>
       <div className="border-t border-border/60">
         <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center justify-between gap-3 px-5 py-5 text-[11px] text-muted-foreground lg:flex-row lg:px-10">
