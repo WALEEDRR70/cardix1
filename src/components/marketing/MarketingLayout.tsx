@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LangToggle as LocaleSwitcher } from "@/components/LangToggle";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
+import { MobileNav } from "@/components/marketing/MobileNav";
 import { isRtl, type Locale } from "@/i18n/config";
 
 export function MarketingLayout({ children, lang }: { children: ReactNode; lang?: Locale }) {
@@ -77,6 +78,7 @@ function MarketingNav() {
 
 
         <div className="flex items-center gap-2">
+          <MobileNav links={navLinks} authed={authed} />
           <div className="hidden md:flex items-center gap-2">
             <ThemeToggle compact />
             <LocaleSwitcher compact />
