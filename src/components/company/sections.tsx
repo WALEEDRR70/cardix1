@@ -620,7 +620,9 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
 /* ----------------------------- departments ---------------------------- */
 
 export function DepartmentsTab({ company, canEdit }: { company: Company; canEdit: boolean }) {
-  const { w } = useWs();
+  const { w, lang } = useWs();
+  const ar = lang === "ar";
+
   const qc = useQueryClient();
   const [name, setName] = useState("");
 
