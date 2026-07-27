@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "@/lib/nav";
 import { useQuery } from "@tanstack/react-query";
 import { Wand2, Plus, Loader2, Trash2 } from "lucide-react";
