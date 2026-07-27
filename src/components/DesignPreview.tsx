@@ -7,7 +7,7 @@ export function DesignPreview({
   doc,
   values,
   className,
-  radius = 20,
+  radius,
 }: {
   doc: StudioDoc;
   values?: Record<string, string>;
