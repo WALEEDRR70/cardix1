@@ -94,8 +94,9 @@ function TemplatesGallery() {
 
   return (
     <MarketingLayout>
-      <section className="mx-auto w-full max-w-6xl px-5 py-16">
-        <div className="mb-10 text-center">
+      <section className="mx-auto w-full max-w-6xl px-5 py-10 sm:py-16">
+        <div className="mb-7 text-center sm:mb-10">
+
           <span className="inline-flex items-center gap-2 rounded-full border border-border/60 px-3 py-1 text-[11px] text-muted-foreground">
             <Sparkles className="h-3.5 w-3.5" />
             {ar ? "معرض القوالب" : "Template gallery"}
