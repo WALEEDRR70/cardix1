@@ -358,7 +358,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
       .from("company_invitations")
       .insert({
         company_id: company.id,
-        email: payload.email.trim().toLowerCase(),
+        email: payload.email.trim() ? payload.email.trim().toLowerCase() : null,
         name: payload.name || null,
         job_title: payload.job_title || null,
         phone: payload.phone || null,
@@ -369,13 +369,13 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
         invited_by: userId,
         expires_at: new Date(Date.now() + 14 * 864e5).toISOString(),
       })
-      .select("token")
+      .select("id, token")
       .single();
     if (error) throw error;
     void logCompanyAction(company.id, userId, "invitation.created", "company_invitations", {
-      label: payload.email || payload.name,
+      label: payload.email || payload.name || "link",
     });
-    return inviteUrl(data.token);
+    return { id: data.id, token: data.token, url: inviteUrl(data.token) };
   }
 
 
@@ -383,8 +383,8 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
     e.preventDefault();
     setBusy(true);
     try {
-      const url = await createInvite(inv);
-      setLastLink(url);
+      const created = await createInvite(inv);
+      setLastLink(created.url);
       setInv({ name: "", email: "", job_title: "", department_id: "", phone: "", role: "employee", template_id: "" });
       qc.invalidateQueries({ queryKey: ["company-invites", company.id] });
       toast.success(w.invitationCreated);
@@ -476,8 +476,8 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
           <form onSubmit={submitInvite} className="space-y-3">
             <p className="text-sm font-semibold">{w.inviteEmployee}</p>
             <div className="grid gap-3 sm:grid-cols-2">
-              <TextField label={w.employeeName} value={inv.name} onChange={(v) => setInv({ ...inv, name: v })} />
-              <TextField label={w.corporateEmail} type="email" value={inv.email} onChange={(v) => setInv({ ...inv, email: v })} />
+              <TextField label={`${w.employeeName} (${ar ? "اختياري" : "optional"})`} value={inv.name} onChange={(v) => setInv({ ...inv, name: v })} />
+              <TextField label={`${w.corporateEmail} (${ar ? "اختياري" : "optional"})`} type="email" value={inv.email} onChange={(v) => setInv({ ...inv, email: v })} />
               <TextField label={w.jobTitle} value={inv.job_title} onChange={(v) => setInv({ ...inv, job_title: v })} />
               <TextField label={w.phone} value={inv.phone} onChange={(v) => setInv({ ...inv, phone: v })} />
               <div>
@@ -592,8 +592,8 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
         {(invites ?? []).map((i) => (
           <div key={i.id} className="flex items-center gap-2 rounded-2xl border border-border/60 bg-card/60 px-3 py-2.5">
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium">{i.name || i.email}</p>
-              <p className="truncate text-[11px] text-muted-foreground">{i.email}</p>
+              <p className="truncate text-sm font-medium">{i.name || i.email || (ar ? "رابط دعوة" : "Invite link")}</p>
+              <p className="truncate text-[11px] text-muted-foreground">{i.email || inviteUrl(i.token)}</p>
             </div>
             <button onClick={() => { navigator.clipboard.writeText(inviteUrl(i.token)); toast.success(w.copied); }} className="rounded-lg p-2 hover:bg-secondary" aria-label={w.copyLink}>
               <Copy className="h-3.5 w-3.5" />
