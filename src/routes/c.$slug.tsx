@@ -74,6 +74,7 @@ type CardRow = {
   template: string | null;
   is_published: boolean;
   socials: Record<string, string> | null;
+  design?: unknown;
 };
 
 function PublicCard() {
@@ -101,7 +102,7 @@ export function PublicCardView({ slug }: { slug: string }) {
       const { data, error } = await supabase
         .from("cards")
         .select(
-          "id, slug, name, title, company, bio, phone, whatsapp, email, website, address, avatar_url, cover_url, accent_color, template, socials, is_published, is_active, is_verified, card_type, company_id, department_id, extension, working_hours, languages",
+          "id, slug, name, title, company, bio, phone, whatsapp, email, website, address, avatar_url, cover_url, accent_color, template, socials, design, is_published, is_active, is_verified, card_type, company_id, department_id, extension, working_hours, languages",
         )
         .eq("slug", slug)
         .eq("is_published", true)
