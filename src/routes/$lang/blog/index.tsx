@@ -53,7 +53,7 @@ function BlogIndex() {
     <MarketingLayout lang={locale}>
       <section className="relative overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.18),transparent_60%)]" />
-        <div className="relative mx-auto max-w-5xl px-6 py-20 md:py-28">
+        <div className="relative mx-auto max-w-5xl px-5 py-12 sm:px-6 md:py-28">
           <Link to="/" className="text-xs uppercase tracking-widest text-primary/80 hover:text-primary">Cardixn · {isAr ? "المدونة" : "Blog"}</Link>
           <h1 className="mt-4 text-4xl md:text-6xl font-bold leading-tight tracking-tight bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-transparent">
             {isAr ? "رؤى وأدلة عن البطاقات الرقمية" : "Insights & playbooks for the digital-card era"}
@@ -66,7 +66,7 @@ function BlogIndex() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-6 py-16">
+      <section className="mx-auto max-w-5xl px-5 py-10 sm:px-6 md:py-16">
         <div className="grid gap-6 md:grid-cols-2">
           {posts.map((post) => {
             const c = getPostCopy(post, locale);

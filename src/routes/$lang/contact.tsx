@@ -60,7 +60,7 @@ function ContactPage() {
     <MarketingLayout lang={locale}>
       <section className="relative overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.18),transparent_60%)]" />
-        <div className="relative mx-auto max-w-4xl px-6 py-20 md:py-28">
+        <div className="relative mx-auto max-w-4xl px-5 py-12 sm:px-6 md:py-28">
           <span className="text-xs uppercase tracking-widest text-primary/80">Cardixn · {isAr ? "تواصل" : "Contact"}</span>
           <h1 className="mt-4 text-4xl md:text-6xl font-bold leading-tight tracking-tight bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-transparent">
             {isAr ? "نحن هنا للمساعدة" : "We'd love to hear from you"}
@@ -71,7 +71,7 @@ function ContactPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 py-16 grid gap-10 lg:grid-cols-[1.1fr_1fr]">
+      <section className="mx-auto max-w-6xl px-5 py-10 sm:px-6 md:py-16 grid gap-10 lg:grid-cols-[1.1fr_1fr]">
         <div className="rounded-3xl border border-border/60 bg-card/40 backdrop-blur p-7">
           <h2 className="text-xl font-semibold">{isAr ? "أرسل رسالة" : "Send a message"}</h2>
           <div className="mt-6 space-y-4">
