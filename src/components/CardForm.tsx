@@ -209,6 +209,9 @@ export function CardForm({
         </div>
       </section>
 
+      {templatesSlot}
+
+
 
       {/* Accent color */}
       <section hidden={!!locked?.accent_color}>
