@@ -16,6 +16,7 @@ import { Route as LangIndexRouteImport } from './routes/$lang/index'
 import { Route as SitemapChar123langChar125DotxmlRouteImport } from './routes/sitemap/{$lang}[.]xml'
 import { Route as JoinTokenRouteImport } from './routes/join.$token'
 import { Route as CSlugRouteImport } from './routes/c.$slug'
+import { Route as BillingReturnRouteImport } from './routes/billing.return'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as LangTemplatesRouteImport } from './routes/$lang/templates'
 import { Route as LangPricingRouteImport } from './routes/$lang/pricing'
@@ -92,6 +93,11 @@ const JoinTokenRoute = JoinTokenRouteImport.update({
 const CSlugRoute = CSlugRouteImport.update({
   id: '/c/$slug',
   path: '/c/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BillingReturnRoute = BillingReturnRouteImport.update({
+  id: '/billing/return',
+  path: '/billing/return',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
@@ -330,6 +336,7 @@ export interface FileRoutesByFullPath {
   '/$lang/pricing': typeof LangPricingRoute
   '/$lang/templates': typeof LangTemplatesRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/billing/return': typeof BillingReturnRoute
   '/c/$slug': typeof CSlugRoute
   '/join/$token': typeof JoinTokenRoute
   '/sitemap/{$lang}.xml': typeof SitemapChar123langChar125DotxmlRoute
@@ -379,6 +386,7 @@ export interface FileRoutesByTo {
   '/$lang/pricing': typeof LangPricingRoute
   '/$lang/templates': typeof LangTemplatesRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/billing/return': typeof BillingReturnRoute
   '/c/$slug': typeof CSlugRoute
   '/join/$token': typeof JoinTokenRoute
   '/sitemap/{$lang}.xml': typeof SitemapChar123langChar125DotxmlRoute
@@ -428,6 +436,7 @@ export interface FileRoutesById {
   '/$lang/pricing': typeof LangPricingRoute
   '/$lang/templates': typeof LangTemplatesRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/billing/return': typeof BillingReturnRoute
   '/c/$slug': typeof CSlugRoute
   '/join/$token': typeof JoinTokenRoute
   '/sitemap/{$lang}.xml': typeof SitemapChar123langChar125DotxmlRoute
@@ -479,6 +488,7 @@ export interface FileRouteTypes {
     | '/$lang/pricing'
     | '/$lang/templates'
     | '/auth/callback'
+    | '/billing/return'
     | '/c/$slug'
     | '/join/$token'
     | '/sitemap/{$lang}.xml'
@@ -528,6 +538,7 @@ export interface FileRouteTypes {
     | '/$lang/pricing'
     | '/$lang/templates'
     | '/auth/callback'
+    | '/billing/return'
     | '/c/$slug'
     | '/join/$token'
     | '/sitemap/{$lang}.xml'
@@ -576,6 +587,7 @@ export interface FileRouteTypes {
     | '/$lang/pricing'
     | '/$lang/templates'
     | '/auth/callback'
+    | '/billing/return'
     | '/c/$slug'
     | '/join/$token'
     | '/sitemap/{$lang}.xml'
@@ -620,6 +632,7 @@ export interface RootRouteChildren {
   LangRouteRoute: typeof LangRouteRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
+  BillingReturnRoute: typeof BillingReturnRoute
   CSlugRoute: typeof CSlugRoute
   JoinTokenRoute: typeof JoinTokenRoute
   SitemapChar123langChar125DotxmlRoute: typeof SitemapChar123langChar125DotxmlRoute
@@ -677,6 +690,13 @@ declare module '@tanstack/react-router' {
       path: '/c/$slug'
       fullPath: '/c/$slug'
       preLoaderRoute: typeof CSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/billing/return': {
+      id: '/billing/return'
+      path: '/billing/return'
+      fullPath: '/billing/return'
+      preLoaderRoute: typeof BillingReturnRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/callback': {
@@ -1113,6 +1133,7 @@ const rootRouteChildren: RootRouteChildren = {
   LangRouteRoute: LangRouteRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   AuthCallbackRoute: AuthCallbackRoute,
+  BillingReturnRoute: BillingReturnRoute,
   CSlugRoute: CSlugRoute,
   JoinTokenRoute: JoinTokenRoute,
   SitemapChar123langChar125DotxmlRoute: SitemapChar123langChar125DotxmlRoute,
