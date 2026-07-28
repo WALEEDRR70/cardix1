@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import {
   BadgeCheck, Building2, Plus, Copy, Trash2, Upload, Lock, Sparkles, MapPin, Users, MailPlus, BarChart3,
+  Pencil, Check, X,
 } from "lucide-react";
 import {
   useWs, roleLabel, statusLabel, slugify,
