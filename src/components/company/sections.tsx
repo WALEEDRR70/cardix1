@@ -1313,7 +1313,7 @@ function MemberItem({
         </div>
       </div>
 
-      </div>
+
 
       {open && (
         <div className="border-t border-border/60 bg-background/40 px-4 py-4">
