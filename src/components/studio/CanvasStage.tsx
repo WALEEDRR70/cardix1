@@ -77,17 +77,32 @@ function ImageNode({ n, values }: { n: StudioNode; values?: Record<string, strin
 
   return (
     <img
+      key={src}
       src={src}
       alt=""
       draggable={false}
+      loading="eager"
+      decoding="async"
+      referrerPolicy="no-referrer"
       className="pointer-events-none h-full w-full select-none"
       style={{
         borderRadius: s.radius,
         objectFit: s.imageFit ?? (n.imageSource === "logo" ? "contain" : "cover"),
       }}
+      onError={(e) => {
+        const img = e.currentTarget;
+        // Transient/CDN failures: retry once with a cache-busting param before hiding.
+        if (img.dataset.retried !== "1") {
+          img.dataset.retried = "1";
+          img.src = src.includes("?") ? `${src}&_r=1` : `${src}?_r=1`;
+          return;
+        }
+        img.style.visibility = "hidden";
+      }}
     />
   );
 }
+
 
 export function NodeContent({ n, values }: { n: StudioNode; values?: Record<string, string> }) {
   const s = n.style;

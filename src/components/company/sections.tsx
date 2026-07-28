@@ -15,6 +15,7 @@ import {
 } from "@/lib/workspace";
 import { TEMPLATE_META } from "@/components/CardPreview";
 import { logCompanyAction } from "@/components/company/audit";
+import { prepareImageFile, canDisplayImage } from "@/lib/image-prep";
 
 /* ---------------------------- shared bits ---------------------------- */
 
@@ -257,14 +258,31 @@ export function LogoUpload({ label, value, onChange, disabled, companyId }: {
   label: string; value: string; onChange: (v: string) => void; disabled?: boolean; companyId: string;
 }) {
   const [busy, setBusy] = useState(false);
-  async function upload(file: File) {
+  async function upload(input: File) {
     setBusy(true);
+    let file = input;
+    // Validate + normalise before upload: rejects undecodable files and shrinks
+    // oversized logos so they always paint inside the card.
+    try {
+      const prepared = await prepareImageFile(input);
+      file = prepared.file;
+      if (prepared.converted) toast.info("تم تحسين حجم/صيغة الشعار تلقائيًا");
+    } catch {
+      setBusy(false);
+      toast.error("صيغة الصورة غير مدعومة — استخدم PNG أو JPG أو SVG");
+      return;
+    }
     const path = `${companyId}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, "")}`;
     const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
     if (error) { setBusy(false); toast.error(error.message); return; }
     const { data } = await supabase.storage.from("avatars").createSignedUrl(path, 60 * 60 * 24 * 365 * 5);
+    if (!data?.signedUrl) { setBusy(false); toast.error("تعذر إنشاء رابط الشعار"); return; }
+    // Automatic display check — confirm the stored URL really renders.
+    const ok = await canDisplayImage(data.signedUrl);
     setBusy(false);
-    if (data?.signedUrl) onChange(data.signedUrl);
+    if (!ok) { toast.error("تعذر عرض الشعار بعد الرفع، جرّب صورة أخرى"); return; }
+    onChange(data.signedUrl);
+    toast.success("تم رفع الشعار والتحقق من ظهوره");
   }
   return (
     <div>
