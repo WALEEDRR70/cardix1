@@ -11,6 +11,8 @@ import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
 import { TemplatesStrip } from "@/components/TemplatesStrip";
+import { OnboardingChecklist } from "@/components/OnboardingChecklist";
+
 
 import { QRCodeSVG } from "qrcode.react";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
