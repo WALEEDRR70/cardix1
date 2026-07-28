@@ -6,6 +6,7 @@ import { Lock, Pencil, Trash2, Wand2, Unlock, Copy, Loader2, Check, X } from "lu
 import { toast } from "sonner";
 import { Link } from "@/lib/nav";
 import { supabase } from "@/integrations/supabase/client";
+import { renameCompanyDesign as renameDesign } from "@/lib/workspace.functions";
 import { DesignPreview } from "@/components/DesignPreview";
 import type { StudioDoc } from "@/lib/studio/types";
 import {
@@ -60,12 +61,17 @@ export function DepartmentDesignCard({
   async function saveName() {
     const next = draftName.trim();
     if (!next || next === design.name) { setRenaming(false); return; }
-    const { error } = await supabase.from("company_templates").update({ name: next }).eq("id", design.id);
-    if (error) { toast.error(error.message); return; }
-    setRenaming(false);
-    qc.invalidateQueries({ queryKey: ["department-designs", companyId] });
-    qc.invalidateQueries({ queryKey: ["company-templates", companyId] });
+    try {
+      await renameDesign({ data: { designId: design.id, name: next } });
+      setRenaming(false);
+      qc.invalidateQueries({ queryKey: ["department-designs", companyId] });
+      qc.invalidateQueries({ queryKey: ["company-templates", companyId] });
+      toast.success(ar ? "تم تحديث الرتبة الوظيفية" : "Job title updated");
+    } catch {
+      toast.error(ar ? "تعذّر الحفظ" : "Could not save");
+    }
   }
+
 
   // One-time invite link that pre-assigns this department + role + design.
   async function copyInviteLink() {
