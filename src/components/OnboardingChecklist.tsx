@@ -51,6 +51,15 @@ export function OnboardingChecklist({ cards, userId }: { cards: Card[]; userId: 
   const [hidden, setHidden] = useState(false);
   const c = lang === "ar" ? COPY.ar : COPY.en;
 
+  const { data: profile } = useQuery({
+    queryKey: ["onboarding-profile", userId],
+    queryFn: async () => {
+      const { data } = await supabase.from("profiles").select("onboarded_at").eq("id", userId).maybeSingle();
+      return data ?? null;
+    },
+    staleTime: 60_000,
+  });
+
   const first = cards[0];
   const hasCard = !!first;
   const hasDetails =
@@ -58,7 +67,8 @@ export function OnboardingChecklist({ cards, userId }: { cards: Card[]; userId: 
   const shared = !!first?.is_published && (first?.view_count ?? 0) > 0;
 
   const done = [hasCard, hasDetails, shared];
-  if (hidden || done.every(Boolean)) return null;
+  if (hidden || profile?.onboarded_at || done.every(Boolean)) return null;
+
 
   async function dismiss() {
     setHidden(true);
