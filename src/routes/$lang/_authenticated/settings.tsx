@@ -6,6 +6,7 @@ import { useTheme } from "@/lib/theme";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { LocaleSwitcher } from "@/components/LangToggle";
 import { InstallAppButton } from "@/components/InstallAppButton";
+import { SubscriptionCard } from "@/components/billing/SubscriptionCard";
 
 import { LogOut, Moon, Sun, User, Sparkles, ChevronRight } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -56,6 +57,8 @@ function Settings() {
             <ThemeChip active={theme === "light"} onClick={() => setTheme("light")} icon={<Sun className="h-4 w-4" />} label={t.light} />
           </div>
         </Section>
+
+        <SubscriptionCard ar={typeof document !== "undefined" && document.documentElement.lang === "ar"} />
 
         {/* Language */}
         <Section title={t.language}>
