@@ -16,6 +16,7 @@ import {
   applyTemplateToCard,
   deleteTemplate,
   listFavoriteTemplates,
+  listPopularTemplates,
   listMyTemplates,
   listPublicTemplates,
   useTemplate,
@@ -92,6 +93,14 @@ function TemplatesGallery() {
           ? listFavoriteTemplates(uid!)
           : listPublicTemplates(search, audience),
     enabled: tab === "all" || !!uid,
+  });
+
+  /** When the favourites tab is empty we suggest the most-liked community designs. */
+  const { data: suggestions = [] } = useQuery({
+    queryKey: ["popular-templates"],
+    queryFn: () => listPopularTemplates(24),
+    enabled: tab === "saved" && !isLoading && templates.length === 0,
+    staleTime: 60_000,
   });
 
   function currentTarget(): TemplateTarget {
@@ -249,7 +258,7 @@ function TemplatesGallery() {
           <div className="grid place-items-center py-20">
             <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
           </div>
-        ) : templates.length === 0 ? (
+        ) : templates.length === 0 && !(tab === "saved" && suggestions.length > 0) ? (
           <p className="py-20 text-center text-sm text-muted-foreground">
             {tab === "saved"
               ? ar
@@ -264,8 +273,16 @@ function TemplatesGallery() {
                 : "No templates published yet."}
           </p>
         ) : (
+          <>
+          {tab === "saved" && templates.length === 0 && (
+            <p className="mb-5 text-center text-xs text-muted-foreground">
+              {ar
+                ? "لم تحفظ أي قالب بعد — هذه أكثر القوالب إعجاباً، اضغط على القلب لحفظها."
+                : "No favourites yet — here are the most-liked designs, tap the heart to keep one."}
+            </p>
+          )}
           <ul className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-            {templates.map((tpl) => (
+            {(tab === "saved" && templates.length === 0 ? suggestions : templates).map((tpl) => (
               <li
                 key={tpl.id}
                 className="group overflow-hidden rounded-3xl border border-border/60 bg-card/50 p-4 transition hover:border-accent/60"
@@ -307,7 +324,12 @@ function TemplatesGallery() {
                       {busyId === tpl.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Wand2 className="h-3.5 w-3.5" />}
                       {ar ? "استخدام القالب" : "Use template"}
                     </button>
-                    <FavoriteTemplateButton templateId={tpl.id} userId={uid} ar={ar} />
+                    <FavoriteTemplateButton
+                      templateId={tpl.id}
+                      userId={uid}
+                      ar={ar}
+                      likeCount={(tpl as { like_count?: number }).like_count ?? 0}
+                    />
                     {uid === tpl.author_id && (
                       <button
                         onClick={() => onDelete(tpl)}
@@ -322,6 +344,7 @@ function TemplatesGallery() {
               </li>
             ))}
           </ul>
+          </>
         )}
       </section>
 
