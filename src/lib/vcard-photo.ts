@@ -34,7 +34,8 @@ export async function avatarPhotoLine(url?: string | null): Promise<string> {
     const dataUrl = canvas.toDataURL("image/jpeg", 0.82);
     const b64 = dataUrl.split(",")[1];
     if (!b64) return "";
-    return fold(`PHOTO;ENCODING=b;TYPE=JPEG:${b64}`);
+    // iOS Contacts needs ENCODING=BASE64 plus a blank line terminating the photo block.
+    return fold(`PHOTO;ENCODING=BASE64;TYPE=JPEG:${b64}`) + "\r\n";
   } catch {
     return "";
   }
