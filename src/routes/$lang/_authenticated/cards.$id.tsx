@@ -11,6 +11,8 @@ import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 import { useWs } from "@/lib/workspace";
 import { lockedFieldsFromDesign } from "@/lib/company-designs";
+import { ApplyTemplatesStrip } from "@/components/ApplyTemplatesStrip";
+
 
 export const Route = createFileRoute("/$lang/_authenticated/cards/$id")({
   head: () => ({ meta: [{ title: "Edit card — Cardixn" }] }),
