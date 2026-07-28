@@ -66,6 +66,9 @@ export function CardForm({
   department?: string | null;
   /** Extra picker rendered right under the built-in template row (designer templates slider). */
   templatesSlot?: React.ReactNode;
+  /** Called when the user picks a built-in template while a Studio design is applied. */
+  onClearDesign?: () => void;
+
 
 }) {
   const { t, lang } = useI18n();
