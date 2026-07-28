@@ -58,6 +58,8 @@ export function CardForm({
   /** Saved Studio design for this card; when present the live preview shows it and the template picker is hidden. */
   design?: unknown;
   slugPrefix?: string;
+  /** Department name assigned by the company — shown in the live design preview. */
+  department?: string | null;
 }) {
   const { t, lang } = useI18n();
   const [data, setData] = useState<CardFormData>(initial);
