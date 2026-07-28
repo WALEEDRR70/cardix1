@@ -46,6 +46,8 @@ export function CardForm({
   design,
   slugPrefix = "/c/",
   department,
+  templatesSlot,
+
 }: {
   initial: CardFormData;
   onSubmit: (data: CardFormData, extra?: { design?: unknown }) => Promise<void>;
@@ -60,6 +62,9 @@ export function CardForm({
   slugPrefix?: string;
   /** Department name assigned by the company — shown in the live design preview. */
   department?: string | null;
+  /** Extra picker rendered right under the built-in template row (designer templates slider). */
+  templatesSlot?: React.ReactNode;
+
 }) {
   const { t, lang } = useI18n();
   const [data, setData] = useState<CardFormData>(initial);
@@ -208,6 +213,9 @@ export function CardForm({
           })}
         </div>
       </section>
+
+      {templatesSlot}
+
 
 
       {/* Accent color */}
