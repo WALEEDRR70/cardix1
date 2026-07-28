@@ -46,8 +46,9 @@ export function StudioToolbar({
   }
 
   return (
-    <header className="flex items-center gap-1.5 border-b border-border/60 bg-card/50 px-3 py-2">
-      <span className="me-1 max-w-[180px] truncate text-sm font-semibold">{title || (ar ? "بطاقة بدون عنوان" : "Untitled card")}</span>
+    <header className="no-scrollbar flex items-center gap-1.5 overflow-x-auto border-b border-border/60 bg-card/50 px-3 py-2 [&>*]:shrink-0">
+      <span className="me-1 hidden max-w-[180px] truncate text-sm font-semibold sm:inline">{title || (ar ? "بطاقة بدون عنوان" : "Untitled card")}</span>
+
 
       {/* Tools */}
       <div className="flex items-center rounded-lg border border-border/50 bg-background/40 p-0.5">
