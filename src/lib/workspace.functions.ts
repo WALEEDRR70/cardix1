@@ -88,6 +88,7 @@ export const acceptInvitation = createServerFn({ method: "POST" })
           .eq("id", invite.department_id)
           .maybeSingle()
       : { data: null };
+    const departmentName = dept?.name ?? null;
     const jobTitle = invite.job_title ?? tpl?.name ?? dept?.name ?? null;
 
     // The company owner must never be downgraded by accepting an invite link.
