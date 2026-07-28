@@ -6,6 +6,7 @@ import { Lock, Pencil, Trash2, Wand2, Unlock, Copy, Loader2, Check, X } from "lu
 import { toast } from "sonner";
 import { Link } from "@/lib/nav";
 import { supabase } from "@/integrations/supabase/client";
+import { renameCompanyDesign as renameDesign } from "@/lib/workspace.functions";
 import { DesignPreview } from "@/components/DesignPreview";
 import type { StudioDoc } from "@/lib/studio/types";
 import {
