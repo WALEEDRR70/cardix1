@@ -32,6 +32,8 @@ import { toPng } from "html-to-image";
 import QRCode from "qrcode";
 import { localizedPath } from "@/lib/locale-routing";
 import { fetchPublicCardMeta, publicCardHead } from "@/lib/public-card-meta";
+import { avatarPhotoLine } from "@/lib/vcard-photo";
+
 
 
 export const Route = createFileRoute("/c/$slug")({
@@ -184,27 +186,38 @@ export function PublicCardView({ slug }: { slug: string }) {
   const publicUrl = typeof window !== "undefined" ? window.location.href : `/c/${slug}`;
   const isRTL = lang === "ar";
 
-  function vcard() {
+  async function vcard() {
     const socialLines = socialEntries.map(([id, v]) => {
       const meta = SOCIALS_BY_ID[id];
       return `X-SOCIALPROFILE;TYPE=${meta.name}:${meta.toUrl(v)}`;
     });
+    const esc = (s: string) => s.replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/([,;])/g, "\\$1");
+    const parts = (card!.name || "").trim().split(/\s+/);
+    const given = parts[0] ?? "";
+    const family = parts.length > 1 ? parts.slice(1).join(" ") : "";
+    const photoLine = await avatarPhotoLine(card!.avatar_url);
+
     const vcf = [
       "BEGIN:VCARD",
       "VERSION:3.0",
-      `FN:${card!.name}`,
-      card!.title && `TITLE:${card!.title}`,
-      card!.company && `ORG:${card!.company}`,
+      `N:${esc(family)};${esc(given)};;;`,
+      `FN:${esc(card!.name)}`,
+      card!.title && `TITLE:${esc(card!.title)}`,
+      card!.company && `ORG:${esc(card!.company)}`,
       card!.phone && `TEL;TYPE=CELL:${card!.phone}`,
-      card!.email && `EMAIL:${card!.email}`,
+      card!.whatsapp && card!.whatsapp !== card!.phone && `TEL;TYPE=WORK:${card!.whatsapp}`,
+      card!.email && `EMAIL;TYPE=INTERNET:${card!.email}`,
       card!.website && `URL:${card!.website}`,
-      card!.address && `ADR:;;${card!.address};;;;`,
+      card!.address && `ADR;TYPE=WORK:;;${esc(card!.address)};;;;`,
+      card!.bio && `NOTE:${esc(card!.bio)}`,
+      `URL;TYPE=Cardixn:https://cardixn.com/c/${card!.slug}`,
       ...socialLines,
+      photoLine,
       "END:VCARD",
     ]
       .filter(Boolean)
-      .join("\n");
-    const blob = new Blob([vcf], { type: "text/vcard" });
+      .join("\r\n");
+    const blob = new Blob([vcf], { type: "text/vcard;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -213,6 +226,7 @@ export function PublicCardView({ slug }: { slug: string }) {
     URL.revokeObjectURL(url);
     supabase.from("card_events").insert({ card_id: card!.id, event_type: "save" });
   }
+
 
   async function saveToVault() {
     const { data: userRes } = await supabase.auth.getUser();
