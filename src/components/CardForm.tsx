@@ -162,7 +162,7 @@ export function CardForm({
       <div className="space-y-6 lg:order-1">
         {/* Live preview (mobile: inline top) */}
         <div className="flex justify-center lg:hidden">
-          <CardPreview card={{ ...data, design: previewDesign }} size="md" />
+          <CardPreview card={{ ...data, department, design: previewDesign }} size="md" />
         </div>
 
 
@@ -422,7 +422,7 @@ export function CardForm({
           <div className="relative">
             <div className="absolute -inset-6 rounded-[2.5rem] opacity-40 blur-2xl" style={{ background: "var(--gradient-mesh)" }} />
             <div className="relative flex justify-center">
-              <CardPreview card={{ ...data, design: previewDesign }} size="lg" />
+              <CardPreview card={{ ...data, department, design: previewDesign }} size="lg" />
             </div>
           </div>
           <p className="text-center text-[11px] uppercase tracking-[0.25em] text-muted-foreground">{t.livePreview}</p>
