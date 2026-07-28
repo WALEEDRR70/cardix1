@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import { useI18n } from "@/lib/i18n";
 import { CardPreview, TEMPLATE_META, type TemplateId } from "@/components/CardPreview";
 import { useServerFn } from "@tanstack/react-start";
