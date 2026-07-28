@@ -3,8 +3,9 @@ import { Check, IdCard, Image as ImageIcon, Share2, X } from "lucide-react";
 import { Link } from "@/lib/nav";
 import { useI18n } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { accountQueryKey } from "@/lib/account";
+
 
 type Card = {
   id: string;
