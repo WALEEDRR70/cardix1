@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { StaticCardPreview } from "@/components/studio/StaticCardPreview";
 import { CardPreview } from "@/components/CardPreview";
+import { cardDesignValues } from "@/components/DesignPreview";
 import { demoCards } from "@/lib/demo-cards";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "@/lib/nav";
@@ -86,6 +87,26 @@ function TemplatesGallery() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setUid(data.session?.user.id ?? null));
   }, []);
+
+  /** The user's own card — template previews are filled with this data so they see the real result. */
+  const { data: myCard } = useQuery({
+    queryKey: ["preview-card", uid],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("cards")
+        .select("*")
+        .eq("user_id", uid!)
+        .order("is_published", { ascending: false })
+        .order("updated_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      return data;
+    },
+    enabled: !!uid,
+    staleTime: 60_000,
+  });
+
+  const previewValues = myCard ? cardDesignValues(myCard) : undefined;
 
   const { data: templates = [], isLoading } = useQuery({
     queryKey:
@@ -305,7 +326,14 @@ function TemplatesGallery() {
                   />
                 </div>
                 <div className="flex justify-center transition group-hover:scale-[1.02]">
-                  <CardPreview card={card} size="md" />
+                  <CardPreview
+                    card={
+                      myCard
+                        ? { ...myCard, design: null, template: card.template, accent_color: myCard.accent_color || card.accent_color }
+                        : card
+                    }
+                    size="md"
+                  />
                 </div>
                 <button
                   onClick={() => navigate({ to: uid ? "/cards/new" : "/auth" })}
@@ -351,7 +379,7 @@ function TemplatesGallery() {
                   className="group overflow-hidden rounded-3xl border border-border/60 bg-card/50 p-4 transition hover:border-accent/60"
                 >
                   <div className="grid place-items-center overflow-hidden rounded-2xl bg-muted/20 p-3">
-                    <StaticCardPreview doc={tpl.design as unknown as StudioDoc} width={240} />
+                    <StaticCardPreview doc={tpl.design as unknown as StudioDoc} width={240} values={previewValues} />
                   </div>
                   <div className="mt-4">
                     <h2 className="flex items-center gap-2 truncate text-sm font-semibold">
