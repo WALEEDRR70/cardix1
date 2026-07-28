@@ -11,7 +11,7 @@ import { CanvasStage } from "@/components/studio/CanvasStage";
 import { ElementsPanel } from "@/components/studio/ElementsPanel";
 import { PropertiesPanel } from "@/components/studio/PropertiesPanel";
 import { StudioToolbar } from "@/components/studio/StudioToolbar";
-import { ArrowLeft, Building2, LayoutTemplate, Loader2 } from "lucide-react";
+import { ArrowLeft, Building2, LayoutTemplate, Loader2, Shapes, Frame, SlidersHorizontal, X } from "lucide-react";
 
 export const Route = createFileRoute("/$lang/_authenticated/studio/$id")({
   head: () => ({
