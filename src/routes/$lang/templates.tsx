@@ -5,6 +5,8 @@ import { Loader2, Sparkles, Trash2, Wand2, Search } from "lucide-react";
 import { toast } from "sonner";
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { StaticCardPreview } from "@/components/studio/StaticCardPreview";
+import { CardPreview } from "@/components/CardPreview";
+import { demoCards } from "@/lib/demo-cards";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "@/lib/nav";
 import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } from "@/i18n/config";
@@ -65,7 +67,7 @@ function TemplatesGallery() {
   const [search, setSearch] = useState("");
   const [uid, setUid] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
-  const [tab, setTab] = useState<"all" | "mine" | "saved">("all");
+  const [tab, setTab] = useState<"all" | "builtin" | "mine" | "saved">("all");
   const [audience, setAudience] = useState<TemplateAudience | "all">("all");
   const [pending, setPending] = useState<DesignTemplate | null>(null);
   const { data: account } = useAccount();
@@ -196,26 +198,26 @@ function TemplatesGallery() {
           </p>
         </div>
 
-        {uid && (
-          <div className="mx-auto mb-4 flex w-fit items-center gap-1 rounded-full border border-border/60 p-1">
-            {(["all", "saved", "mine"] as const).map((k) => (
-              <button
-                key={k}
-                onClick={() => setTab(k)}
-                className={
-                  "rounded-full px-4 py-1.5 text-xs font-semibold transition " +
-                  (tab === k ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground")
-                }
-              >
-                {k === "all"
-                  ? ar ? "كل القوالب" : "All templates"
+        <div className="mx-auto mb-4 flex w-fit flex-wrap items-center justify-center gap-1 rounded-full border border-border/60 p-1">
+          {(uid ? (["all", "builtin", "saved", "mine"] as const) : (["all", "builtin"] as const)).map((k) => (
+            <button
+              key={k}
+              onClick={() => setTab(k)}
+              className={
+                "rounded-full px-4 py-1.5 text-xs font-semibold transition " +
+                (tab === k ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground")
+              }
+            >
+              {k === "all"
+                ? ar ? "قوالب المصممين" : "Designer templates"
+                : k === "builtin"
+                  ? ar ? "قوالب جاهزة" : "Ready-made styles"
                   : k === "saved"
                     ? ar ? "المفضلة" : "Favourites"
                     : ar ? "قوالبي" : "My templates"}
-              </button>
-            ))}
-          </div>
-        )}
+            </button>
+          ))}
+        </div>
 
         <div className={tab === "all" ? "" : "hidden"}>
           <div className="mx-auto mb-4 flex max-w-md items-center gap-2 rounded-full border border-border/60 px-4 py-2">
@@ -254,7 +256,28 @@ function TemplatesGallery() {
         </div>
 
 
-        {isLoading ? (
+        {tab === "builtin" ? (
+          <ul className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+            {demoCards.map((card) => (
+              <li key={card.template} className="group rounded-3xl border border-border/60 bg-card/50 p-4 transition hover:border-accent/60">
+                <div className="mb-3 flex items-center justify-between px-1">
+                  <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{card.template}</span>
+                  <span className="h-2 w-2 rounded-full" style={{ background: card.accent_color }} />
+                </div>
+                <div className="flex justify-center transition group-hover:scale-[1.02]">
+                  <CardPreview card={card} size="md" />
+                </div>
+                <button
+                  onClick={() => navigate({ to: uid ? "/cards/new" : "/auth" })}
+                  className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-full bg-accent px-3 py-2 text-xs font-semibold text-accent-foreground"
+                >
+                  <Wand2 className="h-3.5 w-3.5" />
+                  {ar ? "أنشئ بطاقة بهذا الشكل" : "Create a card in this style"}
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : isLoading ? (
           <div className="grid place-items-center py-20">
             <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
           </div>
