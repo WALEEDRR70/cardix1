@@ -32,34 +32,76 @@ export const Route = createFileRoute("/$lang/pricing")({
   component: PricingPage,
 });
 
-const PLANS = [
-  {
-    id: "free",
-    en: { name: "Free", price: "$0", note: "forever", tag: "For getting started",
-      items: ["1 digital card", "QR code + share link", "Core templates", "Contact vault (25 cards)", "Basic view analytics"] },
-    ar: { name: "مجاني", price: "0$", note: "للأبد", tag: "للبداية",
-      items: ["بطاقة رقمية واحدة", "رمز QR ورابط مشاركة", "القوالب الأساسية", "خزنة جهات اتصال (25 بطاقة)", "تحليلات مشاهدات أساسية"] },
-  },
-  {
-    id: "pro", featured: true,
-    en: { name: "Pro", price: "$6", note: "/ month", tag: "Most popular",
-      items: ["Unlimited cards", "All 19 luxury templates", "NFC writing + poster export", "AI bio writing & AI card scanning", "Unlimited contact vault + notes", "Full 30-day analytics", "Custom accent colors"] },
-    ar: { name: "برو", price: "6$", note: "/ شهرياً", tag: "الأكثر طلباً",
-      items: ["بطاقات غير محدودة", "كل القوالب الـ19 الفاخرة", "كتابة NFC وتصدير البوستر", "نبذة بالذكاء الاصطناعي ومسح البطاقات", "خزنة غير محدودة مع ملاحظات", "تحليلات كاملة لـ30 يوماً", "ألوان مخصصة للبطاقة"] },
-  },
-  {
-    id: "teams",
-    en: { name: "Teams", price: "$4", note: "/ user / month", tag: "For companies",
-      items: ["Everything in Pro", "Shared brand templates", "Team card directory", "Centralized billing", "Priority support"] },
-    ar: { name: "الفرق", price: "4$", note: "/ مستخدم / شهرياً", tag: "للشركات",
-      items: ["كل مزايا برو", "قوالب موحّدة للعلامة التجارية", "دليل بطاقات الفريق", "فوترة مركزية", "دعم ذو أولوية"] },
-  },
-];
+type PlanRow = {
+  id: string;
+  code: string;
+  name_en: string;
+  name_ar: string;
+  description_en: string | null;
+  description_ar: string | null;
+  audience: string;
+  interval: string;
+  price_cents: number;
+  currency: string;
+  features_en: string[];
+  features_ar: string[];
+  is_featured: boolean;
+  sort_order: number;
+};
+
+const FREE = {
+  en: { name: "Free", note: "forever", tag: "For getting started",
+    items: ["1 digital card", "QR code + share link", "Core templates", "Contact vault (25 cards)", "Basic view analytics"] },
+  ar: { name: "مجاني", note: "للأبد", tag: "للبداية",
+    items: ["بطاقة رقمية واحدة", "رمز QR ورابط مشاركة", "القوالب الأساسية", "خزنة جهات اتصال (25 بطاقة)", "تحليلات مشاهدات أساسية"] },
+};
+
+function priceLabel(cents: number, currency: string) {
+  const v = cents % 100 === 0 ? String(cents / 100) : (cents / 100).toFixed(2);
+  return currency === "USD" ? `$${v}` : `${v} ${currency}`;
+}
 
 function PricingPage() {
   const { lang } = Route.useParams();
   const locale = isSupportedLocale(lang) ? lang : DEFAULT_LOCALE;
   const isAr = locale === "ar";
+  const [audience, setAudience] = useState<"individual" | "company">("individual");
+  const [interval, setInterval] = useState<"month" | "year">("month");
+  const [busy, setBusy] = useState<string | null>(null);
+  const start = useServerFn(startSubscription);
+
+  const { data: plans } = useQuery({
+    queryKey: ["public-plans"],
+    queryFn: async () => {
+      const { data, error } = await (supabase as any)
+        .from("billing_plans")
+        .select("*")
+        .eq("is_active", true)
+        .order("sort_order");
+      if (error) throw error;
+      return data as PlanRow[];
+    },
+  });
+
+  const shown = (plans ?? []).filter((p) => p.audience === audience && p.interval === interval);
+
+  async function subscribe(plan: PlanRow) {
+    setBusy(plan.id);
+    try {
+      const { data: sess } = await supabase.auth.getSession();
+      if (!sess.session) {
+        window.location.href = `/${locale}/auth`;
+        return;
+      }
+      const res = await start({ data: { planId: plan.id, origin: window.location.origin } });
+      if (res.approveUrl) window.location.href = res.approveUrl;
+      else toast.error(isAr ? "تعذّر بدء الدفع" : "Could not start checkout");
+    } catch (e) {
+      toast.error((e as Error).message);
+    } finally {
+      setBusy(null);
+    }
+  }
 
   return (
     <MarketingLayout lang={locale}>
@@ -73,50 +115,102 @@ function PricingPage() {
           <p className="mt-4 mx-auto max-w-2xl text-lg md:text-xl text-muted-foreground">
             {isAr ? "ابدأ مجاناً بدون بطاقة ائتمان. طوّر عندما تحتاج مزايا أكثر فقط." : "Start free with no credit card. Upgrade only when you need more."}
           </p>
+
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <div className="flex rounded-full border border-border/60 bg-card/50 p-1 text-sm">
+              {(["individual", "company"] as const).map((a) => (
+                <button
+                  key={a}
+                  onClick={() => setAudience(a)}
+                  className={"rounded-full px-4 py-2 font-medium transition " + (audience === a ? "bg-primary text-primary-foreground" : "text-muted-foreground")}
+                >
+                  {a === "individual" ? (isAr ? "أفراد" : "Individuals") : isAr ? "شركات" : "Companies"}
+                </button>
+              ))}
+            </div>
+            <div className="flex rounded-full border border-border/60 bg-card/50 p-1 text-sm">
+              {(["month", "year"] as const).map((i) => (
+                <button
+                  key={i}
+                  onClick={() => setInterval(i)}
+                  className={"rounded-full px-4 py-2 font-medium transition " + (interval === i ? "bg-primary text-primary-foreground" : "text-muted-foreground")}
+                >
+                  {i === "month" ? (isAr ? "شهري" : "Monthly") : isAr ? "سنوي" : "Yearly"}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-6xl px-5 py-10 sm:px-6 md:py-16 grid gap-6 lg:grid-cols-3">
-        {PLANS.map((plan) => {
-          const c = isAr ? plan.ar : plan.en;
-          return (
-            <article
-              key={plan.id}
+        <article className="relative rounded-3xl border border-border/60 bg-card/40 p-7 backdrop-blur transition-all hover:border-primary/40">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary/80">{(isAr ? FREE.ar : FREE.en).tag}</p>
+          <h2 className="mt-3 text-2xl font-bold">{(isAr ? FREE.ar : FREE.en).name}</h2>
+          <p className="mt-4 flex items-end gap-1.5">
+            <span className="text-4xl font-bold tracking-tight">{isAr ? "0$" : "$0"}</span>
+            <span className="pb-1 text-sm text-muted-foreground">{(isAr ? FREE.ar : FREE.en).note}</span>
+          </p>
+          <ul className="mt-6 space-y-3 text-sm">
+            {(isAr ? FREE.ar : FREE.en).items.map((i) => (
+              <li key={i} className="flex items-start gap-2.5">
+                <Check className="mt-0.5 size-4 shrink-0 text-primary" />
+                <span className="text-muted-foreground">{i}</span>
+              </li>
+            ))}
+          </ul>
+          <Link to="/auth" className="mt-7 flex items-center justify-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-semibold transition hover:bg-card/60">
+            {isAr ? "ابدأ مجاناً" : "Start free"} <ArrowRight className="size-4 rtl:rotate-180" />
+          </Link>
+        </article>
+
+        {shown.map((plan) => (
+          <article
+            key={plan.id}
+            className={
+              "relative rounded-3xl border p-7 backdrop-blur transition-all " +
+              (plan.is_featured
+                ? "border-primary/60 bg-card/70 shadow-glow lg:scale-[1.03]"
+                : "border-border/60 bg-card/40 hover:border-primary/40")
+            }
+          >
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary/80">
+              {plan.is_featured ? (isAr ? "الأكثر طلباً" : "Most popular") : audience === "company" ? (isAr ? "للشركات" : "For companies") : isAr ? "للأفراد" : "For individuals"}
+            </p>
+            <h2 className="mt-3 text-2xl font-bold">{isAr ? plan.name_ar : plan.name_en}</h2>
+            <p className="mt-4 flex items-end gap-1.5">
+              <span className="text-4xl font-bold tracking-tight">{priceLabel(plan.price_cents, plan.currency)}</span>
+              <span className="pb-1 text-sm text-muted-foreground">
+                {interval === "month" ? (isAr ? "/ شهرياً" : "/ month") : isAr ? "/ سنوياً" : "/ year"}
+              </span>
+            </p>
+            {(isAr ? plan.description_ar : plan.description_en) && (
+              <p className="mt-2 text-sm text-muted-foreground">{isAr ? plan.description_ar : plan.description_en}</p>
+            )}
+            <ul className="mt-6 space-y-3 text-sm">
+              {(isAr ? plan.features_ar : plan.features_en).map((i) => (
+                <li key={i} className="flex items-start gap-2.5">
+                  <Check className="mt-0.5 size-4 shrink-0 text-primary" />
+                  <span className="text-muted-foreground">{i}</span>
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={() => subscribe(plan)}
+              disabled={busy === plan.id}
               className={
-                "relative rounded-3xl border p-7 backdrop-blur transition-all " +
-                (plan.featured
-                  ? "border-primary/60 bg-card/70 shadow-glow lg:scale-[1.03]"
-                  : "border-border/60 bg-card/40 hover:border-primary/40")
+                "mt-7 flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition disabled:opacity-60 " +
+                (plan.is_featured ? "text-accent-foreground shadow-glow" : "border border-border hover:bg-card/60")
               }
+              style={plan.is_featured ? { background: "var(--gradient-gold)" } : undefined}
             >
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary/80">{c.tag}</p>
-              <h2 className="mt-3 text-2xl font-bold">{c.name}</h2>
-              <p className="mt-4 flex items-end gap-1.5">
-                <span className="text-4xl font-bold tracking-tight">{c.price}</span>
-                <span className="pb-1 text-sm text-muted-foreground">{c.note}</span>
-              </p>
-              <ul className="mt-6 space-y-3 text-sm">
-                {c.items.map((i) => (
-                  <li key={i} className="flex items-start gap-2.5">
-                    <Check className="mt-0.5 size-4 shrink-0 text-primary" />
-                    <span className="text-muted-foreground">{i}</span>
-                  </li>
-                ))}
-              </ul>
-              <Link
-                to="/auth"
-                className={
-                  "mt-7 flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition " +
-                  (plan.featured ? "text-accent-foreground shadow-glow" : "border border-border hover:bg-card/60")
-                }
-                style={plan.featured ? { background: "var(--gradient-gold)" } : undefined}
-              >
-                {isAr ? "ابدأ الآن" : "Get started"} <ArrowRight className="size-4 rtl:rotate-180" />
-              </Link>
-            </article>
-          );
-        })}
+              {busy === plan.id ? <Loader2 className="size-4 animate-spin" /> : null}
+              {isAr ? "اشترك عبر PayPal" : "Subscribe with PayPal"} <ArrowRight className="size-4 rtl:rotate-180" />
+            </button>
+          </article>
+        ))}
       </section>
+
 
       <section className="border-t border-border/40">
         <div className="mx-auto max-w-3xl px-5 py-10 sm:px-6 md:py-16">
