@@ -32,6 +32,8 @@ import { toPng } from "html-to-image";
 import QRCode from "qrcode";
 import { localizedPath } from "@/lib/locale-routing";
 import { fetchPublicCardMeta, publicCardHead } from "@/lib/public-card-meta";
+import { avatarPhotoLine } from "@/lib/vcard-photo";
+
 
 
 export const Route = createFileRoute("/c/$slug")({
