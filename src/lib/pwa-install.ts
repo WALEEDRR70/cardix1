@@ -47,8 +47,11 @@ if (typeof window !== "undefined") {
 
 export function subscribeInstallState(listener: Listener) {
   listeners.add(listener);
-  return () => listeners.delete(listener);
+  return () => {
+    listeners.delete(listener);
+  };
 }
+
 
 export function getInstallState() {
   return { canInstall: deferredPrompt !== null, installed };
