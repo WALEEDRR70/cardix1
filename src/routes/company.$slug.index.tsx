@@ -4,6 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { BadgeCheck, Building2, Globe, Mail, Phone, MapPin, ChevronRight } from "lucide-react";
 import { wsDict } from "@/i18n/workspace";
 import { getPreferredLocale } from "@/lib/locale-routing";
+import { publishedServices } from "@/lib/company-services";
+
 
 export const Route = createFileRoute("/company/$slug/")({
   head: ({ params }) => ({
@@ -47,7 +49,9 @@ function CompanyPage() {
   if (!data) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">{w.companyNotFound}</div>;
 
   const { company, branches, departments, cards } = data;
+  const services = publishedServices(company.services);
   const accent = company.brand_primary;
+
 
   return (
     <main className="mx-auto min-h-[100dvh] w-full max-w-3xl px-5 pb-20">
@@ -78,6 +82,30 @@ function CompanyPage() {
         {company.phone && <ContactRow icon={<Phone className="h-4 w-4" />} label={company.phone} href={`tel:${company.phone}`} accent={accent} />}
         {company.address && <ContactRow icon={<MapPin className="h-4 w-4" />} label={company.address} accent={accent} />}
       </div>
+
+      {services.length > 0 && (
+        <section className="mt-8">
+          <h2 className="mb-3 text-sm font-semibold tracking-tight">{getPreferredLocale() === "ar" ? "خدماتنا" : "Our services"}</h2>
+          <div className="grid gap-2 sm:grid-cols-2">
+            {services.map((s) => (
+              <Link
+                key={s.id}
+                to="/company/$slug/services/$service"
+                params={{ slug: company.slug, service: s.slug }}
+                className="glass flex items-center gap-3 rounded-2xl border border-border/60 p-4 transition hover:border-accent/50"
+              >
+                {s.image_url && <img src={s.image_url} alt="" className="h-11 w-11 shrink-0 rounded-xl object-cover" loading="lazy" />}
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-sm font-medium">{s.name}</span>
+                  <span className="block truncate text-[11px] text-muted-foreground">{s.summary || s.price || ""}</span>
+                </span>
+                <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground rtl:rotate-180" />
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
 
       {branches.length > 0 && (
         <section className="mt-8">

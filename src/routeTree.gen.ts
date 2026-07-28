@@ -38,6 +38,7 @@ import { Route as LangAuthenticatedSettingsRouteImport } from './routes/$lang/_a
 import { Route as LangAuthenticatedScanRouteImport } from './routes/$lang/_authenticated/scan'
 import { Route as LangAuthenticatedMeRouteImport } from './routes/$lang/_authenticated/me'
 import { Route as LangAuthenticatedDashboardRouteImport } from './routes/$lang/_authenticated/dashboard'
+import { Route as CompanySlugServicesServiceRouteImport } from './routes/company.$slug.services.$service'
 import { Route as LangAuthenticatedVaultIdRouteImport } from './routes/$lang/_authenticated/vault.$id'
 import { Route as LangAuthenticatedStudioIdRouteImport } from './routes/$lang/_authenticated/studio.$id'
 import { Route as LangAuthenticatedCoNewRouteImport } from './routes/$lang/_authenticated/co/new'
@@ -203,6 +204,12 @@ const LangAuthenticatedDashboardRoute =
     path: '/dashboard',
     getParentRoute: () => LangAuthenticatedRouteRoute,
   } as any)
+const CompanySlugServicesServiceRoute =
+  CompanySlugServicesServiceRouteImport.update({
+    id: '/company/$slug/services/$service',
+    path: '/company/$slug/services/$service',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LangAuthenticatedVaultIdRoute =
   LangAuthenticatedVaultIdRouteImport.update({
     id: '/$id',
@@ -340,6 +347,7 @@ export interface FileRoutesByFullPath {
   '/$lang/co/new': typeof LangAuthenticatedCoNewRoute
   '/$lang/studio/$id': typeof LangAuthenticatedStudioIdRoute
   '/$lang/vault/$id': typeof LangAuthenticatedVaultIdRoute
+  '/company/$slug/services/$service': typeof CompanySlugServicesServiceRoute
   '/$lang/cards/$id/analytics': typeof LangAuthenticatedCardsIdAnalyticsRoute
   '/$lang/co/$slug/activity': typeof LangAuthenticatedCoSlugActivityRoute
   '/$lang/co/$slug/analytics': typeof LangAuthenticatedCoSlugAnalyticsRoute
@@ -385,6 +393,7 @@ export interface FileRoutesByTo {
   '/$lang/co/new': typeof LangAuthenticatedCoNewRoute
   '/$lang/studio/$id': typeof LangAuthenticatedStudioIdRoute
   '/$lang/vault/$id': typeof LangAuthenticatedVaultIdRoute
+  '/company/$slug/services/$service': typeof CompanySlugServicesServiceRoute
   '/$lang/cards/$id/analytics': typeof LangAuthenticatedCardsIdAnalyticsRoute
   '/$lang/co/$slug/activity': typeof LangAuthenticatedCoSlugActivityRoute
   '/$lang/co/$slug/analytics': typeof LangAuthenticatedCoSlugAnalyticsRoute
@@ -434,6 +443,7 @@ export interface FileRoutesById {
   '/$lang/_authenticated/co/new': typeof LangAuthenticatedCoNewRoute
   '/$lang/_authenticated/studio/$id': typeof LangAuthenticatedStudioIdRoute
   '/$lang/_authenticated/vault/$id': typeof LangAuthenticatedVaultIdRoute
+  '/company/$slug/services/$service': typeof CompanySlugServicesServiceRoute
   '/$lang/_authenticated/cards/$id/analytics': typeof LangAuthenticatedCardsIdAnalyticsRoute
   '/$lang/_authenticated/co/$slug/activity': typeof LangAuthenticatedCoSlugActivityRoute
   '/$lang/_authenticated/co/$slug/analytics': typeof LangAuthenticatedCoSlugAnalyticsRoute
@@ -483,6 +493,7 @@ export interface FileRouteTypes {
     | '/$lang/co/new'
     | '/$lang/studio/$id'
     | '/$lang/vault/$id'
+    | '/company/$slug/services/$service'
     | '/$lang/cards/$id/analytics'
     | '/$lang/co/$slug/activity'
     | '/$lang/co/$slug/analytics'
@@ -528,6 +539,7 @@ export interface FileRouteTypes {
     | '/$lang/co/new'
     | '/$lang/studio/$id'
     | '/$lang/vault/$id'
+    | '/company/$slug/services/$service'
     | '/$lang/cards/$id/analytics'
     | '/$lang/co/$slug/activity'
     | '/$lang/co/$slug/analytics'
@@ -576,6 +588,7 @@ export interface FileRouteTypes {
     | '/$lang/_authenticated/co/new'
     | '/$lang/_authenticated/studio/$id'
     | '/$lang/_authenticated/vault/$id'
+    | '/company/$slug/services/$service'
     | '/$lang/_authenticated/cards/$id/analytics'
     | '/$lang/_authenticated/co/$slug/activity'
     | '/$lang/_authenticated/co/$slug/analytics'
@@ -599,6 +612,7 @@ export interface RootRouteChildren {
   SitemapChar123langChar125DotxmlRoute: typeof SitemapChar123langChar125DotxmlRoute
   CompanySlugEmployeeRoute: typeof CompanySlugEmployeeRoute
   CompanySlugIndexRoute: typeof CompanySlugIndexRoute
+  CompanySlugServicesServiceRoute: typeof CompanySlugServicesServiceRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -805,6 +819,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/$lang/dashboard'
       preLoaderRoute: typeof LangAuthenticatedDashboardRouteImport
       parentRoute: typeof LangAuthenticatedRouteRoute
+    }
+    '/company/$slug/services/$service': {
+      id: '/company/$slug/services/$service'
+      path: '/company/$slug/services/$service'
+      fullPath: '/company/$slug/services/$service'
+      preLoaderRoute: typeof CompanySlugServicesServiceRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/$lang/_authenticated/vault/$id': {
       id: '/$lang/_authenticated/vault/$id'
@@ -1075,6 +1096,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapChar123langChar125DotxmlRoute: SitemapChar123langChar125DotxmlRoute,
   CompanySlugEmployeeRoute: CompanySlugEmployeeRoute,
   CompanySlugIndexRoute: CompanySlugIndexRoute,
+  CompanySlugServicesServiceRoute: CompanySlugServicesServiceRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
