@@ -5,6 +5,8 @@ import { Loader2, Sparkles, Trash2, Wand2, Search } from "lucide-react";
 import { toast } from "sonner";
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { StaticCardPreview } from "@/components/studio/StaticCardPreview";
+import { CardPreview } from "@/components/CardPreview";
+import { demoCards } from "@/lib/demo-cards";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "@/lib/nav";
 import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } from "@/i18n/config";
@@ -49,7 +51,11 @@ export const Route = createFileRoute("/$lang/templates")({
       ],
       links: [
         { rel: "canonical", href: url },
-        ...SUPPORTED_LOCALES.map((l) => ({ rel: "alternate", hrefLang: l, href: `${SITE_ORIGIN}/${l}/templates` })),
+        ...SUPPORTED_LOCALES.map((l) => ({
+          rel: "alternate",
+          hrefLang: l,
+          href: `${SITE_ORIGIN}/${l}/templates`,
+        })),
         { rel: "alternate", hrefLang: "x-default", href: `${SITE_ORIGIN}/en/templates` },
       ],
     };
@@ -65,14 +71,16 @@ function TemplatesGallery() {
   const [search, setSearch] = useState("");
   const [uid, setUid] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
-  const [tab, setTab] = useState<"all" | "mine" | "saved">("all");
+  const [tab, setTab] = useState<"all" | "builtin" | "mine" | "saved">("all");
   const [audience, setAudience] = useState<TemplateAudience | "all">("all");
   const [pending, setPending] = useState<DesignTemplate | null>(null);
   const { data: account } = useAccount();
   /** Active context decides the destination: inside a workspace → workspace, otherwise personal. */
   const activeWorkspace =
     account?.accountType === "company"
-      ? (account.managed.find((m) => m.company_id === account.activeCompanyId) ?? account.managed[0] ?? null)
+      ? (account.managed.find((m) => m.company_id === account.activeCompanyId) ??
+        account.managed[0] ??
+        null)
       : null;
 
   useEffect(() => {
@@ -133,12 +141,19 @@ function TemplatesGallery() {
       const cardId = await useTemplate(tpl, target);
       toast.success(
         target.kind === "company"
-          ? ar ? "تمت إضافة بطاقة جديدة إلى مساحة العمل" : "New card added to the workspace"
-          : ar ? "تم إنشاء بطاقة جديدة بهذا التصميم" : "New card created with this design",
+          ? ar
+            ? "تمت إضافة بطاقة جديدة إلى مساحة العمل"
+            : "New card added to the workspace"
+          : ar
+            ? "تم إنشاء بطاقة جديدة بهذا التصميم"
+            : "New card created with this design",
       );
       setPending(null);
       // Personal users land on the simple card editor; workspace designers go to the Studio.
-      navigate({ to: target.kind === "company" ? "/studio/$id" : "/cards/$id", params: { id: cardId } });
+      navigate({
+        to: target.kind === "company" ? "/studio/$id" : "/cards/$id",
+        params: { id: cardId },
+      });
     } catch (e) {
       toast.error((e as Error).message);
     } finally {
@@ -181,7 +196,6 @@ function TemplatesGallery() {
     <MarketingLayout>
       <section className="mx-auto w-full max-w-6xl px-5 py-10 sm:py-16">
         <div className="mb-7 text-center sm:mb-10">
-
           <span className="inline-flex items-center gap-2 rounded-full border border-border/60 px-3 py-1 text-[11px] text-muted-foreground">
             <Sparkles className="h-3.5 w-3.5" />
             {ar ? "معرض القوالب" : "Template gallery"}
@@ -196,26 +210,39 @@ function TemplatesGallery() {
           </p>
         </div>
 
-        {uid && (
-          <div className="mx-auto mb-4 flex w-fit items-center gap-1 rounded-full border border-border/60 p-1">
-            {(["all", "saved", "mine"] as const).map((k) => (
-              <button
-                key={k}
-                onClick={() => setTab(k)}
-                className={
-                  "rounded-full px-4 py-1.5 text-xs font-semibold transition " +
-                  (tab === k ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground")
-                }
-              >
-                {k === "all"
-                  ? ar ? "كل القوالب" : "All templates"
+        <div className="mx-auto mb-4 flex w-fit flex-wrap items-center justify-center gap-1 rounded-full border border-border/60 p-1">
+          {(uid
+            ? (["all", "builtin", "saved", "mine"] as const)
+            : (["all", "builtin"] as const)
+          ).map((k) => (
+            <button
+              key={k}
+              onClick={() => setTab(k)}
+              className={
+                "rounded-full px-4 py-1.5 text-xs font-semibold transition " +
+                (tab === k
+                  ? "bg-accent text-accent-foreground"
+                  : "text-muted-foreground hover:text-foreground")
+              }
+            >
+              {k === "all"
+                ? ar
+                  ? "قوالب المصممين"
+                  : "Designer templates"
+                : k === "builtin"
+                  ? ar
+                    ? "قوالب جاهزة"
+                    : "Ready-made styles"
                   : k === "saved"
-                    ? ar ? "المفضلة" : "Favourites"
-                    : ar ? "قوالبي" : "My templates"}
-              </button>
-            ))}
-          </div>
-        )}
+                    ? ar
+                      ? "المفضلة"
+                      : "Favourites"
+                    : ar
+                      ? "قوالبي"
+                      : "My templates"}
+            </button>
+          ))}
+        </div>
 
         <div className={tab === "all" ? "" : "hidden"}>
           <div className="mx-auto mb-4 flex max-w-md items-center gap-2 rounded-full border border-border/60 px-4 py-2">
@@ -235,7 +262,9 @@ function TemplatesGallery() {
                 onClick={() => setAudience(k)}
                 className={
                   "rounded-full px-3.5 py-1.5 text-[11px] font-semibold transition " +
-                  (audience === k ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground")
+                  (audience === k
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground hover:text-foreground")
                 }
               >
                 {k === "all" ? (ar ? "الكل" : "All") : audienceLabel(k, ar)}
@@ -245,16 +274,50 @@ function TemplatesGallery() {
 
           {uid && (
             <div className="mx-auto mb-8 flex w-fit max-w-full flex-wrap items-center justify-center gap-2 rounded-2xl border border-border/60 px-4 py-2.5 text-[11px]">
-              <span className="text-muted-foreground">{ar ? "سيتم الحفظ في:" : "Will be saved into:"}</span>
+              <span className="text-muted-foreground">
+                {ar ? "سيتم الحفظ في:" : "Will be saved into:"}
+              </span>
               <span className="font-semibold">
-                {activeWorkspace ? activeWorkspace.company.name : ar ? "ملفي الشخصي" : "My personal profile"}
+                {activeWorkspace
+                  ? activeWorkspace.company.name
+                  : ar
+                    ? "ملفي الشخصي"
+                    : "My personal profile"}
               </span>
             </div>
           )}
         </div>
 
-
-        {isLoading ? (
+        {tab === "builtin" ? (
+          <ul className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+            {demoCards.map((card) => (
+              <li
+                key={card.template}
+                className="group rounded-3xl border border-border/60 bg-card/50 p-4 transition hover:border-accent/60"
+              >
+                <div className="mb-3 flex items-center justify-between px-1">
+                  <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+                    {card.template}
+                  </span>
+                  <span
+                    className="h-2 w-2 rounded-full"
+                    style={{ background: card.accent_color }}
+                  />
+                </div>
+                <div className="flex justify-center transition group-hover:scale-[1.02]">
+                  <CardPreview card={card} size="md" />
+                </div>
+                <button
+                  onClick={() => navigate({ to: uid ? "/cards/new" : "/auth" })}
+                  className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-full bg-accent px-3 py-2 text-xs font-semibold text-accent-foreground"
+                >
+                  <Wand2 className="h-3.5 w-3.5" />
+                  {ar ? "أنشئ بطاقة بهذا الشكل" : "Create a card in this style"}
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : isLoading ? (
           <div className="grid place-items-center py-20">
             <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
           </div>
@@ -265,85 +328,98 @@ function TemplatesGallery() {
                 ? "لم تحفظ أي قالب بعد — اضغط على القلب في أي قالب لحفظه هنا."
                 : "No saved templates yet — tap the heart on any template to keep it here."
               : tab === "mine"
-              ? ar
-                ? "لم تنشر أي قالب بعد — افتح تصميمك في الاستوديو واضغط \"نشر كقالب\"."
-                : "You haven't published a template yet — open a design in the Studio and hit \"Publish as template\"."
-              : ar
-                ? "لا توجد قوالب منشورة بعد."
-                : "No templates published yet."}
+                ? ar
+                  ? 'لم تنشر أي قالب بعد — افتح تصميمك في الاستوديو واضغط "نشر كقالب".'
+                  : 'You haven\'t published a template yet — open a design in the Studio and hit "Publish as template".'
+                : ar
+                  ? "لا توجد قوالب منشورة بعد."
+                  : "No templates published yet."}
           </p>
         ) : (
           <>
-          {tab === "saved" && templates.length === 0 && (
-            <p className="mb-5 text-center text-xs text-muted-foreground">
-              {ar
-                ? "لم تحفظ أي قالب بعد — هذه أكثر القوالب إعجاباً، اضغط على القلب لحفظها."
-                : "No favourites yet — here are the most-liked designs, tap the heart to keep one."}
-            </p>
-          )}
-          <ul className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-            {(tab === "saved" && templates.length === 0 ? suggestions : templates).map((tpl) => (
-              <li
-                key={tpl.id}
-                className="group overflow-hidden rounded-3xl border border-border/60 bg-card/50 p-4 transition hover:border-accent/60"
-              >
-                <div className="grid place-items-center overflow-hidden rounded-2xl bg-muted/20 p-3">
-                  <StaticCardPreview doc={tpl.design as unknown as StudioDoc} width={240} />
-                </div>
-                <div className="mt-4">
-                  <h2 className="flex items-center gap-2 truncate text-sm font-semibold">
-                    <span className="truncate">{tpl.title}</span>
-                    {!tpl.is_public && (
-                      <span className="shrink-0 rounded-full border border-border/60 px-2 py-0.5 text-[9px] font-medium text-muted-foreground">
-                        {ar ? "خاص" : "Private"}
-                      </span>
-                    )}
-                  </h2>
-                  <p className="mt-0.5 truncate text-xs text-muted-foreground">
-                    {tpl.author_name ? (ar ? `بواسطة ${tpl.author_name}` : `by ${tpl.author_name}`) : ""}
-                    {tpl.use_count > 0 ? ` · ${tpl.use_count} ${ar ? "استخدام" : "uses"}` : ""}
-                  </p>
-                  {tpl.description && (
-                    <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-muted-foreground">{tpl.description}</p>
-                  )}
-                  {tpl.tags.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-1.5">
-                      {tpl.tags.map((t) => (
-                        <span key={t} className="rounded-full border border-border/60 px-2 py-0.5 text-[10px] text-muted-foreground">
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                  <div className="mt-4 flex items-center gap-2">
-                    <button
-                      onClick={() => onUse(tpl)}
-                      disabled={busyId === tpl.id}
-                      className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-accent px-3 py-2 text-xs font-semibold text-accent-foreground disabled:opacity-60"
-                    >
-                      {busyId === tpl.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Wand2 className="h-3.5 w-3.5" />}
-                      {ar ? "استخدام القالب" : "Use template"}
-                    </button>
-                    <FavoriteTemplateButton
-                      templateId={tpl.id}
-                      userId={uid}
-                      ar={ar}
-                      likeCount={(tpl as { like_count?: number }).like_count ?? 0}
-                    />
-                    {uid === tpl.author_id && (
-                      <button
-                        onClick={() => onDelete(tpl)}
-                        title={ar ? "حذف القالب" : "Delete template"}
-                        className="rounded-full border border-border/60 p-2 text-muted-foreground hover:text-foreground"
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </button>
-                    )}
+            {tab === "saved" && templates.length === 0 && (
+              <p className="mb-5 text-center text-xs text-muted-foreground">
+                {ar
+                  ? "لم تحفظ أي قالب بعد — هذه أكثر القوالب إعجاباً، اضغط على القلب لحفظها."
+                  : "No favourites yet — here are the most-liked designs, tap the heart to keep one."}
+              </p>
+            )}
+            <ul className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+              {(tab === "saved" && templates.length === 0 ? suggestions : templates).map((tpl) => (
+                <li
+                  key={tpl.id}
+                  className="group overflow-hidden rounded-3xl border border-border/60 bg-card/50 p-4 transition hover:border-accent/60"
+                >
+                  <div className="grid place-items-center overflow-hidden rounded-2xl bg-muted/20 p-3">
+                    <StaticCardPreview doc={tpl.design as unknown as StudioDoc} width={240} />
                   </div>
-                </div>
-              </li>
-            ))}
-          </ul>
+                  <div className="mt-4">
+                    <h2 className="flex items-center gap-2 truncate text-sm font-semibold">
+                      <span className="truncate">{tpl.title}</span>
+                      {!tpl.is_public && (
+                        <span className="shrink-0 rounded-full border border-border/60 px-2 py-0.5 text-[9px] font-medium text-muted-foreground">
+                          {ar ? "خاص" : "Private"}
+                        </span>
+                      )}
+                    </h2>
+                    <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                      {tpl.author_name
+                        ? ar
+                          ? `بواسطة ${tpl.author_name}`
+                          : `by ${tpl.author_name}`
+                        : ""}
+                      {tpl.use_count > 0 ? ` · ${tpl.use_count} ${ar ? "استخدام" : "uses"}` : ""}
+                    </p>
+                    {tpl.description && (
+                      <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+                        {tpl.description}
+                      </p>
+                    )}
+                    {tpl.tags.length > 0 && (
+                      <div className="mt-3 flex flex-wrap gap-1.5">
+                        {tpl.tags.map((t) => (
+                          <span
+                            key={t}
+                            className="rounded-full border border-border/60 px-2 py-0.5 text-[10px] text-muted-foreground"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    <div className="mt-4 flex items-center gap-2">
+                      <button
+                        onClick={() => onUse(tpl)}
+                        disabled={busyId === tpl.id}
+                        className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-accent px-3 py-2 text-xs font-semibold text-accent-foreground disabled:opacity-60"
+                      >
+                        {busyId === tpl.id ? (
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        ) : (
+                          <Wand2 className="h-3.5 w-3.5" />
+                        )}
+                        {ar ? "استخدام القالب" : "Use template"}
+                      </button>
+                      <FavoriteTemplateButton
+                        templateId={tpl.id}
+                        userId={uid}
+                        ar={ar}
+                        likeCount={(tpl as { like_count?: number }).like_count ?? 0}
+                      />
+                      {uid === tpl.author_id && (
+                        <button
+                          onClick={() => onDelete(tpl)}
+                          title={ar ? "حذف القالب" : "Delete template"}
+                          className="rounded-full border border-border/60 p-2 text-muted-foreground hover:text-foreground"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </>
         )}
       </section>
