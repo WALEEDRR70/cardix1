@@ -13,7 +13,7 @@ import {
   useWs, roleLabel, statusLabel, slugify,
   parseEmployeeCsv, type Company, type CompanyRole, type MemberStatus,
 } from "@/lib/workspace";
-import { TEMPLATE_META } from "@/components/CardPreview";
+import { TEMPLATE_META, CardPreview } from "@/components/CardPreview";
 import { logCompanyAction } from "@/components/company/audit";
 import { prepareImageFile, canDisplayImage } from "@/lib/image-prep";
 
@@ -310,6 +310,8 @@ export type EmployeeCard = {
   phone: string | null; whatsapp: string | null; email: string | null;
   website: string | null; address: string | null; bio: string | null;
   socials: Record<string, string> | null; avatar_url: string | null; slug: string;
+  company: string | null; department: string | null;
+  template: string | null; accent_color: string; design: unknown;
 };
 
 type MemberRow = {
@@ -383,7 +385,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
     queryFn: async () => {
       const { data, error } = await supabase
         .from("cards")
-        .select("id, user_id, name, title, phone, whatsapp, email, website, address, bio, socials, avatar_url, slug")
+        .select("id, user_id, name, title, company, department, phone, whatsapp, email, website, address, bio, socials, avatar_url, slug, template, accent_color, design")
         .eq("company_id", company.id);
       if (error) throw error;
       return (data ?? []) as EmployeeCard[];
@@ -1278,46 +1280,66 @@ function MemberItem({
   const contactLine = [card?.email || m.corporate_email, card?.phone].filter(Boolean).join(" · ");
 
   return (
-    <div className="rounded-2xl border border-border/60 bg-card/60">
-      <div className="flex flex-wrap items-center gap-2 px-3 py-2.5">
+    <div className="overflow-hidden rounded-3xl border border-border/60 bg-card/70 shadow-sm transition-colors hover:border-border">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 sm:flex sm:flex-wrap">
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="grid h-7 w-7 shrink-0 place-items-center rounded-lg hover:bg-secondary"
-          aria-label={ar ? "تفاصيل الموظف" : "Employee details"}
+          className="flex min-w-0 flex-1 items-center gap-3 text-start"
+          aria-expanded={open}
         >
-          <ChevronDown className={"h-4 w-4 transition-transform " + (open ? "rotate-180" : "")} />
+          {card?.avatar_url ? (
+            <img src={card.avatar_url} alt={displayName} className="h-11 w-11 shrink-0 rounded-2xl object-cover" />
+          ) : (
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-secondary text-muted-foreground">
+              <Users className="h-4 w-4" />
+            </span>
+          )}
+          <span className="min-w-0 flex-1">
+            <span className="block truncate text-sm font-semibold">{displayName}</span>
+            <span className="block truncate text-[11px] text-muted-foreground">
+              {[m.job_title, contactLine].filter(Boolean).join(" — ") || "—"}
+            </span>
+          </span>
+          <ChevronDown className={"h-4 w-4 shrink-0 text-muted-foreground transition-transform " + (open ? "rotate-180" : "")} />
         </button>
-        {card?.avatar_url ? (
-          <img src={card.avatar_url} alt={displayName} className="h-8 w-8 shrink-0 rounded-full object-cover" />
-        ) : null}
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-medium">{displayName}</p>
-          <p className="truncate text-[11px] text-muted-foreground">
-            {[m.job_title, contactLine].filter(Boolean).join(" — ") || "—"}
-          </p>
-        </div>
-        {children}
+        <div className="flex shrink-0 flex-wrap items-center gap-2">{children}</div>
       </div>
 
       {open && (
-        <div className="border-t border-border/60 px-3 py-3">
+        <div className="border-t border-border/60 bg-background/40 px-4 py-4">
           {!card ? (
             <p className="text-xs text-muted-foreground">
               {ar ? "لا توجد بطاقة لهذا الموظف بعد." : "This employee has no card yet."}
             </p>
           ) : (
-            <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                {f.avatar_url ? (
-                  <img src={f.avatar_url} alt={f.name || displayName} className="h-16 w-16 rounded-2xl object-cover" />
-                ) : (
-                  <span className="grid h-16 w-16 place-items-center rounded-2xl bg-secondary text-muted-foreground">
-                    <Users className="h-5 w-5" />
-                  </span>
-                )}
+            <div className="grid gap-5 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
+              {/* live business card */}
+              <div className="space-y-3">
+                <div dir="ltr" className="flex justify-center">
+                  <CardPreview
+                    size="xs"
+                    card={{
+                      name: f.name || displayName,
+                      title: card.title,
+                      company: card.company,
+                      department: card.department,
+                      bio: f.bio,
+                      phone: f.phone,
+                      whatsapp: f.whatsapp,
+                      email: f.email,
+                      website: f.website,
+                      address: f.address,
+                      avatar_url: f.avatar_url || null,
+                      accent_color: card.accent_color,
+                      template: card.template,
+                      design: card.design,
+                      socials: f.socials,
+                    }}
+                  />
+                </div>
                 {canEdit && (
-                  <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex flex-wrap items-center justify-center gap-2">
                     <label className="cursor-pointer rounded-xl bg-secondary px-3 py-1.5 text-xs font-medium">
                       <Upload className="me-1 inline h-3.5 w-3.5" />
                       {uploading ? (ar ? "جارٍ الرفع…" : "Uploading…") : (ar ? "تغيير الصورة" : "Change photo")}
@@ -1331,50 +1353,53 @@ function MemberItem({
                     </label>
                     {f.avatar_url && (
                       <button type="button" onClick={() => setF((p) => ({ ...p, avatar_url: "" }))} className="rounded-xl bg-secondary px-3 py-1.5 text-xs text-destructive">
-                        {ar ? "إزالة" : "Remove"}
+                        {ar ? "إزالة الصورة" : "Remove photo"}
                       </button>
                     )}
                   </div>
                 )}
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-2">
-                <TextField label={ar ? "الاسم" : "Name"} value={f.name} onChange={(v) => setF({ ...f, name: v })} disabled={!canEdit} />
-                <TextField label={ar ? "الجوال" : "Phone"} value={f.phone} onChange={(v) => setF({ ...f, phone: v })} disabled={!canEdit} />
-                <TextField label={ar ? "واتساب" : "WhatsApp"} value={f.whatsapp} onChange={(v) => setF({ ...f, whatsapp: v })} disabled={!canEdit} />
-                <TextField label={ar ? "البريد" : "Email"} type="email" value={f.email} onChange={(v) => setF({ ...f, email: v })} disabled={!canEdit} />
-                <TextField label={ar ? "الموقع الإلكتروني" : "Website"} value={f.website} onChange={(v) => setF({ ...f, website: v })} disabled={!canEdit} />
-                <TextField label={ar ? "العنوان" : "Address"} value={f.address} onChange={(v) => setF({ ...f, address: v })} disabled={!canEdit} />
-              </div>
-
-              <div>
-                <label className="mb-1 block px-1 text-xs text-muted-foreground">{ar ? "النبذة" : "Bio"}</label>
-                <textarea
-                  value={f.bio}
-                  onChange={(e) => setF({ ...f, bio: e.target.value })}
-                  disabled={!canEdit}
-                  rows={3}
-                  className="w-full rounded-2xl border border-input bg-card px-4 py-3 text-sm outline-none disabled:opacity-60"
-                />
-              </div>
-
-              <div>
-                <p className="mb-1 px-1 text-xs text-muted-foreground">{ar ? "الحسابات الاجتماعية" : "Social accounts"}</p>
+              {/* editable fields */}
+              <div className="space-y-4">
                 <div className="grid gap-3 sm:grid-cols-2">
-                  {SOCIAL_KEYS.map((k) => (
-                    <TextField
-                      key={k}
-                      label={k}
-                      value={f.socials[k] ?? ""}
-                      onChange={(v) => setF({ ...f, socials: { ...f.socials, [k]: v } })}
-                      disabled={!canEdit}
-                      placeholder="https://…"
-                    />
-                  ))}
+                  <TextField label={ar ? "الاسم" : "Name"} value={f.name} onChange={(v) => setF({ ...f, name: v })} disabled={!canEdit} />
+                  <TextField label={ar ? "الجوال" : "Phone"} value={f.phone} onChange={(v) => setF({ ...f, phone: v })} disabled={!canEdit} />
+                  <TextField label={ar ? "واتساب" : "WhatsApp"} value={f.whatsapp} onChange={(v) => setF({ ...f, whatsapp: v })} disabled={!canEdit} />
+                  <TextField label={ar ? "البريد" : "Email"} type="email" value={f.email} onChange={(v) => setF({ ...f, email: v })} disabled={!canEdit} />
+                  <TextField label={ar ? "الموقع الإلكتروني" : "Website"} value={f.website} onChange={(v) => setF({ ...f, website: v })} disabled={!canEdit} />
+                  <TextField label={ar ? "العنوان" : "Address"} value={f.address} onChange={(v) => setF({ ...f, address: v })} disabled={!canEdit} />
                 </div>
-              </div>
 
-              {canEdit && <SaveBar busy={busy} label={w.save ?? (ar ? "حفظ" : "Save")} onSave={save} />}
+                <div>
+                  <label className="mb-1 block px-1 text-xs text-muted-foreground">{ar ? "النبذة" : "Bio"}</label>
+                  <textarea
+                    value={f.bio}
+                    onChange={(e) => setF({ ...f, bio: e.target.value })}
+                    disabled={!canEdit}
+                    rows={3}
+                    className="w-full rounded-2xl border border-input bg-card px-4 py-3 text-sm outline-none disabled:opacity-60"
+                  />
+                </div>
+
+                <div>
+                  <p className="mb-1 px-1 text-xs text-muted-foreground">{ar ? "الحسابات الاجتماعية" : "Social accounts"}</p>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {SOCIAL_KEYS.map((k) => (
+                      <TextField
+                        key={k}
+                        label={k}
+                        value={f.socials[k] ?? ""}
+                        onChange={(v) => setF({ ...f, socials: { ...f.socials, [k]: v } })}
+                        disabled={!canEdit}
+                        placeholder="https://…"
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {canEdit && <SaveBar busy={busy} label={w.save ?? (ar ? "حفظ" : "Save")} onSave={save} />}
+              </div>
             </div>
           )}
         </div>
