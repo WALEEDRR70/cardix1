@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { ChevronDown, ExternalLink, GripVertical, Plus, Trash2, X } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { Card, TextField } from "@/components/company/sections";
+import { Card, TextField, LogoUpload } from "@/components/company/sections";
 import { parseServices, newService, slugifyService, type CompanyService } from "@/lib/company-services";
 
 const EN = {
@@ -20,7 +20,7 @@ const EN = {
   whatsapp: "WhatsApp",
   email: "Contact email",
   website: "Booking / info link",
-  image: "Image URL",
+  image: "Service image",
   features: "Highlights",
   addFeature: "Add highlight",
   published: "Published",
@@ -45,7 +45,7 @@ const AR: typeof EN = {
   whatsapp: "واتساب",
   email: "إيميل التواصل",
   website: "رابط الحجز / معلومات",
-  image: "رابط الصورة",
+  image: "صورة الخدمة",
   features: "أبرز المزايا",
   addFeature: "إضافة ميزة",
   published: "منشورة",
@@ -61,12 +61,14 @@ export function ServicesEditor({
   canEdit,
   lang,
   companySlug,
+  companyId,
 }: {
   value: unknown;
   onChange: (next: CompanyService[]) => void;
   canEdit: boolean;
   lang: string;
   companySlug: string;
+  companyId: string;
 }) {
   const t = lang === "ar" ? AR : EN;
   const services = parseServices(value);
@@ -176,7 +178,10 @@ export function ServicesEditor({
                     <TextField label={t.email} value={s.email ?? ""} disabled={!canEdit} type="email" onChange={(v) => patch(s.id, { email: v })} />
                     <TextField label={t.website} value={s.website ?? ""} disabled={!canEdit} onChange={(v) => patch(s.id, { website: v })} />
                   </div>
-                  <TextField label={t.image} value={s.image_url ?? ""} disabled={!canEdit} onChange={(v) => patch(s.id, { image_url: v })} />
+                  <LogoUpload label={t.image} value={s.image_url ?? ""} disabled={!canEdit} companyId={companyId} onChange={(v) => patch(s.id, { image_url: v })} />
+                  {s.image_url && (
+                    <img src={s.image_url} alt={s.name} className="h-32 w-full rounded-2xl border border-border/60 object-cover" />
+                  )}
 
                   <div className="space-y-2">
                     <p className="text-xs font-medium text-muted-foreground">{t.features}</p>

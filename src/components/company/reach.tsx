@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useWs, type Company, type CompanyRole } from "@/lib/workspace";
-import { Card, TextField, SaveBar, useSaveCompany } from "@/components/company/sections";
+import { Card, TextField, SaveBar, useSaveCompany, LogoUpload } from "@/components/company/sections";
 import { ServicesEditor } from "@/components/company/ServicesEditor";
 import { parseServices, type CompanyService } from "@/lib/company-services";
 
@@ -341,9 +341,14 @@ export function CompanyCardTab({ company, canEdit }: { company: Company; canEdit
   }, [company.socials]);
 
   const [tagline, setTagline] = useState(company.tagline ?? "");
+  const [logoUrl, setLogoUrl] = useState(company.logo_url ?? "");
+  const [coverUrl, setCoverUrl] = useState(company.cover_url ?? "");
   const [socials, setSocials] = useState<Record<string, string>>(initialSocials);
   const [services, setServices] = useState<CompanyService[]>(() => parseServices(company.services));
 
+  const mediaLabels = lang === "ar"
+    ? { logo: "شعار البطاقة", cover: "صورة الغلاف", hint: "صور بطاقة الشركة تُرفع بشكل منفصل عن صور الخدمات." }
+    : { logo: "Card logo", cover: "Cover image", hint: "Company card images are uploaded separately from service images." };
 
   return (
     <div className="space-y-4">
@@ -351,14 +356,25 @@ export function CompanyCardTab({ company, canEdit }: { company: Company; canEdit
         <p className="text-sm font-semibold">{t.cardTitle}</p>
         <p className="text-xs text-muted-foreground">{t.cardDesc}</p>
         <div
-          className="rounded-3xl p-5 text-center"
+          className="overflow-hidden rounded-3xl text-center"
           style={{ background: `linear-gradient(140deg, ${company.brand_primary}, ${company.brand_secondary})` }}
         >
-          {company.logo_url && <img src={company.logo_url} alt="" className="mx-auto h-14 w-14 rounded-2xl object-cover" />}
-          <p className="mt-3 text-lg font-semibold text-white">{company.name}</p>
-          {tagline && <p className="mt-1 text-xs text-white/80">{tagline}</p>}
+          {coverUrl && <img src={coverUrl} alt="" className="h-28 w-full object-cover" />}
+          <div className="p-5">
+            {logoUrl && <img src={logoUrl} alt="" className="mx-auto h-14 w-14 rounded-2xl object-cover" />}
+            <p className="mt-3 text-lg font-semibold text-white">{company.name}</p>
+            {tagline && <p className="mt-1 text-xs text-white/80">{tagline}</p>}
+          </div>
+        </div>
+        <p className="text-[11px] text-muted-foreground">{mediaLabels.hint}</p>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <LogoUpload label={mediaLabels.logo} value={logoUrl} onChange={setLogoUrl} disabled={!canEdit} companyId={company.id} />
+          <LogoUpload label={mediaLabels.cover} value={coverUrl} onChange={setCoverUrl} disabled={!canEdit} companyId={company.id} />
         </div>
         <TextField label={t.tagline} value={tagline} onChange={setTagline} disabled={!canEdit} />
+        {canEdit && (
+          <SaveBar busy={busy} label={w.save} onSave={() => save({ tagline, logo_url: logoUrl, cover_url: coverUrl }, t.saved)} />
+        )}
       </Card>
 
       <ServicesEditor
@@ -367,7 +383,9 @@ export function CompanyCardTab({ company, canEdit }: { company: Company; canEdit
         canEdit={canEdit}
         lang={lang}
         companySlug={company.slug}
+        companyId={company.id}
       />
+
 
 
       <Card className="space-y-3">
