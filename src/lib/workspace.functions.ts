@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { resolveJobTitle } from "@/lib/role-titles";
 
 /** Look up an invitation by its token (public — only non-sensitive fields). */
 export const getInvitation = createServerFn({ method: "GET" })
