@@ -2,7 +2,7 @@
 // fields an employee is allowed to personalise (everything else stays locked).
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Lock, Pencil, Trash2, Wand2, Unlock, Copy, Loader2 } from "lucide-react";
+import { Lock, Pencil, Trash2, Wand2, Unlock, Copy, Loader2, Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "@/lib/nav";
 import { supabase } from "@/integrations/supabase/client";
