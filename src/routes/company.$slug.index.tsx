@@ -1,11 +1,25 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { BadgeCheck, Building2, Globe, Mail, Phone, MapPin, ChevronRight } from "lucide-react";
-import { wsDict } from "@/i18n/workspace";
+import { Building2, Calendar, Globe, Mail, MapPin, MessageCircle, Phone, Users, UserPlus, BadgeCheck } from "lucide-react";
 import { getPreferredLocale } from "@/lib/locale-routing";
 import { publishedServices } from "@/lib/company-services";
-
+import { publicDict } from "@/components/company/public/strings";
+import { downloadCompanyVCard, mailHref, siteHref, telHref, waHref } from "@/components/company/public/contact";
+import {
+  ActionButton,
+  BranchCard,
+  CompanyHero,
+  SectionHeading,
+  ServiceCard,
+  ShareBlock,
+  StickyActionBar,
+  TeamGrouped,
+  TeamRail,
+  TrustBar,
+} from "@/components/company/public/sections";
 
 export const Route = createFileRoute("/company/$slug/")({
   head: ({ params }) => ({
@@ -15,15 +29,23 @@ export const Route = createFileRoute("/company/$slug/")({
       { property: "og:title", content: `${params.slug} — Company on Cardixn` },
       { property: "og:description", content: `Official digital business card page for ${params.slug}.` },
       { property: "og:type", content: "profile" },
+      { property: "og:url", content: `https://cardixn.com/company/${params.slug}` },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: `https://cardixn.com/company/${params.slug}` }],
   }),
   component: CompanyPage,
 });
 
+const MAX_SERVICES = 6;
+const MAX_TEAM_RAIL = 8;
+
 function CompanyPage() {
   const { slug } = Route.useParams();
-  const w = wsDict(getPreferredLocale());
+  const locale = getPreferredLocale();
+  const d = publicDict(locale === "ar" ? "ar" : "en");
+  const [allServices, setAllServices] = useState(false);
+  const [fullTeam, setFullTeam] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ["public-company", slug],
@@ -45,127 +67,171 @@ function CompanyPage() {
     },
   });
 
-  if (isLoading) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">{w.loading}</div>;
-  if (!data) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">{w.companyNotFound}</div>;
+  const services = useMemo(() => publishedServices(data?.company.services), [data]);
+
+  if (isLoading) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">…</div>;
+  if (!data) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">404</div>;
 
   const { company, branches, departments, cards } = data;
-  const services = publishedServices(company.services);
   const accent = company.brand_primary;
+  const publicUrl = typeof window !== "undefined" ? window.location.href : `https://cardixn.com/company/${slug}`;
+  const socials = (company.socials as Record<string, string> | null) ?? {};
+  const shownServices = allServices ? services : services.slice(0, MAX_SERVICES);
+  const teamVisible = company.show_employees && cards.length > 0;
 
+  async function share() {
+    const nav = navigator as Navigator & { share?: (data: ShareData) => Promise<void> };
+    if (nav.share) {
+      try {
+        await nav.share({ title: company.name, url: publicUrl });
+        return;
+      } catch {
+        /* dismissed */
+      }
+    }
+    await navigator.clipboard.writeText(publicUrl);
+    toast.success(d.linkCopied);
+  }
+
+  const wa = waHref(company.phone);
+  const tel = telHref(company.phone);
+  const mail = mailHref(company.email);
+  const site = siteHref(company.website);
+
+  const primaryAction = (
+    <ActionButton icon={UserPlus} label={d.saveContact} primary accent={accent} onClick={() => downloadCompanyVCard(company)} />
+  );
+
+  const trust = [
+    company.is_verified && { icon: BadgeCheck, label: d.verified },
+    (company.city || company.country) && { icon: MapPin, label: [company.city, company.country].filter(Boolean).join(", ") },
+    company.founded_year && { icon: Calendar, label: `${d.founded} ${company.founded_year}` },
+    branches.length > 0 && { icon: Building2, label: d.branchesCount(branches.length) },
+    teamVisible && { icon: Users, label: d.teamCount(cards.length) },
+  ].filter(Boolean) as { icon: React.ElementType; label: string }[];
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: company.name,
+    legalName: company.legal_name || undefined,
+    description: company.description || undefined,
+    url: `https://cardixn.com/company/${company.slug}`,
+    logo: company.logo_url || undefined,
+    image: company.cover_url || company.logo_url || undefined,
+    telephone: company.phone || undefined,
+    email: company.email || undefined,
+    sameAs: Object.values(socials).filter(Boolean),
+    address: company.address
+      ? { "@type": "PostalAddress", streetAddress: company.address, addressLocality: company.city || undefined, addressCountry: company.country || undefined }
+      : undefined,
+  };
 
   return (
-    <main className="mx-auto min-h-[100dvh] w-full max-w-3xl px-5 pb-20">
-      <div
-        className="relative mt-6 overflow-hidden rounded-[2rem] border border-border/60"
-        style={{ background: company.cover_url ? undefined : `linear-gradient(135deg, ${accent}33, transparent)` }}
-      >
-        {company.cover_url && <img src={company.cover_url} alt="" className="h-40 w-full object-cover" />}
-        <div className={"flex items-end gap-4 p-6 " + (company.cover_url ? "-mt-10" : "")}>
-          <span className="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-3xl border border-border/60 bg-card" style={{ color: accent }}>
-            {company.logo_url ? <img src={company.logo_url} alt={company.name} className="h-full w-full object-cover" /> : <Building2 className="h-7 w-7" />}
-          </span>
-          <div className="min-w-0">
-            <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
-              <span className="truncate">{company.name}</span>
-              {company.is_verified && <BadgeCheck className="h-5 w-5" style={{ color: accent }} />}
-            </h1>
-            {company.legal_name && <p className="text-xs text-muted-foreground">{company.legal_name}</p>}
-          </div>
-        </div>
-      </div>
+    <div className="min-h-[100dvh] pb-24 sm:pb-16">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      {company.description && <p className="mt-5 text-sm leading-relaxed text-muted-foreground">{company.description}</p>}
+      <CompanyHero
+        company={company}
+        accent={accent}
+        d={d}
+        actions={
+          <>
+            {primaryAction}
+            {wa && <ActionButton icon={MessageCircle} label={d.whatsapp} href={wa} accent={accent} />}
+            {tel && <ActionButton icon={Phone} label={d.call} href={tel} accent={accent} />}
+            {mail && <ActionButton icon={Mail} label={d.email} href={mail} accent={accent} />}
+            {site && <ActionButton icon={Globe} label={d.website} href={site} accent={accent} />}
+          </>
+        }
+      />
 
-      <div className="mt-5 grid gap-2 sm:grid-cols-2">
-        {company.website && <ContactRow icon={<Globe className="h-4 w-4" />} label={company.website} href={company.website} accent={accent} />}
-        {company.email && <ContactRow icon={<Mail className="h-4 w-4" />} label={company.email} href={`mailto:${company.email}`} accent={accent} />}
-        {company.phone && <ContactRow icon={<Phone className="h-4 w-4" />} label={company.phone} href={`tel:${company.phone}`} accent={accent} />}
-        {company.address && <ContactRow icon={<MapPin className="h-4 w-4" />} label={company.address} accent={accent} />}
-      </div>
+      <main className="mx-auto w-full max-w-5xl px-5">
+        <TrustBar items={trust} />
 
-      {services.length > 0 && (
-        <section className="mt-8">
-          <h2 className="mb-3 text-sm font-semibold tracking-tight">{getPreferredLocale() === "ar" ? "خدماتنا" : "Our services"}</h2>
-          <div className="grid gap-2 sm:grid-cols-2">
-            {services.map((s) => (
-              <Link
-                key={s.id}
-                to="/company/$slug/services/$service"
-                params={{ slug: company.slug, service: s.slug }}
-                className="glass flex items-center gap-3 rounded-2xl border border-border/60 p-4 transition hover:border-accent/50"
-              >
-                {s.image_url && <img src={s.image_url} alt="" className="h-11 w-11 shrink-0 rounded-xl object-cover" loading="lazy" />}
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-sm font-medium">{s.name}</span>
-                  <span className="block truncate text-[11px] text-muted-foreground">{s.summary || s.price || ""}</span>
-                </span>
-                <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground rtl:rotate-180" />
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-
-      {branches.length > 0 && (
-        <section className="mt-8">
-          <h2 className="mb-3 text-sm font-semibold tracking-tight">{w.branches}</h2>
-          <div className="grid gap-2 sm:grid-cols-2">
-            {branches.map((b) => (
-              <div key={b.id} className="glass rounded-2xl border border-border/60 p-4">
-                <p className="text-sm font-medium">{b.name}</p>
-                <p className="mt-0.5 text-xs text-muted-foreground">{[b.city, b.country, b.address].filter(Boolean).join(" · ")}</p>
-                {b.phone && <p className="mt-1 text-xs" style={{ color: accent }}>{b.phone}</p>}
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {company.show_employees && cards.length > 0 && (
-        <section className="mt-8">
-          <h2 className="mb-3 text-sm font-semibold tracking-tight">{w.ourTeam}</h2>
-          <div className="space-y-5">
-            {[...departments, { id: null as string | null, name: "—" }]
-              .map((dep) => ({ dep, list: cards.filter((c) => c.department_id === dep.id) }))
-              .filter(({ list }) => list.length > 0)
-              .map(({ dep, list }) => (
-                <div key={dep.id ?? "none"}>
-                  {departments.length > 0 && <p className="mb-2 px-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">{dep.name}</p>}
-                  <div className="grid gap-2 sm:grid-cols-2">
-                    {list.map((c) => (
-                      <Link
-                        key={c.id}
-                        to="/company/$slug/$employee"
-                        params={{ slug: company.slug, employee: c.slug }}
-                        className="glass flex items-center gap-3 rounded-2xl border border-border/60 p-3 transition hover:border-accent/50"
-                      >
-                        <span className="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-full bg-secondary text-xs font-semibold" style={{ color: accent }}>
-                          {c.avatar_url ? <img src={c.avatar_url} alt="" className="h-full w-full object-cover" /> : c.name.slice(0, 2).toUpperCase()}
-                        </span>
-                        <span className="min-w-0 flex-1">
-                          <span className="block truncate text-sm font-medium">{c.name}</span>
-                          <span className="block truncate text-[11px] text-muted-foreground">{c.title}</span>
-                        </span>
-                        <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground rtl:rotate-180" />
-                      </Link>
-                    ))}
-                  </div>
-                </div>
+        {services.length > 0 && (
+          <section className="mt-10">
+            <SectionHeading
+              title={d.services}
+              action={
+                services.length > MAX_SERVICES && !allServices ? (
+                  <button type="button" onClick={() => setAllServices(true)} className="text-xs font-medium" style={{ color: accent }}>
+                    {d.allServices}
+                  </button>
+                ) : undefined
+              }
+            />
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {shownServices.map((s) => (
+                <ServiceCard
+                  key={s.id}
+                  service={s}
+                  slug={company.slug}
+                  accent={accent}
+                  d={d}
+                  fallbackPhone={company.phone}
+                  fallbackWhatsapp={company.phone}
+                  fallbackEmail={company.email}
+                />
               ))}
-          </div>
-        </section>
-      )}
-    </main>
-  );
-}
+            </div>
+          </section>
+        )}
 
-function ContactRow({ icon, label, href, accent }: { icon: React.ReactNode; label: string; href?: string; accent: string }) {
-  const inner = (
-    <span className="glass flex items-center gap-3 rounded-2xl border border-border/60 px-4 py-3 text-sm">
-      <span style={{ color: accent }}>{icon}</span>
-      <span className="truncate">{label}</span>
-    </span>
+        {teamVisible && (
+          <section className="mt-12">
+            <SectionHeading
+              title={d.team}
+              action={
+                cards.length > MAX_TEAM_RAIL || !fullTeam ? (
+                  <button type="button" onClick={() => setFullTeam((v) => !v)} className="text-xs font-medium" style={{ color: accent }}>
+                    {fullTeam ? d.less : d.fullTeam}
+                  </button>
+                ) : undefined
+              }
+            />
+            {fullTeam ? (
+              <TeamGrouped slug={company.slug} departments={departments} cards={cards} accent={accent} />
+            ) : (
+              <TeamRail slug={company.slug} cards={cards.slice(0, MAX_TEAM_RAIL)} accent={accent} />
+            )}
+          </section>
+        )}
+
+        {branches.length > 0 && (
+          <section className="mt-12">
+            <SectionHeading title={d.branches} />
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {branches.map((b) => (
+                <BranchCard key={b.id} branch={b} accent={accent} d={d} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <div className="mt-12">
+          <ShareBlock
+            url={publicUrl}
+            accent={accent}
+            d={d}
+            socials={socials}
+            onShare={share}
+            contact={mail ? { href: mail, label: d.getInTouch } : undefined}
+          />
+        </div>
+
+        <p className="mt-8 text-center text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
+          <Link to="/">Cardixn</Link>
+        </p>
+      </main>
+
+      <StickyActionBar>
+        <div className="flex-1">
+          <ActionButton icon={UserPlus} label={d.saveContact} primary accent={accent} onClick={() => downloadCompanyVCard(company)} />
+        </div>
+        {wa && <ActionButton icon={MessageCircle} label={d.whatsapp} href={wa} accent={accent} />}
+        {tel && <ActionButton icon={Phone} label={d.call} href={tel} accent={accent} />}
+      </StickyActionBar>
+    </div>
   );
-  return href ? <a href={href} target="_blank" rel="noreferrer">{inner}</a> : inner;
 }
