@@ -1,6 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Link } from "@/lib/nav";
 import { useEffect, useRef, useState } from "react";
+
 import { useI18n } from "@/lib/i18n";
 import { LocaleSwitcher } from "@/components/LangToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
