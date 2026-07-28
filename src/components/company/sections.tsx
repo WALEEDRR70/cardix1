@@ -709,6 +709,17 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
             {canEdit && m.role !== "owner" ? (
               <>
                 <select
+                  value={m.department_id ?? ""}
+                  onChange={(e) => setDepartment(m.id, e.target.value)}
+                  className="max-w-[160px] rounded-xl border border-border bg-secondary px-2 py-1.5 text-[11px] outline-none"
+                  title={ar ? "القسم" : "Department"}
+                >
+                  <option value="">{ar ? "— القسم —" : "— Department —"}</option>
+                  {(departments ?? []).map((d) => (
+                    <option key={d.id} value={d.id}>{d.name}</option>
+                  ))}
+                </select>
+                <select
                   value={m.role}
                   onChange={(e) => setRole(m.id, e.target.value as CompanyRole)}
                   className="rounded-xl border border-border bg-secondary px-2 py-1.5 text-[11px] outline-none"
