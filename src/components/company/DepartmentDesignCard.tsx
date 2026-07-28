@@ -4,16 +4,18 @@ import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Lock, Pencil, Trash2, Wand2, Unlock, Copy, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { Link } from "@/lib/nav";
+import { useNavigate } from "@/lib/nav";
 import { supabase } from "@/integrations/supabase/client";
 import { DesignPreview } from "@/components/DesignPreview";
 import type { StudioDoc } from "@/lib/studio/types";
 import {
   EDITABLE_FIELD_KEYS,
+  ensureDesignEditorCard,
   getEditableFields,
   setEditableFields,
   type EditableFieldKey,
 } from "@/lib/company-designs";
+
 
 const LABELS: Record<EditableFieldKey, { en: string; ar: string }> = {
   name: { en: "Employee name", ar: "اسم الموظف" },
@@ -41,6 +43,7 @@ export function DepartmentDesignCard({
     accent_color: string;
     target_role: string | null;
     department_id?: string | null;
+    template?: string | null;
     design: unknown;
   };
   companySlug: string;
@@ -50,10 +53,34 @@ export function DepartmentDesignCard({
   roleLabel?: string | null;
 }) {
   const qc = useQueryClient();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [fields, setFields] = useState<EditableFieldKey[]>(() => getEditableFields(design.design));
   const [saving, setSaving] = useState(false);
   const [inviting, setInviting] = useState(false);
+  const [opening, setOpening] = useState(false);
+
+  // Opens (or creates) the Studio card that backs this department design.
+  async function openDesigner() {
+    setOpening(true);
+    try {
+      const cardId = await ensureDesignEditorCard({
+        templateId: design.id,
+        companyId,
+        companySlug,
+        name: design.name,
+        template: design.template || "classic",
+        accentColor: design.accent_color,
+        design: design.design,
+      });
+      navigate({ to: "/studio/$id", params: { id: cardId } });
+    } catch {
+      toast.error(ar ? "تعذّر فتح المصمم" : "Could not open the designer");
+      setOpening(false);
+    }
+  }
+
+
 
   // One-time invite link that pre-assigns this department + role + design.
   async function copyInviteLink() {
@@ -132,14 +159,16 @@ export function DepartmentDesignCard({
           </div>
           {roleLabel && <p className="mt-0.5 text-[11px] text-muted-foreground">{roleLabel}</p>}
           <div className="mt-2 flex flex-wrap gap-1.5">
-            <Link
-              to="/co/$slug/studio"
-              params={{ slug: companySlug }}
-              className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-[11px] hover:border-primary/60 hover:text-primary"
+            <button
+              type="button"
+              onClick={openDesigner}
+              disabled={opening}
+              className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-[11px] hover:border-primary/60 hover:text-primary disabled:opacity-60"
             >
-              <Pencil className="h-3 w-3" />
+              {opening ? <Loader2 className="h-3 w-3 animate-spin" /> : <Pencil className="h-3 w-3" />}
               {ar ? "تعديل التصميم" : "Edit design"}
-            </Link>
+            </button>
+
             <button
               type="button"
               onClick={copyInviteLink}

@@ -149,3 +149,53 @@ export async function setEditableFields(templateId: string, design: unknown, fie
     .eq("id", templateId);
   if (error) throw error;
 }
+
+/* --------------------- editing a design in the Studio --------------------- */
+
+/**
+ * Returns the id of the company card that backs a department design, creating
+ * (and linking) one when the design has never been opened in the Studio.
+ * The link is stored inside the design payload as `sourceCardId`, so saving in
+ * the Studio can write the updated document back to the design.
+ */
+export async function ensureDesignEditorCard(input: {
+  templateId: string;
+  companyId: string;
+  companySlug: string;
+  name: string;
+  template: string;
+  accentColor: string;
+  design: unknown;
+}): Promise<string> {
+  const payload = (input.design as Record<string, unknown> | null) ?? {};
+  const linked = typeof payload.sourceCardId === "string" ? payload.sourceCardId : null;
+  if (linked) {
+    const { data } = await supabase.from("cards").select("id").eq("id", linked).maybeSingle();
+    if (data?.id) return data.id;
+  }
+
+  const { data: auth } = await supabase.auth.getSession();
+  const uid = auth.session?.user.id;
+  if (!uid) throw new Error("no session");
+
+  const { data: created, error } = await supabase
+    .from("cards")
+    .insert({
+      user_id: uid,
+      company_id: input.companyId,
+      name: input.name,
+      slug: `${input.companySlug}-design-${Math.random().toString(36).slice(2, 7)}`,
+      card_type: "company",
+      template: input.template,
+      accent_color: input.accentColor,
+      design: (Object.keys(payload).length ? payload : null) as never,
+    })
+    .select("id")
+    .single();
+  if (error) throw error;
+
+  const next = { ...payload, sourceCardId: created.id };
+  await supabase.from("company_templates").update({ design: next as never }).eq("id", input.templateId);
+  await supabase.from("cards").update({ design: next as never }).eq("id", created.id);
+  return created.id;
+}
