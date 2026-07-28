@@ -1281,11 +1281,11 @@ function MemberItem({
 
   return (
     <div className="overflow-hidden rounded-3xl border border-border/60 bg-card/70 shadow-sm transition-colors hover:border-border">
-      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 sm:flex sm:flex-nowrap sm:gap-4 sm:px-5 sm:py-4">
+      <div className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:flex-nowrap sm:items-center sm:gap-4 sm:px-5 sm:py-4">
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="flex min-w-0 flex-1 items-center gap-3 text-start sm:gap-4"
+          className="flex w-full min-w-0 flex-1 items-center gap-3 text-start sm:gap-4"
           aria-expanded={open}
         >
           {card?.avatar_url ? (
@@ -1302,16 +1302,13 @@ function MemberItem({
             )}
             <span className="block truncate text-[11px] text-muted-foreground sm:text-xs">{contactLine || "—"}</span>
           </span>
-          <ChevronDown className={"h-4 w-4 shrink-0 text-muted-foreground transition-transform sm:hidden " + (open ? "rotate-180" : "")} />
+          <ChevronDown className={"h-4 w-4 shrink-0 text-muted-foreground transition-transform " + (open ? "rotate-180" : "")} />
         </button>
-        <div className="flex shrink-0 flex-wrap items-center justify-end gap-2 sm:flex-nowrap">
+        <div className="flex flex-wrap items-center gap-2 ps-14 sm:ps-0 sm:shrink-0 sm:flex-nowrap sm:justify-end">
           {children}
-          <ChevronDown
-            onClick={() => setOpen((v) => !v)}
-            className={"hidden h-4 w-4 shrink-0 cursor-pointer text-muted-foreground transition-transform sm:block " + (open ? "rotate-180" : "")}
-          />
         </div>
       </div>
+
 
 
 
