@@ -4,6 +4,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { useStudio } from "@/lib/studio/store";
 import { resolveImageSrc, resolvePlaceholders, type StudioNode } from "@/lib/studio/types";
 import { isSvgSrc, useInlineSvg } from "@/lib/studio/svg";
+import { SOCIAL_ICONS, type SocialIconKey } from "@/lib/studio/social-icons";
 import { PenLayer } from "./PenLayer";
 import { PathEditLayer } from "./PathEditLayer";
 import { cssToGrad } from "./GradientEditor";
@@ -217,6 +218,25 @@ export function NodeContent({ n, values }: { n: StudioNode; values?: Record<stri
       );
     }
 
+    case "icon": {
+      const glyph = SOCIAL_ICONS[(n.icon ?? "website") as SocialIconKey] ?? SOCIAL_ICONS.website;
+      const pad = s.padding ?? Math.round(Math.min(n.w, n.h) * 0.22);
+      return (
+        <div
+          className="grid h-full w-full place-items-center"
+          style={{
+            background: s.gradient ?? s.fill ?? "transparent",
+            borderRadius: s.radius ?? 999,
+            border: s.borderWidth ? `${s.borderWidth}px solid ${s.borderColor ?? "#fff"}` : undefined,
+            padding: pad,
+          }}
+        >
+          <svg viewBox="0 0 24 24" className="h-full w-full" aria-hidden>
+            <path d={glyph.path} fill={s.color ?? "#ffffff"} />
+          </svg>
+        </div>
+      );
+    }
     case "line":
       return <div className="h-full w-full" style={{ background: s.gradient ?? s.fill, borderRadius: s.radius }} />;
     case "shape":
