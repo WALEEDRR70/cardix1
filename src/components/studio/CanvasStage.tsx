@@ -6,6 +6,7 @@ import { resolveImageSrc, resolvePlaceholders, type StudioNode } from "@/lib/stu
 import { isSvgSrc, useInlineSvg } from "@/lib/studio/svg";
 import { PenLayer } from "./PenLayer";
 import { PathEditLayer } from "./PathEditLayer";
+import { cssToGrad } from "./GradientEditor";
 import employeePlaceholder from "@/assets/employee-placeholder.png.asset.json";
 
 
@@ -161,7 +162,14 @@ export function NodeContent({ n, values }: { n: StudioNode; values?: Record<stri
           <QRCodeSVG value={values?.["{{QR}}"] ?? "https://cardixn.com"} size={Math.min(n.w, n.h) - (s.padding ?? 0) * 2} bgColor="transparent" fgColor="#0b0713" />
         </div>
       );
-    case "path":
+    case "path": {
+      // SVG can't consume a CSS gradient string, so translate it into a <defs> paint server.
+      const gradId = `pg-${n.id}`;
+      const grad = s.gradient ? cssToGrad(s.gradient) : null;
+      const stops = grad ? [...grad.stops].sort((a, b) => a.pos - b.pos) : [];
+      const a = ((grad?.angle ?? 180) * Math.PI) / 180;
+      const vx = Math.sin(a);
+      const vy = -Math.cos(a);
       return (
         <svg
           viewBox="0 0 100 100"
@@ -170,9 +178,32 @@ export function NodeContent({ n, values }: { n: StudioNode; values?: Record<stri
           className="h-full w-full overflow-visible"
           style={{ filter: s.blur ? `blur(${s.blur}px)` : undefined }}
         >
+          {grad && (
+            <defs>
+              {grad.type === "radial" ? (
+                <radialGradient id={gradId} cx="50%" cy="50%" r="70%">
+                  {stops.map((st) => (
+                    <stop key={st.id} offset={`${st.pos}%`} stopColor={st.color} stopOpacity={st.alpha} />
+                  ))}
+                </radialGradient>
+              ) : (
+                <linearGradient
+                  id={gradId}
+                  x1={`${(0.5 - vx / 2) * 100}%`}
+                  y1={`${(0.5 - vy / 2) * 100}%`}
+                  x2={`${(0.5 + vx / 2) * 100}%`}
+                  y2={`${(0.5 + vy / 2) * 100}%`}
+                >
+                  {stops.map((st) => (
+                    <stop key={st.id} offset={`${st.pos}%`} stopColor={st.color} stopOpacity={st.alpha} />
+                  ))}
+                </linearGradient>
+              )}
+            </defs>
+          )}
           <path
             d={n.path ?? ""}
-            fill={s.gradient ? "none" : (s.fill && s.fill !== "transparent" ? s.fill : "none")}
+            fill={grad ? `url(#${gradId})` : (s.fill && s.fill !== "transparent" ? s.fill : "none")}
             fillRule="evenodd"
             stroke={s.stroke ?? undefined}
             strokeWidth={s.strokeWidth ?? 0}
@@ -184,6 +215,7 @@ export function NodeContent({ n, values }: { n: StudioNode; values?: Record<stri
           />
         </svg>
       );
+    }
 
     case "line":
       return <div className="h-full w-full" style={{ background: s.gradient ?? s.fill, borderRadius: s.radius }} />;
