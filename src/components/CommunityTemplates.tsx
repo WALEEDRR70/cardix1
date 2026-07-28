@@ -1,10 +1,12 @@
 // Community template grid, reusable for a personal profile or a company workspace.
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2, Wand2 } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "@/lib/nav";
 import { StaticCardPreview } from "@/components/studio/StaticCardPreview";
+import { FavoriteTemplateButton } from "@/components/FavoriteTemplateButton";
+import { supabase } from "@/integrations/supabase/client";
 import {
   listPublicTemplates,
   useTemplate,
@@ -36,6 +38,11 @@ export function CommunityTemplates({
 }) {
   const navigate = useNavigate();
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [uid, setUid] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setUid(data.session?.user.id ?? null));
+  }, []);
 
   const { data: templates = [], isLoading } = useQuery({
     queryKey: ["public-templates", "", audience],
@@ -92,6 +99,7 @@ export function CommunityTemplates({
                 {tpl.author_name ? ` · ${ar ? "بواسطة" : "by"} ${tpl.author_name}` : ""}
               </p>
             </div>
+            <FavoriteTemplateButton templateId={tpl.id} userId={uid} ar={ar} />
             <button
               onClick={() => void onUse(tpl)}
               disabled={busyId === tpl.id}
