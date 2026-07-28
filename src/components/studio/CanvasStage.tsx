@@ -77,17 +77,34 @@ function ImageNode({ n, values }: { n: StudioNode; values?: Record<string, strin
 
   return (
     <img
+      key={src}
       src={src}
       alt=""
       draggable={false}
+      loading="eager"
+      decoding="async"
+      referrerPolicy="no-referrer"
+      crossOrigin="anonymous"
       className="pointer-events-none h-full w-full select-none"
       style={{
         borderRadius: s.radius,
         objectFit: s.imageFit ?? (n.imageSource === "logo" ? "contain" : "cover"),
       }}
+      onError={(e) => {
+        const img = e.currentTarget;
+        // Some CDNs reject the CORS request — retry once without it before giving up.
+        if (img.dataset.retried !== "1") {
+          img.dataset.retried = "1";
+          img.removeAttribute("crossorigin");
+          img.src = src.includes("?") ? `${src}&_r=1` : `${src}?_r=1`;
+          return;
+        }
+        img.style.visibility = "hidden";
+      }}
     />
   );
 }
+
 
 export function NodeContent({ n, values }: { n: StudioNode; values?: Record<string, string> }) {
   const s = n.style;
