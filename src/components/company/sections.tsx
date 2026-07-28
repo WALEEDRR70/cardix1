@@ -1281,30 +1281,39 @@ function MemberItem({
 
   return (
     <div className="overflow-hidden rounded-3xl border border-border/60 bg-card/70 shadow-sm transition-colors hover:border-border">
-      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 sm:flex sm:flex-wrap">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 sm:flex sm:flex-nowrap sm:gap-4 sm:px-5 sm:py-4">
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="flex min-w-0 flex-1 items-center gap-3 text-start"
+          className="flex min-w-0 flex-1 items-center gap-3 text-start sm:gap-4"
           aria-expanded={open}
         >
           {card?.avatar_url ? (
-            <img src={card.avatar_url} alt={displayName} className="h-11 w-11 shrink-0 rounded-2xl object-cover" />
+            <img src={card.avatar_url} alt={displayName} className="h-11 w-11 shrink-0 rounded-2xl object-cover sm:h-14 sm:w-14" />
           ) : (
-            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-secondary text-muted-foreground">
-              <Users className="h-4 w-4" />
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-secondary text-muted-foreground sm:h-14 sm:w-14">
+              <Users className="h-4 w-4 sm:h-5 sm:w-5" />
             </span>
           )}
           <span className="min-w-0 flex-1">
-            <span className="block truncate text-sm font-semibold">{displayName}</span>
-            <span className="block truncate text-[11px] text-muted-foreground">
-              {[m.job_title, contactLine].filter(Boolean).join(" — ") || "—"}
-            </span>
+            <span className="block truncate text-sm font-semibold sm:text-base">{displayName}</span>
+            {m.job_title && (
+              <span className="block truncate text-xs text-muted-foreground sm:text-sm">{m.job_title}</span>
+            )}
+            <span className="block truncate text-[11px] text-muted-foreground sm:text-xs">{contactLine || "—"}</span>
           </span>
-          <ChevronDown className={"h-4 w-4 shrink-0 text-muted-foreground transition-transform " + (open ? "rotate-180" : "")} />
+          <ChevronDown className={"h-4 w-4 shrink-0 text-muted-foreground transition-transform sm:hidden " + (open ? "rotate-180" : "")} />
         </button>
-        <div className="flex shrink-0 flex-wrap items-center gap-2">{children}</div>
+        <div className="flex shrink-0 flex-wrap items-center justify-end gap-2 sm:flex-nowrap">
+          {children}
+          <ChevronDown
+            onClick={() => setOpen((v) => !v)}
+            className={"hidden h-4 w-4 shrink-0 cursor-pointer text-muted-foreground transition-transform sm:block " + (open ? "rotate-180" : "")}
+          />
+        </div>
       </div>
+
+
 
       {open && (
         <div className="border-t border-border/60 bg-background/40 px-4 py-4">
