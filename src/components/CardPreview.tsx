@@ -23,6 +23,8 @@ export interface CardData {
   socials?: Record<string, string> | null | unknown;
   /** Department name (company cards) — used by {{Department}} in Studio designs. */
   department?: string | null;
+  /** Company logo URL — feeds the {{Logo}} placeholder in Studio designs. */
+  logo_url?: string | null;
 }
 
 export const TEMPLATES = [
