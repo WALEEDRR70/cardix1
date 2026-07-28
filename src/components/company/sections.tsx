@@ -1234,7 +1234,7 @@ function MemberItem({
   async function uploadPhoto(file: File) {
     setUploading(true);
     try {
-      const prepared = await prepareImageFile(file);
+      const prepared = (await prepareImageFile(file)).file;
       const { data: auth } = await supabase.auth.getUser();
       if (!auth.user) throw new Error("no session");
       const ext = prepared.name.split(".").pop() || "png";
