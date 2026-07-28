@@ -84,6 +84,11 @@ function Studio({ cardId, title, initial, values, company }: { cardId: string; t
     const { error } = await supabase.from("cards").update({ design: api.state.doc as never }).eq("id", cardId);
     if (!error) {
       lastSaved.current = json;
+      // Keep any department design backed by this card in sync.
+      await supabase
+        .from("company_templates")
+        .update({ design: api.state.doc as never })
+        .filter("design->>sourceCardId", "eq", cardId);
       await supabase.from("card_design_versions").insert({
         card_id: cardId,
         user_id: (await supabase.auth.getSession()).data.session?.user.id ?? "",
