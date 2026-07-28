@@ -194,6 +194,7 @@ function EditCard() {
         )}
         <CardForm
           initial={initial}
+          department={corp?.department ?? (card as { department?: string | null }).department ?? null}
           design={card.design}
           onSubmit={onSubmit}
           submitLabel={t.save}
