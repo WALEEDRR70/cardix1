@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import {
   BadgeCheck, Building2, Plus, Copy, Trash2, Upload, Lock, Sparkles, MapPin, Users, MailPlus, BarChart3,
+  Pencil, Check, X,
 } from "lucide-react";
 import {
   useWs, roleLabel, statusLabel, slugify,
@@ -718,6 +719,21 @@ export function DepartmentsTab({ company, canEdit }: { company: Company; canEdit
 
   const qc = useQueryClient();
   const [name, setName] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
+
+  async function rename(id: string) {
+    const next = editName.trim();
+    if (!next) return;
+    const { error } = await supabase
+      .from("company_departments")
+      .update({ name: next, slug: slugify(next) })
+      .eq("id", id);
+    if (error) { toast.error(error.message); return; }
+    setEditingId(null);
+    qc.invalidateQueries({ queryKey: ["company-departments", company.id] });
+  }
+
 
   const { data } = useQuery({
     queryKey: ["company-departments", company.id],
@@ -766,20 +782,53 @@ export function DepartmentsTab({ company, canEdit }: { company: Company; canEdit
           return (
             <div key={d.id} className="rounded-2xl border border-border/60 bg-card/60 px-3 py-2.5">
               <div className="flex items-center gap-2">
-                <p className="min-w-0 flex-1 truncate text-sm font-medium">{d.name}</p>
-                {canEdit && (
-                  <button
-                    onClick={async () => {
-                      await supabase.from("company_departments").delete().eq("id", d.id);
-                      qc.invalidateQueries({ queryKey: ["company-departments", company.id] });
-                    }}
-                    className="text-muted-foreground hover:text-destructive"
-                    aria-label={w.remove}
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </button>
+                {editingId === d.id ? (
+                  <>
+                    <input
+                      autoFocus
+                      value={editName}
+                      onChange={(e) => setEditName(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") void rename(d.id);
+                        if (e.key === "Escape") setEditingId(null);
+                      }}
+                      className="min-w-0 flex-1 rounded-xl border border-input bg-card px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-ring"
+                    />
+                    <button onClick={() => void rename(d.id)} className="text-primary" aria-label={w.save}>
+                      <Check className="h-4 w-4" />
+                    </button>
+                    <button onClick={() => setEditingId(null)} className="text-muted-foreground" aria-label={w.cancel}>
+                      <X className="h-4 w-4" />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <p className="min-w-0 flex-1 truncate text-sm font-medium">{d.name}</p>
+                    {canEdit && (
+                      <button
+                        onClick={() => { setEditingId(d.id); setEditName(d.name); }}
+                        className="text-muted-foreground hover:text-primary"
+                        aria-label={ar ? "إعادة تسمية" : "Rename"}
+                      >
+                        <Pencil className="h-3.5 w-3.5" />
+                      </button>
+                    )}
+                    {canEdit && (
+                      <button
+                        onClick={async () => {
+                          await supabase.from("company_departments").delete().eq("id", d.id);
+                          qc.invalidateQueries({ queryKey: ["company-departments", company.id] });
+                        }}
+                        className="text-muted-foreground hover:text-destructive"
+                        aria-label={w.remove}
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    )}
+                  </>
                 )}
               </div>
+
               <div className="mt-2 space-y-2">
                 {assigned.length === 0 ? (
                   <span className="text-[11px] text-muted-foreground">
