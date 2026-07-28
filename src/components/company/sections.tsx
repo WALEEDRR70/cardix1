@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import {
   BadgeCheck, Building2, Plus, Copy, Trash2, Upload, Lock, Sparkles, MapPin, Users, MailPlus, BarChart3,
-  Pencil, Check, X,
+  Pencil, Check, X, ChevronDown,
 } from "lucide-react";
 import {
   useWs, roleLabel, statusLabel, slugify,
@@ -1183,6 +1183,149 @@ export function AnalyticsTab({ company }: { company: Company }) {
           </div>
         ))}
       </Card>
+    </div>
+  );
+}
+
+/* --------------------- employee row + card details --------------------- */
+
+const SOCIAL_KEYS = ["linkedin", "twitter", "instagram", "facebook", "tiktok", "snapchat", "youtube"] as const;
+
+function MemberItem({
+  m, card, ar, w, canEdit, onSaved, children,
+}: {
+  m: MemberRow;
+  card: EmployeeCard | null;
+  ar: boolean;
+  w: Record<string, string>;
+  canEdit: boolean;
+  onSaved: () => void;
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [f, setF] = useState(() => ({
+    name: card?.name ?? "",
+    phone: card?.phone ?? "",
+    whatsapp: card?.whatsapp ?? "",
+    email: card?.email ?? "",
+    website: card?.website ?? "",
+    address: card?.address ?? "",
+    bio: card?.bio ?? "",
+    socials: { ...(card?.socials ?? {}) } as Record<string, string>,
+  }));
+
+  useEffect(() => {
+    setF({
+      name: card?.name ?? "",
+      phone: card?.phone ?? "",
+      whatsapp: card?.whatsapp ?? "",
+      email: card?.email ?? "",
+      website: card?.website ?? "",
+      address: card?.address ?? "",
+      bio: card?.bio ?? "",
+      socials: { ...(card?.socials ?? {}) } as Record<string, string>,
+    });
+  }, [card?.id, card?.name, card?.phone, card?.whatsapp, card?.email, card?.website, card?.address, card?.bio, card?.socials]);
+
+  async function save() {
+    if (!card) return;
+    setBusy(true);
+    const socials = Object.fromEntries(Object.entries(f.socials).filter(([, v]) => (v ?? "").trim() !== ""));
+    const { error } = await supabase
+      .from("cards")
+      .update({
+        name: f.name.trim() || (card.name ?? ""),
+        phone: f.phone.trim() || null,
+        whatsapp: f.whatsapp.trim() || null,
+        email: f.email.trim() || null,
+        website: f.website.trim() || null,
+        address: f.address.trim() || null,
+        bio: f.bio.trim() || null,
+        socials,
+      })
+      .eq("id", card.id);
+    setBusy(false);
+    if (error) { toast.error(error.message); return; }
+    toast.success(w.saved ?? (ar ? "تم الحفظ" : "Saved"));
+    onSaved();
+  }
+
+  const displayName = card?.name || m.corporate_email || m.user_id.slice(0, 8);
+  const contactLine = [card?.email || m.corporate_email, card?.phone].filter(Boolean).join(" · ");
+
+  return (
+    <div className="rounded-2xl border border-border/60 bg-card/60">
+      <div className="flex flex-wrap items-center gap-2 px-3 py-2.5">
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          className="grid h-7 w-7 shrink-0 place-items-center rounded-lg hover:bg-secondary"
+          aria-label={ar ? "تفاصيل الموظف" : "Employee details"}
+        >
+          <ChevronDown className={"h-4 w-4 transition-transform " + (open ? "rotate-180" : "")} />
+        </button>
+        {card?.avatar_url ? (
+          <img src={card.avatar_url} alt={displayName} className="h-8 w-8 shrink-0 rounded-full object-cover" />
+        ) : null}
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-medium">{displayName}</p>
+          <p className="truncate text-[11px] text-muted-foreground">
+            {[m.job_title, contactLine].filter(Boolean).join(" — ") || "—"}
+          </p>
+        </div>
+        {children}
+      </div>
+
+      {open && (
+        <div className="border-t border-border/60 px-3 py-3">
+          {!card ? (
+            <p className="text-xs text-muted-foreground">
+              {ar ? "لا توجد بطاقة لهذا الموظف بعد." : "This employee has no card yet."}
+            </p>
+          ) : (
+            <div className="space-y-3">
+              <div className="grid gap-3 sm:grid-cols-2">
+                <TextField label={ar ? "الاسم" : "Name"} value={f.name} onChange={(v) => setF({ ...f, name: v })} disabled={!canEdit} />
+                <TextField label={ar ? "الجوال" : "Phone"} value={f.phone} onChange={(v) => setF({ ...f, phone: v })} disabled={!canEdit} />
+                <TextField label={ar ? "واتساب" : "WhatsApp"} value={f.whatsapp} onChange={(v) => setF({ ...f, whatsapp: v })} disabled={!canEdit} />
+                <TextField label={ar ? "البريد" : "Email"} type="email" value={f.email} onChange={(v) => setF({ ...f, email: v })} disabled={!canEdit} />
+                <TextField label={ar ? "الموقع الإلكتروني" : "Website"} value={f.website} onChange={(v) => setF({ ...f, website: v })} disabled={!canEdit} />
+                <TextField label={ar ? "العنوان" : "Address"} value={f.address} onChange={(v) => setF({ ...f, address: v })} disabled={!canEdit} />
+              </div>
+
+              <div>
+                <label className="mb-1 block px-1 text-xs text-muted-foreground">{ar ? "النبذة" : "Bio"}</label>
+                <textarea
+                  value={f.bio}
+                  onChange={(e) => setF({ ...f, bio: e.target.value })}
+                  disabled={!canEdit}
+                  rows={3}
+                  className="w-full rounded-2xl border border-input bg-card px-4 py-3 text-sm outline-none disabled:opacity-60"
+                />
+              </div>
+
+              <div>
+                <p className="mb-1 px-1 text-xs text-muted-foreground">{ar ? "الحسابات الاجتماعية" : "Social accounts"}</p>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {SOCIAL_KEYS.map((k) => (
+                    <TextField
+                      key={k}
+                      label={k}
+                      value={f.socials[k] ?? ""}
+                      onChange={(v) => setF({ ...f, socials: { ...f.socials, [k]: v } })}
+                      disabled={!canEdit}
+                      placeholder="https://…"
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {canEdit && <SaveBar busy={busy} label={w.save ?? (ar ? "حفظ" : "Save")} onSave={save} />}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
