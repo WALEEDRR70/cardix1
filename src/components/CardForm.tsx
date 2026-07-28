@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import { useI18n } from "@/lib/i18n";
 import { CardPreview, TEMPLATE_META, type TemplateId } from "@/components/CardPreview";
 import { useServerFn } from "@tanstack/react-start";
@@ -47,6 +47,8 @@ export function CardForm({
   slugPrefix = "/c/",
   department,
   templatesSlot,
+  onClearDesign,
+
 
 }: {
   initial: CardFormData;
@@ -64,6 +66,9 @@ export function CardForm({
   department?: string | null;
   /** Extra picker rendered right under the built-in template row (designer templates slider). */
   templatesSlot?: React.ReactNode;
+  /** Called when the user picks a built-in template while a Studio design is applied. */
+  onClearDesign?: () => void;
+
 
 }) {
   const { t, lang } = useI18n();
@@ -141,16 +146,30 @@ export function CardForm({
 
   const set = <K extends keyof CardFormData>(k: K, v: CardFormData[K]) => setData((d) => ({ ...d, [k]: v }));
 
-  /** Studio design re-tinted live with the picked accent color. */
-  const accentChanged = !!design && data.accent_color !== initial.accent_color;
-  const previewDesign = useMemo(() => {
-    if (!design || !accentChanged) return design;
-    try {
-      return recolorDesign(design as StudioDoc, initial.accent_color, data.accent_color);
-    } catch {
-      return design;
+  /** Set when the user switches back to a built-in template while a Studio design is applied. */
+  const [designCleared, setDesignCleared] = useState(false);
+  useEffect(() => { setDesignCleared(false); }, [design]);
+  const effectiveDesign = designCleared ? null : design;
+
+  function pickBuiltinTemplate(id: TemplateId) {
+    set("template", id);
+    if (effectiveDesign) {
+      setDesignCleared(true);
+      onClearDesign?.();
     }
-  }, [design, accentChanged, initial.accent_color, data.accent_color]);
+  }
+
+  /** Studio design re-tinted live with the picked accent color. */
+  const accentChanged = !!effectiveDesign && data.accent_color !== initial.accent_color;
+  const previewDesign = useMemo(() => {
+    if (!effectiveDesign || !accentChanged) return effectiveDesign;
+    try {
+      return recolorDesign(effectiveDesign as StudioDoc, initial.accent_color, data.accent_color);
+    } catch {
+      return effectiveDesign;
+    }
+  }, [effectiveDesign, accentChanged, initial.accent_color, data.accent_color]);
+
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -180,16 +199,16 @@ export function CardForm({
       )}
 
       {/* Template picker */}
-      <section hidden={!!locked?.template || !!design}>
+      <section hidden={!!locked?.template}>
         <label className="mb-2 block px-1 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{t.template}</label>
         <div ref={tplScrollRef} className="no-scrollbar -mx-4 flex cursor-grab gap-2.5 overflow-x-auto px-4 pb-1 lg:mx-0 lg:px-0">
           {TEMPLATE_META.filter((tpl) => !allowedTemplates || allowedTemplates.includes(tpl.id)).map((tpl) => {
-            const active = data.template === tpl.id;
+            const active = !effectiveDesign && data.template === tpl.id;
             return (
               <button
                 key={tpl.id}
                 type="button"
-                onClick={() => set("template", tpl.id as TemplateId)}
+                onClick={() => pickBuiltinTemplate(tpl.id as TemplateId)}
                 className="group flex snap-start shrink-0 flex-col items-center gap-1.5"
               >
                 <span

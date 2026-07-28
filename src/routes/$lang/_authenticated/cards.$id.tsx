@@ -118,6 +118,14 @@ function EditCard() {
     toast.success(t.saved);
   }
 
+  async function clearDesign(): Promise<void> {
+    const { error } = await supabase.from("cards").update({ design: null }).eq("id", id).eq("user_id", user.id);
+    if (error) { toast.error(error.message); return; }
+    qc.invalidateQueries({ queryKey: ["card", id, user.id] });
+    qc.invalidateQueries({ queryKey: ["cards"] });
+  }
+
+
   const publicUrl = typeof window !== "undefined" ? `${window.location.origin}/c/${card.slug}` : `/c/${card.slug}`;
 
   async function nativeShare() {
@@ -205,6 +213,7 @@ function EditCard() {
           locked={card.company_id ? (corp?.locked ?? { company: true, accent_color: true, template: true, slug: true }) : undefined}
           allowedTemplates={corp && corp.templates.length > 0 ? corp.templates : undefined}
           templatesSlot={!card.company_id ? <ApplyTemplatesStrip cardId={id} /> : undefined}
+          onClearDesign={!card.company_id ? clearDesign : undefined}
         />
       </div>
 
