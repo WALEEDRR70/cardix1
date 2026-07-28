@@ -88,6 +88,7 @@ export const acceptInvitation = createServerFn({ method: "POST" })
           .eq("id", invite.department_id)
           .maybeSingle()
       : { data: null };
+    const departmentName = dept?.name ?? null;
     const jobTitle = invite.job_title ?? tpl?.name ?? dept?.name ?? null;
 
     // The company owner must never be downgraded by accepting an invite link.
@@ -131,6 +132,7 @@ export const acceptInvitation = createServerFn({ method: "POST" })
           user_id: context.userId,
           company_id: invite.company_id,
           department_id: invite.department_id,
+          department: departmentName,
           company_template_id: tpl?.id ?? null,
           card_type: "employee",
           slug,
@@ -156,6 +158,7 @@ export const acceptInvitation = createServerFn({ method: "POST" })
         .update({
           company_template_id: tpl.id,
           department_id: invite.department_id,
+          department: departmentName,
           ...(jobTitle ? { title: jobTitle } : {}),
           accent_color: tpl.accent_color,
           template: tpl.template,
