@@ -24,13 +24,13 @@ async function assertAdmin(ctx: { supabase: any; userId: string }) {
   if (!data) throw new Error("Forbidden");
 }
 
-/** Creates (or reuses) a PayPal billing plan for a Cardixn plan row. */
+/** Creates (or recreates) a PayPal billing plan for a Cardixn plan row. */
 export const syncPlanToPaypal = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { planId: string }) => d)
   .handler(async ({ data, context }) => {
     await assertAdmin(context as any);
-    const { paypalFetch } = await import("@/lib/paypal.server");
+    const { ensurePlanLinked } = await import("@/lib/paypal.server");
     const { supabase } = context as any;
 
     const { data: plan } = await supabase
@@ -39,41 +39,31 @@ export const syncPlanToPaypal = createServerFn({ method: "POST" })
       .eq("id", data.planId)
       .maybeSingle();
     if (!plan) throw new Error("Plan not found");
-    const p = plan as PlanRow;
 
-    const product = await paypalFetch<{ id: string }>("/v1/catalogs/products", {
-      method: "POST",
-      body: {
-        name: `Cardixn ${p.name_en}`,
-        type: "SERVICE",
-        category: "SOFTWARE",
-      },
-    });
+    const paypalPlanId = await ensurePlanLinked(plan as PlanRow, true);
+    return { paypalPlanId };
+  });
 
-    const created = await paypalFetch<{ id: string }>("/v1/billing/plans", {
-      method: "POST",
-      body: {
-        product_id: product.id,
-        name: `Cardixn ${p.name_en} (${p.interval})`,
-        status: "ACTIVE",
-        billing_cycles: [
-          {
-            frequency: { interval_unit: p.interval === "year" ? "YEAR" : "MONTH", interval_count: 1 },
-            tenure_type: "REGULAR",
-            sequence: 1,
-            total_cycles: 0,
-            pricing_scheme: {
-              fixed_price: { currency_code: p.currency, value: (p.price_cents / 100).toFixed(2) },
-            },
-          },
-        ],
-        payment_preferences: { auto_bill_outstanding: true, setup_fee_failure_action: "CONTINUE", payment_failure_threshold: 2 },
-      },
-    });
+/** Links every active plan that has no PayPal plan yet. */
+export const syncAllPlansToPaypal = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context as any);
+    const { ensurePlanLinked } = await import("@/lib/paypal.server");
+    const { supabase } = context as any;
 
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    await (supabaseAdmin as any).from("billing_plans").update({ paypal_plan_id: created.id }).eq("id", p.id);
-    return { paypalPlanId: created.id };
+    const { data: plans } = await supabase
+      .from("billing_plans")
+      .select("id, code, name_en, interval, price_cents, currency, paypal_plan_id")
+      .eq("is_active", true);
+
+    let linked = 0;
+    for (const plan of (plans ?? []) as PlanRow[]) {
+      if (plan.paypal_plan_id) continue;
+      await ensurePlanLinked(plan);
+      linked += 1;
+    }
+    return { linked, total: (plans ?? []).length };
   });
 
 /** Starts a PayPal subscription checkout, returns the approval URL. */
@@ -81,7 +71,7 @@ export const startSubscription = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { planId: string; origin: string; companyId?: string | null }) => d)
   .handler(async ({ data, context }) => {
-    const { paypalFetch, approveLink } = await import("@/lib/paypal.server");
+    const { paypalFetch, approveLink, ensurePlanLinked } = await import("@/lib/paypal.server");
     const { supabase, userId } = context as any;
 
     const { data: plan } = await supabase
@@ -92,14 +82,15 @@ export const startSubscription = createServerFn({ method: "POST" })
       .maybeSingle();
     if (!plan) throw new Error("Plan not found");
     const p = plan as PlanRow;
-    if (!p.paypal_plan_id) throw new Error("This plan is not linked to PayPal yet");
+    // Self-heal: link the plan to PayPal on first purchase if an admin never did.
+    const paypalPlanId = await ensurePlanLinked(p);
 
     const sub = await paypalFetch<{ id: string; links: Array<{ rel: string; href: string }> }>(
       "/v1/billing/subscriptions",
       {
         method: "POST",
         body: {
-          plan_id: p.paypal_plan_id,
+          plan_id: paypalPlanId,
           custom_id: userId,
           application_context: {
             brand_name: "Cardixn",
@@ -124,6 +115,7 @@ export const startSubscription = createServerFn({ method: "POST" })
 
     return { approveUrl: approveLink(sub.links), subscriptionId: sub.id };
   });
+
 
 /** Starts a one-time PayPal order for a purchasable template. */
 export const startProductCheckout = createServerFn({ method: "POST" })
