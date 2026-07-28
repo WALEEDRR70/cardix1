@@ -104,26 +104,27 @@ export function CompanyHero({
 
   return (
     <header className="relative overflow-hidden rounded-b-[2.5rem] border-b border-border/50">
-      <div className="relative h-44 w-full sm:h-60">
+      <div className="relative h-44 w-full overflow-hidden sm:h-60">
         {company.cover_url ? (
-          <img src={company.cover_url} alt="" className="h-full w-full object-cover" />
+          <img src={company.cover_url} alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
         ) : (
           <div className="h-full w-full" style={{ background: `linear-gradient(135deg, ${accent}55, transparent 70%)` }} />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/25 to-transparent" />
       </div>
 
       <div className="mx-auto -mt-14 w-full max-w-5xl px-5 pb-7 sm:-mt-16">
         <span
-          className="grid h-24 w-24 place-items-center overflow-hidden rounded-3xl border border-border/60 bg-card shadow-lg sm:h-28 sm:w-28"
+          className="grid h-24 w-24 place-items-center overflow-hidden rounded-3xl border border-border/60 bg-card p-2 shadow-lg sm:h-28 sm:w-28"
           style={{ color: accent }}
         >
           {company.logo_url ? (
-            <img src={company.logo_url} alt={company.name} className="h-full w-full object-cover" />
+            <img src={company.logo_url} alt={company.name} className="h-full w-full object-contain" />
           ) : (
             <Building2 className="h-9 w-9" />
           )}
         </span>
+
 
         <h1 className="mt-4 flex items-center gap-2 text-3xl font-semibold tracking-tight sm:text-4xl">
           <span className="min-w-0 break-words">{company.name}</span>
