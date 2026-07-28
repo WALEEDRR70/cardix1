@@ -329,7 +329,12 @@ function TemplatesGallery() {
                   <CardPreview
                     card={
                       myCard
-                        ? { ...myCard, design: null, template: card.template, accent_color: myCard.accent_color || card.accent_color }
+                        ? {
+                            ...myCard,
+                            design: null,
+                            template: card.template,
+                            accent_color: myCard.accent_color || card.accent_color,
+                          }
                         : card
                     }
                     size="md"
@@ -379,7 +384,11 @@ function TemplatesGallery() {
                   className="group overflow-hidden rounded-3xl border border-border/60 bg-card/50 p-4 transition hover:border-accent/60"
                 >
                   <div className="grid place-items-center overflow-hidden rounded-2xl bg-muted/20 p-3">
-                    <StaticCardPreview doc={tpl.design as unknown as StudioDoc} width={240} values={previewValues} />
+                    <StaticCardPreview
+                      doc={tpl.design as unknown as StudioDoc}
+                      width={240}
+                      values={previewValues}
+                    />
                   </div>
                   <div className="mt-4">
                     <h2 className="flex items-center gap-2 truncate text-sm font-semibold">
