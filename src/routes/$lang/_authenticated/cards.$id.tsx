@@ -118,6 +118,14 @@ function EditCard() {
     toast.success(t.saved);
   }
 
+  async function clearDesign(): Promise<void> {
+    const { error } = await supabase.from("cards").update({ design: null }).eq("id", id).eq("user_id", user.id);
+    if (error) { toast.error(error.message); return; }
+    qc.invalidateQueries({ queryKey: ["card", id, user.id] });
+    qc.invalidateQueries({ queryKey: ["cards"] });
+  }
+
+
   const publicUrl = typeof window !== "undefined" ? `${window.location.origin}/c/${card.slug}` : `/c/${card.slug}`;
 
   async function nativeShare() {
