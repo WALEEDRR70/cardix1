@@ -132,6 +132,13 @@ function Studio({ cardId, title, initial, values, company }: { cardId: string; t
               </Link>
             </>
           )}
+          <button
+            onClick={() => void save(false)}
+            disabled={saving}
+            className="ms-auto rounded-full bg-primary px-3 py-1 text-[11px] font-semibold text-primary-foreground disabled:opacity-60 lg:hidden"
+          >
+            {saving ? (ar ? "جارٍ الحفظ…" : "Saving…") : ar ? "حفظ" : "Save"}
+          </button>
         </div>
         <StudioToolbar ar={ar} title={title} saving={saving} onSave={() => void save(false)} />
 
