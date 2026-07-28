@@ -344,16 +344,16 @@ export function CardForm({
           )}
         </section>
 
-        <Field label={t.name} value={data.name} onChange={(v) => set("name", v)} required />
+        <Field label={t.name} value={data.name} onChange={(v) => set("name", v)} required locked={locked?.name} />
 
         <div className="grid grid-cols-2 gap-3">
-          <Field label={t.title} value={data.title} onChange={(v) => set("title", v)} />
+          <Field label={t.title} value={data.title} onChange={(v) => set("title", v)} locked={locked?.title} />
           <Field label={t.company} value={data.company} onChange={(v) => set("company", v)} locked={locked?.company} />
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          <Field label={t.phone} value={data.phone} onChange={(v) => set("phone", v)} />
-          <Field label={t.email} value={data.email} onChange={(v) => set("email", v)} type="email" />
+          <Field label={t.phone} value={data.phone} onChange={(v) => set("phone", v)} locked={locked?.phone} />
+          <Field label={t.email} value={data.email} onChange={(v) => set("email", v)} type="email" locked={locked?.email} />
         </div>
 
         {/* Everything optional lives behind one toggle so the first screen stays short */}
