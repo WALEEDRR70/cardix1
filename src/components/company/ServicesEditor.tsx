@@ -178,7 +178,10 @@ export function ServicesEditor({
                     <TextField label={t.email} value={s.email ?? ""} disabled={!canEdit} type="email" onChange={(v) => patch(s.id, { email: v })} />
                     <TextField label={t.website} value={s.website ?? ""} disabled={!canEdit} onChange={(v) => patch(s.id, { website: v })} />
                   </div>
-                  <TextField label={t.image} value={s.image_url ?? ""} disabled={!canEdit} onChange={(v) => patch(s.id, { image_url: v })} />
+                  <LogoUpload label={t.image} value={s.image_url ?? ""} disabled={!canEdit} companyId={companyId} onChange={(v) => patch(s.id, { image_url: v })} />
+                  {s.image_url && (
+                    <img src={s.image_url} alt={s.name} className="h-32 w-full rounded-2xl border border-border/60 object-cover" />
+                  )}
 
                   <div className="space-y-2">
                     <p className="text-xs font-medium text-muted-foreground">{t.features}</p>
