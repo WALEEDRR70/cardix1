@@ -19,16 +19,12 @@ type ProductRow = {
   currency: string;
 };
 
-async function assertAdmin(ctx: { supabase: any; userId: string }) {
-  const { data } = await ctx.supabase.rpc("has_role", { _user_id: ctx.userId, _role: "admin" });
-  if (!data) throw new Error("Forbidden");
-}
-
 /** Creates (or recreates) a PayPal billing plan for a Cardixn plan row. */
 export const syncPlanToPaypal = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { planId: string }) => d)
   .handler(async ({ data, context }) => {
+    const { assertAdmin } = await import("@/lib/billing.server");
     await assertAdmin(context as any);
     const { ensurePlanLinked } = await import("@/lib/paypal.server");
     const { supabase } = context as any;
@@ -48,6 +44,7 @@ export const syncPlanToPaypal = createServerFn({ method: "POST" })
 export const syncAllPlansToPaypal = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    const { assertAdmin } = await import("@/lib/billing.server");
     await assertAdmin(context as any);
     const { ensurePlanLinked } = await import("@/lib/paypal.server");
     const { supabase } = context as any;
