@@ -75,6 +75,7 @@ function Studio({ cardId, title, initial, values, company }: { cardId: string; t
   const api = useStudioState(initial);
   const stageRef = useRef<HTMLDivElement>(null);
   const [saving, setSaving] = useState(false);
+  const [panel, setPanel] = useState<"elements" | "props" | null>(null);
   const lastSaved = useRef(JSON.stringify(initial));
 
   async function save(silent = false) {
