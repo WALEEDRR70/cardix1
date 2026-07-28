@@ -103,6 +103,7 @@ export type Database = {
           cover_url: string | null
           created_at: string
           custom_values: Json
+          department: string | null
           department_id: string | null
           design: Json | null
           email: string | null
@@ -137,6 +138,7 @@ export type Database = {
           cover_url?: string | null
           created_at?: string
           custom_values?: Json
+          department?: string | null
           department_id?: string | null
           design?: Json | null
           email?: string | null
@@ -171,6 +173,7 @@ export type Database = {
           cover_url?: string | null
           created_at?: string
           custom_values?: Json
+          department?: string | null
           department_id?: string | null
           design?: Json | null
           email?: string | null
