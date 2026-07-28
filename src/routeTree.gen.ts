@@ -16,6 +16,7 @@ import { Route as LangIndexRouteImport } from './routes/$lang/index'
 import { Route as SitemapChar123langChar125DotxmlRouteImport } from './routes/sitemap/{$lang}[.]xml'
 import { Route as JoinTokenRouteImport } from './routes/join.$token'
 import { Route as CSlugRouteImport } from './routes/c.$slug'
+import { Route as BillingReturnRouteImport } from './routes/billing.return'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as LangTemplatesRouteImport } from './routes/$lang/templates'
 import { Route as LangPricingRouteImport } from './routes/$lang/pricing'
@@ -44,6 +45,7 @@ import { Route as LangAuthenticatedStudioIdRouteImport } from './routes/$lang/_a
 import { Route as LangAuthenticatedCoNewRouteImport } from './routes/$lang/_authenticated/co/new'
 import { Route as LangAuthenticatedCardsNewRouteImport } from './routes/$lang/_authenticated/cards.new'
 import { Route as LangAuthenticatedCardsIdRouteImport } from './routes/$lang/_authenticated/cards.$id'
+import { Route as LangAuthenticatedAdminBillingRouteImport } from './routes/$lang/_authenticated/admin/billing'
 import { Route as LangAuthenticatedCoSlugRouteRouteImport } from './routes/$lang/_authenticated/co/$slug/route'
 import { Route as LangAuthenticatedCoSlugIndexRouteImport } from './routes/$lang/_authenticated/co/$slug/index'
 import { Route as LangAuthenticatedCoSlugTemplatesRouteImport } from './routes/$lang/_authenticated/co/$slug/templates'
@@ -91,6 +93,11 @@ const JoinTokenRoute = JoinTokenRouteImport.update({
 const CSlugRoute = CSlugRouteImport.update({
   id: '/c/$slug',
   path: '/c/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BillingReturnRoute = BillingReturnRouteImport.update({
+  id: '/billing/return',
+  path: '/billing/return',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
@@ -239,6 +246,12 @@ const LangAuthenticatedCardsIdRoute =
     path: '/cards/$id',
     getParentRoute: () => LangAuthenticatedRouteRoute,
   } as any)
+const LangAuthenticatedAdminBillingRoute =
+  LangAuthenticatedAdminBillingRouteImport.update({
+    id: '/admin/billing',
+    path: '/admin/billing',
+    getParentRoute: () => LangAuthenticatedRouteRoute,
+  } as any)
 const LangAuthenticatedCoSlugRouteRoute =
   LangAuthenticatedCoSlugRouteRouteImport.update({
     id: '/co/$slug',
@@ -323,6 +336,7 @@ export interface FileRoutesByFullPath {
   '/$lang/pricing': typeof LangPricingRoute
   '/$lang/templates': typeof LangTemplatesRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/billing/return': typeof BillingReturnRoute
   '/c/$slug': typeof CSlugRoute
   '/join/$token': typeof JoinTokenRoute
   '/sitemap/{$lang}.xml': typeof SitemapChar123langChar125DotxmlRoute
@@ -342,6 +356,7 @@ export interface FileRoutesByFullPath {
   '/$lang/tools/': typeof LangToolsIndexRoute
   '/company/$slug/': typeof CompanySlugIndexRoute
   '/$lang/co/$slug': typeof LangAuthenticatedCoSlugRouteRouteWithChildren
+  '/$lang/admin/billing': typeof LangAuthenticatedAdminBillingRoute
   '/$lang/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/cards/new': typeof LangAuthenticatedCardsNewRoute
   '/$lang/co/new': typeof LangAuthenticatedCoNewRoute
@@ -371,6 +386,7 @@ export interface FileRoutesByTo {
   '/$lang/pricing': typeof LangPricingRoute
   '/$lang/templates': typeof LangTemplatesRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/billing/return': typeof BillingReturnRoute
   '/c/$slug': typeof CSlugRoute
   '/join/$token': typeof JoinTokenRoute
   '/sitemap/{$lang}.xml': typeof SitemapChar123langChar125DotxmlRoute
@@ -388,6 +404,7 @@ export interface FileRoutesByTo {
   '/$lang/l': typeof LangLIndexRoute
   '/$lang/tools': typeof LangToolsIndexRoute
   '/company/$slug': typeof CompanySlugIndexRoute
+  '/$lang/admin/billing': typeof LangAuthenticatedAdminBillingRoute
   '/$lang/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/cards/new': typeof LangAuthenticatedCardsNewRoute
   '/$lang/co/new': typeof LangAuthenticatedCoNewRoute
@@ -419,6 +436,7 @@ export interface FileRoutesById {
   '/$lang/pricing': typeof LangPricingRoute
   '/$lang/templates': typeof LangTemplatesRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/billing/return': typeof BillingReturnRoute
   '/c/$slug': typeof CSlugRoute
   '/join/$token': typeof JoinTokenRoute
   '/sitemap/{$lang}.xml': typeof SitemapChar123langChar125DotxmlRoute
@@ -438,6 +456,7 @@ export interface FileRoutesById {
   '/$lang/tools/': typeof LangToolsIndexRoute
   '/company/$slug/': typeof CompanySlugIndexRoute
   '/$lang/_authenticated/co/$slug': typeof LangAuthenticatedCoSlugRouteRouteWithChildren
+  '/$lang/_authenticated/admin/billing': typeof LangAuthenticatedAdminBillingRoute
   '/$lang/_authenticated/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/_authenticated/cards/new': typeof LangAuthenticatedCardsNewRoute
   '/$lang/_authenticated/co/new': typeof LangAuthenticatedCoNewRoute
@@ -469,6 +488,7 @@ export interface FileRouteTypes {
     | '/$lang/pricing'
     | '/$lang/templates'
     | '/auth/callback'
+    | '/billing/return'
     | '/c/$slug'
     | '/join/$token'
     | '/sitemap/{$lang}.xml'
@@ -488,6 +508,7 @@ export interface FileRouteTypes {
     | '/$lang/tools/'
     | '/company/$slug/'
     | '/$lang/co/$slug'
+    | '/$lang/admin/billing'
     | '/$lang/cards/$id'
     | '/$lang/cards/new'
     | '/$lang/co/new'
@@ -517,6 +538,7 @@ export interface FileRouteTypes {
     | '/$lang/pricing'
     | '/$lang/templates'
     | '/auth/callback'
+    | '/billing/return'
     | '/c/$slug'
     | '/join/$token'
     | '/sitemap/{$lang}.xml'
@@ -534,6 +556,7 @@ export interface FileRouteTypes {
     | '/$lang/l'
     | '/$lang/tools'
     | '/company/$slug'
+    | '/$lang/admin/billing'
     | '/$lang/cards/$id'
     | '/$lang/cards/new'
     | '/$lang/co/new'
@@ -564,6 +587,7 @@ export interface FileRouteTypes {
     | '/$lang/pricing'
     | '/$lang/templates'
     | '/auth/callback'
+    | '/billing/return'
     | '/c/$slug'
     | '/join/$token'
     | '/sitemap/{$lang}.xml'
@@ -583,6 +607,7 @@ export interface FileRouteTypes {
     | '/$lang/tools/'
     | '/company/$slug/'
     | '/$lang/_authenticated/co/$slug'
+    | '/$lang/_authenticated/admin/billing'
     | '/$lang/_authenticated/cards/$id'
     | '/$lang/_authenticated/cards/new'
     | '/$lang/_authenticated/co/new'
@@ -607,6 +632,7 @@ export interface RootRouteChildren {
   LangRouteRoute: typeof LangRouteRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
+  BillingReturnRoute: typeof BillingReturnRoute
   CSlugRoute: typeof CSlugRoute
   JoinTokenRoute: typeof JoinTokenRoute
   SitemapChar123langChar125DotxmlRoute: typeof SitemapChar123langChar125DotxmlRoute
@@ -664,6 +690,13 @@ declare module '@tanstack/react-router' {
       path: '/c/$slug'
       fullPath: '/c/$slug'
       preLoaderRoute: typeof CSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/billing/return': {
+      id: '/billing/return'
+      path: '/billing/return'
+      fullPath: '/billing/return'
+      preLoaderRoute: typeof BillingReturnRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/callback': {
@@ -862,6 +895,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangAuthenticatedCardsIdRouteImport
       parentRoute: typeof LangAuthenticatedRouteRoute
     }
+    '/$lang/_authenticated/admin/billing': {
+      id: '/$lang/_authenticated/admin/billing'
+      path: '/admin/billing'
+      fullPath: '/$lang/admin/billing'
+      preLoaderRoute: typeof LangAuthenticatedAdminBillingRouteImport
+      parentRoute: typeof LangAuthenticatedRouteRoute
+    }
     '/$lang/_authenticated/co/$slug': {
       id: '/$lang/_authenticated/co/$slug'
       path: '/co/$slug'
@@ -1021,6 +1061,7 @@ interface LangAuthenticatedRouteRouteChildren {
   LangAuthenticatedSwitchRoute: typeof LangAuthenticatedSwitchRoute
   LangAuthenticatedVaultRoute: typeof LangAuthenticatedVaultRouteWithChildren
   LangAuthenticatedCoSlugRouteRoute: typeof LangAuthenticatedCoSlugRouteRouteWithChildren
+  LangAuthenticatedAdminBillingRoute: typeof LangAuthenticatedAdminBillingRoute
   LangAuthenticatedCardsIdRoute: typeof LangAuthenticatedCardsIdRouteWithChildren
   LangAuthenticatedCardsNewRoute: typeof LangAuthenticatedCardsNewRoute
   LangAuthenticatedCoNewRoute: typeof LangAuthenticatedCoNewRoute
@@ -1037,6 +1078,7 @@ const LangAuthenticatedRouteRouteChildren: LangAuthenticatedRouteRouteChildren =
     LangAuthenticatedVaultRoute: LangAuthenticatedVaultRouteWithChildren,
     LangAuthenticatedCoSlugRouteRoute:
       LangAuthenticatedCoSlugRouteRouteWithChildren,
+    LangAuthenticatedAdminBillingRoute: LangAuthenticatedAdminBillingRoute,
     LangAuthenticatedCardsIdRoute: LangAuthenticatedCardsIdRouteWithChildren,
     LangAuthenticatedCardsNewRoute: LangAuthenticatedCardsNewRoute,
     LangAuthenticatedCoNewRoute: LangAuthenticatedCoNewRoute,
@@ -1091,6 +1133,7 @@ const rootRouteChildren: RootRouteChildren = {
   LangRouteRoute: LangRouteRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   AuthCallbackRoute: AuthCallbackRoute,
+  BillingReturnRoute: BillingReturnRoute,
   CSlugRoute: CSlugRoute,
   JoinTokenRoute: JoinTokenRoute,
   SitemapChar123langChar125DotxmlRoute: SitemapChar123langChar125DotxmlRoute,
