@@ -166,7 +166,15 @@ function Vault() {
                   }}
                   className="block cursor-pointer"
                 >
-                  <CardPreview card={c as any} size="xs" />
+                  <CardPreview
+                    card={{
+                      ...(c as any),
+                      ...Object.fromEntries(
+                        Object.entries((c as any).source_card ?? {}).filter(([, v]) => v !== null && v !== undefined),
+                      ),
+                    } as any}
+                    size="xs"
+                  />
                 </div>
 
                 <div className="absolute end-2 top-2 flex items-center gap-1.5">

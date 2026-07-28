@@ -72,7 +72,7 @@ function Dashboard() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("saved_cards")
-        .select("id, name, title, company, avatar_url, accent_color, template, source_card_id, notes, cards:source_card_id(slug)")
+        .select("id, name, title, company, avatar_url, accent_color, template, source_card_id, notes, cards:source_card_id(slug, design, template, accent_color, avatar_url, name, title, company, phone, email, website, address, department, bio, socials)")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
       if (error) throw error;
@@ -133,15 +133,19 @@ function Dashboard() {
                 {saved && saved.length > 0 ? (
                   <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
                     {saved.slice(0, 6).map((s: any) => {
-                      const slug = s.cards?.slug as string | undefined;
+                      const src = s.cards as Record<string, unknown> | null;
+                      const slug = src?.slug as string | undefined;
                       const dest = slug ? { to: "/c/$slug" as const, params: { slug } } : { to: "/vault/$id" as const, params: { id: s.id } };
+                      // Prefer the original card (Studio design included) so the vault
+                      // thumbnail matches the real card, not a generic template.
+                      const preview = src ? { ...s, ...Object.fromEntries(Object.entries(src).filter(([, v]) => v !== null && v !== undefined)) } : s;
                       return (
                         <Link
                           key={s.id}
                           {...dest}
                           className="group block"
                         >
-                          <CardPreview card={s as any} size="xs" />
+                          <CardPreview card={preview as any} size="xs" />
                         </Link>
                       );
                     })}
