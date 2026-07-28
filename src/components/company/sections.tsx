@@ -719,6 +719,21 @@ export function DepartmentsTab({ company, canEdit }: { company: Company; canEdit
 
   const qc = useQueryClient();
   const [name, setName] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
+
+  async function rename(id: string) {
+    const next = editName.trim();
+    if (!next) return;
+    const { error } = await supabase
+      .from("company_departments")
+      .update({ name: next, slug: slugify(next) })
+      .eq("id", id);
+    if (error) { toast.error(error.message); return; }
+    setEditingId(null);
+    qc.invalidateQueries({ queryKey: ["company-departments", company.id] });
+  }
+
 
   const { data } = useQuery({
     queryKey: ["company-departments", company.id],
