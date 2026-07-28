@@ -329,22 +329,18 @@ export function SeoTab({ company, canEdit }: { company: Company; canEdit: boolea
 const SOCIAL_KEYS = ["linkedin", "x", "instagram", "facebook", "youtube", "whatsapp"] as const;
 
 export function CompanyCardTab({ company, canEdit }: { company: Company; canEdit: boolean }) {
-  const { t, w } = useT();
+  const { t, w, lang } = useT();
   const { save, busy } = useSaveCompany(company.id);
 
   const initialSocials = useMemo(() => {
     const s = (company.socials ?? {}) as Record<string, string>;
     return Object.fromEntries(SOCIAL_KEYS.map((k) => [k, s[k] ?? ""])) as Record<string, string>;
   }, [company.socials]);
-  const initialServices = useMemo(
-    () => (Array.isArray(company.services) ? (company.services as unknown[]).map(String) : []),
-    [company.services],
-  );
 
   const [tagline, setTagline] = useState(company.tagline ?? "");
   const [socials, setSocials] = useState<Record<string, string>>(initialSocials);
-  const [services, setServices] = useState<string[]>(initialServices);
-  const [draft, setDraft] = useState("");
+  const [services, setServices] = useState<CompanyService[]>(() => parseServices(company.services));
+
 
   return (
     <div className="space-y-4">
