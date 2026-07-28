@@ -216,9 +216,26 @@ function EditCard() {
           <SheetAction icon={<Copy className="h-5 w-5" />} label={t.copyLink} onClick={() => { navigator.clipboard.writeText(publicUrl); toast.success(t.linkCopied); }} />
           <SheetAction icon={<Download className="h-5 w-5" />} label="QR" onClick={downloadQr} />
         </div>
-        <a href={`/c/${card.slug}`} target="_blank" rel="noreferrer" className="mt-4 flex items-center justify-center gap-2 rounded-2xl border border-border py-3 text-sm">
+        <a
+          href={`/${lang}/tools/email-signature?${new URLSearchParams({
+            name: card.name ?? "",
+            title: card.title ?? "",
+            company: card.company ?? "",
+            phone: card.phone ?? "",
+            email: card.email ?? "",
+            url: publicUrl,
+            accent: card.accent_color ?? "#7C34FF",
+          }).toString()}`}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-4 flex items-center justify-center gap-2 rounded-2xl border border-border py-3 text-sm"
+        >
+          <Mail className="h-4 w-4" /> {lang === "ar" ? "توقيع البريد الإلكتروني" : "Email signature"}
+        </a>
+        <a href={`/c/${card.slug}`} target="_blank" rel="noreferrer" className="mt-3 flex items-center justify-center gap-2 rounded-2xl border border-border py-3 text-sm">
           <ExternalLink className="h-4 w-4" /> {t.view}
         </a>
+
         <div className="mt-3 flex items-center justify-center gap-1 text-[11px] text-muted-foreground">
           <QrCode className="h-3 w-3" /> {card.view_count} {t.totalViews.toLowerCase()}
         </div>
