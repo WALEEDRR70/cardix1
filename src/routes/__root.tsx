@@ -17,6 +17,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Toaster } from "sonner";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { localizedPath } from "@/lib/locale-routing";
+import "@/lib/pwa-install";
+
 
 function NotFoundComponent() {
   return (
