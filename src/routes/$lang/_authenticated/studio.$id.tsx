@@ -111,21 +111,21 @@ function Studio({ cardId, title, initial, values, company }: { cardId: string; t
   return (
     <StudioProvider api={api}>
       <div className="flex h-[100dvh] flex-col bg-background" dir={ar ? "rtl" : "ltr"}>
-        <div className="flex items-center gap-2 border-b border-border/60 bg-card/60 px-3 py-1.5 text-xs">
-          <Link to={company?.slug ? `/co/${company.slug}/studio` : `/cards/${cardId}`} className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
+        <div className="no-scrollbar flex items-center gap-2 overflow-x-auto border-b border-border/60 bg-card/60 px-3 py-1.5 text-xs [&>*]:shrink-0">
+          <Link to={company?.slug ? `/co/${company.slug}/studio` : `/cards/${cardId}`} className="flex items-center gap-1 whitespace-nowrap text-muted-foreground hover:text-foreground">
             <ArrowLeft className="h-3.5 w-3.5 rtl:rotate-180" />
             {company?.slug ? (ar ? "رجوع إلى مساحة الشركة" : "Back to workspace") : ar ? "رجوع إلى البطاقة" : "Back to card"}
           </Link>
 
           <span className="mx-1 h-3 w-px bg-border/60" />
-          <Link to="/templates" className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
+          <Link to="/templates" className="flex items-center gap-1 whitespace-nowrap text-muted-foreground hover:text-foreground">
             <LayoutTemplate className="h-3.5 w-3.5" />
             {ar ? "معرض القوالب" : "Template gallery"}
           </Link>
           {company?.slug && (
             <>
               <span className="mx-1 h-3 w-px bg-border/60" />
-              <Link to={`/co/${company.slug}`} className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
+              <Link to={`/co/${company.slug}`} className="flex items-center gap-1 whitespace-nowrap text-muted-foreground hover:text-foreground">
                 <Building2 className="h-3.5 w-3.5" />
                 {company.name || (ar ? "مساحة الشركة" : "Company workspace")}
               </Link>
@@ -133,12 +133,64 @@ function Studio({ cardId, title, initial, values, company }: { cardId: string; t
           )}
         </div>
         <StudioToolbar ar={ar} title={title} saving={saving} onSave={() => void save(false)} />
-        <div className="flex min-h-0 flex-1">
-          <ElementsPanel ar={ar} />
+
+        {/* Desktop: three columns. Mobile: canvas only + panels as sheets. */}
+        <div className="relative flex min-h-0 flex-1">
+          <div className="hidden lg:flex">
+            <ElementsPanel ar={ar} />
+          </div>
           <CanvasStage stageRef={stageRef} values={values} />
-          <PropertiesPanel ar={ar} />
+          <div className="hidden lg:flex">
+            <PropertiesPanel ar={ar} />
+          </div>
+
+          {panel && (
+            <div className="absolute inset-0 z-40 flex lg:hidden">
+              <button
+                aria-label="close"
+                className="absolute inset-0 bg-background/70 backdrop-blur-sm"
+                onClick={() => setPanel(null)}
+              />
+              <div className="relative ms-auto flex h-full w-[86%] max-w-[340px] flex-col bg-card shadow-2xl [&>aside]:h-full [&>aside]:w-full [&>aside]:min-w-0 [&>aside]:overflow-y-auto">
+                <button
+                  onClick={() => setPanel(null)}
+                  className="absolute end-2 top-2 z-10 grid h-8 w-8 place-items-center rounded-full border border-border/60 bg-background/80 text-muted-foreground"
+                  aria-label={ar ? "إغلاق" : "Close"}
+                >
+                  <X className="h-4 w-4" />
+                </button>
+                {panel === "elements" ? <ElementsPanel ar={ar} /> : <PropertiesPanel ar={ar} />}
+              </div>
+            </div>
+          )}
         </div>
+
+        {/* Mobile panel switcher */}
+        <nav className="flex items-center gap-2 border-t border-border/60 bg-card/70 px-3 py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] lg:hidden">
+          <button
+            onClick={() => setPanel(panel === "elements" ? null : "elements")}
+            className={"flex flex-1 items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium transition " + (panel === "elements" ? "border-accent bg-accent/15 text-foreground" : "border-border/60 text-muted-foreground")}
+          >
+            <Shapes className="h-4 w-4" />
+            {ar ? "العناصر" : "Elements"}
+          </button>
+          <button
+            onClick={() => setPanel(null)}
+            className={"flex flex-1 items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium transition " + (!panel ? "border-accent bg-accent/15 text-foreground" : "border-border/60 text-muted-foreground")}
+          >
+            <Frame className="h-4 w-4" />
+            {ar ? "اللوحة" : "Canvas"}
+          </button>
+          <button
+            onClick={() => setPanel(panel === "props" ? null : "props")}
+            className={"flex flex-1 items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium transition " + (panel === "props" ? "border-accent bg-accent/15 text-foreground" : "border-border/60 text-muted-foreground")}
+          >
+            <SlidersHorizontal className="h-4 w-4" />
+            {ar ? "الخصائص" : "Properties"}
+          </button>
+        </nav>
       </div>
     </StudioProvider>
   );
 }
+
