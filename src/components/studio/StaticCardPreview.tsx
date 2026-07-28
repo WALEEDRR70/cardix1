@@ -17,8 +17,10 @@ export function StaticCardPreview({
   return (
     <div
       className={className}
+      dir="ltr"
       style={{ width, height: doc.h * scale, overflow: "hidden", position: "relative", borderRadius: 14 }}
     >
+
       <div
         style={{
           width: doc.w,
