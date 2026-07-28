@@ -362,34 +362,14 @@ export function CompanyCardTab({ company, canEdit }: { company: Company; canEdit
         <TextField label={t.tagline} value={tagline} onChange={setTagline} disabled={!canEdit} />
       </Card>
 
-      <Card className="space-y-3">
-        <p className="text-sm font-semibold">{t.services}</p>
-        <div className="flex flex-wrap gap-2">
-          {services.map((s, i) => (
-            <span key={`${s}-${i}`} className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs">
-              {s}
-              {canEdit && (
-                <button onClick={() => setServices((p) => p.filter((_, idx) => idx !== i))}><X className="h-3 w-3" /></button>
-              )}
-            </span>
-          ))}
-        </div>
-        {canEdit && (
-          <div className="flex gap-2">
-            <input
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              className="flex-1 rounded-2xl border border-input bg-card px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring"
-            />
-            <button
-              onClick={() => { if (draft.trim()) { setServices((p) => [...p, draft.trim()]); setDraft(""); } }}
-              className="flex items-center gap-1.5 rounded-2xl border border-border px-4 text-xs font-medium"
-            >
-              <Plus className="h-3.5 w-3.5" /> {t.addService}
-            </button>
-          </div>
-        )}
-      </Card>
+      <ServicesEditor
+        value={services}
+        onChange={setServices}
+        canEdit={canEdit}
+        lang={lang}
+        companySlug={company.slug}
+      />
+
 
       <Card className="space-y-3">
         <p className="text-sm font-semibold">{t.socials}</p>
