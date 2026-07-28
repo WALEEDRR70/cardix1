@@ -130,8 +130,8 @@ export function DepartmentDesignCard({
 
   return (
     <div className="rounded-2xl border border-border/60 bg-background/40 p-3">
-      <div className="flex gap-3">
-        <div className="w-32 shrink-0 overflow-hidden rounded-xl bg-secondary/40">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
+        <div dir="ltr" className="w-full shrink-0 overflow-hidden rounded-xl bg-secondary/40 sm:w-40">
           {hasDoc ? (
             <DesignPreview doc={doc as StudioDoc} />
           ) : (
@@ -150,7 +150,7 @@ export function DepartmentDesignCard({
                   await supabase.from("company_templates").delete().eq("id", design.id);
                   qc.invalidateQueries({ queryKey: ["department-designs", companyId] });
                 }}
-                className="text-muted-foreground hover:text-destructive"
+                className="shrink-0 text-muted-foreground hover:text-destructive"
                 aria-label={ar ? "إزالة" : "Remove"}
               >
                 <Trash2 className="h-3.5 w-3.5" />
@@ -158,38 +158,39 @@ export function DepartmentDesignCard({
             )}
           </div>
           {roleLabel && <p className="mt-0.5 text-[11px] text-muted-foreground">{roleLabel}</p>}
-          <div className="mt-2 flex flex-wrap gap-1.5">
+          <div className="mt-2 grid grid-cols-2 gap-1.5 sm:flex sm:flex-wrap">
             <button
               type="button"
               onClick={openDesigner}
               disabled={opening}
-              className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-[11px] hover:border-primary/60 hover:text-primary disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-1 rounded-full border border-border bg-card px-2.5 py-1.5 text-[11px] hover:border-primary/60 hover:text-primary disabled:opacity-60"
             >
               {opening ? <Loader2 className="h-3 w-3 animate-spin" /> : <Pencil className="h-3 w-3" />}
-              {ar ? "تعديل التصميم" : "Edit design"}
+              <span className="truncate">{ar ? "تعديل التصميم" : "Edit design"}</span>
             </button>
 
             <button
               type="button"
               onClick={copyInviteLink}
               disabled={inviting}
-              className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-[11px] hover:border-primary/60 hover:text-primary disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-1 rounded-full border border-border bg-card px-2.5 py-1.5 text-[11px] hover:border-primary/60 hover:text-primary disabled:opacity-60"
             >
               {inviting ? <Loader2 className="h-3 w-3 animate-spin" /> : <Copy className="h-3 w-3" />}
-              {ar ? "نسخ رابط دعوة" : "Copy invite link"}
+              <span className="truncate">{ar ? "نسخ رابط دعوة" : "Copy invite link"}</span>
             </button>
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
-              className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-[11px] hover:border-primary/60 hover:text-primary"
+              className="col-span-2 inline-flex items-center justify-center gap-1 rounded-full border border-border bg-card px-2.5 py-1.5 text-[11px] hover:border-primary/60 hover:text-primary sm:col-span-1"
             >
               <Lock className="h-3 w-3" />
-              {ar ? "العناصر القابلة للتعديل" : "Editable fields"}
+              <span className="truncate">{ar ? "العناصر القابلة للتعديل" : "Editable fields"}</span>
               <span className="text-muted-foreground">({fields.length}/{EDITABLE_FIELD_KEYS.length})</span>
             </button>
           </div>
         </div>
       </div>
+
 
       {open && (
         <div className="mt-3 border-t border-border/60 pt-3">
