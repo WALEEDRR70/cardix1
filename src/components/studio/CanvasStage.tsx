@@ -84,7 +84,6 @@ function ImageNode({ n, values }: { n: StudioNode; values?: Record<string, strin
       loading="eager"
       decoding="async"
       referrerPolicy="no-referrer"
-      crossOrigin="anonymous"
       className="pointer-events-none h-full w-full select-none"
       style={{
         borderRadius: s.radius,
@@ -92,10 +91,9 @@ function ImageNode({ n, values }: { n: StudioNode; values?: Record<string, strin
       }}
       onError={(e) => {
         const img = e.currentTarget;
-        // Some CDNs reject the CORS request — retry once without it before giving up.
+        // Transient/CDN failures: retry once with a cache-busting param before hiding.
         if (img.dataset.retried !== "1") {
           img.dataset.retried = "1";
-          img.removeAttribute("crossorigin");
           img.src = src.includes("?") ? `${src}&_r=1` : `${src}?_r=1`;
           return;
         }
