@@ -15,6 +15,7 @@ import {
 } from "@/lib/workspace";
 import { TEMPLATE_META } from "@/components/CardPreview";
 import { logCompanyAction } from "@/components/company/audit";
+import { prepareImageFile, canDisplayImage } from "@/lib/image-prep";
 
 /* ---------------------------- shared bits ---------------------------- */
 
