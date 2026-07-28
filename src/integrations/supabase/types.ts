@@ -14,6 +14,242 @@ export type Database = {
   }
   public: {
     Tables: {
+      billing_orders: {
+        Row: {
+          amount_cents: number
+          created_at: string
+          currency: string
+          id: string
+          kind: string
+          paypal_order_id: string | null
+          paypal_subscription_id: string | null
+          plan_id: string | null
+          product_id: string | null
+          raw: Json
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_cents?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          kind: string
+          paypal_order_id?: string | null
+          paypal_subscription_id?: string | null
+          plan_id?: string | null
+          product_id?: string | null
+          raw?: Json
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_cents?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          kind?: string
+          paypal_order_id?: string | null
+          paypal_subscription_id?: string | null
+          plan_id?: string | null
+          product_id?: string | null
+          raw?: Json
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "billing_orders_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "billing_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "billing_orders_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "billing_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      billing_plans: {
+        Row: {
+          audience: string
+          code: string
+          created_at: string
+          currency: string
+          description_ar: string | null
+          description_en: string | null
+          features_ar: string[]
+          features_en: string[]
+          id: string
+          interval: string
+          is_active: boolean
+          is_featured: boolean
+          name_ar: string
+          name_en: string
+          paypal_plan_id: string | null
+          price_cents: number
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          audience?: string
+          code: string
+          created_at?: string
+          currency?: string
+          description_ar?: string | null
+          description_en?: string | null
+          features_ar?: string[]
+          features_en?: string[]
+          id?: string
+          interval?: string
+          is_active?: boolean
+          is_featured?: boolean
+          name_ar: string
+          name_en: string
+          paypal_plan_id?: string | null
+          price_cents?: number
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          audience?: string
+          code?: string
+          created_at?: string
+          currency?: string
+          description_ar?: string | null
+          description_en?: string | null
+          features_ar?: string[]
+          features_en?: string[]
+          id?: string
+          interval?: string
+          is_active?: boolean
+          is_featured?: boolean
+          name_ar?: string
+          name_en?: string
+          paypal_plan_id?: string | null
+          price_cents?: number
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      billing_products: {
+        Row: {
+          code: string
+          created_at: string
+          currency: string
+          description_ar: string | null
+          description_en: string | null
+          id: string
+          is_active: boolean
+          name_ar: string
+          name_en: string
+          preview_url: string | null
+          price_cents: number
+          sort_order: number
+          template_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          currency?: string
+          description_ar?: string | null
+          description_en?: string | null
+          id?: string
+          is_active?: boolean
+          name_ar: string
+          name_en: string
+          preview_url?: string | null
+          price_cents?: number
+          sort_order?: number
+          template_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          currency?: string
+          description_ar?: string | null
+          description_en?: string | null
+          id?: string
+          is_active?: boolean
+          name_ar?: string
+          name_en?: string
+          preview_url?: string | null
+          price_cents?: number
+          sort_order?: number
+          template_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "billing_products_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "design_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      billing_subscriptions: {
+        Row: {
+          company_id: string | null
+          created_at: string
+          current_period_end: string | null
+          id: string
+          paypal_subscription_id: string | null
+          plan_id: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          company_id?: string | null
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          paypal_subscription_id?: string | null
+          plan_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          company_id?: string | null
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          paypal_subscription_id?: string | null
+          plan_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "billing_subscriptions_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "billing_subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "billing_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       card_design_versions: {
         Row: {
           card_id: string
@@ -1021,14 +1257,42 @@ export type Database = {
           },
         ]
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
+      app_role: "admin" | "moderator" | "user"
       card_type: "personal" | "company" | "employee"
       company_role: "owner" | "admin" | "manager" | "employee" | "viewer"
       field_permission: "company_locked" | "employee_editable"
@@ -1162,6 +1426,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      app_role: ["admin", "moderator", "user"],
       card_type: ["personal", "company", "employee"],
       company_role: ["owner", "admin", "manager", "employee", "viewer"],
       field_permission: ["company_locked", "employee_editable"],
