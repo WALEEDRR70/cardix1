@@ -97,8 +97,10 @@ function Dashboard() {
   return (
     <MobileShell topBar={<PageHeader title={t.brand} subtitle={user.email ?? undefined} right={<span className="lg:hidden"><ThemeToggle compact /></span>} />}>
       <div className="px-4 lg:px-8">
+        <OnboardingChecklist cards={(cards ?? []) as never} userId={user.id} />
         {hasCards ? (
           <>
+
             {/* Stats */}
             <div className="grid grid-cols-3 gap-2 lg:gap-4">
               <StatTile label={t.myCards} value={cards!.length} />
