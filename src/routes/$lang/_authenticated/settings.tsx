@@ -22,7 +22,7 @@ export const Route = createFileRoute("/$lang/_authenticated/settings")({
 });
 
 function Settings() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const { theme, setTheme } = useTheme();
   const { user } = Route.useRouteContext();
   const nav = useNavigate();
@@ -58,7 +58,7 @@ function Settings() {
           </div>
         </Section>
 
-        <SubscriptionCard ar={typeof document !== "undefined" && document.documentElement.lang === "ar"} />
+        <SubscriptionCard ar={lang === "ar"} />
 
         {/* Language */}
         <Section title={t.language}>
