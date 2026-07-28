@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { ChevronDown, ExternalLink, GripVertical, Plus, Trash2, X } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { Card, TextField } from "@/components/company/sections";
+import { Card, TextField, LogoUpload } from "@/components/company/sections";
 import { parseServices, newService, slugifyService, type CompanyService } from "@/lib/company-services";
 
 const EN = {
@@ -20,7 +20,7 @@ const EN = {
   whatsapp: "WhatsApp",
   email: "Contact email",
   website: "Booking / info link",
-  image: "Image URL",
+  image: "Service image",
   features: "Highlights",
   addFeature: "Add highlight",
   published: "Published",
@@ -45,7 +45,7 @@ const AR: typeof EN = {
   whatsapp: "واتساب",
   email: "إيميل التواصل",
   website: "رابط الحجز / معلومات",
-  image: "رابط الصورة",
+  image: "صورة الخدمة",
   features: "أبرز المزايا",
   addFeature: "إضافة ميزة",
   published: "منشورة",
@@ -61,12 +61,14 @@ export function ServicesEditor({
   canEdit,
   lang,
   companySlug,
+  companyId,
 }: {
   value: unknown;
   onChange: (next: CompanyService[]) => void;
   canEdit: boolean;
   lang: string;
   companySlug: string;
+  companyId: string;
 }) {
   const t = lang === "ar" ? AR : EN;
   const services = parseServices(value);
