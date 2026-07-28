@@ -366,7 +366,8 @@ export function CompanyCardTab({ company, canEdit }: { company: Company; canEdit
             {logoUrl && <img src={logoUrl} alt="" className="mx-auto h-14 w-14 rounded-2xl object-cover" />}
             <p className="mt-3 text-lg font-semibold text-white">{company.name}</p>
             {tagline && <p className="mt-1 text-xs text-white/80">{tagline}</p>}
-          </div>
+            {description && <p className="mt-2 text-[11px] leading-relaxed text-white/70">{description}</p>}
+
         </div>
         <p className="text-[11px] text-muted-foreground">{mediaLabels.hint}</p>
         <div className="grid gap-3 sm:grid-cols-2">
