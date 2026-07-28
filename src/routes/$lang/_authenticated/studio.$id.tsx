@@ -61,11 +61,30 @@ function StudioRoute() {
   }
 
   const initial = (data.design as StudioDoc | null) ?? emptyDoc((data.accent_color as string) || "#7c34ff");
-  const company = (data as { companies?: { logo_url: string | null; name: string | null; slug: string | null } | null }).companies ?? null;
+  const company = (data as { companies?: { logo_url: string | null; name: string | null; slug: string | null; tagline?: string | null } | null }).companies ?? null;
+  const socials = (data.socials as Record<string, string> | null) ?? {};
   const values: Record<string, string> = {};
-  if (company?.logo_url) values["{{Logo}}"] = company.logo_url;
-  if (data.avatar_url) values["{{Photo}}"] = data.avatar_url as string;
-  if (company?.name) values["{{Company}}"] = company.name;
+  const put = (key: string, v?: string | null) => {
+    if (typeof v === "string" && v.trim()) values[key] = v.trim();
+  };
+  put("{{Logo}}", company?.logo_url);
+  put("{{Photo}}", data.avatar_url as string | null);
+  put("{{Company}}", company?.name);
+  put("{{Tagline}}", company?.tagline ?? null);
+  put("{{Employee Name}}", data.name as string | null);
+  put("{{Job Title}}", data.title as string | null);
+  put("{{Department}}", data.department as string | null);
+  put("{{Bio}}", data.bio as string | null);
+  put("{{Phone}}", data.phone as string | null);
+  put("{{Mobile}}", data.phone as string | null);
+  put("{{WhatsApp}}", data.whatsapp as string | null);
+  put("{{Email}}", data.email as string | null);
+  put("{{Website}}", data.website as string | null);
+  put("{{Address}}", data.address as string | null);
+  put("{{Hours}}", data.working_hours as string | null);
+  put("{{LinkedIn}}", socials.linkedin);
+  put("{{Instagram}}", socials.instagram);
+  put("{{X}}", socials.x ?? socials.twitter);
   return <Studio cardId={data.id} title={(data.title as string) || (data.name as string) || ""} initial={initial} values={values} company={company ? { slug: company.slug, name: company.name } : null} />;
 }
 
