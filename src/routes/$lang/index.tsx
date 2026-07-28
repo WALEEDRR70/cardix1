@@ -13,6 +13,7 @@ import {
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { MobileNav } from "@/components/marketing/MobileNav";
 import { supabase } from "@/integrations/supabase/client";
+import { demoCards } from "@/lib/demo-cards";
 
 function useIsAuthed() {
   const [authed, setAuthed] = useState<boolean | null>(null);
@@ -117,14 +118,6 @@ export const Route = createFileRoute("/$lang/")({
 
 
 
-const demoCards = [
-  { name: "Layla Al-Farsi", title: "Design Director", company: "Atelier Nord", accent_color: "#7c34ff", template: "luxury" },
-  { name: "Kenji Ito", title: "Founder", company: "Kōgei", accent_color: "#22D3EE", template: "aurora" },
-  { name: "Maya Chen", title: "Investor", company: "Northline", accent_color: "#9C7A3C", template: "ivory" },
-  { name: "Noor Rahman", title: "Product Lead", company: "Meridian", accent_color: "#E5E7EB", template: "platinum" },
-  { name: "Adrián Vega", title: "CTO", company: "Halo Labs", accent_color: "#A855F7", template: "neon" },
-  { name: "Sara Kim", title: "Partner", company: "Kōan", accent_color: "#111111", template: "noir" },
-];
 
 function Landing() {
   const { t, lang } = useI18n();
@@ -138,7 +131,6 @@ function Landing() {
       <Nav t={t} c={c} authed={authed} />
       <Hero t={t} c={c} authed={authed} />
       <TrustStrip c={c} />
-      <Templates c={c} />
       <HowItWorks c={c} />
       <Features c={c} />
       <SeoSections authed={authed} />
@@ -205,7 +197,7 @@ function Nav({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingC
 
         <nav className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
           <a href="#features" className="hover:text-foreground transition">{c.navFeatures}</a>
-          <a href="#templates" className="hover:text-foreground transition">{c.navTemplates}</a>
+          <Link to="/templates" className="hover:text-foreground transition">{c.navTemplates}</Link>
           <Link to="/tools" className="hover:text-foreground transition">{toolsLabel}</Link>
           <Link to="/blog" className="hover:text-foreground transition">{blogLabel}</Link>
           <a href="#pricing" className="hover:text-foreground transition">{c.navPricing}</a>
@@ -217,7 +209,7 @@ function Nav({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingC
             authed={authed}
             links={[
               { href: "#features", label: c.navFeatures },
-              { href: "#templates", label: c.navTemplates },
+              { to: "/templates", label: c.navTemplates },
               { to: "/tools", label: toolsLabel },
               { to: "/blog", label: blogLabel },
               { href: "#pricing", label: c.navPricing },
@@ -287,9 +279,9 @@ function Hero({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: Landing
               {t.getStarted}
               <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
             </Link>
-            <a href="#templates" className="glass inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium hover:bg-card">
+            <Link to="/templates" className="glass inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium hover:bg-card">
               <Sparkles className="h-4 w-4" /> {c.navTemplates}
-            </a>
+            </Link>
           </div>
 
           {/* Feature strip */}
@@ -386,32 +378,6 @@ function TrustStrip({ c }: { c: LandingCopy }) {
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-muted-foreground/80">
           {names.map((n) => (
             <span key={n} className="font-medium tracking-tight">{n}</span>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ---------------- Templates ---------------- */
-function Templates({ c }: { c: LandingCopy }) {
-  const { t } = useI18n();
-  return (
-    <section id="templates" className="relative py-24 lg:py-32">
-      <div className="mx-auto w-full max-w-[1440px] px-5 lg:px-10">
-        <SectionHeader eyebrow={t.eyebrowTemplates} title={c.templatesTitle} desc={c.templatesDesc} />
-
-        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {demoCards.map((card, i) => (
-            <div key={i} className="group relative rounded-3xl border border-border bg-card/40 p-6 backdrop-blur transition hover:-translate-y-1 hover:shadow-luxe">
-              <div className="mb-4 flex items-center justify-between">
-                <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{card.template}</span>
-                <span className="h-2 w-2 rounded-full" style={{ background: card.accent_color }} />
-              </div>
-              <div className="flex justify-center transition group-hover:scale-[1.02]">
-                <CardPreview card={card} size="md" />
-              </div>
-            </div>
           ))}
         </div>
       </div>
@@ -663,9 +629,9 @@ function FinalCta({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: Lan
                   {t.getStarted}
                   <ArrowRight className="h-4 w-4 rtl:rotate-180" />
                 </Link>
-                <a href="#templates" className="glass inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium">
+                <Link to="/templates" className="glass inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium">
                   <Layers className="h-4 w-4" /> {c.navTemplates}
-                </a>
+                </Link>
               </div>
             </div>
             <div className="relative hidden lg:flex justify-center">
