@@ -132,14 +132,16 @@ export function DepartmentDesignCard({
           </div>
           {roleLabel && <p className="mt-0.5 text-[11px] text-muted-foreground">{roleLabel}</p>}
           <div className="mt-2 flex flex-wrap gap-1.5">
-            <Link
-              to="/co/$slug/studio"
-              params={{ slug: companySlug }}
-              className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-[11px] hover:border-primary/60 hover:text-primary"
+            <button
+              type="button"
+              onClick={openDesigner}
+              disabled={opening}
+              className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-[11px] hover:border-primary/60 hover:text-primary disabled:opacity-60"
             >
-              <Pencil className="h-3 w-3" />
+              {opening ? <Loader2 className="h-3 w-3 animate-spin" /> : <Pencil className="h-3 w-3" />}
               {ar ? "تعديل التصميم" : "Edit design"}
-            </Link>
+            </button>
+
             <button
               type="button"
               onClick={copyInviteLink}
