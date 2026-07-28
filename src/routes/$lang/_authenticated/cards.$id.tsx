@@ -213,6 +213,7 @@ function EditCard() {
           locked={card.company_id ? (corp?.locked ?? { company: true, accent_color: true, template: true, slug: true }) : undefined}
           allowedTemplates={corp && corp.templates.length > 0 ? corp.templates : undefined}
           templatesSlot={!card.company_id ? <ApplyTemplatesStrip cardId={id} /> : undefined}
+          onClearDesign={!card.company_id ? clearDesign : undefined}
         />
       </div>
 
