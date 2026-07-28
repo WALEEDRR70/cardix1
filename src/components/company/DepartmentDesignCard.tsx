@@ -54,6 +54,18 @@ export function DepartmentDesignCard({
   const [fields, setFields] = useState<EditableFieldKey[]>(() => getEditableFields(design.design));
   const [saving, setSaving] = useState(false);
   const [inviting, setInviting] = useState(false);
+  const [renaming, setRenaming] = useState(false);
+  const [draftName, setDraftName] = useState(design.name);
+
+  async function saveName() {
+    const next = draftName.trim();
+    if (!next || next === design.name) { setRenaming(false); return; }
+    const { error } = await supabase.from("company_templates").update({ name: next }).eq("id", design.id);
+    if (error) { toast.error(error.message); return; }
+    setRenaming(false);
+    qc.invalidateQueries({ queryKey: ["department-designs", companyId] });
+    qc.invalidateQueries({ queryKey: ["company-templates", companyId] });
+  }
 
   // One-time invite link that pre-assigns this department + role + design.
   async function copyInviteLink() {
