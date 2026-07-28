@@ -4,6 +4,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { useStudio } from "@/lib/studio/store";
 import { resolveImageSrc, resolvePlaceholders, type StudioNode } from "@/lib/studio/types";
 import { isSvgSrc, useInlineSvg } from "@/lib/studio/svg";
+import { SOCIAL_ICONS, type SocialIconKey } from "@/lib/studio/social-icons";
 import { PenLayer } from "./PenLayer";
 import { PathEditLayer } from "./PathEditLayer";
 import { cssToGrad } from "./GradientEditor";
