@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useWs, type Company, type CompanyRole } from "@/lib/workspace";
-import { Card, TextField, SaveBar, useSaveCompany } from "@/components/company/sections";
+import { Card, TextField, SaveBar, useSaveCompany, LogoUpload } from "@/components/company/sections";
 import { ServicesEditor } from "@/components/company/ServicesEditor";
 import { parseServices, type CompanyService } from "@/lib/company-services";
 
