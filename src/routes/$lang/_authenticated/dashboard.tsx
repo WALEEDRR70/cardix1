@@ -255,7 +255,7 @@ function MyCards({ cards, companyMap, onQr, onEdit, onDelete, onOpen, t }: CardA
           {cards.map((c) => (
             <div key={c.id} className="relative mx-auto w-full max-w-md">
               <button onClick={() => onOpen(c.slug)} className="block w-full" aria-label={c.name}>
-                <CardPreview card={c as any} size="lg" />
+                <CardPreview card={{ ...(c as any), logo_url: c.company_id ? companyMap[c.company_id as string]?.logo_url ?? null : null }} size="lg" />
               </button>
               <CompanyBadge card={c as any} company={c.company_id ? companyMap[c.company_id as string] : undefined} />
               <CardActionsMenu
@@ -386,7 +386,7 @@ function CardStack({
                   aria-label={c.name}
                   tabIndex={isTop ? 0 : -1}
                 >
-                  <CardPreview card={c as any} size="lg" />
+                  <CardPreview card={{ ...(c as any), logo_url: c.company_id ? companyMap[c.company_id as string]?.logo_url ?? null : null }} size="lg" />
                 </button>
                 <CompanyBadge card={c as any} company={c.company_id ? companyMap[c.company_id as string] : undefined} />
                 {isTop && (
