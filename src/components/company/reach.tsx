@@ -341,8 +341,10 @@ export function CompanyCardTab({ company, canEdit }: { company: Company; canEdit
   }, [company.socials]);
 
   const [tagline, setTagline] = useState(company.tagline ?? "");
+  const [description, setDescription] = useState(company.description ?? "");
   const [logoUrl, setLogoUrl] = useState(company.logo_url ?? "");
   const [coverUrl, setCoverUrl] = useState(company.cover_url ?? "");
+
   const [socials, setSocials] = useState<Record<string, string>>(initialSocials);
   const [services, setServices] = useState<CompanyService[]>(() => parseServices(company.services));
 
