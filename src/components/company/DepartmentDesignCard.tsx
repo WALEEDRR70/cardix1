@@ -4,16 +4,18 @@ import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Lock, Pencil, Trash2, Wand2, Unlock, Copy, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { Link } from "@/lib/nav";
+import { useNavigate } from "@/lib/nav";
 import { supabase } from "@/integrations/supabase/client";
 import { DesignPreview } from "@/components/DesignPreview";
 import type { StudioDoc } from "@/lib/studio/types";
 import {
   EDITABLE_FIELD_KEYS,
+  ensureDesignEditorCard,
   getEditableFields,
   setEditableFields,
   type EditableFieldKey,
 } from "@/lib/company-designs";
+
 
 const LABELS: Record<EditableFieldKey, { en: string; ar: string }> = {
   name: { en: "Employee name", ar: "اسم الموظف" },
