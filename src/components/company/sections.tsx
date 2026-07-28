@@ -523,6 +523,20 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
     qc.invalidateQueries({ queryKey: ["company-members", company.id] });
   }
 
+  async function setDepartment(memberId: string, departmentId: string) {
+    const { error } = await supabase
+      .from("company_members")
+      .update({ department_id: departmentId || null })
+      .eq("id", memberId);
+    if (error) { toast.error(error.message); return; }
+    void logCompanyAction(company.id, userId, "member.department", "company_members", { label: departmentId || "none" });
+    qc.invalidateQueries({ queryKey: ["company-members", company.id] });
+    qc.invalidateQueries({ queryKey: ["company-member-cards", company.id] });
+    toast.success(ar ? "تم نقل الموظف وتحديث تصميم بطاقته" : "Employee moved and card design updated");
+  }
+
+
+
   return (
     <div className="space-y-4">
       {canEdit && (
