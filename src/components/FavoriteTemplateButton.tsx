@@ -19,11 +19,14 @@ export function FavoriteTemplateButton({
   userId,
   ar,
   className,
+  likeCount,
 }: {
   templateId: string;
   userId: string | null;
   ar: boolean;
   className?: string;
+  /** Public number of likes for this template; shown next to the heart. */
+  likeCount?: number | null;
 }) {
   const qc = useQueryClient();
   const { data: ids = [] } = useFavoriteTemplateIds(userId);
@@ -31,19 +34,40 @@ export function FavoriteTemplateButton({
 
   const { mutate, isPending } = useMutation({
     mutationFn: () => toggleFavoriteTemplate(userId!, templateId, !active),
+    // Optimistic: the heart flips instantly, so the like always "shows".
+    onMutate: async () => {
+      await qc.cancelQueries({ queryKey: ["favorite-template-ids", userId] });
+      const prev = qc.getQueryData<string[]>(["favorite-template-ids", userId]) ?? [];
+      qc.setQueryData<string[]>(
+        ["favorite-template-ids", userId],
+        active ? prev.filter((id) => id !== templateId) : [...prev, templateId],
+      );
+      return { prev };
+    },
+    onError: (e, _v, ctx) => {
+      if (ctx?.prev) qc.setQueryData(["favorite-template-ids", userId], ctx.prev);
+      toast.error((e as Error).message);
+    },
     onSuccess: (now) => {
-      qc.invalidateQueries({ queryKey: ["favorite-template-ids"] });
-      qc.invalidateQueries({ queryKey: ["favorite-templates"] });
       toast.success(
         now
           ? ar ? "تمت الإضافة إلى المفضلة" : "Saved to favourites"
           : ar ? "تمت الإزالة من المفضلة" : "Removed from favourites",
       );
     },
-    onError: (e) => toast.error((e as Error).message),
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: ["favorite-template-ids"] });
+      qc.invalidateQueries({ queryKey: ["favorite-templates"] });
+      qc.invalidateQueries({ queryKey: ["popular-templates"] });
+      qc.invalidateQueries({ queryKey: ["public-templates"] });
+    },
   });
 
   if (!userId) return null;
+
+  const base = typeof likeCount === "number" ? likeCount : null;
+  const wasLiked = base !== null && ids.includes(templateId);
+  const shown = base === null ? null : Math.max(base, wasLiked ? 1 : 0);
 
   return (
     <button
@@ -53,7 +77,7 @@ export function FavoriteTemplateButton({
       aria-pressed={active}
       title={active ? (ar ? "إزالة من المفضلة" : "Remove from favourites") : ar ? "حفظ في المفضلة" : "Save to favourites"}
       className={
-        "grid shrink-0 place-items-center rounded-full border p-2 transition disabled:opacity-60 " +
+        "inline-flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-2 text-[11px] font-semibold transition disabled:opacity-60 " +
         (active
           ? "border-accent/60 bg-accent/10 text-accent"
           : "border-border/60 text-muted-foreground hover:text-foreground") +
@@ -61,6 +85,7 @@ export function FavoriteTemplateButton({
       }
     >
       <Heart className={"h-3.5 w-3.5 " + (active ? "fill-current" : "")} />
+      {shown !== null && shown > 0 && <span className="tabular-nums">{shown}</span>}
     </button>
   );
 }
