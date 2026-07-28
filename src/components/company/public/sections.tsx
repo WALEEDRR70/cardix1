@@ -103,19 +103,19 @@ export function CompanyHero({
   const rest = company.tagline ? company.description : company.description?.split(/\n/).slice(1).join("\n");
 
   return (
-    <header className="relative overflow-hidden rounded-b-[2.5rem] border-b border-border/50">
-      <div className="relative h-44 w-full overflow-hidden sm:h-60">
+    <header data-company-hero className="relative isolate overflow-hidden rounded-b-[2.5rem] border-b border-border/50">
+      <div className="absolute inset-0 -z-10 overflow-hidden">
         {company.cover_url ? (
-          <img src={company.cover_url} alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
+          <img src={company.cover_url} alt="" className="h-full w-full object-cover object-center" />
         ) : (
           <div className="h-full w-full" style={{ background: `linear-gradient(135deg, ${accent}, ${accent}33 60%, transparent)` }} />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/25 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-b from-background/0 via-background/5 to-background/40" />
       </div>
 
-      <div className="mx-auto -mt-14 w-full max-w-5xl px-5 pb-7 sm:-mt-16">
+      <div className="mx-auto flex min-h-[28rem] w-full max-w-5xl flex-col justify-end px-5 pb-7 pt-24 sm:min-h-[32rem] sm:pt-32">
         <span
-          className="grid h-24 w-24 place-items-center overflow-hidden rounded-3xl border border-border/60 bg-card p-2 shadow-lg sm:h-28 sm:w-28"
+          className="grid h-24 w-24 place-items-center overflow-hidden rounded-3xl border border-border/60 bg-card/70 p-2 shadow-lg backdrop-blur-xl sm:h-28 sm:w-28"
           style={{ color: accent }}
         >
           {company.logo_url ? (
