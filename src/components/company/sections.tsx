@@ -747,40 +747,6 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
         ))}
       </Card>
 
-      <Card className="space-y-2">
-        <p className="text-sm font-semibold">{w.pendingInvites}</p>
-        {(invites ?? []).length === 0 && (
-          <EmptyState
-            icon={MailPlus}
-            title={w.noInvites}
-            hint={ar ? "الدعوات المعلّقة ستظهر هنا مع رابط الانضمام." : "Pending invitations appear here with their join link."}
-          />
-        )}
-
-        {(invites ?? []).map((i) => (
-          <div key={i.id} className="flex items-center gap-2 rounded-2xl border border-border/60 bg-card/60 px-3 py-2.5">
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium">{i.name || i.email || (ar ? "رابط دعوة" : "Invite link")}</p>
-              <p className="truncate text-[11px] text-muted-foreground">{i.email || inviteUrl(i.token)}</p>
-            </div>
-            <button onClick={() => { navigator.clipboard.writeText(inviteUrl(i.token)); toast.success(w.copied); }} className="rounded-lg p-2 hover:bg-secondary" aria-label={w.copyLink}>
-              <Copy className="h-3.5 w-3.5" />
-            </button>
-            {canEdit && (
-              <button
-                onClick={async () => {
-                  await supabase.from("company_invitations").update({ status: "revoked" }).eq("id", i.id);
-                  qc.invalidateQueries({ queryKey: ["company-invites", company.id] });
-                }}
-                className="rounded-lg p-2 text-destructive hover:bg-secondary"
-                aria-label={w.remove}
-              >
-                <Trash2 className="h-3.5 w-3.5" />
-              </button>
-            )}
-          </div>
-        ))}
-      </Card>
     </div>
   );
 }
