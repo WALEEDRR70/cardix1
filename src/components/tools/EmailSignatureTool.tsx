@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Copy, Check } from "lucide-react";
 import type { Locale } from "@/i18n/config";
 
@@ -9,6 +9,22 @@ export function EmailSignatureTool({ lang }: { lang: Locale }) {
   });
   const [copied, setCopied] = useState<"html" | "rich" | null>(null);
   const upd = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement>) => setF({ ...f, [k]: e.target.value });
+
+  // Prefill from a Cardixn card: /tools/email-signature?name=…&url=…
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    if (![...q.keys()].length) return;
+    setF((prev) => ({
+      name: q.get("name") ?? prev.name,
+      title: q.get("title") ?? prev.title,
+      company: q.get("company") ?? prev.company,
+      phone: q.get("phone") ?? prev.phone,
+      email: q.get("email") ?? prev.email,
+      url: q.get("url") ?? prev.url,
+      accent: q.get("accent") ?? prev.accent,
+    }));
+  }, []);
+
 
   const html = `<table cellpadding="0" cellspacing="0" border="0" style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;color:#0f172a;font-size:14px;line-height:1.5">
   <tr><td style="padding-bottom:6px"><strong style="font-size:16px;color:${f.accent}">${f.name || "Your Name"}</strong></td></tr>
