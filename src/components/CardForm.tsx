@@ -385,8 +385,10 @@ export function CardForm({
               <textarea
                 value={data.bio}
                 onChange={(e) => set("bio", e.target.value)}
+                readOnly={!!locked?.bio}
+                disabled={!!locked?.bio}
                 rows={3}
-                className="w-full resize-none rounded-2xl border border-input bg-card px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                className={"w-full resize-none rounded-2xl border border-input bg-card px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring " + (locked?.bio ? "opacity-60" : "")}
               />
             </section>
 
