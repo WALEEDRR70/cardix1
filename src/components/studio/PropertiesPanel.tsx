@@ -224,6 +224,16 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
               onChange={(v) => up({ imageSource: v })}
             />
           </Row>
+          <Row label={ar ? "الملاءمة" : "Fit"}>
+            <Seg
+              value={(s.imageFit ?? (n.imageSource === "logo" ? "contain" : "cover")) as "cover" | "contain"}
+              options={[
+                { v: "contain" as const, label: ar ? "كامل" : "Contain" },
+                { v: "cover" as const, label: ar ? "ملء" : "Cover" },
+              ]}
+              onChange={(v) => st({ imageFit: v })}
+            />
+          </Row>
           {(n.imageSource ?? "upload") === "upload" ? (
             <>
               <Row label="URL">
