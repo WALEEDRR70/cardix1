@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.enforce_locked_card_fields() FROM PUBLIC, anon, authenticated;
