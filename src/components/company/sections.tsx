@@ -716,7 +716,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
                 {roleLabel(m.role, w)} · {statusLabel(m.status, w)}
               </span>
             )}
-          </div>
+          </MemberItem>
         ))}
       </Card>
 
