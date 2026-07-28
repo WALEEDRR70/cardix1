@@ -141,16 +141,30 @@ export function CardForm({
 
   const set = <K extends keyof CardFormData>(k: K, v: CardFormData[K]) => setData((d) => ({ ...d, [k]: v }));
 
-  /** Studio design re-tinted live with the picked accent color. */
-  const accentChanged = !!design && data.accent_color !== initial.accent_color;
-  const previewDesign = useMemo(() => {
-    if (!design || !accentChanged) return design;
-    try {
-      return recolorDesign(design as StudioDoc, initial.accent_color, data.accent_color);
-    } catch {
-      return design;
+  /** Set when the user switches back to a built-in template while a Studio design is applied. */
+  const [designCleared, setDesignCleared] = useState(false);
+  useEffect(() => { setDesignCleared(false); }, [design]);
+  const effectiveDesign = designCleared ? null : design;
+
+  function pickBuiltinTemplate(id: TemplateId) {
+    set("template", id);
+    if (effectiveDesign) {
+      setDesignCleared(true);
+      onClearDesign?.();
     }
-  }, [design, accentChanged, initial.accent_color, data.accent_color]);
+  }
+
+  /** Studio design re-tinted live with the picked accent color. */
+  const accentChanged = !!effectiveDesign && data.accent_color !== initial.accent_color;
+  const previewDesign = useMemo(() => {
+    if (!effectiveDesign || !accentChanged) return effectiveDesign;
+    try {
+      return recolorDesign(effectiveDesign as StudioDoc, initial.accent_color, data.accent_color);
+    } catch {
+      return effectiveDesign;
+    }
+  }, [effectiveDesign, accentChanged, initial.accent_color, data.accent_color]);
+
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
