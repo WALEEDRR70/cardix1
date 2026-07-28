@@ -34,7 +34,7 @@ function StudioRoute() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("cards")
-        .select("id, title, name, bio, phone, whatsapp, email, website, address, department, working_hours, socials, design, accent_color, avatar_url, company_id, companies:company_id(logo_url, name, slug, tagline)")
+        .select("id, title, name, company, bio, phone, whatsapp, email, website, address, department, working_hours, socials, design, accent_color, avatar_url, company_id, companies:company_id(logo_url, name, slug, tagline)")
         .eq("id", id)
         .maybeSingle();
       if (error) throw error;
@@ -69,7 +69,8 @@ function StudioRoute() {
   };
   put("{{Logo}}", company?.logo_url);
   put("{{Photo}}", data.avatar_url as string | null);
-  put("{{Company}}", company?.name);
+  // Never fall back to the demo company name — show the card's own company, or nothing.
+  values["{{Company}}"] = (company?.name || (data.company as string | null) || "").trim();
   put("{{Tagline}}", company?.tagline ?? null);
   put("{{Employee Name}}", data.name as string | null);
   put("{{Job Title}}", data.title as string | null);
