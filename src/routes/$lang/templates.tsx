@@ -309,6 +309,13 @@ function TemplatesGallery() {
           )}
         </div>
 
+        {myCard && (
+          <p className="mx-auto mb-6 w-fit rounded-full border border-border/60 px-4 py-2 text-[11px] text-muted-foreground">
+            {ar ? "المعاينة ببيانات بطاقتك" : "Previewed with your card"}:{" "}
+            <span className="font-semibold text-foreground">{myCard.name}</span>
+          </p>
+        )}
+
         {tab === "builtin" ? (
           <ul className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
             {demoCards.map((card) => (
