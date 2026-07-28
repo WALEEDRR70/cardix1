@@ -43,6 +43,7 @@ export function DepartmentDesignCard({
     accent_color: string;
     target_role: string | null;
     department_id?: string | null;
+    template?: string | null;
     design: unknown;
   };
   companySlug: string;
@@ -52,10 +53,34 @@ export function DepartmentDesignCard({
   roleLabel?: string | null;
 }) {
   const qc = useQueryClient();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [fields, setFields] = useState<EditableFieldKey[]>(() => getEditableFields(design.design));
   const [saving, setSaving] = useState(false);
   const [inviting, setInviting] = useState(false);
+  const [opening, setOpening] = useState(false);
+
+  // Opens (or creates) the Studio card that backs this department design.
+  async function openDesigner() {
+    setOpening(true);
+    try {
+      const cardId = await ensureDesignEditorCard({
+        templateId: design.id,
+        companyId,
+        companySlug,
+        name: design.name,
+        template: design.template || "classic",
+        accentColor: design.accent_color,
+        design: design.design,
+      });
+      navigate({ to: "/studio/$id", params: { id: cardId } });
+    } catch {
+      toast.error(ar ? "تعذّر فتح المصمم" : "Could not open the designer");
+      setOpening(false);
+    }
+  }
+
+
 
   // One-time invite link that pre-assigns this department + role + design.
   async function copyInviteLink() {
