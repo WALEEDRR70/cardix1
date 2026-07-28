@@ -6,6 +6,13 @@ import { useWs, type Company, type CompanyRole } from "@/lib/workspace";
 import { Link } from "@/lib/nav";
 
 export const Route = createFileRoute("/$lang/_authenticated/co/$slug")({
+  head: () => ({
+    meta: [
+      { title: "Company workspace — Cardixn" },
+      { name: "description", content: "Manage your company's digital business cards, branding and team." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   component: CompanyWorkspaceLayout,
 });
 

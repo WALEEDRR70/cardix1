@@ -8,6 +8,13 @@ import { ArrowRight, BadgeCheck, ExternalLink, QrCode, BarChart3, ArrowLeftRight
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 
 export const Route = createFileRoute("/$lang/_authenticated/me")({
+  head: () => ({
+    meta: [
+      { title: "My company card — Cardixn" },
+      { name: "description", content: "View and share your corporate digital business card." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   component: EmployeeSpace,
 });
 

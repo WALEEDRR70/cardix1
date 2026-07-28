@@ -1,0 +1,1 @@
+revoke all on function public.bump_card_view_count() from public, anon, authenticated;

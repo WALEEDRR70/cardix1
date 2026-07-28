@@ -446,11 +446,11 @@ function CompanyBadge({
   if (!card.company_id) return null;
   const name = company?.name ?? card.company ?? "";
   return (
-    <div className="pointer-events-none absolute start-3 top-3 z-20 flex max-w-[75%] items-center gap-2 rounded-full border border-white/20 bg-black/45 px-2.5 py-1 backdrop-blur-md">
+    <div className="pointer-events-none absolute start-3 top-3 z-20 flex max-w-[calc(100%-4.5rem)] items-center gap-2 rounded-full border border-white/20 bg-black/45 px-2.5 py-1 backdrop-blur-md">
       {company?.logo_url ? (
-        <img src={company.logo_url} alt={name} className="h-5 w-5 rounded-full object-cover" loading="lazy" />
+        <img src={company.logo_url} alt={name} className="h-5 w-5 shrink-0 rounded-full object-cover" loading="lazy" />
       ) : (
-        <span className="grid h-5 w-5 place-items-center rounded-full bg-primary/25">
+        <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary/25">
           <Building2 className="h-3 w-3 text-primary-foreground" />
         </span>
       )}
