@@ -191,32 +191,61 @@ export const finalizeCheckout = createServerFn({ method: "POST" })
     }
 
     if (data.subscriptionId) {
-      const sub = await paypalFetch<{ status: string; plan_id: string; billing_info?: { next_billing_time?: string } }>(
-        `/v1/billing/subscriptions/${data.subscriptionId}`,
-      );
-      const { data: order } = await admin
-        .from("billing_orders")
-        .select("plan_id")
-        .eq("paypal_subscription_id", data.subscriptionId)
-        .maybeSingle();
-
-      await admin
-        .from("billing_orders")
-        .update({ status: sub.status === "ACTIVE" ? "paid" : sub.status.toLowerCase(), raw: sub })
-        .eq("paypal_subscription_id", data.subscriptionId);
-
-      await admin.from("billing_subscriptions").upsert(
-        {
-          user_id: userId,
-          plan_id: order?.plan_id ?? null,
-          paypal_subscription_id: data.subscriptionId,
-          status: sub.status.toLowerCase(),
-          current_period_end: sub.billing_info?.next_billing_time ?? null,
-        },
-        { onConflict: "paypal_subscription_id" },
-      );
-      return { kind: "subscription" as const, status: sub.status };
+      const { syncSubscriptionState } = await import("@/lib/paypal.server");
+      const res = await syncSubscriptionState(data.subscriptionId);
+      return { kind: "subscription" as const, status: res.status };
     }
 
     throw new Error("Nothing to finalize");
   });
+
+/** Current user's active subscription (if any) plus their one-time purchases. */
+export const getMyBilling = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabase, userId } = context as any;
+    const { data: subs } = await supabase
+      .from("billing_subscriptions")
+      .select("id, status, current_period_end, paypal_subscription_id, plan_id, created_at")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
+
+    const rows = (subs ?? []) as Array<{ plan_id: string | null; status: string }>;
+    const planIds = [...new Set(rows.map((r) => r.plan_id).filter(Boolean))] as string[];
+    let plans: any[] = [];
+    if (planIds.length) {
+      const { data } = await supabase
+        .from("billing_plans")
+        .select("id, code, name_en, name_ar, interval, price_cents, currency, audience")
+        .in("id", planIds);
+      plans = data ?? [];
+    }
+
+    const merged = rows.map((r: any) => ({ ...r, plan: plans.find((p) => p.id === r.plan_id) ?? null }));
+    const active = merged.find((s: any) => s.status === "active" || s.status === "approval_pending") ?? null;
+    return { subscriptions: merged, active, isPro: !!merged.find((s: any) => s.status === "active") };
+  });
+
+/** Cancels the caller's PayPal subscription. */
+export const cancelMySubscription = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { subscriptionId: string }) => d)
+  .handler(async ({ data, context }) => {
+    const { supabase, userId } = context as any;
+    const { data: row } = await supabase
+      .from("billing_subscriptions")
+      .select("paypal_subscription_id")
+      .eq("user_id", userId)
+      .eq("paypal_subscription_id", data.subscriptionId)
+      .maybeSingle();
+    if (!row) throw new Error("Subscription not found");
+
+    const { paypalFetch, syncSubscriptionState } = await import("@/lib/paypal.server");
+    await paypalFetch(`/v1/billing/subscriptions/${data.subscriptionId}/cancel`, {
+      method: "POST",
+      body: { reason: "Cancelled by the customer from Cardixn" },
+    });
+    const res = await syncSubscriptionState(data.subscriptionId);
+    return { status: res.status };
+  });
+
