@@ -11,6 +11,8 @@ import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 import { useWs } from "@/lib/workspace";
 import { lockedFieldsFromDesign } from "@/lib/company-designs";
+import { ApplyTemplatesStrip } from "@/components/ApplyTemplatesStrip";
+
 
 export const Route = createFileRoute("/$lang/_authenticated/cards/$id")({
   head: () => ({ meta: [{ title: "Edit card — Cardixn" }] }),
@@ -203,7 +205,10 @@ function EditCard() {
           locked={card.company_id ? (corp?.locked ?? { company: true, accent_color: true, template: true, slug: true }) : undefined}
           allowedTemplates={corp && corp.templates.length > 0 ? corp.templates : undefined}
         />
+
+        {!card.company_id && <ApplyTemplatesStrip cardId={id} />}
       </div>
+
 
       <BottomSheet open={shareOpen} onClose={() => setShareOpen(false)} title={t.shareCard}>
         <div id="card-qr" className="mx-auto mt-2 grid w-fit place-items-center rounded-3xl bg-white p-5">
