@@ -114,8 +114,22 @@ export const SAMPLE_VALUES: Record<string, string> = {
 };
 
 export function resolvePlaceholders(text: string, values?: Record<string, string>): string {
-  return text.replace(/\{\{[^}]+\}\}/g, (m) => values?.[m] ?? SAMPLE_VALUES[m] ?? m);
+  const out = text.replace(/\{\{[^}]+\}\}/g, (m) => values?.[m] ?? SAMPLE_VALUES[m] ?? m);
+  // Tokens can resolve to an empty string (an employee with no department, for
+  // example). Tidy the separators so a line never reads "· " or "Manager ·".
+  return out
+    .split("\n")
+    .map((line) =>
+      line
+        .replace(/\s*([·|•\-–])\s*(?=([·|•\-–]\s*)*$)/g, "")
+        .replace(/^\s*[·|•\-–]\s*/g, "")
+        .replace(/\s*([·|•\-–])\s*([·|•\-–]\s*)+/g, " $1 ")
+        .replace(/[ \t]{2,}/g, " ")
+        .trimEnd(),
+    )
+    .join("\n");
 }
+
 
 /** Resolves the picture of an image node (employee photo / company logo / uploaded file). */
 export function resolveImageSrc(
