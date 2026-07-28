@@ -305,6 +305,13 @@ export function LogoUpload({ label, value, onChange, disabled, companyId }: {
 
 /* ------------------------------ employees ----------------------------- */
 
+export type EmployeeCard = {
+  id: string; user_id: string; name: string; title: string | null;
+  phone: string | null; whatsapp: string | null; email: string | null;
+  website: string | null; address: string | null; bio: string | null;
+  socials: Record<string, string> | null; avatar_url: string | null; slug: string;
+};
+
 type MemberRow = {
   id: string; user_id: string; role: CompanyRole; status: MemberStatus;
   job_title: string | null; corporate_email: string | null; department_id: string | null;
@@ -370,6 +377,24 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
       return data ?? [];
     },
   });
+
+  const { data: memberCards } = useQuery({
+    queryKey: ["company-member-cards", company.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("cards")
+        .select("id, user_id, name, title, phone, whatsapp, email, website, address, bio, socials, avatar_url, slug")
+        .eq("company_id", company.id);
+      if (error) throw error;
+      return (data ?? []) as EmployeeCard[];
+    },
+  });
+
+  const cardByUser = useMemo(() => {
+    const m: Record<string, EmployeeCard> = {};
+    for (const c of memberCards ?? []) if (!m[c.user_id]) m[c.user_id] = c;
+    return m;
+  }, [memberCards]);
 
   function inviteUrl(token: string) {
     const origin = typeof window !== "undefined" ? window.location.origin : "https://cardixn.com";
@@ -656,11 +681,15 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
         )}
 
         {(members ?? []).map((m) => (
-          <div key={m.id} className="flex flex-wrap items-center gap-2 rounded-2xl border border-border/60 bg-card/60 px-3 py-2.5">
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium">{m.corporate_email ?? m.user_id.slice(0, 8)}</p>
-              <p className="truncate text-[11px] text-muted-foreground">{m.job_title || "—"}</p>
-            </div>
+          <MemberItem
+            key={m.id}
+            m={m}
+            card={cardByUser[m.user_id] ?? null}
+            ar={ar}
+            w={w}
+            canEdit={canEdit}
+            onSaved={() => qc.invalidateQueries({ queryKey: ["company-member-cards", company.id] })}
+          >
             {canEdit && m.role !== "owner" ? (
               <>
                 <select
