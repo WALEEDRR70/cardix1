@@ -237,3 +237,19 @@ export async function toggleFavoriteTemplate(userId: string, templateId: string,
   if (error) throw error;
   return false;
 }
+
+/** Most-liked public templates — used to suggest designs when a user has no favourites yet. */
+export async function listPopularTemplates(limit = 24, exclude: string[] = []): Promise<DesignTemplate[]> {
+  let q = supabase
+    .from("design_templates")
+    .select("*")
+    .eq("is_public", true)
+    .order("like_count", { ascending: false })
+    .order("use_count", { ascending: false })
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (exclude.length) q = q.not("id", "in", `(${exclude.join(",")})`);
+  const { data, error } = await q;
+  if (error) throw error;
+  return (data ?? []) as DesignTemplate[];
+}

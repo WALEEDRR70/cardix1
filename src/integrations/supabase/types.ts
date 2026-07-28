@@ -814,6 +814,7 @@ export type Database = {
           design: Json
           id: string
           is_public: boolean
+          like_count: number
           preview_url: string | null
           tags: string[]
           title: string
@@ -830,6 +831,7 @@ export type Database = {
           design: Json
           id?: string
           is_public?: boolean
+          like_count?: number
           preview_url?: string | null
           tags?: string[]
           title: string
@@ -846,6 +848,7 @@ export type Database = {
           design?: Json
           id?: string
           is_public?: boolean
+          like_count?: number
           preview_url?: string | null
           tags?: string[]
           title?: string
