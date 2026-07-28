@@ -135,6 +135,7 @@ function Page() {
         .from("cards")
         .select("id, name, title, slug, updated_at, design, template, accent_color, avatar_url, phone, email, website, company")
         .eq("company_id", company.id)
+        .eq("card_type", "company")
         .order("updated_at", { ascending: false });
       if (error) throw error;
       return data ?? [];
