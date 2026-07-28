@@ -8,6 +8,8 @@ import { StaticCardPreview } from "@/components/studio/StaticCardPreview";
 import { FavoriteTemplateButton } from "@/components/FavoriteTemplateButton";
 import { supabase } from "@/integrations/supabase/client";
 import {
+  listFavoriteTemplates,
+  listPopularTemplates,
   listPublicTemplates,
   useTemplate,
   type DesignTemplate,
@@ -28,6 +30,7 @@ export function CommunityTemplates({
   audience,
   target,
   limit,
+  mode = "public",
 }: {
   ar: boolean;
   /** Which template kind to show ("personal" and "employee" also include mixed templates). */
@@ -35,6 +38,8 @@ export function CommunityTemplates({
   /** Where a used template gets saved. */
   target: TemplateTarget;
   limit?: number;
+  /** "favorites" shows the user's liked templates, falling back to popular suggestions. */
+  mode?: "public" | "favorites";
 }) {
   const navigate = useNavigate();
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -44,11 +49,24 @@ export function CommunityTemplates({
     supabase.auth.getSession().then(({ data }) => setUid(data.session?.user.id ?? null));
   }, []);
 
-  const { data: templates = [], isLoading } = useQuery({
-    queryKey: ["public-templates", "", audience],
-    queryFn: () => listPublicTemplates(undefined, audience),
+  const favorites = useQuery({
+    queryKey: ["favorite-templates", uid],
+    queryFn: () => listFavoriteTemplates(uid!),
+    enabled: mode === "favorites" && !!uid,
+    staleTime: 30_000,
+  });
+
+  const publicQuery = useQuery({
+    queryKey: mode === "favorites" ? ["popular-templates"] : ["public-templates", "", audience],
+    queryFn: () => (mode === "favorites" ? listPopularTemplates(24) : listPublicTemplates(undefined, audience)),
+    enabled: mode === "public" || (!!uid && favorites.isSuccess && favorites.data.length === 0) || (mode === "favorites" && !uid),
     staleTime: 60_000,
   });
+
+  const usingSuggestions = mode === "favorites" && (favorites.data?.length ?? 0) === 0;
+  const templates: DesignTemplate[] =
+    mode === "favorites" ? (usingSuggestions ? (publicQuery.data ?? []) : favorites.data!) : (publicQuery.data ?? []);
+  const isLoading = mode === "favorites" ? favorites.isLoading || (usingSuggestions && publicQuery.isLoading) : publicQuery.isLoading;
 
   async function onUse(tpl: DesignTemplate) {
     setBusyId(tpl.id);
@@ -85,6 +103,14 @@ export function CommunityTemplates({
   const shown = limit ? templates.slice(0, limit) : templates;
 
   return (
+    <>
+    {usingSuggestions && (
+      <p className="mb-3 text-center text-[11px] text-muted-foreground">
+        {ar
+          ? "لم تحفظ أي قالب بعد — هذه أكثر القوالب إعجاباً لدى المصممين."
+          : "No favourites yet — here are the most-liked community designs."}
+      </p>
+    )}
     <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {shown.map((tpl) => (
         <li key={tpl.id} className="glass rounded-3xl border border-border/40 p-3">
@@ -99,7 +125,12 @@ export function CommunityTemplates({
                 {tpl.author_name ? ` · ${ar ? "بواسطة" : "by"} ${tpl.author_name}` : ""}
               </p>
             </div>
-            <FavoriteTemplateButton templateId={tpl.id} userId={uid} ar={ar} />
+            <FavoriteTemplateButton
+              templateId={tpl.id}
+              userId={uid}
+              ar={ar}
+              likeCount={(tpl as { like_count?: number }).like_count ?? 0}
+            />
             <button
               onClick={() => void onUse(tpl)}
               disabled={busyId === tpl.id}
@@ -112,5 +143,6 @@ export function CommunityTemplates({
         </li>
       ))}
     </ul>
+    </>
   );
 }
