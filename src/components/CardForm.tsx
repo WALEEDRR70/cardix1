@@ -45,6 +45,7 @@ export function CardForm({
   allowedTemplates,
   design,
   slugPrefix = "/c/",
+  department,
 }: {
   initial: CardFormData;
   onSubmit: (data: CardFormData, extra?: { design?: unknown }) => Promise<void>;
