@@ -26,9 +26,31 @@ export function InstallAppButton({ className }: { className?: string }) {
     return subscribeInstallState(sync);
   }, []);
 
+  /** iOS device (incl. iPadOS reporting as Mac with touch). */
+  function isIos() {
+    const ua = navigator.userAgent;
+    return (
+      /iPad|iPhone|iPod/.test(ua) ||
+      (navigator.platform === "MacIntel" && (navigator as unknown as { maxTouchPoints: number }).maxTouchPoints > 1)
+    );
+  }
+
+  /** On iOS, only Safari can add to Home Screen — Chrome/Edge/Firefox cannot. */
+  function isIosNonSafari() {
+    const ua = navigator.userAgent;
+    return isIos() && /CriOS|FxiOS|EdgiOS|OPiOS|Instagram|FBAN|FBAV/.test(ua);
+  }
+
   async function install() {
     setBusy(true);
     try {
+      // Chrome (or any in-app browser) on iOS: hand off to Safari, which is the
+      // only browser there that can install the app.
+      if (isIosNonSafari()) {
+        window.location.href = `x-safari-https://${window.location.host}${window.location.pathname}`;
+        setTimeout(() => setShowIosHelp(true), 1200);
+        return;
+      }
       const outcome = await promptInstall();
       if (outcome === "unavailable") setShowIosHelp(true);
       if (outcome === "accepted") setState((s) => ({ ...s, installed: true }));
@@ -36,6 +58,7 @@ export function InstallAppButton({ className }: { className?: string }) {
       setBusy(false);
     }
   }
+
 
   if (state.installed) {
     return (
