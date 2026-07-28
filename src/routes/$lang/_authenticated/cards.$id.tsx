@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { CardForm, type CardFormData } from "@/components/CardForm";
 import { useI18n } from "@/lib/i18n";
 import { MobileShell, PageHeader, BottomSheet } from "@/components/MobileShell";
-import { BarChart3, Download, Share2, Copy, ExternalLink, QrCode, Wand2 } from "lucide-react";
+import { BarChart3, Download, Share2, Copy, ExternalLink, QrCode, Wand2, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
