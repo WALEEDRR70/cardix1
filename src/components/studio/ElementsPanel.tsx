@@ -61,6 +61,17 @@ const ITEMS: Item[] = [
     }],
   },
 
+  ...SOCIAL_ICON_KEYS.map((key): Item => {
+    const g = SOCIAL_ICONS[key];
+    return {
+      key: `icon-${key}`, label: g.label, labelAr: g.labelAr, icon: Share2, group: "icons",
+      make: () => ["icon", {
+        name: g.label, w: 64, h: 64, icon: key,
+        style: { fill: g.brand, color: "#ffffff", radius: 999 },
+      }],
+    };
+  }),
+
   field("linkedin", "LinkedIn", "لينكدإن", Linkedin, "social", "{{LinkedIn}}", { fontSize: 16 }),
   field("instagram", "Instagram", "إنستغرام", Instagram, "social", "{{Instagram}}", { fontSize: 16 }),
   field("x", "X / Twitter", "إكس", Twitter, "social", "{{X}}", { fontSize: 16 }),
