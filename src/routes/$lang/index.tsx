@@ -7,8 +7,19 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { CardPreview } from "@/components/CardPreview";
 import { QRCodeSVG } from "qrcode.react";
 import {
-  ArrowRight, QrCode, ScanLine, Sparkles, Radio, BarChart3,
-  Smartphone, Star, Check, ChevronDown, Zap, Layers, Globe2,
+  ArrowRight,
+  QrCode,
+  ScanLine,
+  Sparkles,
+  Radio,
+  BarChart3,
+  Smartphone,
+  Star,
+  Check,
+  ChevronDown,
+  Zap,
+  Layers,
+  Globe2,
 } from "lucide-react";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { MobileNav } from "@/components/marketing/MobileNav";
@@ -19,15 +30,25 @@ function useIsAuthed() {
   const [authed, setAuthed] = useState<boolean | null>(null);
   useEffect(() => {
     let mounted = true;
-    supabase.auth.getSession().then(({ data }) => { if (mounted) setAuthed(!!data.session); });
+    supabase.auth.getSession().then(({ data }) => {
+      if (mounted) setAuthed(!!data.session);
+    });
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setAuthed(!!s));
-    return () => { mounted = false; sub.subscription.unsubscribe(); };
+    return () => {
+      mounted = false;
+      sub.subscription.unsubscribe();
+    };
   }, []);
   return authed;
 }
 
-
-import { SUPPORTED_LOCALES, SITE_ORIGIN, isSupportedLocale, DEFAULT_LOCALE, LOCALE_META } from "@/i18n/config";
+import {
+  SUPPORTED_LOCALES,
+  SITE_ORIGIN,
+  isSupportedLocale,
+  DEFAULT_LOCALE,
+  LOCALE_META,
+} from "@/i18n/config";
 import { getLandingSeo } from "@/i18n/landing-seo";
 import { getLandingCopy, type LandingCopy } from "@/i18n/landing";
 import { SeoSections, getSeoFaqItems } from "@/components/landing/SeoSections";
@@ -39,55 +60,53 @@ export const Route = createFileRoute("/$lang/")({
     const seo = getLandingSeo(lang);
     const faqItems = getSeoFaqItems(lang);
     const scripts = [
-          {
-            type: "application/ld+json",
-            children: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "SoftwareApplication",
-              name: "Cardixn",
-              applicationCategory: "BusinessApplication",
-              operatingSystem: "Web, iOS, Android",
-              description: seo.description,
-              url,
-              offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-              aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", ratingCount: "1284" },
-            }),
-          },
-          {
-            type: "application/ld+json",
-            children: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              name: "Cardixn",
-              url: SITE_ORIGIN,
-              logo: `${SITE_ORIGIN}/favicon.ico`,
-              sameAs: [],
-            }),
-          },
-          {
-            type: "application/ld+json",
-            children: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              inLanguage: lang,
-              mainEntity: faqItems.map((f) => ({
-                "@type": "Question",
-                name: f.q,
-                acceptedAnswer: { "@type": "Answer", text: f.a },
-              })),
-            }),
-          },
-          {
-            type: "application/ld+json",
-            children: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Home", item: url },
-              ],
-            }),
-          },
-        ];
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: "Cardixn",
+          applicationCategory: "BusinessApplication",
+          operatingSystem: "Web, iOS, Android",
+          description: seo.description,
+          url,
+          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+          aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", ratingCount: "1284" },
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Cardixn",
+          url: SITE_ORIGIN,
+          logo: `${SITE_ORIGIN}/favicon.ico`,
+          sameAs: [],
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          inLanguage: lang,
+          mainEntity: faqItems.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: url }],
+        }),
+      },
+    ];
     return {
       meta: [
         { title: seo.title },
@@ -116,14 +135,10 @@ export const Route = createFileRoute("/$lang/")({
   component: Landing,
 });
 
-
-
-
 function Landing() {
   const { t, lang } = useI18n();
   const c = getLandingCopy(lang);
   const authed = useIsAuthed();
-
 
   return (
     <div className="relative min-h-[100dvh] overflow-x-clip bg-background text-foreground">
@@ -158,24 +173,45 @@ function BackgroundFx() {
         }}
       />
       {/* mesh glow */}
-      <div className="absolute inset-0 opacity-80" style={{ backgroundImage: "var(--gradient-mesh)" }} />
+      <div
+        className="absolute inset-0 opacity-80"
+        style={{ backgroundImage: "var(--gradient-mesh)" }}
+      />
       {/* orbs */}
-      <div className="absolute -left-40 top-[15%] h-[500px] w-[500px] rounded-full opacity-30 blur-3xl"
-           style={{ background: "radial-gradient(circle, oklch(0.82 0.14 85 / 0.35), transparent 60%)" }} />
-      <div className="absolute -right-40 top-[50%] h-[600px] w-[600px] rounded-full opacity-30 blur-3xl"
-           style={{ background: "radial-gradient(circle, oklch(0.55 0.15 260 / 0.4), transparent 60%)" }} />
+      <div
+        className="absolute -left-40 top-[15%] h-[500px] w-[500px] rounded-full opacity-30 blur-3xl"
+        style={{
+          background: "radial-gradient(circle, oklch(0.82 0.14 85 / 0.35), transparent 60%)",
+        }}
+      />
+      <div
+        className="absolute -right-40 top-[50%] h-[600px] w-[600px] rounded-full opacity-30 blur-3xl"
+        style={{
+          background: "radial-gradient(circle, oklch(0.55 0.15 260 / 0.4), transparent 60%)",
+        }}
+      />
       {/* noise */}
-      <div className="absolute inset-0 opacity-[0.035] mix-blend-overlay"
-           style={{
-             backgroundImage:
-               'url("data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22240%22 height=%22240%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%222%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/></svg>")',
-           }} />
+      <div
+        className="absolute inset-0 opacity-[0.035] mix-blend-overlay"
+        style={{
+          backgroundImage:
+            'url("data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22240%22 height=%22240%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%222%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/></svg>")',
+        }}
+      />
     </div>
   );
 }
 
 /* ---------------- Nav ---------------- */
-function Nav({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy; authed: boolean | null }) {
+function Nav({
+  t,
+  c,
+  authed,
+}: {
+  t: ReturnType<typeof useI18n>["t"];
+  c: LandingCopy;
+  authed: boolean | null;
+}) {
   const { lang } = useI18n();
   const ar = lang === "ar";
   const toolsLabel = ar ? "الأدوات" : "Tools";
@@ -183,12 +219,18 @@ function Nav({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingC
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 8);
-    on(); window.addEventListener("scroll", on, { passive: true });
+    on();
+    window.addEventListener("scroll", on, { passive: true });
     return () => window.removeEventListener("scroll", on);
   }, []);
 
   return (
-    <header className={"safe-top sticky top-0 z-40 w-full transition-all " + (scrolled ? "backdrop-blur-xl bg-background/70 border-b border-border/60" : "")}>
+    <header
+      className={
+        "safe-top sticky top-0 z-40 w-full transition-all " +
+        (scrolled ? "backdrop-blur-xl bg-background/70 border-b border-border/60" : "")
+      }
+    >
       <div className="mx-auto flex h-16 w-full max-w-[1440px] items-center justify-between px-5 lg:px-10">
         <Link to="/" className="flex items-center gap-2.5">
           <img src={logoAsset.url} alt="" className="h-9 w-9 object-contain" />
@@ -196,12 +238,24 @@ function Nav({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingC
         </Link>
 
         <nav className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
-          <a href="#features" className="hover:text-foreground transition">{c.navFeatures}</a>
-          <Link to="/templates" className="hover:text-foreground transition">{c.navTemplates}</Link>
-          <Link to="/tools" className="hover:text-foreground transition">{toolsLabel}</Link>
-          <Link to="/blog" className="hover:text-foreground transition">{blogLabel}</Link>
-          <a href="#pricing" className="hover:text-foreground transition">{c.navPricing}</a>
-          <a href="#faq" className="hover:text-foreground transition">{c.navFaq}</a>
+          <a href="#features" className="hover:text-foreground transition">
+            {c.navFeatures}
+          </a>
+          <Link to="/templates" className="hover:text-foreground transition">
+            {c.navTemplates}
+          </Link>
+          <Link to="/tools" className="hover:text-foreground transition">
+            {toolsLabel}
+          </Link>
+          <Link to="/blog" className="hover:text-foreground transition">
+            {blogLabel}
+          </Link>
+          <a href="#pricing" className="hover:text-foreground transition">
+            {c.navPricing}
+          </a>
+          <a href="#faq" className="hover:text-foreground transition">
+            {c.navFaq}
+          </a>
         </nav>
 
         <div className="flex items-center gap-2">
@@ -221,7 +275,12 @@ function Nav({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingC
             <LocaleSwitcher compact />
           </div>
           {authed === false ? (
-            <Link to="/auth" className="hidden md:inline-flex text-sm text-muted-foreground hover:text-foreground px-3 py-2">{t.signIn}</Link>
+            <Link
+              to="/auth"
+              className="hidden md:inline-flex text-sm text-muted-foreground hover:text-foreground px-3 py-2"
+            >
+              {t.signIn}
+            </Link>
           ) : null}
           <Link
             to={authed === false ? "/auth" : "/dashboard"}
@@ -238,7 +297,15 @@ function Nav({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingC
 }
 
 /* ---------------- Hero ---------------- */
-function Hero({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy; authed: boolean | null }) {
+function Hero({
+  t,
+  c,
+  authed,
+}: {
+  t: ReturnType<typeof useI18n>["t"];
+  c: LandingCopy;
+  authed: boolean | null;
+}) {
   const heroAr = useI18n().lang === "ar";
   const wrapRef = useRef<HTMLDivElement>(null);
   const [mx, setMx] = useState(0);
@@ -268,18 +335,21 @@ function Hero({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: Landing
             <span className="text-gradient-gold">{t.tagline.split(".")[1]?.trim() || t.brand}</span>
           </h1>
 
-          <p className="mt-6 max-w-xl text-base text-muted-foreground sm:text-lg">
-            {t.subtagline}
-          </p>
+          <p className="mt-6 max-w-xl text-base text-muted-foreground sm:text-lg">{t.subtagline}</p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Link to={authed === false ? "/auth" : "/dashboard"}
+            <Link
+              to={authed === false ? "/auth" : "/dashboard"}
               className="group inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-glow transition active:scale-[0.98]"
-              style={{ background: "var(--gradient-gold)" }}>
+              style={{ background: "var(--gradient-gold)" }}
+            >
               {t.getStarted}
               <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
             </Link>
-            <Link to="/templates" className="glass inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium hover:bg-card">
+            <Link
+              to="/templates"
+              className="glass inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium hover:bg-card"
+            >
               <Sparkles className="h-4 w-4" /> {c.navTemplates}
             </Link>
           </div>
@@ -292,7 +362,10 @@ function Hero({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: Landing
               { icon: ScanLine, label: heroAr ? "مسح ذكي" : "AI scan" },
               { icon: BarChart3, label: heroAr ? "تحليلات" : "Analytics" },
             ].map((f) => (
-              <div key={f.label} className="glass flex items-center gap-2 rounded-2xl px-3 py-2.5 text-xs">
+              <div
+                key={f.label}
+                className="glass flex items-center gap-2 rounded-2xl px-3 py-2.5 text-xs"
+              >
                 <f.icon className="h-4 w-4 text-accent" /> {f.label}
               </div>
             ))}
@@ -303,23 +376,38 @@ function Hero({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: Landing
         <div
           ref={wrapRef}
           onMouseMove={onMove}
-          onMouseLeave={() => { setMx(0); setMy(0); }}
+          onMouseLeave={() => {
+            setMx(0);
+            setMy(0);
+          }}
           className="relative mx-auto flex h-[520px] w-full max-w-[560px] items-center justify-center [perspective:1400px] lg:h-[600px]"
         >
           {/* glow behind */}
-          <div className="absolute inset-8 rounded-full opacity-70 blur-3xl"
-            style={{ background: "radial-gradient(circle, oklch(0.82 0.14 85 / 0.35), transparent 60%)" }} />
+          <div
+            className="absolute inset-8 rounded-full opacity-70 blur-3xl"
+            style={{
+              background: "radial-gradient(circle, oklch(0.82 0.14 85 / 0.35), transparent 60%)",
+            }}
+          />
 
           {/* back cards */}
           <div
             className="absolute transition-transform duration-300 ease-out"
-            style={{ transform: `translate3d(${-140 - mx * 20}px, ${-40 + my * 10}px, 0) rotate(-14deg)`, opacity: 0.55, filter: "blur(1px)" }}
+            style={{
+              transform: `translate3d(${-140 - mx * 20}px, ${-40 + my * 10}px, 0) rotate(-14deg)`,
+              opacity: 0.55,
+              filter: "blur(1px)",
+            }}
           >
             <CardPreview card={demoCards[1]} size="md" />
           </div>
           <div
             className="absolute transition-transform duration-300 ease-out"
-            style={{ transform: `translate3d(${130 - mx * 20}px, ${50 + my * 10}px, 0) rotate(12deg)`, opacity: 0.65, filter: "blur(0.5px)" }}
+            style={{
+              transform: `translate3d(${130 - mx * 20}px, ${50 + my * 10}px, 0) rotate(12deg)`,
+              opacity: 0.65,
+              filter: "blur(0.5px)",
+            }}
           >
             <CardPreview card={demoCards[2]} size="md" />
           </div>
@@ -339,11 +427,20 @@ function Hero({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: Landing
           {/* Floating QR */}
           <div
             className="absolute bottom-2 rtl:right-2 ltr:right-2 lg:bottom-6 lg:rtl:right-6 lg:ltr:right-6 z-20"
-            style={{ transform: `translate3d(${mx * -14}px, ${my * -14}px, 0)`, transition: "transform 200ms ease-out" }}
+            style={{
+              transform: `translate3d(${mx * -14}px, ${my * -14}px, 0)`,
+              transition: "transform 200ms ease-out",
+            }}
           >
             <div className="glass flex items-center gap-3 rounded-2xl p-3 shadow-luxe">
               <div className="grid place-items-center rounded-xl bg-white p-2">
-                <QRCodeSVG value="https://cardix.app" size={70} fgColor="#0a0a0a" bgColor="#ffffff" level="M" />
+                <QRCodeSVG
+                  value="https://cardix.app"
+                  size={70}
+                  fgColor="#0a0a0a"
+                  bgColor="#ffffff"
+                  level="M"
+                />
               </div>
               <div className="pr-1">
                 <p className="text-[11px] font-semibold">{c.liveCard}</p>
@@ -355,7 +452,10 @@ function Hero({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: Landing
           {/* Floating badges */}
           <div
             className="absolute top-4 rtl:left-4 ltr:left-4 z-20"
-            style={{ transform: `translate3d(${mx * 14}px, ${my * 14}px, 0)`, transition: "transform 200ms ease-out" }}
+            style={{
+              transform: `translate3d(${mx * 14}px, ${my * 14}px, 0)`,
+              transition: "transform 200ms ease-out",
+            }}
           >
             <div className="glass flex items-center gap-2 rounded-full px-3 py-1.5 shadow-soft">
               <Radio className="h-3.5 w-3.5 text-accent" />
@@ -377,7 +477,9 @@ function TrustStrip({ c }: { c: LandingCopy }) {
         <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">{c.trustedBy}</p>
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-muted-foreground/80">
           {names.map((n) => (
-            <span key={n} className="font-medium tracking-tight">{n}</span>
+            <span key={n} className="font-medium tracking-tight">
+              {n}
+            </span>
           ))}
         </div>
       </div>
@@ -400,9 +502,14 @@ function HowItWorks({ c }: { c: LandingCopy }) {
         <div className="mt-14 grid gap-4 lg:grid-cols-3">
           {steps.map((s) => (
             <div key={s.n} className="glass relative overflow-hidden rounded-3xl p-8">
-              <div className="text-[80px] font-semibold leading-none tracking-tighter text-foreground/5">{s.n}</div>
+              <div className="text-[80px] font-semibold leading-none tracking-tighter text-foreground/5">
+                {s.n}
+              </div>
               <div className="mt-[-40px] flex items-center gap-3">
-                <span className="grid h-11 w-11 place-items-center rounded-2xl text-accent-foreground" style={{ background: "var(--gradient-gold)" }}>
+                <span
+                  className="grid h-11 w-11 place-items-center rounded-2xl text-accent-foreground"
+                  style={{ background: "var(--gradient-gold)" }}
+                >
                   <s.icon className="h-5 w-5" />
                 </span>
                 <h3 className="text-xl font-semibold">{s.title}</h3>
@@ -426,22 +533,43 @@ function Features({ c }: { c: LandingCopy }) {
 
         <div className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-6 lg:auto-rows-[220px]">
           {/* Big — Share */}
-          <FeatureCard className="md:col-span-4 md:row-span-2" icon={QrCode} title={c.featShare} desc={c.featShareD}>
+          <FeatureCard
+            className="md:col-span-4 md:row-span-2"
+            icon={QrCode}
+            title={c.featShare}
+            desc={c.featShareD}
+          >
             <div className="pointer-events-none absolute -bottom-8 rtl:-left-8 ltr:-right-8 opacity-90">
               <div className="grid place-items-center rounded-3xl bg-white p-4 shadow-luxe">
-                <QRCodeSVG value="https://cardix.app" size={140} fgColor="#0a0a0a" bgColor="#ffffff" level="M" />
+                <QRCodeSVG
+                  value="https://cardix.app"
+                  size={140}
+                  fgColor="#0a0a0a"
+                  bgColor="#ffffff"
+                  level="M"
+                />
               </div>
             </div>
           </FeatureCard>
 
           {/* Scanner */}
-          <FeatureCard className="md:col-span-2" icon={ScanLine} title={c.featScan} desc={c.featScanD} />
+          <FeatureCard
+            className="md:col-span-2"
+            icon={ScanLine}
+            title={c.featScan}
+            desc={c.featScanD}
+          />
 
           {/* NFC */}
           <FeatureCard className="md:col-span-2" icon={Radio} title={c.featNfc} desc={c.featNfcD} />
 
           {/* Analytics */}
-          <FeatureCard className="md:col-span-4" icon={BarChart3} title={c.featAnalytics} desc={c.featAnalyticsD}>
+          <FeatureCard
+            className="md:col-span-4"
+            icon={BarChart3}
+            title={c.featAnalytics}
+            desc={c.featAnalyticsD}
+          >
             <div className="pointer-events-none absolute inset-x-6 bottom-4 flex h-16 items-end gap-1 opacity-90">
               {Array.from({ length: 30 }).map((_, i) => {
                 const h = 20 + Math.round(Math.abs(Math.sin(i * 0.7)) * 70 + (i % 5) * 4);
@@ -449,7 +577,11 @@ function Features({ c }: { c: LandingCopy }) {
                   <div
                     key={i}
                     className="flex-1 rounded-t-md"
-                    style={{ height: `${h}%`, background: "var(--gradient-gold)", opacity: 0.35 + (i / 30) * 0.5 }}
+                    style={{
+                      height: `${h}%`,
+                      background: "var(--gradient-gold)",
+                      opacity: 0.35 + (i / 30) * 0.5,
+                    }}
                   />
                 );
               })}
@@ -457,9 +589,19 @@ function Features({ c }: { c: LandingCopy }) {
           </FeatureCard>
 
           {/* i18n */}
-          <FeatureCard className="md:col-span-3" icon={Globe2} title={c.featI18n} desc={c.featI18nD} />
+          <FeatureCard
+            className="md:col-span-3"
+            icon={Globe2}
+            title={c.featI18n}
+            desc={c.featI18nD}
+          />
           {/* Cloud */}
-          <FeatureCard className="md:col-span-3" icon={Smartphone} title={c.featCloud} desc={c.featCloudD} />
+          <FeatureCard
+            className="md:col-span-3"
+            icon={Smartphone}
+            title={c.featCloud}
+            desc={c.featCloudD}
+          />
         </div>
       </div>
     </section>
@@ -467,9 +609,17 @@ function Features({ c }: { c: LandingCopy }) {
 }
 
 function FeatureCard({
-  icon: Icon, title, desc, className = "", children,
+  icon: Icon,
+  title,
+  desc,
+  className = "",
+  children,
 }: {
-  icon: typeof Zap; title: string; desc: string; className?: string; children?: React.ReactNode;
+  icon: typeof Zap;
+  title: string;
+  desc: string;
+  className?: string;
+  children?: React.ReactNode;
 }) {
   return (
     <div className={"glass relative overflow-hidden rounded-3xl p-6 lg:p-8 " + className}>
@@ -494,13 +644,23 @@ function Testimonials({ c }: { c: LandingCopy }) {
         <SectionHeader eyebrow={dict.eyebrowTestimonials} title={c.testimonialsTitle} />
         <div className="mt-14 grid gap-5 lg:grid-cols-3">
           {c.testimonials.map((t) => (
-            <figure key={t.name} className="glass flex h-full flex-col justify-between rounded-3xl p-7">
+            <figure
+              key={t.name}
+              className="glass flex h-full flex-col justify-between rounded-3xl p-7"
+            >
               <div className="flex gap-1 text-accent">
-                {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-4 w-4 fill-current" />
+                ))}
               </div>
-              <blockquote className="mt-4 text-base leading-relaxed text-foreground/90">"{t.body}"</blockquote>
+              <blockquote className="mt-4 text-base leading-relaxed text-foreground/90">
+                "{t.body}"
+              </blockquote>
               <figcaption className="mt-6 flex items-center gap-3 border-t border-border pt-5">
-                <span className="grid h-10 w-10 place-items-center rounded-full text-sm font-semibold text-accent-foreground" style={{ background: "var(--gradient-gold)" }}>
+                <span
+                  className="grid h-10 w-10 place-items-center rounded-full text-sm font-semibold text-accent-foreground"
+                  style={{ background: "var(--gradient-gold)" }}
+                >
                   {t.name.slice(0, 1)}
                 </span>
                 <div className="min-w-0">
@@ -517,11 +677,37 @@ function Testimonials({ c }: { c: LandingCopy }) {
 }
 
 /* ---------------- Pricing ---------------- */
-function Pricing({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy; authed: boolean | null }) {
+function Pricing({
+  t,
+  c,
+  authed,
+}: {
+  t: ReturnType<typeof useI18n>["t"];
+  c: LandingCopy;
+  authed: boolean | null;
+}) {
   const plans = [
-    { name: c.free, price: "0", feats: ["1 card", "QR sharing", "Basic analytics"], cta: c.getStartedFree, primary: false },
-    { name: c.pro, price: "9", feats: ["Unlimited cards", "AI scanner", "NFC + custom slug", "30-day analytics"], cta: c.tryPro, primary: true },
-    { name: c.team, price: "29", feats: ["Everything in Pro", "Team roles", "Custom domain", "Priority support"], cta: t.getStarted, primary: false },
+    {
+      name: c.free,
+      price: "0",
+      feats: ["1 card", "QR sharing", "Basic analytics"],
+      cta: c.getStartedFree,
+      primary: false,
+    },
+    {
+      name: c.pro,
+      price: "9",
+      feats: ["Unlimited cards", "AI scanner", "NFC + custom slug", "30-day analytics"],
+      cta: c.tryPro,
+      primary: true,
+    },
+    {
+      name: c.team,
+      price: "29",
+      feats: ["Everything in Pro", "Team roles", "Custom domain", "Priority support"],
+      cta: t.getStarted,
+      primary: false,
+    },
   ];
   return (
     <section id="pricing" className="relative py-24 lg:py-32">
@@ -533,19 +719,23 @@ function Pricing({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: Land
               key={p.name}
               className={
                 "relative flex flex-col rounded-3xl p-8 " +
-                (p.primary
-                  ? "border-2 border-accent bg-card/80 shadow-luxe"
-                  : "glass")
+                (p.primary ? "border-2 border-accent bg-card/80 shadow-luxe" : "glass")
               }
             >
               {p.primary && (
-                <span className="absolute -top-3 rtl:right-6 ltr:left-6 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-accent-foreground shadow-glow" style={{ background: "var(--gradient-gold)" }}>
+                <span
+                  className="absolute -top-3 rtl:right-6 ltr:left-6 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-accent-foreground shadow-glow"
+                  style={{ background: "var(--gradient-gold)" }}
+                >
                   {t.mostPopular}
                 </span>
               )}
-              <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{p.name}</p>
+              <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                {p.name}
+              </p>
               <p className="mt-4 text-5xl font-semibold tracking-tight">
-                ${p.price}<span className="text-base font-normal text-muted-foreground">{c.perMonth}</span>
+                ${p.price}
+                <span className="text-base font-normal text-muted-foreground">{c.perMonth}</span>
               </p>
               <ul className="mt-6 flex-1 space-y-3">
                 {p.feats.map((f) => (
@@ -590,7 +780,12 @@ function Faq({ c }: { c: LandingCopy }) {
             >
               <div className="flex items-center justify-between gap-4">
                 <span className="text-base font-medium">{f.q}</span>
-                <ChevronDown className={"h-4 w-4 shrink-0 text-muted-foreground transition " + (open === i ? "rotate-180" : "")} />
+                <ChevronDown
+                  className={
+                    "h-4 w-4 shrink-0 text-muted-foreground transition " +
+                    (open === i ? "rotate-180" : "")
+                  }
+                />
               </div>
               <div
                 className="grid overflow-hidden transition-[grid-template-rows] duration-300 ease-out"
@@ -609,34 +804,61 @@ function Faq({ c }: { c: LandingCopy }) {
 }
 
 /* ---------------- Final CTA ---------------- */
-function FinalCta({ t, c, authed }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy; authed: boolean | null }) {
+function FinalCta({
+  t,
+  c,
+  authed,
+}: {
+  t: ReturnType<typeof useI18n>["t"];
+  c: LandingCopy;
+  authed: boolean | null;
+}) {
   return (
     <section className="relative py-24 lg:py-32">
       <div className="mx-auto w-full max-w-[1280px] px-5 lg:px-10">
         <div className="relative overflow-hidden rounded-[2.5rem] border border-border bg-card/60 p-10 backdrop-blur lg:p-20">
-          <div className="pointer-events-none absolute inset-0 opacity-70" style={{ backgroundImage: "var(--gradient-mesh)" }} />
-          <div className="pointer-events-none absolute -inset-40 rounded-full opacity-40 blur-3xl"
-               style={{ background: "radial-gradient(circle, oklch(0.82 0.14 85 / 0.4), transparent 60%)" }} />
+          <div
+            className="pointer-events-none absolute inset-0 opacity-70"
+            style={{ backgroundImage: "var(--gradient-mesh)" }}
+          />
+          <div
+            className="pointer-events-none absolute -inset-40 rounded-full opacity-40 blur-3xl"
+            style={{
+              background: "radial-gradient(circle, oklch(0.82 0.14 85 / 0.4), transparent 60%)",
+            }}
+          />
           <div className="relative grid items-center gap-10 lg:grid-cols-[1.2fr_1fr]">
             <div>
               <h2 className="text-4xl font-semibold tracking-tight lg:text-6xl">
                 <span className="text-gradient-gold">{c.ctaTitle}</span>
               </h2>
-              <p className="mt-4 max-w-lg text-base text-muted-foreground lg:text-lg">{c.ctaDesc}</p>
+              <p className="mt-4 max-w-lg text-base text-muted-foreground lg:text-lg">
+                {c.ctaDesc}
+              </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link to={authed === false ? "/auth" : "/dashboard"} className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-glow"
-                  style={{ background: "var(--gradient-gold)" }}>
+                <Link
+                  to={authed === false ? "/auth" : "/dashboard"}
+                  className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-glow"
+                  style={{ background: "var(--gradient-gold)" }}
+                >
                   {t.getStarted}
                   <ArrowRight className="h-4 w-4 rtl:rotate-180" />
                 </Link>
-                <Link to="/templates" className="glass inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium">
+                <Link
+                  to="/templates"
+                  className="glass inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium"
+                >
                   <Layers className="h-4 w-4" /> {c.navTemplates}
                 </Link>
               </div>
             </div>
             <div className="relative hidden lg:flex justify-center">
-              <div className="absolute inset-0 rounded-full opacity-70 blur-3xl"
-                   style={{ background: "radial-gradient(circle, oklch(0.82 0.14 85 / 0.3), transparent 60%)" }} />
+              <div
+                className="absolute inset-0 rounded-full opacity-70 blur-3xl"
+                style={{
+                  background: "radial-gradient(circle, oklch(0.82 0.14 85 / 0.3), transparent 60%)",
+                }}
+              />
               <div className="relative float-slow">
                 <CardPreview card={demoCards[0]} size="lg" />
               </div>
@@ -673,9 +895,15 @@ function Footer({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy }
   ];
   const learnLinks = [
     { to: "/blog", label: ar ? "المدونة" : "Blog" },
-    { to: "/blog/digital-business-cards-2026-complete-guide", label: ar ? "دليل 2026 الشامل" : "2026 Complete Guide" },
+    {
+      to: "/blog/digital-business-cards-2026-complete-guide",
+      label: ar ? "دليل 2026 الشامل" : "2026 Complete Guide",
+    },
     { to: "/blog/nfc-vs-qr-which-is-better", label: ar ? "NFC مقابل QR" : "NFC vs QR" },
-    { to: "/blog/how-to-create-digital-business-card", label: ar ? "كيف تنشئ بطاقتك" : "How to Create One" },
+    {
+      to: "/blog/how-to-create-digital-business-card",
+      label: ar ? "كيف تنشئ بطاقتك" : "How to Create One",
+    },
     { to: "/blog/ai-ocr-scan-paper-cards", label: ar ? "شرح المسح الذكي" : "AI OCR Explained" },
   ];
   return (
@@ -699,10 +927,16 @@ function Footer({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy }
       </div>
       <div className="border-t border-border/60">
         <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center justify-between gap-3 px-5 py-5 text-[11px] text-muted-foreground lg:flex-row lg:px-10">
-          <span>© {new Date().getFullYear()} {t.brand} · {c.footerTag}</span>
+          <span>
+            © {new Date().getFullYear()} {t.brand} · {c.footerTag}
+          </span>
           <div className="flex items-center gap-4">
-            <a href="/sitemap.xml" className="hover:text-foreground">Sitemap</a>
-            <Link to="/auth" className="hover:text-foreground">{t.signIn}</Link>
+            <a href="/sitemap.xml" className="hover:text-foreground">
+              Sitemap
+            </a>
+            <Link to="/auth" className="hover:text-foreground">
+              {t.signIn}
+            </Link>
           </div>
         </div>
       </div>
@@ -713,11 +947,15 @@ function Footer({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy }
 function FooterCol({ title, items }: { title: string; items: { to: string; label: string }[] }) {
   return (
     <div>
-      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground/80">{title}</p>
+      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground/80">
+        {title}
+      </p>
       <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
         {items.map((i) => (
           <li key={i.to}>
-            <Link to={i.to as any} className="hover:text-foreground transition">{i.label}</Link>
+            <Link to={i.to as any} className="hover:text-foreground transition">
+              {i.label}
+            </Link>
           </li>
         ))}
       </ul>
@@ -725,14 +963,23 @@ function FooterCol({ title, items }: { title: string; items: { to: string; label
   );
 }
 
-
 /* ---------------- Bits ---------------- */
-function SectionHeader({ eyebrow, title, desc }: { eyebrow: string; title: string; desc?: string }) {
+function SectionHeader({
+  eyebrow,
+  title,
+  desc,
+}: {
+  eyebrow: string;
+  title: string;
+  desc?: string;
+}) {
   return (
     <div className="mx-auto max-w-3xl text-center">
       <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-accent">{eyebrow}</p>
       <h2 className="mt-4 text-3xl font-semibold tracking-tight lg:text-5xl">{title}</h2>
-      {desc && <p className="mx-auto mt-4 max-w-xl text-sm text-muted-foreground lg:text-base">{desc}</p>}
+      {desc && (
+        <p className="mx-auto mt-4 max-w-xl text-sm text-muted-foreground lg:text-base">{desc}</p>
+      )}
     </div>
   );
 }
