@@ -75,7 +75,18 @@ function ImageNode({ n, values }: { n: StudioNode; values?: Record<string, strin
     );
   }
 
-  return <img src={src} alt="" draggable={false} className="pointer-events-none h-full w-full select-none object-cover" style={{ borderRadius: s.radius }} />;
+  return (
+    <img
+      src={src}
+      alt=""
+      draggable={false}
+      className="pointer-events-none h-full w-full select-none"
+      style={{
+        borderRadius: s.radius,
+        objectFit: s.imageFit ?? (n.imageSource === "logo" ? "contain" : "cover"),
+      }}
+    />
+  );
 }
 
 export function NodeContent({ n, values }: { n: StudioNode; values?: Record<string, string> }) {

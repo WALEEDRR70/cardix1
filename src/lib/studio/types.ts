@@ -39,7 +39,8 @@ export type NodeStyle = {
   svgColorMap?: Record<string, string> | null;
   /** Drops the full-bleed background rectangle inside the artwork. */
   svgRemoveBg?: boolean;
-
+  /** How a bitmap image fills its box (logos default to "contain"). */
+  imageFit?: "cover" | "contain" | null;
 
 };
 
