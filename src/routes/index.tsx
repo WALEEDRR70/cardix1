@@ -13,12 +13,18 @@ export const Route = createFileRoute("/")({
         return;
       }
       try {
+        sessionStorage.setItem("cardix_entry", "1");
+      } catch {
+        /* ignore */
+      }
+      try {
         const saved = localStorage.getItem("cardix_lang");
         if (isSupportedLocale(saved)) locale = saved;
         else locale = detectBrowserLocale();
       } catch {
         locale = detectBrowserLocale();
       }
+
     }
     throw redirect({ to: "/$lang/", params: { lang: locale }, replace: true });
   },

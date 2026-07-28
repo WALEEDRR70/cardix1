@@ -1,6 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Link } from "@/lib/nav";
 import { useEffect, useRef, useState } from "react";
+
 import { useI18n } from "@/lib/i18n";
 import { LocaleSwitcher } from "@/components/LangToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -139,6 +140,30 @@ function Landing() {
   const { t, lang } = useI18n();
   const c = getLandingCopy(lang);
   const authed = useIsAuthed();
+  const navigate = useNavigate();
+  const bounced = useRef(false);
+
+  // App-entry behaviour: a signed-in user opening the app (installed PWA or a
+  // fresh visit to the site root) lands on the dashboard, not the marketing page.
+  useEffect(() => {
+    if (authed !== true || bounced.current) return;
+    let isEntry = false;
+    try {
+      const standalone =
+        window.matchMedia?.("(display-mode: standalone)").matches ||
+        // iOS Safari
+        (window.navigator as unknown as { standalone?: boolean }).standalone === true;
+      isEntry = standalone || sessionStorage.getItem("cardix_entry") === "1";
+      sessionStorage.removeItem("cardix_entry");
+    } catch {
+      isEntry = false;
+    }
+    if (!isEntry) return;
+    bounced.current = true;
+    navigate({ to: "/$lang/dashboard", params: { lang }, replace: true });
+  }, [authed, lang, navigate]);
+
+
 
   return (
     <div className="relative min-h-[100dvh] overflow-x-clip bg-background text-foreground">
