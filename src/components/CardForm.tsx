@@ -391,7 +391,7 @@ export function CardForm({
             </section>
 
             <div className="grid grid-cols-2 gap-3">
-              <Field label={t.whatsapp} value={data.whatsapp} onChange={(v) => set("whatsapp", v)} />
+              <Field label={t.whatsapp} value={data.whatsapp} onChange={(v) => set("whatsapp", v)} locked={locked?.whatsapp} />
               <Field label={t.website} value={data.website} onChange={(v) => set("website", v)} locked={locked?.website} />
             </div>
             <Field label={t.address} value={data.address} onChange={(v) => set("address", v)} locked={locked?.address} />
