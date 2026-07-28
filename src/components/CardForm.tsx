@@ -47,6 +47,8 @@ export function CardForm({
   slugPrefix = "/c/",
   department,
   templatesSlot,
+  onClearDesign,
+
 
 }: {
   initial: CardFormData;
