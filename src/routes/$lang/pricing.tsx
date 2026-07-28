@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { startSubscription } from "@/lib/billing.functions";
+import { getMyBilling, startSubscription } from "@/lib/billing.functions";
 import { Link } from "@/lib/nav";
 import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } from "@/i18n/config";
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
@@ -75,6 +75,17 @@ function PricingPage() {
   const [interval, setInterval] = useState<"month" | "year">("month");
   const [busy, setBusy] = useState<string | null>(null);
   const start = useServerFn(startSubscription);
+  const loadBilling = useServerFn(getMyBilling);
+
+  const { data: billing } = useQuery({
+    queryKey: ["my-billing-public"],
+    queryFn: async () => {
+      const { data: sess } = await supabase.auth.getSession();
+      if (!sess.session) return null;
+      return (await loadBilling({})) as any;
+    },
+  });
+  const activePlanId: string | null = billing?.active?.plan_id ?? null;
 
   const { data: plans } = useQuery({
     queryKey: ["public-plans"],
@@ -203,7 +214,7 @@ function PricingPage() {
             </ul>
             <button
               onClick={() => subscribe(plan)}
-              disabled={busy === plan.id}
+              disabled={busy === plan.id || activePlanId === plan.id}
               className={
                 "mt-7 flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition disabled:opacity-60 " +
                 (plan.is_featured ? "text-accent-foreground shadow-glow" : "border border-border hover:bg-card/60")
@@ -211,7 +222,10 @@ function PricingPage() {
               style={plan.is_featured ? { background: "var(--gradient-gold)" } : undefined}
             >
               {busy === plan.id ? <Loader2 className="size-4 animate-spin" /> : null}
-              {isAr ? "اشترك عبر PayPal" : "Subscribe with PayPal"} <ArrowRight className="size-4 rtl:rotate-180" />
+              {activePlanId === plan.id
+                ? isAr ? "باقتك الحالية" : "Your current plan"
+                : isAr ? "اشترك عبر PayPal" : "Subscribe with PayPal"}
+              {activePlanId === plan.id ? null : <ArrowRight className="size-4 rtl:rotate-180" />}
             </button>
           </article>
         ))}

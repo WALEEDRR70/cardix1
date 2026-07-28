@@ -6,6 +6,7 @@ import { useTheme } from "@/lib/theme";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { LocaleSwitcher } from "@/components/LangToggle";
 import { InstallAppButton } from "@/components/InstallAppButton";
+import { SubscriptionCard } from "@/components/billing/SubscriptionCard";
 
 import { LogOut, Moon, Sun, User, Sparkles, ChevronRight } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -21,7 +22,7 @@ export const Route = createFileRoute("/$lang/_authenticated/settings")({
 });
 
 function Settings() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const { theme, setTheme } = useTheme();
   const { user } = Route.useRouteContext();
   const nav = useNavigate();
@@ -56,6 +57,8 @@ function Settings() {
             <ThemeChip active={theme === "light"} onClick={() => setTheme("light")} icon={<Sun className="h-4 w-4" />} label={t.light} />
           </div>
         </Section>
+
+        <SubscriptionCard ar={lang === "ar"} />
 
         {/* Language */}
         <Section title={t.language}>

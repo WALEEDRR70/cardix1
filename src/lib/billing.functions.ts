@@ -19,18 +19,14 @@ type ProductRow = {
   currency: string;
 };
 
-async function assertAdmin(ctx: { supabase: any; userId: string }) {
-  const { data } = await ctx.supabase.rpc("has_role", { _user_id: ctx.userId, _role: "admin" });
-  if (!data) throw new Error("Forbidden");
-}
-
-/** Creates (or reuses) a PayPal billing plan for a Cardixn plan row. */
+/** Creates (or recreates) a PayPal billing plan for a Cardixn plan row. */
 export const syncPlanToPaypal = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { planId: string }) => d)
   .handler(async ({ data, context }) => {
+    const { assertAdmin } = await import("@/lib/billing.server");
     await assertAdmin(context as any);
-    const { paypalFetch } = await import("@/lib/paypal.server");
+    const { ensurePlanLinked } = await import("@/lib/paypal.server");
     const { supabase } = context as any;
 
     const { data: plan } = await supabase
@@ -39,41 +35,32 @@ export const syncPlanToPaypal = createServerFn({ method: "POST" })
       .eq("id", data.planId)
       .maybeSingle();
     if (!plan) throw new Error("Plan not found");
-    const p = plan as PlanRow;
 
-    const product = await paypalFetch<{ id: string }>("/v1/catalogs/products", {
-      method: "POST",
-      body: {
-        name: `Cardixn ${p.name_en}`,
-        type: "SERVICE",
-        category: "SOFTWARE",
-      },
-    });
+    const paypalPlanId = await ensurePlanLinked(plan as PlanRow, true);
+    return { paypalPlanId };
+  });
 
-    const created = await paypalFetch<{ id: string }>("/v1/billing/plans", {
-      method: "POST",
-      body: {
-        product_id: product.id,
-        name: `Cardixn ${p.name_en} (${p.interval})`,
-        status: "ACTIVE",
-        billing_cycles: [
-          {
-            frequency: { interval_unit: p.interval === "year" ? "YEAR" : "MONTH", interval_count: 1 },
-            tenure_type: "REGULAR",
-            sequence: 1,
-            total_cycles: 0,
-            pricing_scheme: {
-              fixed_price: { currency_code: p.currency, value: (p.price_cents / 100).toFixed(2) },
-            },
-          },
-        ],
-        payment_preferences: { auto_bill_outstanding: true, setup_fee_failure_action: "CONTINUE", payment_failure_threshold: 2 },
-      },
-    });
+/** Links every active plan that has no PayPal plan yet. */
+export const syncAllPlansToPaypal = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { assertAdmin } = await import("@/lib/billing.server");
+    await assertAdmin(context as any);
+    const { ensurePlanLinked } = await import("@/lib/paypal.server");
+    const { supabase } = context as any;
 
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    await (supabaseAdmin as any).from("billing_plans").update({ paypal_plan_id: created.id }).eq("id", p.id);
-    return { paypalPlanId: created.id };
+    const { data: plans } = await supabase
+      .from("billing_plans")
+      .select("id, code, name_en, interval, price_cents, currency, paypal_plan_id")
+      .eq("is_active", true);
+
+    let linked = 0;
+    for (const plan of (plans ?? []) as PlanRow[]) {
+      if (plan.paypal_plan_id) continue;
+      await ensurePlanLinked(plan);
+      linked += 1;
+    }
+    return { linked, total: (plans ?? []).length };
   });
 
 /** Starts a PayPal subscription checkout, returns the approval URL. */
@@ -81,7 +68,7 @@ export const startSubscription = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { planId: string; origin: string; companyId?: string | null }) => d)
   .handler(async ({ data, context }) => {
-    const { paypalFetch, approveLink } = await import("@/lib/paypal.server");
+    const { paypalFetch, approveLink, ensurePlanLinked } = await import("@/lib/paypal.server");
     const { supabase, userId } = context as any;
 
     const { data: plan } = await supabase
@@ -92,14 +79,15 @@ export const startSubscription = createServerFn({ method: "POST" })
       .maybeSingle();
     if (!plan) throw new Error("Plan not found");
     const p = plan as PlanRow;
-    if (!p.paypal_plan_id) throw new Error("This plan is not linked to PayPal yet");
+    // Self-heal: link the plan to PayPal on first purchase if an admin never did.
+    const paypalPlanId = await ensurePlanLinked(p);
 
     const sub = await paypalFetch<{ id: string; links: Array<{ rel: string; href: string }> }>(
       "/v1/billing/subscriptions",
       {
         method: "POST",
         body: {
-          plan_id: p.paypal_plan_id,
+          plan_id: paypalPlanId,
           custom_id: userId,
           application_context: {
             brand_name: "Cardixn",
@@ -124,6 +112,7 @@ export const startSubscription = createServerFn({ method: "POST" })
 
     return { approveUrl: approveLink(sub.links), subscriptionId: sub.id };
   });
+
 
 /** Starts a one-time PayPal order for a purchasable template. */
 export const startProductCheckout = createServerFn({ method: "POST" })
@@ -199,32 +188,61 @@ export const finalizeCheckout = createServerFn({ method: "POST" })
     }
 
     if (data.subscriptionId) {
-      const sub = await paypalFetch<{ status: string; plan_id: string; billing_info?: { next_billing_time?: string } }>(
-        `/v1/billing/subscriptions/${data.subscriptionId}`,
-      );
-      const { data: order } = await admin
-        .from("billing_orders")
-        .select("plan_id")
-        .eq("paypal_subscription_id", data.subscriptionId)
-        .maybeSingle();
-
-      await admin
-        .from("billing_orders")
-        .update({ status: sub.status === "ACTIVE" ? "paid" : sub.status.toLowerCase(), raw: sub })
-        .eq("paypal_subscription_id", data.subscriptionId);
-
-      await admin.from("billing_subscriptions").upsert(
-        {
-          user_id: userId,
-          plan_id: order?.plan_id ?? null,
-          paypal_subscription_id: data.subscriptionId,
-          status: sub.status.toLowerCase(),
-          current_period_end: sub.billing_info?.next_billing_time ?? null,
-        },
-        { onConflict: "paypal_subscription_id" },
-      );
-      return { kind: "subscription" as const, status: sub.status };
+      const { syncSubscriptionState } = await import("@/lib/paypal.server");
+      const res = await syncSubscriptionState(data.subscriptionId);
+      return { kind: "subscription" as const, status: res.status };
     }
 
     throw new Error("Nothing to finalize");
   });
+
+/** Current user's active subscription (if any) plus their one-time purchases. */
+export const getMyBilling = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabase, userId } = context as any;
+    const { data: subs } = await supabase
+      .from("billing_subscriptions")
+      .select("id, status, current_period_end, paypal_subscription_id, plan_id, created_at")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
+
+    const rows = (subs ?? []) as Array<{ plan_id: string | null; status: string }>;
+    const planIds = [...new Set(rows.map((r) => r.plan_id).filter(Boolean))] as string[];
+    let plans: any[] = [];
+    if (planIds.length) {
+      const { data } = await supabase
+        .from("billing_plans")
+        .select("id, code, name_en, name_ar, interval, price_cents, currency, audience")
+        .in("id", planIds);
+      plans = data ?? [];
+    }
+
+    const merged = rows.map((r: any) => ({ ...r, plan: plans.find((p) => p.id === r.plan_id) ?? null }));
+    const active = merged.find((s: any) => s.status === "active" || s.status === "approval_pending") ?? null;
+    return { subscriptions: merged, active, isPro: !!merged.find((s: any) => s.status === "active") };
+  });
+
+/** Cancels the caller's PayPal subscription. */
+export const cancelMySubscription = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { subscriptionId: string }) => d)
+  .handler(async ({ data, context }) => {
+    const { supabase, userId } = context as any;
+    const { data: row } = await supabase
+      .from("billing_subscriptions")
+      .select("paypal_subscription_id")
+      .eq("user_id", userId)
+      .eq("paypal_subscription_id", data.subscriptionId)
+      .maybeSingle();
+    if (!row) throw new Error("Subscription not found");
+
+    const { paypalFetch, syncSubscriptionState } = await import("@/lib/paypal.server");
+    await paypalFetch(`/v1/billing/subscriptions/${data.subscriptionId}/cancel`, {
+      method: "POST",
+      body: { reason: "Cancelled by the customer from Cardixn" },
+    });
+    const res = await syncSubscriptionState(data.subscriptionId);
+    return { status: res.status };
+  });
+

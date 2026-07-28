@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { Link2, Loader2, Plus, Save, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
-import { syncPlanToPaypal } from "@/lib/billing.functions";
+import { syncAllPlansToPaypal, syncPlanToPaypal } from "@/lib/billing.functions";
 
 export const Route = createFileRoute("/$lang/_authenticated/admin/billing")({
   head: () => ({
@@ -92,6 +92,16 @@ function AdminBilling() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  const syncAllFn = useServerFn(syncAllPlansToPaypal);
+  const syncAll = useMutation({
+    mutationFn: () => syncAllFn({}),
+    onSuccess: (r: any) => {
+      toast.success(`تم ربط ${r.linked} باقة مع PayPal`);
+      qc.invalidateQueries({ queryKey: ["admin-plans"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   if (roleLoading) {
     return (
       <MobileShell topBar={<PageHeader title="الفوترة" back="/dashboard" />}>
@@ -119,7 +129,16 @@ function AdminBilling() {
               <h2 className="text-base font-semibold">باقات الاشتراك</h2>
               <p className="text-xs text-muted-foreground">أسعار الأفراد والشركات — شهري وسنوي.</p>
             </div>
-            <NewPlanButton onDone={() => qc.invalidateQueries({ queryKey: ["admin-plans"] })} />
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => syncAll.mutate()}
+                disabled={syncAll.isPending}
+                className="rounded-full border border-border px-3 py-2 text-xs font-semibold disabled:opacity-60"
+              >
+                {syncAll.isPending ? "جارٍ الربط…" : "ربط كل الباقات مع PayPal"}
+              </button>
+              <NewPlanButton onDone={() => qc.invalidateQueries({ queryKey: ["admin-plans"] })} />
+            </div>
           </header>
           <div className="grid gap-3">
             {(plans.data ?? []).map((p) => (
