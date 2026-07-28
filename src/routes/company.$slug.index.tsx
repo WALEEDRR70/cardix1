@@ -4,6 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { BadgeCheck, Building2, Globe, Mail, Phone, MapPin, ChevronRight } from "lucide-react";
 import { wsDict } from "@/i18n/workspace";
 import { getPreferredLocale } from "@/lib/locale-routing";
+import { publishedServices } from "@/lib/company-services";
+
 
 export const Route = createFileRoute("/company/$slug/")({
   head: ({ params }) => ({
