@@ -31,6 +31,8 @@ import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { toPng } from "html-to-image";
 import QRCode from "qrcode";
 import { localizedPath } from "@/lib/locale-routing";
+import { fetchPublicCardMeta, publicCardHead } from "@/lib/public-card-meta";
+
 
 export const Route = createFileRoute("/c/$slug")({
   loader: async ({ params }) => ({ meta: await fetchPublicCardMeta(params.slug) }),
