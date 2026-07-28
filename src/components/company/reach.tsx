@@ -341,8 +341,10 @@ export function CompanyCardTab({ company, canEdit }: { company: Company; canEdit
   }, [company.socials]);
 
   const [tagline, setTagline] = useState(company.tagline ?? "");
+  const [description, setDescription] = useState(company.description ?? "");
   const [logoUrl, setLogoUrl] = useState(company.logo_url ?? "");
   const [coverUrl, setCoverUrl] = useState(company.cover_url ?? "");
+
   const [socials, setSocials] = useState<Record<string, string>>(initialSocials);
   const [services, setServices] = useState<CompanyService[]>(() => parseServices(company.services));
 
@@ -364,6 +366,7 @@ export function CompanyCardTab({ company, canEdit }: { company: Company; canEdit
             {logoUrl && <img src={logoUrl} alt="" className="mx-auto h-14 w-14 rounded-2xl object-cover" />}
             <p className="mt-3 text-lg font-semibold text-white">{company.name}</p>
             {tagline && <p className="mt-1 text-xs text-white/80">{tagline}</p>}
+            {description && <p className="mt-2 text-[11px] leading-relaxed text-white/70">{description}</p>}
           </div>
         </div>
         <p className="text-[11px] text-muted-foreground">{mediaLabels.hint}</p>
@@ -372,9 +375,22 @@ export function CompanyCardTab({ company, canEdit }: { company: Company; canEdit
           <LogoUpload label={mediaLabels.cover} value={coverUrl} onChange={setCoverUrl} disabled={!canEdit} companyId={company.id} />
         </div>
         <TextField label={t.tagline} value={tagline} onChange={setTagline} disabled={!canEdit} />
+        <div>
+          <label className="mb-1 block px-1 text-xs text-muted-foreground">{w.companyDescription}</label>
+          <textarea
+            rows={4}
+            maxLength={300}
+            value={description}
+            disabled={!canEdit}
+            onChange={(e) => setDescription(e.target.value)}
+            className="w-full resize-none rounded-2xl border border-input bg-card px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring disabled:opacity-60"
+          />
+          <p className="px-1 pt-1 text-[11px] text-muted-foreground">{description.length}/300</p>
+        </div>
         {canEdit && (
-          <SaveBar busy={busy} label={w.save} onSave={() => save({ tagline, logo_url: logoUrl, cover_url: coverUrl }, t.saved)} />
+          <SaveBar busy={busy} label={w.save} onSave={() => save({ tagline, description, logo_url: logoUrl, cover_url: coverUrl }, t.saved)} />
         )}
+
       </Card>
 
       <ServicesEditor
