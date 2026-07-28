@@ -2,7 +2,7 @@
 // fields an employee is allowed to personalise (everything else stays locked).
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Lock, Pencil, Trash2, Wand2, Unlock, Copy, Loader2, Check, X } from "lucide-react";
+import { Lock, Pencil, Trash2, Wand2, Unlock, Copy, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "@/lib/nav";
 import { supabase } from "@/integrations/supabase/client";
@@ -54,18 +54,6 @@ export function DepartmentDesignCard({
   const [fields, setFields] = useState<EditableFieldKey[]>(() => getEditableFields(design.design));
   const [saving, setSaving] = useState(false);
   const [inviting, setInviting] = useState(false);
-  const [renaming, setRenaming] = useState(false);
-  const [draftName, setDraftName] = useState(design.name);
-
-  async function saveName() {
-    const next = draftName.trim();
-    if (!next || next === design.name) { setRenaming(false); return; }
-    const { error } = await supabase.from("company_templates").update({ name: next }).eq("id", design.id);
-    if (error) { toast.error(error.message); return; }
-    setRenaming(false);
-    qc.invalidateQueries({ queryKey: ["department-designs", companyId] });
-    qc.invalidateQueries({ queryKey: ["company-templates", companyId] });
-  }
 
   // One-time invite link that pre-assigns this department + role + design.
   async function copyInviteLink() {
@@ -128,53 +116,20 @@ export function DepartmentDesignCard({
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: design.accent_color }} />
-            {renaming ? (
-              <>
-                <input
-                  autoFocus
-                  value={draftName}
-                  onChange={(e) => setDraftName(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") void saveName();
-                    if (e.key === "Escape") setRenaming(false);
-                  }}
-                  className="min-w-0 flex-1 rounded-lg border border-input bg-card px-2 py-1 text-sm outline-none focus:ring-2 focus:ring-ring"
-                />
-                <button onClick={() => void saveName()} className="text-primary" aria-label={ar ? "حفظ" : "Save"}>
-                  <Check className="h-4 w-4" />
-                </button>
-                <button onClick={() => setRenaming(false)} className="text-muted-foreground" aria-label={ar ? "إلغاء" : "Cancel"}>
-                  <X className="h-4 w-4" />
-                </button>
-              </>
-            ) : (
-              <>
-                <p className="min-w-0 flex-1 truncate text-sm font-medium">{design.name}</p>
-                {canEdit && (
-                  <button
-                    onClick={() => { setDraftName(design.name); setRenaming(true); }}
-                    className="text-muted-foreground hover:text-primary"
-                    aria-label={ar ? "إعادة تسمية" : "Rename"}
-                  >
-                    <Pencil className="h-3.5 w-3.5" />
-                  </button>
-                )}
-                {canEdit && (
-                  <button
-                    onClick={async () => {
-                      await supabase.from("company_templates").delete().eq("id", design.id);
-                      qc.invalidateQueries({ queryKey: ["department-designs", companyId] });
-                    }}
-                    className="text-muted-foreground hover:text-destructive"
-                    aria-label={ar ? "إزالة" : "Remove"}
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </button>
-                )}
-              </>
+            <p className="min-w-0 flex-1 truncate text-sm font-medium">{design.name}</p>
+            {canEdit && (
+              <button
+                onClick={async () => {
+                  await supabase.from("company_templates").delete().eq("id", design.id);
+                  qc.invalidateQueries({ queryKey: ["department-designs", companyId] });
+                }}
+                className="text-muted-foreground hover:text-destructive"
+                aria-label={ar ? "إزالة" : "Remove"}
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+              </button>
             )}
           </div>
-
           {roleLabel && <p className="mt-0.5 text-[11px] text-muted-foreground">{roleLabel}</p>}
           <div className="mt-2 flex flex-wrap gap-1.5">
             <Link
