@@ -12,10 +12,11 @@ import type { NodeType, StudioNode } from "@/lib/studio/types";
 import { cn } from "@/lib/utils";
 import { AiPanel } from "./AiPanel";
 import { SvgBackgrounds } from "./SvgBackgrounds";
+import { SOCIAL_ICONS, SOCIAL_ICON_KEYS } from "@/lib/studio/social-icons";
 
 type Item = {
   key: string; label: string; labelAr: string; icon: React.ElementType;
-  group: "content" | "contact" | "social" | "shapes" | "vector" | "media";
+  group: "content" | "contact" | "social" | "icons" | "shapes" | "vector" | "media";
   make: () => [NodeType, Partial<StudioNode>];
 };
 
@@ -100,6 +101,7 @@ const GROUPS: { key: Item["group"]; en: string; ar: string }[] = [
   { key: "content", en: "Card content", ar: "محتوى البطاقة" },
   { key: "contact", en: "Contact details", ar: "بيانات التواصل" },
   { key: "social", en: "Social & actions", ar: "التواصل والإجراءات" },
+  { key: "icons", en: "Social icons", ar: "أيقونات التواصل" },
   { key: "shapes", en: "Shapes", ar: "الأشكال" },
   { key: "vector", en: "Vector", ar: "متجهات" },
   { key: "media", en: "Media", ar: "الوسائط" },
