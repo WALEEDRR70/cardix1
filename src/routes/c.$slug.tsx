@@ -31,22 +31,23 @@ import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { toPng } from "html-to-image";
 import QRCode from "qrcode";
 import { localizedPath } from "@/lib/locale-routing";
+import { fetchPublicCardMeta, publicCardHead } from "@/lib/public-card-meta";
+
 
 export const Route = createFileRoute("/c/$slug")({
-  head: ({ params }) => ({
-    meta: [
-      { title: `${params.slug} — Cardixn` },
-      { name: "description", content: "A digital business card on Cardixn." },
-      { property: "og:title", content: `${params.slug} — Cardixn` },
-      { property: "og:description", content: "Digital business card by Cardixn." },
-      { property: "og:type", content: "profile" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  loader: async ({ params }) => ({ meta: await fetchPublicCardMeta(params.slug) }),
+  head: ({ params, loaderData }) => {
+    const url = `https://cardixn.com/c/${params.slug}`;
+    return {
+      meta: publicCardHead(loaderData?.meta ?? null, url, params.slug),
+      links: [{ rel: "canonical", href: url }],
+    };
+  },
   component: PublicCard,
   errorComponent: () => <NotFoundView />,
   notFoundComponent: () => <NotFoundView />,
 });
+
 
 function NotFoundView() {
   const { t } = useI18n();
