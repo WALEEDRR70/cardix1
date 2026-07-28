@@ -68,6 +68,9 @@ function Settings() {
           <Row icon={<Sparkles className="h-4 w-4" />} label={t.brand} sub="v1.0" />
         </Section>
 
+        <InstallAppButton />
+
+
         <button
           onClick={signOut}
           className="glass flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-medium text-destructive hover:bg-destructive/10"
