@@ -33,6 +33,7 @@ export function ActionButton({
   label,
   primary,
   accent,
+  iconOnly,
 }: {
   href?: string;
   onClick?: () => void;
@@ -40,25 +41,28 @@ export function ActionButton({
   label: string;
   primary?: boolean;
   accent: string;
+  iconOnly?: boolean;
 }) {
-  const cls = primary
+  const cls = iconOnly
+    ? "grid h-11 w-11 shrink-0 place-items-center rounded-full border border-border/60 bg-card/60 text-foreground transition hover:border-foreground/30"
+    : primary
     ? "flex h-11 items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold transition hover:opacity-90"
     : "flex h-11 items-center justify-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 text-sm font-medium text-foreground transition hover:border-foreground/30";
-  const style = primary ? { background: accent, color: getReadableText(accent) } : undefined;
+  const style = primary && !iconOnly ? { background: accent, color: getReadableText(accent) } : undefined;
   const inner = (
     <>
-      <Icon className="h-4 w-4 shrink-0" style={primary ? undefined : { color: accent }} />
-      <span className="truncate">{label}</span>
+      <Icon className="h-4 w-4 shrink-0" style={primary && !iconOnly ? undefined : { color: accent }} />
+      {!iconOnly && <span className="truncate">{label}</span>}
     </>
   );
   if (href)
     return (
-      <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer" className={cls} style={style} onClick={onClick}>
+      <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer" className={cls} style={style} onClick={onClick} aria-label={iconOnly ? label : undefined}>
         {inner}
       </a>
     );
   return (
-    <button type="button" onClick={onClick} className={cls} style={style}>
+    <button type="button" onClick={onClick} className={cls} style={style} aria-label={iconOnly ? label : undefined}>
       {inner}
     </button>
   );

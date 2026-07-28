@@ -228,11 +228,11 @@ function CompanyPage() {
       </main>
 
       <StickyActionBar>
-        <div className="flex-1">
+        <div className="min-w-0 flex-1">
           <ActionButton icon={UserPlus} label={d.saveContact} primary accent={accent} onClick={() => downloadCompanyVCard(company)} />
         </div>
-        {wa && <ActionButton icon={MessageCircle} label={d.whatsapp} href={wa} accent={accent} />}
-        {tel && <ActionButton icon={Phone} label={d.call} href={tel} accent={accent} />}
+        {wa && <ActionButton icon={MessageCircle} label={d.whatsapp} href={wa} accent={accent} iconOnly />}
+        {tel && <ActionButton icon={Phone} label={d.call} href={tel} accent={accent} iconOnly />}
       </StickyActionBar>
     </div>
   );
