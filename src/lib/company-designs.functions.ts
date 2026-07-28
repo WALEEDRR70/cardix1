@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { resolveJobTitle } from "@/lib/role-titles";
 
 /**
  * Re-applies the company's card designs to every employee card.
