@@ -72,7 +72,7 @@ function Dashboard() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("saved_cards")
-        .select("id, name, title, company, avatar_url, accent_color, template, source_card_id, notes, cards:source_card_id(slug)")
+        .select("id, name, title, company, avatar_url, accent_color, template, source_card_id, notes, cards:source_card_id(slug, design, template, accent_color, avatar_url, name, title, company, phone, email, website, address, department, bio, socials)")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
       if (error) throw error;
