@@ -72,3 +72,102 @@ export function approveLink(links: Array<{ rel: string; href: string }> | undefi
 export function money(cents: number, currency: string) {
   return { currency_code: currency, value: (cents / 100).toFixed(2) };
 }
+
+export type PlanForPaypal = {
+  id: string;
+  name_en: string;
+  interval: string;
+  price_cents: number;
+  currency: string;
+  paypal_plan_id: string | null;
+};
+
+/**
+ * Returns the PayPal billing-plan id for a Cardixn plan, creating the PayPal
+ * product + plan on the fly the first time and persisting the id.
+ */
+export async function ensurePlanLinked(plan: PlanForPaypal, force = false): Promise<string> {
+  if (plan.paypal_plan_id && !force) return plan.paypal_plan_id;
+
+  const product = await paypalFetch<{ id: string }>("/v1/catalogs/products", {
+    method: "POST",
+    body: { name: `Cardixn ${plan.name_en}`, type: "SERVICE", category: "SOFTWARE" },
+  });
+
+  const created = await paypalFetch<{ id: string }>("/v1/billing/plans", {
+    method: "POST",
+    body: {
+      product_id: product.id,
+      name: `Cardixn ${plan.name_en} (${plan.interval})`,
+      status: "ACTIVE",
+      billing_cycles: [
+        {
+          frequency: { interval_unit: plan.interval === "year" ? "YEAR" : "MONTH", interval_count: 1 },
+          tenure_type: "REGULAR",
+          sequence: 1,
+          total_cycles: 0,
+          pricing_scheme: {
+            fixed_price: { currency_code: plan.currency, value: (plan.price_cents / 100).toFixed(2) },
+          },
+        },
+      ],
+      payment_preferences: {
+        auto_bill_outstanding: true,
+        setup_fee_failure_action: "CONTINUE",
+        payment_failure_threshold: 2,
+      },
+    },
+  });
+
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  await (supabaseAdmin as any).from("billing_plans").update({ paypal_plan_id: created.id }).eq("id", plan.id);
+  return created.id;
+}
+
+/** Pulls a subscription from PayPal and mirrors its state into the database. */
+export async function syncSubscriptionState(subscriptionId: string) {
+  const sub = await paypalFetch<{
+    id: string;
+    status: string;
+    plan_id: string;
+    custom_id?: string;
+    billing_info?: { next_billing_time?: string };
+  }>(`/v1/billing/subscriptions/${subscriptionId}`);
+
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const admin = supabaseAdmin as any;
+
+  const { data: order } = await admin
+    .from("billing_orders")
+    .select("plan_id, user_id")
+    .eq("paypal_subscription_id", subscriptionId)
+    .maybeSingle();
+
+  const userId = order?.user_id ?? sub.custom_id ?? null;
+  let planId: string | null = order?.plan_id ?? null;
+  if (!planId && sub.plan_id) {
+    const { data: plan } = await admin.from("billing_plans").select("id").eq("paypal_plan_id", sub.plan_id).maybeSingle();
+    planId = plan?.id ?? null;
+  }
+
+  const status = sub.status.toLowerCase();
+  await admin
+    .from("billing_orders")
+    .update({ status: status === "active" ? "paid" : status, raw: sub })
+    .eq("paypal_subscription_id", subscriptionId);
+
+  if (userId) {
+    await admin.from("billing_subscriptions").upsert(
+      {
+        user_id: userId,
+        plan_id: planId,
+        paypal_subscription_id: subscriptionId,
+        status,
+        current_period_end: sub.billing_info?.next_billing_time ?? null,
+      },
+      { onConflict: "paypal_subscription_id" },
+    );
+  }
+
+  return { status: sub.status, userId, planId };
+}
