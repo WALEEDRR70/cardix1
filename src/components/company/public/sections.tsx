@@ -108,7 +108,7 @@ export function CompanyHero({
         {company.cover_url ? (
           <img src={company.cover_url} alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
         ) : (
-          <div className="h-full w-full" style={{ background: `linear-gradient(135deg, ${accent}55, transparent 70%)` }} />
+          <div className="h-full w-full" style={{ background: `linear-gradient(135deg, ${accent}, ${accent}33 60%, transparent)` }} />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/25 to-transparent" />
       </div>
