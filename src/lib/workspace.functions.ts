@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { resolveJobTitle } from "@/lib/role-titles";
 
 /** Look up an invitation by its token (public — only non-sensitive fields). */
 export const getInvitation = createServerFn({ method: "GET" })
@@ -89,7 +90,7 @@ export const acceptInvitation = createServerFn({ method: "POST" })
           .maybeSingle()
       : { data: null };
     const departmentName = dept?.name ?? null;
-    const jobTitle = invite.job_title ?? tpl?.target_role ?? tpl?.name ?? dept?.name ?? null;
+    const jobTitle = resolveJobTitle(invite.job_title, departmentName, invite.role);
 
     // The company owner must never be downgraded by accepting an invite link.
     const isOwner = company.owner_id === context.userId;

@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { resolveJobTitle } from "@/lib/role-titles";
 
 /**
  * Re-applies the company's card designs to every employee card.
@@ -46,7 +47,7 @@ export const syncCompanyCardDesigns = createServerFn({ method: "POST" })
         is_verified: company?.is_verified ?? false,
         updated_at: new Date().toISOString(),
       };
-      const title = m.job_title || tpl.target_role || tpl.name || department;
+      const title = resolveJobTitle(m.job_title, department, tpl.target_role);
       if (title) patch.title = title;
       if (tpl.design) patch.design = tpl.design;
       const { error } = await supabaseAdmin
