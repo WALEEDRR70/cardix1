@@ -75,6 +75,8 @@ type CardRow = {
   is_published: boolean;
   socials: Record<string, string> | null;
   design?: unknown;
+  company_id?: string | null;
+  logo_url?: string | null;
 };
 
 function PublicCard() {
@@ -102,7 +104,7 @@ export function PublicCardView({ slug }: { slug: string }) {
       const { data, error } = await supabase
         .from("cards")
         .select(
-          "id, slug, name, title, company, bio, phone, whatsapp, email, website, address, avatar_url, cover_url, accent_color, template, socials, design, is_published, is_active, is_verified, card_type, company_id, department_id, department, extension, working_hours, languages",
+          "id, slug, name, title, company, bio, phone, whatsapp, email, website, address, avatar_url, cover_url, accent_color, template, socials, design, is_published, is_active, is_verified, card_type, company_id, department_id, department, extension, working_hours, languages, companies:company_id(logo_url, name)",
         )
         .eq("slug", slug)
         .eq("is_published", true)
@@ -110,7 +112,10 @@ export function PublicCardView({ slug }: { slug: string }) {
         .maybeSingle();
       if (error) throw error;
       if (!data) throw notFound();
-      return data as CardRow;
+      const row = data as Record<string, unknown>;
+      const co = row.companies as { logo_url: string | null; name: string | null } | null;
+      // Flatten the company logo so Studio designs can resolve {{Logo}}.
+      return { ...row, logo_url: co?.logo_url ?? null } as CardRow;
     },
   });
 
