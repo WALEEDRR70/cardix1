@@ -11,9 +11,11 @@ import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } fro
 import { useAccount } from "@/lib/account";
 import { audienceLabel } from "@/components/CommunityTemplates";
 import { UseTemplateDialog } from "@/components/UseTemplateDialog";
+import { FavoriteTemplateButton } from "@/components/FavoriteTemplateButton";
 import {
   applyTemplateToCard,
   deleteTemplate,
+  listFavoriteTemplates,
   listMyTemplates,
   listPublicTemplates,
   useTemplate,
@@ -62,7 +64,7 @@ function TemplatesGallery() {
   const [search, setSearch] = useState("");
   const [uid, setUid] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
-  const [tab, setTab] = useState<"all" | "mine">("all");
+  const [tab, setTab] = useState<"all" | "mine" | "saved">("all");
   const [audience, setAudience] = useState<TemplateAudience | "all">("all");
   const [pending, setPending] = useState<DesignTemplate | null>(null);
   const { data: account } = useAccount();
@@ -77,8 +79,18 @@ function TemplatesGallery() {
   }, []);
 
   const { data: templates = [], isLoading } = useQuery({
-    queryKey: tab === "mine" ? ["my-templates", uid] : ["public-templates", search, audience],
-    queryFn: () => (tab === "mine" ? listMyTemplates(uid!) : listPublicTemplates(search, audience)),
+    queryKey:
+      tab === "mine"
+        ? ["my-templates", uid]
+        : tab === "saved"
+          ? ["favorite-templates", uid]
+          : ["public-templates", search, audience],
+    queryFn: () =>
+      tab === "mine"
+        ? listMyTemplates(uid!)
+        : tab === "saved"
+          ? listFavoriteTemplates(uid!)
+          : listPublicTemplates(search, audience),
     enabled: tab === "all" || !!uid,
   });
 
@@ -177,7 +189,7 @@ function TemplatesGallery() {
 
         {uid && (
           <div className="mx-auto mb-4 flex w-fit items-center gap-1 rounded-full border border-border/60 p-1">
-            {(["all", "mine"] as const).map((k) => (
+            {(["all", "saved", "mine"] as const).map((k) => (
               <button
                 key={k}
                 onClick={() => setTab(k)}
@@ -186,13 +198,17 @@ function TemplatesGallery() {
                   (tab === k ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground")
                 }
               >
-                {k === "all" ? (ar ? "كل القوالب" : "All templates") : ar ? "قوالبي" : "My templates"}
+                {k === "all"
+                  ? ar ? "كل القوالب" : "All templates"
+                  : k === "saved"
+                    ? ar ? "المفضلة" : "Favourites"
+                    : ar ? "قوالبي" : "My templates"}
               </button>
             ))}
           </div>
         )}
 
-        <div className={tab === "mine" ? "hidden" : ""}>
+        <div className={tab === "all" ? "" : "hidden"}>
           <div className="mx-auto mb-4 flex max-w-md items-center gap-2 rounded-full border border-border/60 px-4 py-2">
             <Search className="h-4 w-4 text-muted-foreground" />
             <input
@@ -235,7 +251,11 @@ function TemplatesGallery() {
           </div>
         ) : templates.length === 0 ? (
           <p className="py-20 text-center text-sm text-muted-foreground">
-            {tab === "mine"
+            {tab === "saved"
+              ? ar
+                ? "لم تحفظ أي قالب بعد — اضغط على القلب في أي قالب لحفظه هنا."
+                : "No saved templates yet — tap the heart on any template to keep it here."
+              : tab === "mine"
               ? ar
                 ? "لم تنشر أي قالب بعد — افتح تصميمك في الاستوديو واضغط \"نشر كقالب\"."
                 : "You haven't published a template yet — open a design in the Studio and hit \"Publish as template\"."
@@ -287,6 +307,7 @@ function TemplatesGallery() {
                       {busyId === tpl.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Wand2 className="h-3.5 w-3.5" />}
                       {ar ? "استخدام القالب" : "Use template"}
                     </button>
+                    <FavoriteTemplateButton templateId={tpl.id} userId={uid} ar={ar} />
                     {uid === tpl.author_id && (
                       <button
                         onClick={() => onDelete(tpl)}

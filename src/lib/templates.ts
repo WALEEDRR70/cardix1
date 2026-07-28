@@ -194,3 +194,46 @@ export async function applyTemplateToCard(tpl: DesignTemplate, cardId: string): 
   }
   return cardId;
 }
+
+/* ------------------------------ favourites ------------------------------- */
+
+/** Ids of templates the signed-in user saved to their favourites. */
+export async function listFavoriteTemplateIds(userId: string): Promise<string[]> {
+  const { data, error } = await supabase
+    .from("template_favorites")
+    .select("template_id")
+    .eq("user_id", userId);
+  if (error) throw error;
+  return (data ?? []).map((r) => r.template_id as string);
+}
+
+/** Full template rows the user saved, newest first. */
+export async function listFavoriteTemplates(userId: string): Promise<DesignTemplate[]> {
+  const { data, error } = await supabase
+    .from("template_favorites")
+    .select("created_at, design_templates(*)")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? [])
+    .map((r) => (r as { design_templates: DesignTemplate | null }).design_templates)
+    .filter((t): t is DesignTemplate => !!t);
+}
+
+/** Adds or removes a template from the user's favourites. Returns the new state. */
+export async function toggleFavoriteTemplate(userId: string, templateId: string, next: boolean): Promise<boolean> {
+  if (next) {
+    const { error } = await supabase
+      .from("template_favorites")
+      .insert({ user_id: userId, template_id: templateId });
+    if (error && error.code !== "23505") throw error;
+    return true;
+  }
+  const { error } = await supabase
+    .from("template_favorites")
+    .delete()
+    .eq("user_id", userId)
+    .eq("template_id", templateId);
+  if (error) throw error;
+  return false;
+}
