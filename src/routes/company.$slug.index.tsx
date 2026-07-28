@@ -7,6 +7,7 @@ import { Building2, Calendar, Globe, Mail, MapPin, MessageCircle, Phone, Users, 
 import { getPreferredLocale } from "@/lib/locale-routing";
 import { publishedServices } from "@/lib/company-services";
 import { publicDict } from "@/components/company/public/strings";
+import { wsDict } from "@/i18n/workspace";
 import { downloadCompanyVCard, mailHref, siteHref, telHref, waHref } from "@/components/company/public/contact";
 import {
   ActionButton,
@@ -44,6 +45,7 @@ function CompanyPage() {
   const { slug } = Route.useParams();
   const locale = getPreferredLocale();
   const d = publicDict(locale === "ar" ? "ar" : "en");
+  const w = wsDict(locale);
   const [allServices, setAllServices] = useState(false);
   const [fullTeam, setFullTeam] = useState(false);
 
@@ -69,8 +71,8 @@ function CompanyPage() {
 
   const services = useMemo(() => publishedServices(data?.company.services), [data]);
 
-  if (isLoading) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">…</div>;
-  if (!data) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">404</div>;
+  if (isLoading) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">{w.loading}</div>;
+  if (!data) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">{w.companyNotFound}</div>;
 
   const { company, branches, departments, cards } = data;
   const accent = company.brand_primary;
