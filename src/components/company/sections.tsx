@@ -1212,8 +1212,10 @@ function MemberItem({
     website: card?.website ?? "",
     address: card?.address ?? "",
     bio: card?.bio ?? "",
+    avatar_url: card?.avatar_url ?? "",
     socials: { ...(card?.socials ?? {}) } as Record<string, string>,
   }));
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     setF({
@@ -1224,9 +1226,29 @@ function MemberItem({
       website: card?.website ?? "",
       address: card?.address ?? "",
       bio: card?.bio ?? "",
+      avatar_url: card?.avatar_url ?? "",
       socials: { ...(card?.socials ?? {}) } as Record<string, string>,
     });
-  }, [card?.id, card?.name, card?.phone, card?.whatsapp, card?.email, card?.website, card?.address, card?.bio, card?.socials]);
+  }, [card?.id, card?.avatar_url, card?.name, card?.phone, card?.whatsapp, card?.email, card?.website, card?.address, card?.bio, card?.socials]);
+
+  async function uploadPhoto(file: File) {
+    setUploading(true);
+    try {
+      const prepared = (await prepareImageFile(file)).file;
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth.user) throw new Error("no session");
+      const ext = prepared.name.split(".").pop() || "png";
+      const path = `${auth.user.id}/${Date.now()}.${ext}`;
+      const { error } = await supabase.storage.from("avatars").upload(path, prepared, { upsert: true });
+      if (error) throw error;
+      const { data: signed } = await supabase.storage.from("avatars").createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
+      if (signed?.signedUrl) setF((p) => ({ ...p, avatar_url: signed.signedUrl }));
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  }
 
   async function save() {
     if (!card) return;
@@ -1242,6 +1264,7 @@ function MemberItem({
         website: f.website.trim() || null,
         address: f.address.trim() || null,
         bio: f.bio.trim() || null,
+        avatar_url: f.avatar_url.trim() || null,
         socials,
       })
       .eq("id", card.id);
@@ -1285,6 +1308,36 @@ function MemberItem({
             </p>
           ) : (
             <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                {f.avatar_url ? (
+                  <img src={f.avatar_url} alt={f.name || displayName} className="h-16 w-16 rounded-2xl object-cover" />
+                ) : (
+                  <span className="grid h-16 w-16 place-items-center rounded-2xl bg-secondary text-muted-foreground">
+                    <Users className="h-5 w-5" />
+                  </span>
+                )}
+                {canEdit && (
+                  <div className="flex flex-wrap items-center gap-2">
+                    <label className="cursor-pointer rounded-xl bg-secondary px-3 py-1.5 text-xs font-medium">
+                      <Upload className="me-1 inline h-3.5 w-3.5" />
+                      {uploading ? (ar ? "جارٍ الرفع…" : "Uploading…") : (ar ? "تغيير الصورة" : "Change photo")}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        disabled={uploading}
+                        onChange={(e) => { const file = e.target.files?.[0]; if (file) uploadPhoto(file); e.target.value = ""; }}
+                      />
+                    </label>
+                    {f.avatar_url && (
+                      <button type="button" onClick={() => setF((p) => ({ ...p, avatar_url: "" }))} className="rounded-xl bg-secondary px-3 py-1.5 text-xs text-destructive">
+                        {ar ? "إزالة" : "Remove"}
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+
               <div className="grid gap-3 sm:grid-cols-2">
                 <TextField label={ar ? "الاسم" : "Name"} value={f.name} onChange={(v) => setF({ ...f, name: v })} disabled={!canEdit} />
                 <TextField label={ar ? "الجوال" : "Phone"} value={f.phone} onChange={(v) => setF({ ...f, phone: v })} disabled={!canEdit} />
