@@ -21,6 +21,8 @@ export interface CardData {
   /** Custom Studio design — takes precedence over the classic template. */
   design?: unknown;
   socials?: Record<string, string> | null | unknown;
+  /** Department name (company cards) — used by {{Department}} in Studio designs. */
+  department?: string | null;
 }
 
 export const TEMPLATES = [
