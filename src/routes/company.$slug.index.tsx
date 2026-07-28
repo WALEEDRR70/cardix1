@@ -47,7 +47,9 @@ function CompanyPage() {
   if (!data) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">{w.companyNotFound}</div>;
 
   const { company, branches, departments, cards } = data;
+  const services = publishedServices(company.services);
   const accent = company.brand_primary;
+
 
   return (
     <main className="mx-auto min-h-[100dvh] w-full max-w-3xl px-5 pb-20">
