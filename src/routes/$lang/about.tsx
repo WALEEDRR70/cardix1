@@ -3,6 +3,7 @@ import { Link } from "@/lib/nav";
 import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } from "@/i18n/config";
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { ArrowRight, Leaf, Sparkles, ShieldCheck, Globe2 } from "lucide-react";
+import { GetStartedCards } from "@/components/marketing/GetStartedCards";
 
 export const Route = createFileRoute("/$lang/about")({
   head: ({ params }) => {
@@ -113,6 +114,7 @@ function AboutPage() {
           </div>
         </div>
       </section>
+      <GetStartedCards lang={locale} />
     </MarketingLayout>
   );
 }

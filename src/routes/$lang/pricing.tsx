@@ -9,6 +9,7 @@ import { Link } from "@/lib/nav";
 import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } from "@/i18n/config";
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
+import { GetStartedCards } from "@/components/marketing/GetStartedCards";
 
 export const Route = createFileRoute("/$lang/pricing")({
   head: ({ params }) => {
@@ -234,6 +235,7 @@ function PricingPage() {
           </div>
         </div>
       </section>
+      <GetStartedCards lang={locale} />
     </MarketingLayout>
   );
 }
