@@ -72,7 +72,7 @@ export function UseTemplateDialog({
                     type="button"
                     onClick={() => setPicked(c.id)}
                     className={
-                      "relative w-[150px] shrink-0 rounded-2xl border p-2 text-start transition sm:w-[190px] " +
+                      "relative w-[140px] shrink-0 snap-start rounded-2xl border p-2 text-start transition sm:w-[190px] " +
                       (active ? "border-accent bg-accent/10" : "border-border/60 hover:border-accent/50")
                     }
                   >
