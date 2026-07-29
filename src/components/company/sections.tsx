@@ -267,7 +267,7 @@ export function LogoUpload({ label, value, onChange, disabled, companyId }: {
     try {
       const prepared = await prepareImageFile(input);
       file = prepared.file;
-      if (prepared.converted) toast.info("تم تحسين حجم/صيغة الشعار تلقائيًا");
+      if (prepared.converted) toast.info(txPick("Logo size/format was optimized automatically", "تم تحسين حجم/صيغة الشعار تلقائيًا"));
     } catch {
       setBusy(false);
       toast.error(txPick("Unsupported image format — use PNG, JPG or SVG", "صيغة الصورة غير مدعومة — استخدم PNG أو JPG أو SVG"));
@@ -277,13 +277,13 @@ export function LogoUpload({ label, value, onChange, disabled, companyId }: {
     const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
     if (error) { setBusy(false); toast.error(txErr(error)); return; }
     const { data } = await supabase.storage.from("avatars").createSignedUrl(path, 60 * 60 * 24 * 365 * 5);
-    if (!data?.signedUrl) { setBusy(false); toast.error("تعذر إنشاء رابط الشعار"); return; }
+    if (!data?.signedUrl) { setBusy(false); toast.error(txPick("Could not create the logo link", "تعذر إنشاء رابط الشعار")); return; }
     // Automatic display check — confirm the stored URL really renders.
     const ok = await canDisplayImage(data.signedUrl);
     setBusy(false);
-    if (!ok) { toast.error("تعذر عرض الشعار بعد الرفع، جرّب صورة أخرى"); return; }
+    if (!ok) { toast.error(txPick("The logo could not be displayed after upload, try another image", "تعذر عرض الشعار بعد الرفع، جرّب صورة أخرى")); return; }
     onChange(data.signedUrl);
-    toast.success("تم رفع الشعار والتحقق من ظهوره");
+    toast.success(txPick("Logo uploaded and verified", "تم رفع الشعار والتحقق من ظهوره"));
   }
   return (
     <div>
@@ -450,7 +450,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
   async function importCsv(file: File) {
     const text = await file.text();
     const rows = parseEmployeeCsv(text);
-    if (rows.length === 0) { toast.error("CSV"); return; }
+    if (rows.length === 0) { toast.error(txPick("No valid rows found in the CSV file", "لا توجد صفوف صالحة في ملف CSV")); return; }
     setBusy(true);
     let ok = 0;
     for (const r of rows) {
