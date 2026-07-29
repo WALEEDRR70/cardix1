@@ -41,15 +41,16 @@ export function UseTemplateDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[85vh] w-[calc(100vw-2rem)] max-w-2xl overflow-y-auto overflow-x-hidden p-4 sm:p-6">
-        <DialogHeader>
+      <DialogContent className="grid max-h-[85vh] w-[calc(100vw-2rem)] max-w-2xl grid-cols-[minmax(0,1fr)] overflow-y-auto overflow-x-hidden rounded-2xl p-4 sm:p-6">
+        <DialogHeader className="min-w-0 pe-8">
           <DialogTitle>{tx("Use template")}</DialogTitle>
           <DialogDescription>
             {tx("Pick an existing card to restyle, or create a new card with this design.")}
           </DialogDescription>
         </DialogHeader>
 
-        <div>
+        <div className="min-w-0">
+
           <p className="mb-2 text-xs font-semibold text-muted-foreground">
             {tx("My cards")}
           </p>
