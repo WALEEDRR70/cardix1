@@ -21,6 +21,8 @@ import {
   BadgeCheck,
   MoreHorizontal,
   UserPlus,
+  Pencil,
+
 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { useQuery } from "@tanstack/react-query";
@@ -475,13 +477,25 @@ export function PublicCardView({ slug }: { slug: string }) {
         )}
 
 
-        <button
-          className="glass grid h-11 w-11 place-items-center rounded-full text-muted-foreground transition hover:text-foreground"
-          aria-label={t.more}
-          onClick={nativeShare}
-        >
-          <MoreHorizontal className="h-4 w-4" />
-        </button>
+        {isOwner ? (
+          <Link
+            to="/cards/$id"
+            params={{ id: card.id }}
+            className="glass grid h-11 w-11 place-items-center rounded-full text-muted-foreground transition hover:text-foreground"
+            aria-label={t.editCard}
+          >
+            <Pencil className="h-4 w-4" />
+          </Link>
+        ) : (
+          <button
+            className="glass grid h-11 w-11 place-items-center rounded-full text-muted-foreground transition hover:text-foreground"
+            aria-label={t.more}
+            onClick={nativeShare}
+          >
+            <MoreHorizontal className="h-4 w-4" />
+          </button>
+        )}
+
       </header>
 
       {/* Main */}
