@@ -185,10 +185,11 @@ export function CardForm({
   return (
     <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-10 lg:items-start">
       <div className="space-y-6 lg:order-1">
-        {/* Live preview (mobile: inline top) */}
-        <div className="flex justify-center lg:hidden">
+        {/* Live preview (mobile: sticks to the top while filling the fields) */}
+        <div className="sticky top-0 z-30 -mx-5 flex justify-center border-b border-border/40 bg-background/85 px-5 py-3 backdrop-blur-xl lg:hidden">
           <CardPreview card={{ ...data, department, design: previewDesign }} size="md" />
         </div>
+
 
 
 
