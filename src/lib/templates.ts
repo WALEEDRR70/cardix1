@@ -121,20 +121,34 @@ export async function useTemplate(
   const isCompany = target.kind === "company";
   const slug = isCompany ? `${target.companySlug}-${base}-${rand}` : `tpl-${base}-${rand}`;
 
+  // Prefill the new card with the user's main card so the details form is not empty.
+  const main = await getMainCard(uid);
+
   const { data, error } = await supabase
     .from("cards")
     .insert({
       user_id: uid,
       company_id: isCompany ? target.companyId : null,
-      name: isCompany ? target.companyName : tpl.title,
+      name: (isCompany ? target.companyName : main?.name) || tpl.title,
       slug,
       card_type: isCompany ? "company" : "personal",
       accent_color: (isCompany ? target.accent : null) || design.background?.color || "#7c34ff",
       design: design as never,
+      title: main?.title ?? null,
+      company: main?.company ?? null,
+      bio: main?.bio ?? null,
+      phone: main?.phone ?? null,
+      whatsapp: main?.whatsapp ?? null,
+      email: main?.email ?? null,
+      website: main?.website ?? null,
+      address: main?.address ?? null,
+      avatar_url: main?.avatar_url ?? null,
+      socials: (main?.socials ?? {}) as never,
     })
     .select("id")
     .single();
   if (error) throw error;
+
 
   try {
     const { bumpTemplateUse } = await import("@/lib/templates.functions");
