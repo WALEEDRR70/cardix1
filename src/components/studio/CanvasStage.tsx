@@ -1,4 +1,5 @@
 // The visual canvas: renders the document and handles pan / zoom / marquee / drag / resize / rotate / snap.
+import type { ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { useStudio } from "@/lib/studio/store";
@@ -44,66 +45,89 @@ function ImageNode({ n, values }: { n: StudioNode; values?: Record<string, strin
 
   const svg = isSvgSrc(src) && s.svgInline !== false ? inline : null;
 
+  // Clip/paint wrapper: corner radius, fill and border apply to the frame,
+  // so they work even when the image itself has transparent corners.
+  const Frame = ({ children }: { children: ReactNode }) => (
+    <div
+      className="h-full w-full"
+      style={{
+        borderRadius: s.radius,
+        overflow: "hidden",
+        background: s.gradient ?? (s.fill && s.fill !== "transparent" ? s.fill : undefined),
+        border: s.borderWidth ? `${s.borderWidth}px solid ${s.borderColor ?? "#ffffff"}` : undefined,
+        padding: s.padding,
+      }}
+    >
+      {children}
+    </div>
+  );
+
+
   if (!src) {
     if (n.imageSource === "employee") {
       return (
-        <img
-          src={employeePlaceholder.url}
-          alt=""
-          draggable={false}
-          className="pointer-events-none h-full w-full select-none object-cover"
-          style={{ borderRadius: s.radius }}
-        />
-
+        <Frame>
+          <img
+            src={employeePlaceholder.url}
+            alt=""
+            draggable={false}
+            className="pointer-events-none h-full w-full select-none object-cover"
+          />
+        </Frame>
       );
     }
     return (
-      <div
-        className="grid h-full w-full place-items-center border border-dashed text-[10px] uppercase tracking-widest"
-        style={{ borderRadius: s.radius, borderColor: "#ffffff40", color: "#ffffff80" }}
-      >
-        {n.imageSource === "logo" ? "logo" : "image"}
-      </div>
+      <Frame>
+        <div
+          className="grid h-full w-full place-items-center border border-dashed text-[10px] uppercase tracking-widest"
+          style={{ borderRadius: s.radius, borderColor: "#ffffff40", color: "#ffffff80" }}
+        >
+          {n.imageSource === "logo" ? "logo" : "image"}
+        </div>
+      </Frame>
     );
   }
 
   if (svg) {
     return (
-      <div
-        className="h-full w-full [&>svg]:h-full [&>svg]:w-full"
-        style={{ borderRadius: s.radius, overflow: "hidden" }}
-        dangerouslySetInnerHTML={{ __html: svg }}
-      />
+      <Frame>
+        <div
+          className="h-full w-full [&>svg]:h-full [&>svg]:w-full"
+          dangerouslySetInnerHTML={{ __html: svg }}
+        />
+      </Frame>
     );
   }
 
   return (
-    <img
-      key={src}
-      src={src}
-      alt=""
-      draggable={false}
-      loading="eager"
-      decoding="async"
-      referrerPolicy="no-referrer"
-      className="pointer-events-none h-full w-full select-none"
-      style={{
-        borderRadius: s.radius,
-        objectFit: s.imageFit ?? (n.imageSource === "logo" ? "contain" : "cover"),
-      }}
-      onError={(e) => {
-        const img = e.currentTarget;
-        // Transient/CDN failures: retry once with a cache-busting param before hiding.
-        if (img.dataset.retried !== "1") {
-          img.dataset.retried = "1";
-          img.src = src.includes("?") ? `${src}&_r=1` : `${src}?_r=1`;
-          return;
-        }
-        img.style.visibility = "hidden";
-      }}
-    />
+    <Frame>
+      <img
+        key={src}
+        src={src}
+        alt=""
+        draggable={false}
+        loading="eager"
+        decoding="async"
+        referrerPolicy="no-referrer"
+        className="pointer-events-none h-full w-full select-none"
+        style={{
+          objectFit: s.imageFit ?? (n.imageSource === "logo" ? "contain" : "cover"),
+        }}
+        onError={(e) => {
+          const img = e.currentTarget;
+          // Transient/CDN failures: retry once with a cache-busting param before hiding.
+          if (img.dataset.retried !== "1") {
+            img.dataset.retried = "1";
+            img.src = src.includes("?") ? `${src}&_r=1` : `${src}?_r=1`;
+            return;
+          }
+          img.style.visibility = "hidden";
+        }}
+      />
+    </Frame>
   );
 }
+
 
 
 export function NodeContent({ n, values }: { n: StudioNode; values?: Record<string, string> }) {
