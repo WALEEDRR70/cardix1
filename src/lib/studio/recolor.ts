@@ -94,3 +94,35 @@ export function recolorDesign(doc: StudioDoc, fromAccent: string, toAccent: stri
     nodes: doc.nodes.map((n) => recolorNode(n, from, to)),
   };
 }
+
+/**
+ * Best guess of a design's current accent: the most frequently used saturated color.
+ * Falls back to a neutral blue when the design has no colored paint.
+ */
+export function docAccent(doc: StudioDoc): string {
+  const counts = new Map<string, number>();
+  const scan = (value: string | null | undefined) => {
+    if (!value) return;
+    for (const c of value.match(/#[0-9a-fA-F]{6}\b/g) ?? []) {
+      const [r, g, b] = rgb(hex(c));
+      const { s, l } = rgbToHsl(r, g, b);
+      if (s < 0.18 || l < 0.08 || l > 0.94) continue;
+      const k = c.toLowerCase();
+      counts.set(k, (counts.get(k) ?? 0) + 1);
+    }
+  };
+  const walk = (n: StudioNode) => {
+    for (const k of PAINT_KEYS) {
+      const v = n.style[k];
+      if (typeof v === "string") scan(v);
+    }
+    if (n.style.svgColorMap) Object.values(n.style.svgColorMap).forEach((v) => scan(v));
+    n.children?.forEach(walk);
+  };
+  scan(doc.background.color);
+  scan(doc.background.gradient);
+  doc.nodes.forEach(walk);
+  let best = "", top = 0;
+  for (const [c, n] of counts) if (n > top) { top = n; best = c; }
+  return best || "#3b82f6";
+}

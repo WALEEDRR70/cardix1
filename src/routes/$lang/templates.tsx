@@ -29,6 +29,8 @@ import {
   type TemplateTarget,
 } from "@/lib/templates";
 import type { StudioDoc } from "@/lib/studio/types";
+import { recolorDesign, docAccent } from "@/lib/studio/recolor";
+import { TemplateColorSwatches } from "@/components/TemplateColorSwatches";
 
 export const Route = createFileRoute("/$lang/templates")({
   head: ({ params }) => {
@@ -76,6 +78,8 @@ function TemplatesGallery() {
   const [tab, setTab] = useState<"all" | "builtin" | "mine" | "saved">("all");
   const [audience, setAudience] = useState<TemplateAudience | "all">("all");
   const [pending, setPending] = useState<DesignTemplate | null>(null);
+  /** Per-template accent chosen from the colour dots (template id → hex). */
+  const [tint, setTint] = useState<Record<string, string>>({});
   const { data: account } = useAccount();
   /** Platform owner/admin may fix any published template in place. */
   const isAdmin = useIsAdmin(uid);
@@ -147,12 +151,19 @@ function TemplatesGallery() {
     };
   }
 
+  /** The template design with the picked accent applied (or the original design). */
+  function tintedDoc(tpl: DesignTemplate): StudioDoc {
+    const doc = tpl.design as unknown as StudioDoc;
+    const c = tint[tpl.id];
+    return c ? recolorDesign(doc, docAccent(doc), c) : doc;
+  }
+
   function onUse(tpl: DesignTemplate) {
     if (!uid) {
       navigate({ to: "/auth" });
       return;
     }
-    setPending(tpl);
+    setPending({ ...tpl, design: tintedDoc(tpl) as unknown as DesignTemplate["design"] });
   }
 
   /** Creates a brand-new card from the pending template. */
@@ -394,12 +405,20 @@ function TemplatesGallery() {
                   className="group overflow-hidden rounded-3xl border border-border/60 bg-card/50 p-4 transition hover:border-accent/60"
                 >
                   <div className="grid place-items-center overflow-hidden rounded-2xl bg-muted/20 p-3">
-                    <StaticCardPreview
-                      doc={tpl.design as unknown as StudioDoc}
-                      width={240}
-                      values={previewValues}
-                    />
+                    <StaticCardPreview doc={tintedDoc(tpl)} width={240} values={previewValues} />
                   </div>
+                  <TemplateColorSwatches
+                    ar={ar}
+                    value={tint[tpl.id] ?? null}
+                    onChange={(c) =>
+                      setTint((prev) => {
+                        const next = { ...prev };
+                        if (c) next[tpl.id] = c;
+                        else delete next[tpl.id];
+                        return next;
+                      })
+                    }
+                  />
                   <div className="mt-4">
                     <h2 className="flex items-center gap-2 truncate text-sm font-semibold">
                       <span className="truncate">{tpl.title}</span>
