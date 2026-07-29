@@ -16,6 +16,7 @@ import {
 import { TEMPLATE_META, CardPreview } from "@/components/CardPreview";
 import { logCompanyAction } from "@/components/company/audit";
 import { prepareImageFile, canDisplayImage } from "@/lib/image-prep";
+import { tx } from "@/lib/tx";
 
 /* ---------------------------- shared bits ---------------------------- */
 
@@ -532,7 +533,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
     void logCompanyAction(company.id, userId, "member.department", "company_members", { label: departmentId || "none" });
     qc.invalidateQueries({ queryKey: ["company-members", company.id] });
     qc.invalidateQueries({ queryKey: ["company-member-cards", company.id] });
-    toast.success(ar ? "تم نقل الموظف وتحديث تصميم بطاقته" : "Employee moved and card design updated");
+    toast.success(tx("Employee moved and card design updated"));
   }
 
 
@@ -560,11 +561,9 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
       {canEdit && (
         <Card className="space-y-3">
           <div>
-            <p className="text-sm font-semibold">{ar ? "رابط دعوة سريع" : "Quick invite link"}</p>
+            <p className="text-sm font-semibold">{tx("Quick invite link")}</p>
             <p className="text-xs text-muted-foreground">
-              {ar
-                ? "شارك الرابط مع الموظف — يعمل مرة واحدة فقط، ويتجدد تلقائيًا بعد كل نسخ."
-                : "Share this link with an employee — it works once and renews automatically after each copy."}
+              {tx("Share this link with an employee — it works once and renews automatically after each copy.")}
             </p>
           </div>
           <div className="grid gap-2 sm:grid-cols-3">
@@ -629,8 +628,8 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
           <form onSubmit={submitInvite} className="space-y-3">
             <p className="text-sm font-semibold">{w.inviteEmployee}</p>
             <div className="grid gap-3 sm:grid-cols-2">
-              <TextField label={`${w.employeeName} (${ar ? "اختياري" : "optional"})`} value={inv.name} onChange={(v) => setInv({ ...inv, name: v })} />
-              <TextField label={`${w.corporateEmail} (${ar ? "اختياري" : "optional"})`} type="email" value={inv.email} onChange={(v) => setInv({ ...inv, email: v })} />
+              <TextField label={`${w.employeeName} (${tx("optional")})`} value={inv.name} onChange={(v) => setInv({ ...inv, name: v })} />
+              <TextField label={`${w.corporateEmail} (${tx("optional")})`} type="email" value={inv.email} onChange={(v) => setInv({ ...inv, email: v })} />
               <TextField label={w.jobTitle} value={inv.job_title} onChange={(v) => setInv({ ...inv, job_title: v })} />
               <TextField label={w.phone} value={inv.phone} onChange={(v) => setInv({ ...inv, phone: v })} />
               <div>
@@ -690,7 +689,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
           <EmptyState
             icon={Users}
             title={w.noEmployees}
-            hint={ar ? "ادعُ أول موظف ليحصل على بطاقته تلقائيًا بهوية الشركة." : "Invite your first employee to get a branded card automatically."}
+            hint={tx("Invite your first employee to get a branded card automatically.")}
             actionLabel={canEdit ? w.inviteEmployee : undefined}
             onAction={canEdit ? () => { setInviting(true); setImporting(false); } : undefined}
           />
@@ -712,9 +711,9 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
                   value={m.department_id ?? ""}
                   onChange={(e) => setDepartment(m.id, e.target.value)}
                   className="max-w-[160px] rounded-xl border border-border bg-secondary px-2 py-1.5 text-[11px] outline-none"
-                  title={ar ? "القسم" : "Department"}
+                  title={tx("Department")}
                 >
-                  <option value="">{ar ? "— القسم —" : "— Department —"}</option>
+                  <option value="">{tx("— Department —")}</option>
                   {(departments ?? []).map((d) => (
                     <option key={d.id} value={d.id}>{d.name}</option>
                   ))}
@@ -812,7 +811,7 @@ export function DepartmentsTab({ company, canEdit }: { company: Company; canEdit
         <EmptyState
           icon={Building2}
           title={w.noDepartments}
-          hint={ar ? "أنشئ قسمًا مثل «المبيعات» لتخصيص تصميم بطاقة له." : "Create a department like “Sales” to assign it a card design."}
+          hint={tx("Create a department like “Sales” to assign it a card design.")}
         />
       )}
 
@@ -848,7 +847,7 @@ export function DepartmentsTab({ company, canEdit }: { company: Company; canEdit
                       <button
                         onClick={() => { setEditingId(d.id); setEditName(d.name); }}
                         className="text-muted-foreground hover:text-primary"
-                        aria-label={ar ? "إعادة تسمية" : "Rename"}
+                        aria-label={tx("Rename")}
                       >
                         <Pencil className="h-3.5 w-3.5" />
                       </button>
@@ -872,7 +871,7 @@ export function DepartmentsTab({ company, canEdit }: { company: Company; canEdit
               <div className="mt-2 space-y-2">
                 {assigned.length === 0 ? (
                   <span className="text-[11px] text-muted-foreground">
-                    {ar ? "لا يوجد تصميم معيّن" : "No design assigned"}
+                    {tx("No design assigned")}
                   </span>
                 ) : (
                   assigned.map((t) => (
@@ -1263,7 +1262,7 @@ function MemberItem({
       .eq("id", card.id);
     setBusy(false);
     if (error) { toast.error(error.message); return; }
-    toast.success(w.saved ?? (ar ? "تم الحفظ" : "Saved"));
+    toast.success(w.saved ?? (tx("Saved")));
     onSaved();
   }
 
@@ -1307,7 +1306,7 @@ function MemberItem({
         <div className="border-t border-border/60 bg-background/40 px-4 py-4">
           {!card ? (
             <p className="text-xs text-muted-foreground">
-              {ar ? "لا توجد بطاقة لهذا الموظف بعد." : "This employee has no card yet."}
+              {tx("This employee has no card yet.")}
             </p>
           ) : (
             <div className="grid gap-5 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
@@ -1339,7 +1338,7 @@ function MemberItem({
                   <div className="flex flex-wrap items-center justify-center gap-2">
                     <label className="cursor-pointer rounded-xl bg-secondary px-3 py-1.5 text-xs font-medium">
                       <Upload className="me-1 inline h-3.5 w-3.5" />
-                      {uploading ? (ar ? "جارٍ الرفع…" : "Uploading…") : (ar ? "تغيير الصورة" : "Change photo")}
+                      {uploading ? (tx("Uploading…")) : (tx("Change photo"))}
                       <input
                         type="file"
                         accept="image/*"
@@ -1350,7 +1349,7 @@ function MemberItem({
                     </label>
                     {f.avatar_url && (
                       <button type="button" onClick={() => setF((p) => ({ ...p, avatar_url: "" }))} className="rounded-xl bg-secondary px-3 py-1.5 text-xs text-destructive">
-                        {ar ? "إزالة الصورة" : "Remove photo"}
+                        {tx("Remove photo")}
                       </button>
                     )}
                   </div>
@@ -1360,16 +1359,16 @@ function MemberItem({
               {/* editable fields */}
               <div className="space-y-4">
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <TextField label={ar ? "الاسم" : "Name"} value={f.name} onChange={(v) => setF({ ...f, name: v })} disabled={!canEdit} />
-                  <TextField label={ar ? "الجوال" : "Phone"} value={f.phone} onChange={(v) => setF({ ...f, phone: v })} disabled={!canEdit} />
-                  <TextField label={ar ? "واتساب" : "WhatsApp"} value={f.whatsapp} onChange={(v) => setF({ ...f, whatsapp: v })} disabled={!canEdit} />
-                  <TextField label={ar ? "البريد" : "Email"} type="email" value={f.email} onChange={(v) => setF({ ...f, email: v })} disabled={!canEdit} />
-                  <TextField label={ar ? "الموقع الإلكتروني" : "Website"} value={f.website} onChange={(v) => setF({ ...f, website: v })} disabled={!canEdit} />
-                  <TextField label={ar ? "العنوان" : "Address"} value={f.address} onChange={(v) => setF({ ...f, address: v })} disabled={!canEdit} />
+                  <TextField label={tx("Name")} value={f.name} onChange={(v) => setF({ ...f, name: v })} disabled={!canEdit} />
+                  <TextField label={tx("Phone")} value={f.phone} onChange={(v) => setF({ ...f, phone: v })} disabled={!canEdit} />
+                  <TextField label={tx("WhatsApp")} value={f.whatsapp} onChange={(v) => setF({ ...f, whatsapp: v })} disabled={!canEdit} />
+                  <TextField label={tx("Email")} type="email" value={f.email} onChange={(v) => setF({ ...f, email: v })} disabled={!canEdit} />
+                  <TextField label={tx("Website")} value={f.website} onChange={(v) => setF({ ...f, website: v })} disabled={!canEdit} />
+                  <TextField label={tx("Address")} value={f.address} onChange={(v) => setF({ ...f, address: v })} disabled={!canEdit} />
                 </div>
 
                 <div>
-                  <label className="mb-1 block px-1 text-xs text-muted-foreground">{ar ? "النبذة" : "Bio"}</label>
+                  <label className="mb-1 block px-1 text-xs text-muted-foreground">{tx("Bio")}</label>
                   <textarea
                     value={f.bio}
                     onChange={(e) => setF({ ...f, bio: e.target.value })}
@@ -1380,7 +1379,7 @@ function MemberItem({
                 </div>
 
                 <div>
-                  <p className="mb-1 px-1 text-xs text-muted-foreground">{ar ? "الحسابات الاجتماعية" : "Social accounts"}</p>
+                  <p className="mb-1 px-1 text-xs text-muted-foreground">{tx("Social accounts")}</p>
                   <div className="grid gap-3 sm:grid-cols-2">
                     {SOCIAL_KEYS.map((k) => (
                       <TextField
@@ -1395,7 +1394,7 @@ function MemberItem({
                   </div>
                 </div>
 
-                {canEdit && <SaveBar busy={busy} label={w.save ?? (ar ? "حفظ" : "Save")} onSave={save} />}
+                {canEdit && <SaveBar busy={busy} label={w.save ?? (tx("Save"))} onSave={save} />}
               </div>
             </div>
           )}

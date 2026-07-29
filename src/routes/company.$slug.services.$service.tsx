@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, Building2, Check, Globe, Mail, MessageCircle, Phone } from "lucide-react";
 import { getPreferredLocale } from "@/lib/locale-routing";
 import { findService } from "@/lib/company-services";
+import { tx } from "@/lib/tx";
 
 export const Route = createFileRoute("/company/$slug/services/$service")({
   head: ({ params }) => ({
@@ -37,13 +38,13 @@ function ServicePage() {
     },
   });
 
-  if (isLoading) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">{ar ? "جارٍ التحميل…" : "Loading…"}</div>;
+  if (isLoading) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">{tx("Loading…")}</div>;
   if (!data?.service) {
     return (
       <div className="grid min-h-[100dvh] place-items-center gap-3 px-6 text-center text-sm text-muted-foreground">
-        <p>{ar ? "الخدمة غير متوفرة" : "Service not found"}</p>
+        <p>{tx("Service not found")}</p>
         <Link to="/company/$slug" params={{ slug }} className="text-accent underline">
-          {ar ? "العودة لصفحة الشركة" : "Back to company page"}
+          {tx("Back to company page")}
         </Link>
       </div>
     );
@@ -89,14 +90,14 @@ function ServicePage() {
 
       {s.description && (
         <section className="mt-6">
-          <h2 className="mb-2 text-sm font-semibold tracking-tight">{ar ? "التفاصيل" : "Details"}</h2>
+          <h2 className="mb-2 text-sm font-semibold tracking-tight">{tx("Details")}</h2>
           <p className="whitespace-pre-line text-sm leading-relaxed text-muted-foreground">{s.description}</p>
         </section>
       )}
 
       {(s.features ?? []).length > 0 && (
         <section className="mt-6">
-          <h2 className="mb-2 text-sm font-semibold tracking-tight">{ar ? "أبرز المزايا" : "Highlights"}</h2>
+          <h2 className="mb-2 text-sm font-semibold tracking-tight">{tx("Highlights")}</h2>
           <ul className="grid gap-2 sm:grid-cols-2">
             {(s.features ?? []).map((f, i) => (
               <li key={`${f}-${i}`} className="glass flex items-center gap-2 rounded-2xl border border-border/60 px-4 py-3 text-sm">
@@ -109,10 +110,10 @@ function ServicePage() {
       )}
 
       <section className="mt-6">
-        <h2 className="mb-2 text-sm font-semibold tracking-tight">{ar ? "تواصل معنا" : "Get in touch"}</h2>
+        <h2 className="mb-2 text-sm font-semibold tracking-tight">{tx("Get in touch")}</h2>
         <div className="grid gap-2 sm:grid-cols-2">
           {phone && <ActionRow icon={<Phone className="h-4 w-4" />} label={phone} href={`tel:${phone}`} accent={accent} />}
-          {wa && <ActionRow icon={<MessageCircle className="h-4 w-4" />} label={ar ? "واتساب" : "WhatsApp"} href={`https://wa.me/${wa.replace(/\D/g, "")}`} accent={accent} />}
+          {wa && <ActionRow icon={<MessageCircle className="h-4 w-4" />} label={tx("WhatsApp")} href={`https://wa.me/${wa.replace(/\D/g, "")}`} accent={accent} />}
           {email && <ActionRow icon={<Mail className="h-4 w-4" />} label={email} href={`mailto:${email}?subject=${encodeURIComponent(s.name)}`} accent={accent} />}
           {(s.website || company.website) && (
             <ActionRow icon={<Globe className="h-4 w-4" />} label={s.website || company.website!} href={s.website || company.website!} accent={accent} />

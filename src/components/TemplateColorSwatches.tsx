@@ -1,6 +1,7 @@
 // Colour dots under a template thumbnail: tapping one re-tints the whole design live,
 // so users immediately see that any template can adopt their own colour.
 import { RotateCcw } from "lucide-react";
+import { tx } from "@/lib/tx";
 
 export const TEMPLATE_SWATCHES = [
   "#7c3aed",
@@ -26,13 +27,13 @@ export function TemplateColorSwatches({
   return (
     <div className="mt-3 flex flex-wrap items-center justify-center gap-1.5">
       <span className="me-1 text-[10px] text-muted-foreground">
-        {ar ? "لوّن القالب" : "Recolor"}
+        {tx("Recolor")}
       </span>
       {TEMPLATE_SWATCHES.map((c) => (
         <button
           key={c}
           type="button"
-          title={ar ? "طبّق هذا اللون" : "Apply this colour"}
+          title={tx("Apply this colour")}
           aria-label={ar ? `طبّق اللون ${c}` : `Apply colour ${c}`}
           onClick={() => onChange(value === c ? null : c)}
           className={
@@ -48,7 +49,7 @@ export function TemplateColorSwatches({
         <button
           type="button"
           onClick={() => onChange(null)}
-          title={ar ? "إرجاع الألوان الأصلية" : "Reset original colours"}
+          title={tx("Reset original colours")}
           className="rounded-full border border-border/60 p-1 text-muted-foreground hover:text-foreground"
         >
           <RotateCcw className="h-3 w-3" />

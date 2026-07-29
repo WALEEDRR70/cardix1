@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { useStudio } from "@/lib/studio/store";
 import { publishTemplate, type TemplateAudience } from "@/lib/templates";
 import { audienceLabel } from "@/components/CommunityTemplates";
+import { tx } from "@/lib/tx";
 
 export function PublishTemplateDialog({ ar, defaultTitle }: { ar: boolean; defaultTitle?: string }) {
   const { state } = useStudio();
@@ -18,7 +19,7 @@ export function PublishTemplateDialog({ ar, defaultTitle }: { ar: boolean; defau
 
   async function submit() {
     if (!title.trim()) {
-      toast.error(ar ? "اكتب اسم القالب" : "Give the template a name");
+      toast.error(tx("Give the template a name"));
       return;
     }
     setBusy(true);
@@ -33,8 +34,8 @@ export function PublishTemplateDialog({ ar, defaultTitle }: { ar: boolean; defau
       });
       toast.success(
         isPublic
-          ? ar ? "تم نشر القالب للعامة" : "Template published"
-          : ar ? "تم حفظ القالب كمسودة خاصة" : "Template saved privately",
+          ? tx("Template published")
+          : tx("Template saved privately"),
       );
       setOpen(false);
     } catch (e) {
@@ -51,7 +52,7 @@ export function PublishTemplateDialog({ ar, defaultTitle }: { ar: boolean; defau
         className="flex items-center gap-1.5 rounded-lg border border-border/60 px-3 py-1.5 text-xs hover:border-accent/60"
       >
         <Share2 className="h-3.5 w-3.5" />
-        {ar ? "نشر كقالب" : "Publish template"}
+        {tx("Publish template")}
       </button>
 
       {open && (
@@ -59,29 +60,27 @@ export function PublishTemplateDialog({ ar, defaultTitle }: { ar: boolean; defau
           <div
             className="w-full max-w-md rounded-2xl border border-border/60 bg-card p-5 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
-            dir={ar ? "rtl" : "ltr"}
+            dir={tx("ltr")}
           >
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-sm font-semibold">{ar ? "نشر التصميم كقالب" : "Publish design as template"}</h2>
+              <h2 className="text-sm font-semibold">{tx("Publish design as template")}</h2>
               <button onClick={() => setOpen(false)} className="text-muted-foreground hover:text-foreground">
                 <X className="h-4 w-4" />
               </button>
             </div>
 
             <p className="mb-4 text-xs leading-relaxed text-muted-foreground">
-              {ar
-                ? "سيبقى قالبك الأصلي محفوظاً كما صمّمته. من يستخدمه يحصل على نسخة خاصة به يعدّلها بحرية دون أي تأثير على تصميمك."
-                : "Your original stays exactly as you designed it. Anyone who uses it gets their own private copy to edit freely."}
+              {tx("Your original stays exactly as you designed it. Anyone who uses it gets their own private copy to edit freely.")}
             </p>
 
-            <label className="mb-1 block text-[11px] text-muted-foreground">{ar ? "اسم القالب" : "Template name"}</label>
+            <label className="mb-1 block text-[11px] text-muted-foreground">{tx("Template name")}</label>
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="mb-3 w-full rounded-lg border border-border/60 bg-transparent px-3 py-2 text-sm outline-none focus:border-accent"
             />
 
-            <label className="mb-1 block text-[11px] text-muted-foreground">{ar ? "وصف مختصر" : "Short description"}</label>
+            <label className="mb-1 block text-[11px] text-muted-foreground">{tx("Short description")}</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -90,17 +89,17 @@ export function PublishTemplateDialog({ ar, defaultTitle }: { ar: boolean; defau
             />
 
             <label className="mb-1 block text-[11px] text-muted-foreground">
-              {ar ? "وسوم (افصل بفاصلة)" : "Tags (comma separated)"}
+              {tx("Tags (comma separated)")}
             </label>
             <input
               value={tags}
               onChange={(e) => setTags(e.target.value)}
-              placeholder={ar ? "فاخر, داكن, شركات" : "luxury, dark, corporate"}
+              placeholder={tx("luxury, dark, corporate")}
               className="mb-4 w-full rounded-lg border border-border/60 bg-transparent px-3 py-2 text-sm outline-none focus:border-accent"
             />
 
             <label className="mb-1 block text-[11px] text-muted-foreground">
-              {ar ? "نوع القالب" : "Template kind"}
+              {tx("Template kind")}
             </label>
             <div className="mb-4 flex gap-1 rounded-full border border-border/60 p-1">
               {(["personal", "employee", "mixed"] as const).map((k) => (
@@ -120,7 +119,7 @@ export function PublishTemplateDialog({ ar, defaultTitle }: { ar: boolean; defau
 
             <label className="mb-4 flex items-center gap-2 text-xs text-muted-foreground">
               <input type="checkbox" checked={isPublic} onChange={(e) => setIsPublic(e.target.checked)} />
-              {ar ? "متاح للجميع في معرض القوالب" : "Visible to everyone in the gallery"}
+              {tx("Visible to everyone in the gallery")}
             </label>
 
             <button
@@ -129,7 +128,7 @@ export function PublishTemplateDialog({ ar, defaultTitle }: { ar: boolean; defau
               className="flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-3 py-2 text-xs font-semibold text-accent-foreground disabled:opacity-60"
             >
               {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Share2 className="h-3.5 w-3.5" />}
-              {ar ? "نشر" : "Publish"}
+              {tx("Publish")}
             </button>
           </div>
         </div>

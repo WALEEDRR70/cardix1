@@ -10,6 +10,7 @@ import { ElementsPanel } from "@/components/studio/ElementsPanel";
 import { PropertiesPanel } from "@/components/studio/PropertiesPanel";
 import { StudioToolbar } from "@/components/studio/StudioToolbar";
 import { Frame, Shapes, SlidersHorizontal, X } from "lucide-react";
+import { tx } from "@/lib/tx";
 
 export function StudioWorkspace({
   title,
@@ -39,7 +40,7 @@ export function StudioWorkspace({
     try {
       await onSave(api.state.doc, silent);
       lastSaved.current = json;
-      if (!silent) toast.success(ar ? "تم حفظ التصميم" : "Design saved");
+      if (!silent) toast.success(tx("Design saved"));
     } catch (e) {
       if (!silent) toast.error((e as Error).message);
     } finally {
@@ -55,7 +56,7 @@ export function StudioWorkspace({
 
   return (
     <StudioProvider api={api}>
-      <div className="flex h-[100dvh] flex-col bg-background" dir={ar ? "rtl" : "ltr"}>
+      <div className="flex h-[100dvh] flex-col bg-background" dir={tx("ltr")}>
         <div className="no-scrollbar flex items-center gap-2 overflow-x-auto border-b border-border/60 bg-card/60 px-3 py-1.5 text-xs [&>*]:shrink-0">
           {breadcrumbs}
           <button
@@ -63,7 +64,7 @@ export function StudioWorkspace({
             disabled={saving}
             className="ms-auto rounded-full bg-primary px-3 py-1 text-[11px] font-semibold text-primary-foreground disabled:opacity-60 lg:hidden"
           >
-            {saving ? (ar ? "جارٍ الحفظ…" : "Saving…") : ar ? "حفظ" : "Save"}
+            {saving ? (tx("Saving…")) : tx("Save")}
           </button>
         </div>
         <StudioToolbar ar={ar} title={title} saving={saving} onSave={() => void save(false)} />
@@ -89,7 +90,7 @@ export function StudioWorkspace({
                 <button
                   onClick={() => setPanel(null)}
                   className="absolute end-2 top-2 z-10 grid h-8 w-8 place-items-center rounded-full border border-border/60 bg-background/80 text-muted-foreground"
-                  aria-label={ar ? "إغلاق" : "Close"}
+                  aria-label={tx("Close")}
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -106,21 +107,21 @@ export function StudioWorkspace({
             className={"flex flex-1 items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium transition " + (panel === "elements" ? "border-accent bg-accent/15 text-foreground" : "border-border/60 text-muted-foreground")}
           >
             <Shapes className="h-4 w-4" />
-            {ar ? "العناصر" : "Elements"}
+            {tx("Elements")}
           </button>
           <button
             onClick={() => setPanel(null)}
             className={"flex flex-1 items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium transition " + (!panel ? "border-accent bg-accent/15 text-foreground" : "border-border/60 text-muted-foreground")}
           >
             <Frame className="h-4 w-4" />
-            {ar ? "اللوحة" : "Canvas"}
+            {tx("Canvas")}
           </button>
           <button
             onClick={() => setPanel(panel === "props" ? null : "props")}
             className={"flex flex-1 items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium transition " + (panel === "props" ? "border-accent bg-accent/15 text-foreground" : "border-border/60 text-muted-foreground")}
           >
             <SlidersHorizontal className="h-4 w-4" />
-            {ar ? "الخصائص" : "Properties"}
+            {tx("Properties")}
           </button>
         </nav>
       </div>

@@ -15,6 +15,7 @@ import {
   type DesignTemplate,
 } from "@/lib/templates";
 import type { StudioDoc } from "@/lib/studio/types";
+import { tx } from "@/lib/tx";
 
 export function ApplyTemplatesStrip({ cardId }: { cardId: string }) {
   const { lang } = useI18n();
@@ -51,7 +52,7 @@ export function ApplyTemplatesStrip({ cardId }: { cardId: string }) {
       await applyTemplateToCard(tpl, cardId);
       setAppliedId(tpl.id);
       await qc.invalidateQueries({ queryKey: ["card", cardId] });
-      toast.success(ar ? "تم تطبيق التصميم على البطاقة" : "Design applied to this card");
+      toast.success(tx("Design applied to this card"));
     } catch (e) {
       toast.error((e as Error).message);
     } finally {
@@ -63,7 +64,7 @@ export function ApplyTemplatesStrip({ cardId }: { cardId: string }) {
     <section className="mt-5">
       <div className="mb-2 flex items-center justify-between gap-2 px-1">
         <label className="block text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-          {ar ? "قوالب المصممين" : "Designer templates"}
+          {tx("Designer templates")}
         </label>
         <div className="flex gap-1.5">
           {(["public", "favorites"] as const).map((k) => (
@@ -77,7 +78,7 @@ export function ApplyTemplatesStrip({ cardId }: { cardId: string }) {
               }
             >
               {k === "favorites" && <Heart className="h-2.5 w-2.5" />}
-              {k === "public" ? (ar ? "الكل" : "All") : ar ? "المفضلة" : "Favourites"}
+              {k === "public" ? (tx("All")) : tx("Favourites")}
             </button>
           ))}
         </div>
@@ -90,8 +91,8 @@ export function ApplyTemplatesStrip({ cardId }: { cardId: string }) {
       ) : templates.length === 0 ? (
         <p className="py-4 text-center text-[11px] text-muted-foreground">
           {tab === "favorites"
-            ? ar ? "لم تحفظ أي قالب بعد." : "No saved templates yet."
-            : ar ? "لا توجد قوالب منشورة بعد." : "No templates published yet."}
+            ? tx("No saved templates yet.")
+            : tx("No templates published yet.")}
         </p>
       ) : (
         <div

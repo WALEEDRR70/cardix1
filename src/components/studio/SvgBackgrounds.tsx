@@ -6,6 +6,7 @@ import { useStudio } from "@/lib/studio/store";
 import { SVG_BACKGROUNDS } from "@/lib/studio/svg-backgrounds";
 import { artworkToNodes, parseSvgArtwork, type SvgArtwork } from "@/lib/studio/svg-import";
 import { cn } from "@/lib/utils";
+import { tx } from "@/lib/tx";
 
 function Thumb({ art, className }: { art: SvgArtwork; className?: string }) {
   return (
@@ -38,7 +39,7 @@ export function SvgBackgrounds({ ar }: { ar: boolean }) {
   const custom = useMemo(() => (markup.trim() ? parseSvgArtwork(markup) : null), [markup]);
 
   function insert(art: SvgArtwork | null, label: string) {
-    if (!art) { setError(ar ? "لم أتمكن من قراءة مسارات هذا الملف." : "No editable paths found in this SVG."); return; }
+    if (!art) { setError(tx("No editable paths found in this SVG.")); return; }
     setError(null);
     dispatch({
       t: "addMany",
@@ -80,7 +81,7 @@ export function SvgBackgrounds({ ar }: { ar: boolean }) {
         className="flex w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-border/60 px-2 py-2 text-[11px] text-muted-foreground transition hover:border-accent hover:text-foreground"
       >
         <Upload className="h-3.5 w-3.5" />
-        {ar ? "استيراد خلفية SVG" : "Import SVG background"}
+        {tx("Import SVG background")}
       </button>
 
       {open && (
@@ -90,7 +91,7 @@ export function SvgBackgrounds({ ar }: { ar: boolean }) {
               <div className="flex items-center gap-2">
                 <Layers className="h-4 w-4 text-accent" />
                 <h3 className="text-sm font-semibold">
-                  {ar ? "استيراد خلفية SVG قابلة للتعديل" : "Import an editable SVG background"}
+                  {tx("Import an editable SVG background")}
                 </h3>
               </div>
               <button type="button" onClick={() => setOpen(false)} className="rounded p-1 text-muted-foreground hover:bg-muted/40">
@@ -99,9 +100,7 @@ export function SvgBackgrounds({ ar }: { ar: boolean }) {
             </div>
 
             <p className="mb-2 text-[11px] text-muted-foreground">
-              {ar
-                ? "الصق كود SVG أو ارفع ملفاً. كل مسار سيتحول إلى عنصر متجهي مستقل يمكنك تعديل نقاطه وألوانه في أي وقت — حتى بعد النشر."
-                : "Paste SVG code or upload a file. Every path becomes its own vector node — points and colors stay editable, even after publishing."}
+              {tx("Paste SVG code or upload a file. Every path becomes its own vector node — points and colors stay editable, even after publishing.")}
             </p>
 
             <textarea
@@ -115,7 +114,7 @@ export function SvgBackgrounds({ ar }: { ar: boolean }) {
 
             <div className="mt-3 flex flex-wrap items-center gap-2">
               <label className="cursor-pointer rounded-md border border-border/60 px-2 py-1.5 text-[11px] text-muted-foreground hover:text-foreground">
-                {ar ? "رفع ملف .svg" : "Upload .svg"}
+                {tx("Upload .svg")}
                 <input
                   type="file"
                   accept=".svg,image/svg+xml"
@@ -135,9 +134,9 @@ export function SvgBackgrounds({ ar }: { ar: boolean }) {
                       fit === f ? "bg-accent/20 text-foreground" : "text-muted-foreground hover:text-foreground",
                     )}
                   >
-                    {f === "cover" ? (ar ? "تغطية" : "Cover")
-                      : f === "contain" ? (ar ? "احتواء" : "Contain")
-                        : (ar ? "تمديد" : "Stretch")}
+                    {f === "cover" ? (tx("Cover"))
+                      : f === "contain" ? (tx("Contain"))
+                        : (tx("Stretch"))}
                   </button>
                 ))}
               </div>
@@ -150,12 +149,12 @@ export function SvgBackgrounds({ ar }: { ar: boolean }) {
                 )}
                 <button
                   type="button"
-                  onClick={() => insert(custom, ar ? "خلفية" : "Background")}
+                  onClick={() => insert(custom, tx("Background"))}
                   disabled={!custom}
                   className="flex items-center gap-1.5 rounded-md bg-accent px-3 py-1.5 text-[11px] font-medium text-accent-foreground disabled:opacity-40"
                 >
                   <Wand2 className="h-3.5 w-3.5" />
-                  {ar ? "إضافة كطبقات قابلة للتعديل" : "Add as editable layers"}
+                  {tx("Add as editable layers")}
                 </button>
               </div>
             </div>

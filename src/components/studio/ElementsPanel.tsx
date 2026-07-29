@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { AiPanel } from "./AiPanel";
 import { SvgBackgrounds } from "./SvgBackgrounds";
 import { SOCIAL_ICONS, SOCIAL_ICON_KEYS } from "@/lib/studio/social-icons";
+import { tx } from "@/lib/tx";
 
 type Item = {
   key: string; label: string; labelAr: string; icon: React.ElementType;
@@ -151,14 +152,14 @@ function Library({ ar }: { ar: boolean }) {
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder={ar ? "ابحث عن عنصر…" : "Search elements…"}
+            placeholder={tx("Search elements…")}
             className="h-full w-full bg-transparent text-[11px] outline-none"
           />
         </div>
       </div>
       <div className="flex-1 overflow-y-auto px-2 pb-3">
         {(!term || "backgrounds".includes(term) || "خلفيات".includes(term)) && (
-          <Section title={ar ? "خلفيات SVG" : "SVG backgrounds"} defaultOpen={false} forceOpen={!!term}>
+          <Section title={tx("SVG backgrounds")} defaultOpen={false} forceOpen={!!term}>
             <SvgBackgrounds ar={ar} />
           </Section>
         )}
@@ -257,16 +258,16 @@ function LayersPanel({ ar }: { ar: boolean }) {
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
       <div className="flex items-center gap-0.5 border-b border-border/50 px-1.5 py-1.5">
-        <IconBtn title={ar ? "تجميع" : "Group"} onClick={() => dispatch({ t: "group", ids: sel })}><Group className="h-3.5 w-3.5" /></IconBtn>
-        <IconBtn title={ar ? "فك التجميع" : "Ungroup"} onClick={() => sel[0] && dispatch({ t: "ungroup", id: sel[0] })}><Ungroup className="h-3.5 w-3.5" /></IconBtn>
+        <IconBtn title={tx("Group")} onClick={() => dispatch({ t: "group", ids: sel })}><Group className="h-3.5 w-3.5" /></IconBtn>
+        <IconBtn title={tx("Ungroup")} onClick={() => sel[0] && dispatch({ t: "ungroup", id: sel[0] })}><Ungroup className="h-3.5 w-3.5" /></IconBtn>
         <span className="mx-0.5 h-4 w-px bg-border/60" />
-        <IconBtn title={ar ? "إلى المقدمة" : "To front"} onClick={() => sel[0] && dispatch({ t: "order", id: sel[0], dir: "front" })}><ChevronsUp className="h-3.5 w-3.5" /></IconBtn>
-        <IconBtn title={ar ? "للأمام" : "Forward"} onClick={() => sel[0] && dispatch({ t: "order", id: sel[0], dir: "forward" })}><ChevronUp className="h-3.5 w-3.5" /></IconBtn>
-        <IconBtn title={ar ? "للخلف" : "Backward"} onClick={() => sel[0] && dispatch({ t: "order", id: sel[0], dir: "backward" })}><ChevronDown className="h-3.5 w-3.5" /></IconBtn>
-        <IconBtn title={ar ? "إلى الخلف" : "To back"} onClick={() => sel[0] && dispatch({ t: "order", id: sel[0], dir: "back" })}><ChevronsDown className="h-3.5 w-3.5" /></IconBtn>
+        <IconBtn title={tx("To front")} onClick={() => sel[0] && dispatch({ t: "order", id: sel[0], dir: "front" })}><ChevronsUp className="h-3.5 w-3.5" /></IconBtn>
+        <IconBtn title={tx("Forward")} onClick={() => sel[0] && dispatch({ t: "order", id: sel[0], dir: "forward" })}><ChevronUp className="h-3.5 w-3.5" /></IconBtn>
+        <IconBtn title={tx("Backward")} onClick={() => sel[0] && dispatch({ t: "order", id: sel[0], dir: "backward" })}><ChevronDown className="h-3.5 w-3.5" /></IconBtn>
+        <IconBtn title={tx("To back")} onClick={() => sel[0] && dispatch({ t: "order", id: sel[0], dir: "back" })}><ChevronsDown className="h-3.5 w-3.5" /></IconBtn>
         <span className="mx-0.5 h-4 w-px bg-border/60" />
-        <IconBtn title={ar ? "تكرار" : "Duplicate"} onClick={() => dispatch({ t: "duplicate", ids: sel })}><Copy className="h-3.5 w-3.5" /></IconBtn>
-        <IconBtn title={ar ? "حذف" : "Delete"} onClick={() => dispatch({ t: "remove", ids: sel })}><Trash2 className="h-3.5 w-3.5" /></IconBtn>
+        <IconBtn title={tx("Duplicate")} onClick={() => dispatch({ t: "duplicate", ids: sel })}><Copy className="h-3.5 w-3.5" /></IconBtn>
+        <IconBtn title={tx("Delete")} onClick={() => dispatch({ t: "remove", ids: sel })}><Trash2 className="h-3.5 w-3.5" /></IconBtn>
       </div>
       <ul
         className="flex-1 overflow-y-auto p-1.5 text-xs"
@@ -331,7 +332,7 @@ function LayersPanel({ ar }: { ar: boolean }) {
             )}
           >
             <ImageIcon className="h-3.5 w-3.5 shrink-0 opacity-60" />
-            <span className="flex-1 truncate">{ar ? "الخلفية" : "Background"}</span>
+            <span className="flex-1 truncate">{tx("Background")}</span>
             <span
               className="h-4 w-6 shrink-0 rounded border border-border/60"
               style={{
@@ -344,7 +345,7 @@ function LayersPanel({ ar }: { ar: boolean }) {
         </li>
       </ul>
       <p className="border-t border-border/50 px-3 py-1.5 text-[10px] text-muted-foreground/70">
-        {ar ? "اسحب الطبقة لإعادة ترتيبها أو أفلتها داخل مجموعة" : "Drag a layer to reorder, or drop it inside a group"}
+        {tx("Drag a layer to reorder, or drop it inside a group")}
       </p>
     </div>
   );

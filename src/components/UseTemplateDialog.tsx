@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { CardPreview } from "@/components/CardPreview";
 import { useDragScroll } from "@/lib/use-drag-scroll";
 import { listTargetCards, type DesignTemplate } from "@/lib/templates";
+import { tx } from "@/lib/tx";
 
 export function UseTemplateDialog({
   tpl,
@@ -42,17 +43,15 @@ export function UseTemplateDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[85vh] w-[calc(100vw-2rem)] max-w-2xl overflow-y-auto overflow-x-hidden p-4 sm:p-6">
         <DialogHeader>
-          <DialogTitle>{ar ? "استخدام القالب" : "Use template"}</DialogTitle>
+          <DialogTitle>{tx("Use template")}</DialogTitle>
           <DialogDescription>
-            {ar
-              ? "اختر بطاقة موجودة لتغيير تصميمها، أو أنشئ بطاقة جديدة بهذا التصميم."
-              : "Pick an existing card to restyle, or create a new card with this design."}
+            {tx("Pick an existing card to restyle, or create a new card with this design.")}
           </DialogDescription>
         </DialogHeader>
 
         <div>
           <p className="mb-2 text-xs font-semibold text-muted-foreground">
-            {ar ? "بطاقاتي" : "My cards"}
+            {tx("My cards")}
           </p>
           {isLoading ? (
             <div className="grid h-32 place-items-center">
@@ -60,7 +59,7 @@ export function UseTemplateDialog({
             </div>
           ) : cards.length === 0 ? (
             <p className="py-6 text-center text-xs text-muted-foreground">
-              {ar ? "لا توجد بطاقات بعد." : "No cards yet."}
+              {tx("No cards yet.")}
             </p>
           ) : (
             <div ref={dragRef} className="flex gap-3 overflow-x-auto pb-2">
@@ -120,7 +119,7 @@ export function UseTemplateDialog({
             className="flex w-full items-center justify-center gap-1.5 rounded-full bg-accent px-4 py-2.5 sm:flex-1 text-xs font-semibold text-accent-foreground disabled:opacity-50"
           >
             {busy && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-            {ar ? "تطبيق على البطاقة المختارة" : "Apply to selected card"}
+            {tx("Apply to selected card")}
           </button>
           <button
             type="button"
@@ -129,7 +128,7 @@ export function UseTemplateDialog({
             className="flex w-full items-center justify-center gap-1.5 rounded-full border border-border/60 px-4 py-2.5 sm:w-auto text-xs font-semibold disabled:opacity-50"
           >
             <Plus className="h-3.5 w-3.5" />
-            {ar ? "إنشاء بطاقة جديدة" : "Create new card"}
+            {tx("Create new card")}
           </button>
         </div>
       </DialogContent>

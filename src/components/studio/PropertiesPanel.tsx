@@ -12,6 +12,7 @@ import { isSvgSrc } from "@/lib/studio/svg";
 import { SvgPalette } from "@/components/studio/SvgPalette";
 import { GradientEditor } from "@/components/studio/GradientEditor";
 import { PanelSection, Row, NumInput, ColorInput, Seg, MiniBtn, SwitchRow, fieldCls } from "@/components/studio/inspector";
+import { tx } from "@/lib/tx";
 
 const BG_PRESETS: string[] = [
   "linear-gradient(160deg,#0b0713,#2c125a)",
@@ -39,10 +40,10 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
     const activeSize = CARD_SIZES.find((s) => s.w === state.doc.w && s.h === state.doc.h);
     return (
       <aside className={shell}>
-        <PanelHeader icon={Frame} title={ar ? "اللوحة" : "Canvas"} sub={`${state.doc.w} × ${state.doc.h}`} />
+        <PanelHeader icon={Frame} title={tx("Canvas")} sub={`${state.doc.w} × ${state.doc.h}`} />
 
-        <PanelSection title={ar ? "مقاس البطاقة" : "Card size"}>
-          <Row label={ar ? "جاهز" : "Preset"}>
+        <PanelSection title={tx("Card size")}>
+          <Row label={tx("Preset")}>
             <select
               value={activeSize?.key ?? "custom"}
               onChange={(e) => {
@@ -51,7 +52,7 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
               }}
               className={fieldCls}
             >
-              {!activeSize && <option value="custom">{ar ? "مخصص" : "Custom"}</option>}
+              {!activeSize && <option value="custom">{tx("Custom")}</option>}
               {CARD_SIZES.map((s) => (
                 <option key={s.key} value={s.key}>{ar ? s.labelAr : s.label}</option>
               ))}
@@ -62,12 +63,12 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
             <NumInput badge="H" value={state.doc.h} onChange={(v) => dispatch({ t: "size", w: state.doc.w, h: v })} />
           </div>
           <MiniBtn className="w-full" onClick={() => dispatch({ t: "size", w: state.doc.h, h: state.doc.w })}>
-            {ar ? "تبديل الاتجاه" : "Swap orientation"}
+            {tx("Swap orientation")}
           </MiniBtn>
         </PanelSection>
 
-        <PanelSection title={ar ? "الخلفية" : "Background"}>
-          <Row label={ar ? "اللون" : "Color"}>
+        <PanelSection title={tx("Background")}>
+          <Row label={tx("Color")}>
             <ColorInput value={bg.color} fallback="#0b0713" onChange={(v) => dispatch({ t: "bg", patch: { color: v } })} />
           </Row>
           <div className="grid grid-cols-6 gap-1 pt-0.5">
@@ -90,25 +91,25 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
           />
         </PanelSection>
 
-        <PanelSection title={ar ? "صورة الخلفية" : "Background image"} defaultOpen={!!bg.image}>
+        <PanelSection title={tx("Background image")} defaultOpen={!!bg.image}>
           <Row label="URL">
             <input value={bg.image ?? ""} onChange={(e) => dispatch({ t: "bg", patch: { image: e.target.value || null } })} className={fieldCls} />
           </Row>
           <UploadButton ar={ar} onDone={(url) => dispatch({ t: "bg", patch: { image: url } })} />
           {bg.image && (
             <>
-              <Row label={ar ? "الملاءمة" : "Fit"}>
+              <Row label={tx("Fit")}>
                 <Seg
                   value={(bg.fit ?? "cover") as "cover" | "contain" | "repeat"}
                   options={[
-                    { v: "cover", label: ar ? "تغطية" : "Cover" },
-                    { v: "contain", label: ar ? "احتواء" : "Contain" },
-                    { v: "repeat", label: ar ? "تكرار" : "Tile" },
+                    { v: "cover", label: tx("Cover") },
+                    { v: "contain", label: tx("Contain") },
+                    { v: "repeat", label: tx("Tile") },
                   ]}
                   onChange={(v) => dispatch({ t: "bg", patch: { fit: v } })}
                 />
               </Row>
-              <Row label={ar ? "الشفافية" : "Opacity"}>
+              <Row label={tx("Opacity")}>
                 <NumInput
                   badge="%"
                   min={0}
@@ -118,14 +119,14 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
                 />
               </Row>
               <MiniBtn className="w-full" onClick={() => dispatch({ t: "bg", patch: { image: null } })}>
-                {ar ? "إزالة الصورة" : "Remove image"}
+                {tx("Remove image")}
               </MiniBtn>
             </>
           )}
         </PanelSection>
 
         <p className="p-3 text-[11px] leading-relaxed text-muted-foreground/80">
-          {ar ? "اختر عنصرًا على اللوحة لتعديل خصائصه." : "Select an element on the canvas to edit its properties."}
+          {tx("Select an element on the canvas to edit its properties.")}
         </p>
       </aside>
     );
@@ -143,17 +144,17 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
         sub={ids.length > 1 ? (ar ? `${ids.length} عناصر محددة` : `${ids.length} selected`) : n.type}
         right={
           <div className="flex items-center gap-0.5">
-            <HeadBtn title={ar ? "إظهار/إخفاء" : "Show / hide"} onClick={() => up({ hidden: !n.hidden })}>
+            <HeadBtn title={tx("Show / hide")} onClick={() => up({ hidden: !n.hidden })}>
               {n.hidden ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
             </HeadBtn>
-            <HeadBtn title={ar ? "قفل" : "Lock"} onClick={() => up({ locked: !n.locked })}>
+            <HeadBtn title={tx("Lock")} onClick={() => up({ locked: !n.locked })}>
               {n.locked ? <Lock className="h-3.5 w-3.5" /> : <Unlock className="h-3.5 w-3.5" />}
             </HeadBtn>
           </div>
         }
       />
 
-      <PanelSection title={ar ? "التخطيط" : "Layout"}>
+      <PanelSection title={tx("Layout")}>
         <div className="grid grid-cols-2 gap-1.5">
           <NumInput badge="X" value={Math.round(n.x)} onChange={(v) => up({ x: v })} />
           <NumInput badge="Y" value={Math.round(n.y)} onChange={(v) => up({ y: v })} />
@@ -165,12 +166,10 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
       </PanelSection>
 
       {(n.type === "text" || n.type === "button") && (
-        <PanelSection title={ar ? "النص" : "Text"}>
+        <PanelSection title={tx("Text")}>
           {/\{\{[^}]+\}\}/.test(n.text ?? "") ? (
             <p className="rounded-md border border-border/50 bg-background/40 px-2 py-1.5 text-[11px] text-muted-foreground">
-              {ar
-                ? "هذا الحقل يُعبّأ تلقائيًا من بيانات الموظف."
-                : "This field fills automatically from the employee data."}
+              {tx("This field fills automatically from the employee data.")}
             </p>
           ) : (
             <textarea
@@ -186,7 +185,7 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
             <NumInput badge="LS" step={0.5} value={s.letterSpacing ?? 0} onChange={(v) => st({ letterSpacing: v })} />
             <NumInput badge="LH" step={0.1} value={s.lineHeight ?? 1.3} onChange={(v) => st({ lineHeight: v })} />
           </div>
-          <Row label={ar ? "المحاذاة" : "Align"}>
+          <Row label={tx("Align")}>
             <Seg
               value={(s.align ?? "left") as "left" | "center" | "right"}
               options={[
@@ -197,14 +196,14 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
               onChange={(v) => st({ align: v })}
             />
           </Row>
-          <Row label={ar ? "اللون" : "Color"}>
+          <Row label={tx("Color")}>
             <ColorInput value={s.color} onChange={(v) => st({ color: v })} />
           </Row>
           {n.type === "text" && (
-            <Row label={ar ? "حد الأسطر" : "Max lines"}>
+            <Row label={tx("Max lines")}>
               <div className="flex items-center gap-1.5">
                 <NumInput badge="≡" min={0} value={s.maxLines ?? 0} onChange={(v) => st({ maxLines: v > 0 ? Math.round(v) : null })} />
-                <span className="text-[10px] text-muted-foreground">{ar ? "٠ = بلا حد" : "0 = none"}</span>
+                <span className="text-[10px] text-muted-foreground">{tx("0 = none")}</span>
               </div>
             </Row>
           )}
@@ -212,24 +211,24 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
       )}
 
       {n.type === "image" && (
-        <PanelSection title={ar ? "الصورة" : "Image"}>
-          <Row label={ar ? "المصدر" : "Source"}>
+        <PanelSection title={tx("Image")}>
+          <Row label={tx("Source")}>
             <Seg
               value={(n.imageSource ?? "upload") as ImageSource}
               options={[
-                { v: "employee" as ImageSource, label: ar ? "الموظف" : "Employee" },
-                { v: "logo" as ImageSource, label: ar ? "الشعار" : "Logo" },
-                { v: "upload" as ImageSource, label: ar ? "رفع" : "Upload" },
+                { v: "employee" as ImageSource, label: tx("Employee") },
+                { v: "logo" as ImageSource, label: tx("Logo") },
+                { v: "upload" as ImageSource, label: tx("Upload") },
               ]}
               onChange={(v) => up({ imageSource: v })}
             />
           </Row>
-          <Row label={ar ? "الملاءمة" : "Fit"}>
+          <Row label={tx("Fit")}>
             <Seg
               value={(s.imageFit ?? (n.imageSource === "logo" ? "contain" : "cover")) as "cover" | "contain"}
               options={[
-                { v: "contain" as const, label: ar ? "كامل" : "Contain" },
-                { v: "cover" as const, label: ar ? "ملء" : "Cover" },
+                { v: "contain" as const, label: tx("Contain") },
+                { v: "cover" as const, label: tx("Cover") },
               ]}
               onChange={(v) => st({ imageFit: v })}
             />
@@ -244,51 +243,51 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
           ) : (
             <p className="text-[10px] leading-relaxed text-muted-foreground">
               {n.imageSource === "employee"
-                ? (ar ? "تُستبدل تلقائيًا بصورة الموظف عند عرض البطاقة." : "Replaced automatically by the employee photo when the card is rendered.")
-                : (ar ? "تُستبدل تلقائيًا بشعار الشركة عند عرض البطاقة." : "Replaced automatically by the company logo when the card is rendered.")}
+                ? (tx("Replaced automatically by the employee photo when the card is rendered."))
+                : (tx("Replaced automatically by the company logo when the card is rendered."))}
             </p>
           )}
 
           {isSvgSrc(n.src) && (
             <div className="mt-1 space-y-1.5 rounded-lg border border-border/50 bg-background/30 p-2">
               <div className="flex items-center justify-between gap-2">
-                <p className="text-[10px] uppercase tracking-widest text-muted-foreground">{ar ? "تحكم SVG" : "SVG"}</p>
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground">{tx("SVG")}</p>
                 <MiniBtn
                   className="h-6"
                   onClick={() => st({ svgColorMap: null, svgRemoveBg: false, svgFill: null, svgStroke: null, svgStrokeWidth: null })}
                 >
-                  {ar ? "إعادة ضبط" : "Reset"}
+                  {tx("Reset")}
                 </MiniBtn>
               </div>
               <SwitchRow
-                label={ar ? "تفعيل التحكم بالألوان" : "Enable color control"}
+                label={tx("Enable color control")}
                 on={s.svgInline !== false}
                 onChange={(v) => st({ svgInline: v })}
               />
               {s.svgInline !== false && (
                 <>
                   <SvgPalette src={n.src} style={s} onStyle={st} ar={ar} />
-                  <Row label={ar ? "تعبئة" : "Fill"}>
+                  <Row label={tx("Fill")}>
                     <ColorInput
                       value={s.svgFill}
                       onChange={(v) => st({ svgFill: v })}
                       extra={
                         <>
-                          <MiniBtn className="h-5 border-0 px-1" onClick={() => st({ svgFill: "none" })}>{ar ? "شفاف" : "None"}</MiniBtn>
-                          <MiniBtn className="h-5 border-0 px-1" onClick={() => st({ svgFill: null })}>{ar ? "أصلي" : "Orig"}</MiniBtn>
+                          <MiniBtn className="h-5 border-0 px-1" onClick={() => st({ svgFill: "none" })}>{tx("None")}</MiniBtn>
+                          <MiniBtn className="h-5 border-0 px-1" onClick={() => st({ svgFill: null })}>{tx("Orig")}</MiniBtn>
                         </>
                       }
                     />
                   </Row>
-                  <Row label={ar ? "الإطار" : "Stroke"}>
+                  <Row label={tx("Stroke")}>
                     <ColorInput
                       value={s.svgStroke}
                       fallback="#7c34ff"
                       onChange={(v) => st({ svgStroke: v })}
-                      extra={<MiniBtn className="h-5 border-0 px-1" onClick={() => st({ svgStroke: null, svgStrokeWidth: null })}>{ar ? "أصلي" : "Orig"}</MiniBtn>}
+                      extra={<MiniBtn className="h-5 border-0 px-1" onClick={() => st({ svgStroke: null, svgStrokeWidth: null })}>{tx("Orig")}</MiniBtn>}
                     />
                   </Row>
-                  <Row label={ar ? "السماكة" : "Width"}>
+                  <Row label={tx("Width")}>
                     <NumInput badge="◻" step={0.5} value={s.svgStrokeWidth ?? 0} onChange={(v) => st({ svgStrokeWidth: v })} />
                   </Row>
                 </>
@@ -299,33 +298,31 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
       )}
 
       {n.type === "icon" && (
-        <PanelSection title={ar ? "الأيقونة" : "Icon"}>
-          <Row label={ar ? "لون الشعار" : "Glyph color"}>
+        <PanelSection title={tx("Icon")}>
+          <Row label={tx("Glyph color")}>
             <ColorInput
               value={s.color ?? "#ffffff"}
               fallback="#ffffff"
               onChange={(v) => st({ color: v })}
-              extra={<MiniBtn className="h-5 border-0 px-1" onClick={() => st({ color: null })}>{ar ? "أصلي" : "Orig"}</MiniBtn>}
+              extra={<MiniBtn className="h-5 border-0 px-1" onClick={() => st({ color: null })}>{tx("Orig")}</MiniBtn>}
             />
           </Row>
           <p className="text-[10px] leading-relaxed text-muted-foreground">
-            {ar
-              ? "لون الشعار داخل الأيقونة. لون الخلفية يُضبط من قسم التعبئة."
-              : "Color of the glyph inside the icon. Background is set in the Fill section."}
+            {tx("Color of the glyph inside the icon. Background is set in the Fill section.")}
           </p>
         </PanelSection>
       )}
 
       {n.type === "path" && (
 
-        <PanelSection title={ar ? "المسار المتجهي" : "Vector path"}>
+        <PanelSection title={tx("Vector path")}>
           <textarea
             value={n.path ?? ""}
             onChange={(e) => up({ path: e.target.value })}
             rows={2}
             className={`${fieldCls} h-auto resize-y py-1.5 font-mono leading-relaxed`}
           />
-          <Row label={ar ? "الخط" : "Stroke"}>
+          <Row label={tx("Stroke")}>
             <ColorInput value={s.stroke} fallback="#7c34ff" onChange={(v) => st({ stroke: v })} />
           </Row>
           <div className="grid grid-cols-2 gap-1.5">
@@ -333,20 +330,20 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
             <NumInput badge="⋯" value={Number(s.dash ?? 0)} onChange={(v) => st({ dash: v ? String(v) : null })} />
           </div>
           <MiniBtn className="w-full" onClick={() => st({ fill: "transparent" })}>
-            {ar ? "بدون تعبئة (خط فقط)" : "No fill (stroke only)"}
+            {tx("No fill (stroke only)")}
           </MiniBtn>
         </PanelSection>
       )}
 
-      <PanelSection title={ar ? "التعبئة" : "Fill"} defaultOpen={n.type !== "text"}>
-        <Row label={ar ? "اللون" : "Color"}>
+      <PanelSection title={tx("Fill")} defaultOpen={n.type !== "text"}>
+        <Row label={tx("Color")}>
           <div className="flex items-center gap-1">
             <ColorInput value={s.fill} fallback="#7c34ff" onChange={(v) => st({ fill: v })} />
             <MiniBtn
               className={s.fill === "transparent" ? "border-accent/60 text-accent" : ""}
               onClick={() => st({ fill: "transparent", gradient: null })}
             >
-              {ar ? "شفاف" : "None"}
+              {tx("None")}
             </MiniBtn>
           </div>
         </Row>
@@ -366,28 +363,28 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
         <GradientEditor ar={ar} value={s.gradient} onChange={(css: string) => st({ gradient: css })} onRemove={() => st({ gradient: null })} />
       </PanelSection>
 
-      <PanelSection title={ar ? "المظهر" : "Appearance"} defaultOpen={n.type !== "text"}>
+      <PanelSection title={tx("Appearance")} defaultOpen={n.type !== "text"}>
         <div className="grid grid-cols-2 gap-1.5">
           <NumInput badge="⌒" value={s.radius ?? 0} onChange={(v) => st({ radius: v })} />
           <NumInput badge="⇱" value={s.padding ?? 0} onChange={(v) => st({ padding: v })} />
           <NumInput badge="▭" value={s.borderWidth ?? 0} onChange={(v) => st({ borderWidth: v })} />
           <NumInput badge="✦" value={s.blur ?? 0} onChange={(v) => st({ blur: v })} />
         </div>
-        <Row label={ar ? "لون الحد" : "Border"}>
+        <Row label={tx("Border")}>
           <ColorInput value={s.borderColor} onChange={(v) => st({ borderColor: v })} />
         </Row>
-        <Row label={ar ? "الظل" : "Shadow"}>
+        <Row label={tx("Shadow")}>
           <Seg
             value={(s.shadow ?? "") as string}
             options={[
-              { v: "", label: ar ? "بدون" : "None" },
-              { v: "0 8px 24px rgba(0,0,0,.35)", label: ar ? "ناعم" : "Soft" },
-              { v: "0 18px 50px rgba(0,0,0,.55)", label: ar ? "عميق" : "Deep" },
+              { v: "", label: tx("None") },
+              { v: "0 8px 24px rgba(0,0,0,.35)", label: tx("Soft") },
+              { v: "0 18px 50px rgba(0,0,0,.55)", label: tx("Deep") },
             ]}
             onChange={(v) => st({ shadow: v || null })}
           />
         </Row>
-        <Row label={ar ? "توهج" : "Glow"}>
+        <Row label={tx("Glow")}>
           <input value={s.glow ?? ""} placeholder="#7c34ff88" onChange={(e) => st({ glow: e.target.value || null })} className={fieldCls} />
         </Row>
       </PanelSection>
@@ -441,9 +438,9 @@ function UploadButton({ ar, onDone }: { ar: boolean; onDone: (url: string) => vo
           setBusy(true);
           try {
             onDone(await uploadStudioImage(file));
-            toast.success(ar ? "تم رفع الصورة" : "Image uploaded");
+            toast.success(tx("Image uploaded"));
           } catch (err) {
-            toast.error(err instanceof Error ? err.message : ar ? "تعذّر الرفع" : "Upload failed");
+            toast.error(err instanceof Error ? err.message : tx("Upload failed"));
           } finally {
             setBusy(false);
           }
@@ -451,7 +448,7 @@ function UploadButton({ ar, onDone }: { ar: boolean; onDone: (url: string) => vo
       />
       <MiniBtn className="flex w-full items-center justify-center gap-2" disabled={busy} onClick={() => ref.current?.click()}>
         {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
-        {busy ? (ar ? "جارٍ الرفع…" : "Uploading…") : ar ? "رفع صورة" : "Upload image"}
+        {busy ? (tx("Uploading…")) : tx("Upload image")}
       </MiniBtn>
     </>
   );

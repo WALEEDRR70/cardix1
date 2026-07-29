@@ -2,6 +2,7 @@
 import { useMemo } from "react";
 import { extractSvgColors, useSvgMarkup } from "@/lib/studio/svg";
 import type { NodeStyle } from "@/lib/studio/types";
+import { tx } from "@/lib/tx";
 
 export function SvgPalette({
   src,
@@ -28,7 +29,7 @@ export function SvgPalette({
   if (!raw) {
     return (
       <p className="text-[10px] text-muted-foreground">
-        {ar ? "جارِ قراءة الشعار…" : "Reading the artwork…"}
+        {tx("Reading the artwork…")}
       </p>
     );
   }
@@ -36,7 +37,7 @@ export function SvgPalette({
   if (!colors.length) {
     return (
       <p className="text-[10px] text-muted-foreground">
-        {ar ? "لم يتم العثور على ألوان قابلة للتعديل داخل الملف." : "No editable colors found inside this file."}
+        {tx("No editable colors found inside this file.")}
       </p>
     );
   }
@@ -45,7 +46,7 @@ export function SvgPalette({
     <div className="space-y-2">
       <div className="flex items-center justify-between">
         <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
-          {ar ? "ألوان الشعار" : "Artwork colors"}
+          {tx("Artwork colors")}
         </p>
         {Object.keys(map).length > 0 && (
           <button
@@ -53,7 +54,7 @@ export function SvgPalette({
             onClick={() => onStyle({ svgColorMap: null })}
             className="text-[10px] text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
           >
-            {ar ? "استعادة الكل" : "Reset all"}
+            {tx("Reset all")}
           </button>
         )}
       </div>
@@ -87,7 +88,7 @@ export function SvgPalette({
                   hidden ? "border-accent/60 bg-accent/15 text-foreground" : "border-border/60 text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {ar ? "شفاف" : "None"}
+                {tx("None")}
               </button>
               {current !== undefined && (
                 <button
@@ -95,7 +96,7 @@ export function SvgPalette({
                   onClick={() => set(color, null)}
                   className="shrink-0 whitespace-nowrap rounded-md border border-border/60 px-2 py-1 text-[10px] text-muted-foreground hover:text-foreground"
                 >
-                  {ar ? "الأصلي" : "Reset"}
+                  {tx("Reset")}
                 </button>
               )}
             </div>
@@ -109,7 +110,7 @@ export function SvgPalette({
           checked={style.svgRemoveBg === true}
           onChange={(e) => onStyle({ svgRemoveBg: e.target.checked })}
         />
-        {ar ? "إزالة خلفية الشعار (المربع الكامل)" : "Remove artwork background (full-bleed rect)"}
+        {tx("Remove artwork background (full-bleed rect)")}
       </label>
     </div>
   );

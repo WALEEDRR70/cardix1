@@ -7,6 +7,7 @@ import {
   promptInstall,
   subscribeInstallState,
 } from "@/lib/pwa-install";
+import { tx } from "@/lib/tx";
 
 /**
  * Lets the user install Cardixn as a web app (home screen / apps page).
@@ -64,7 +65,7 @@ export function InstallAppButton({ className }: { className?: string }) {
     return (
       <p className={"flex items-center justify-center gap-2 text-sm text-muted-foreground " + (className ?? "")}>
         <Check className="h-4 w-4" />
-        {ar ? "التطبيق مُثبّت على جهازك" : "App installed on this device"}
+        {tx("App installed on this device")}
       </p>
     );
   }
@@ -78,14 +79,12 @@ export function InstallAppButton({ className }: { className?: string }) {
         style={{ background: "var(--gradient-gold)" }}
       >
         {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
-        {ar ? "تثبيت التطبيق على الجهاز" : "Install app on your device"}
+        {tx("Install app on your device")}
       </button>
       {showIosHelp && (
         <p className="mt-2 flex items-start gap-2 px-1 text-[12px] leading-relaxed text-muted-foreground">
           <Share className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-          {ar
-            ? "متصفحك لا يدعم التثبيت التلقائي. على آيفون: افتح الموقع في Safari، اضغط زر المشاركة ثم «إضافة إلى الشاشة الرئيسية»."
-            : "Your browser doesn't support one-tap install. On iPhone: open this site in Safari, tap Share, then “Add to Home Screen”."}
+          {tx("Your browser doesn't support one-tap install. On iPhone: open this site in Safari, tap Share, then “Add to Home Screen”.")}
         </p>
       )}
     </div>
