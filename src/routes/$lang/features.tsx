@@ -14,8 +14,8 @@ export const Route = createFileRoute("/$lang/features")({
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}/features`;
     const isAr = lang === "ar";
-    const title = tx("Cardixn Features — NFC, QR & AI Scanning for Digital Business Cards");
-    const description = tx("Explore every Cardixn feature: NFC, QR and link sharing, AI card scanning, live analytics, luxury templates, contact vault and cloud sync.");
+    const title = tx("Cardixn Features — NFC, QR & AI Scanning for Digital Business Cards", lang);
+    const description = tx("Explore every Cardixn feature: NFC, QR and link sharing, AI card scanning, live analytics, luxury templates, contact vault and cloud sync.", lang);
     return {
       meta: [
         { title }, { name: "description", content: description },

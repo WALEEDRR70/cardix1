@@ -11,8 +11,8 @@ export const Route = createFileRoute("/$lang/contact")({
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}/contact`;
     const isAr = lang === "ar";
-    const title = tx("Contact Cardixn — Support, Sales & Partnerships");
-    const description = tx("Get in touch with the Cardixn team for support, team plans or partnerships. We usually reply within one business day.");
+    const title = tx("Contact Cardixn — Support, Sales & Partnerships", lang);
+    const description = tx("Get in touch with the Cardixn team for support, team plans or partnerships. We usually reply within one business day.", lang);
     return {
       meta: [
         { title }, { name: "description", content: description },

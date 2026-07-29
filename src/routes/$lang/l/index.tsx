@@ -11,8 +11,8 @@ export const Route = createFileRoute("/$lang/l/")({
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}/l`;
     const isAr = lang === "ar";
-    const title = tx("The Digital Business Card Guide — Cardixn");
-    const description = tx("The complete guide to digital business cards, QR, NFC, OCR and modern networking. Dozens of expert articles.");
+    const title = tx("The Digital Business Card Guide — Cardixn", lang);
+    const description = tx("The complete guide to digital business cards, QR, NFC, OCR and modern networking. Dozens of expert articles.", lang);
     return {
       meta: [
         { title }, { name: "description", content: description },

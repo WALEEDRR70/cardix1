@@ -17,8 +17,8 @@ export const Route = createFileRoute("/$lang/pricing")({
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}/pricing`;
     const isAr = lang === "ar";
-    const title = tx("Cardixn Pricing — Start Free, Upgrade Anytime");
-    const description = tx("Simple Cardixn plans: Free for individuals, Pro for professionals, Teams for companies. No credit card to get started.");
+    const title = tx("Cardixn Pricing — Start Free, Upgrade Anytime", lang);
+    const description = tx("Simple Cardixn plans: Free for individuals, Pro for professionals, Teams for companies. No credit card to get started.", lang);
     return {
       meta: [
         { title }, { name: "description", content: description },

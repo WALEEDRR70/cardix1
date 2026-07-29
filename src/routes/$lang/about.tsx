@@ -11,8 +11,8 @@ export const Route = createFileRoute("/$lang/about")({
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}/about`;
     const isAr = lang === "ar";
-    const title = tx("About Cardixn — The Story Behind the Luxury Digital Card");
-    const description = tx("Meet Cardixn: the digital business card platform replacing paper with instant NFC and QR sharing, luxury design and 20-language support.");
+    const title = tx("About Cardixn — The Story Behind the Luxury Digital Card", lang);
+    const description = tx("Meet Cardixn: the digital business card platform replacing paper with instant NFC and QR sharing, luxury design and 20-language support.", lang);
     return {
       meta: [
         { title }, { name: "description", content: description },

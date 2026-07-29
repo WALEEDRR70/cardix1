@@ -14,8 +14,8 @@ export const Route = createFileRoute("/$lang/tools/")({
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}/tools`;
     const isAr = lang === "ar";
-    const title = tx("Free Professional Tools — QR, vCard & Email Signature | Cardixn");
-    const description = tx("Free professional toolkit: QR generator, vCard downloader, email signature builder. No signup, no watermarks, unlimited use.");
+    const title = tx("Free Professional Tools — QR, vCard & Email Signature | Cardixn", lang);
+    const description = tx("Free professional toolkit: QR generator, vCard downloader, email signature builder. No signup, no watermarks, unlimited use.", lang);
     return {
       meta: [
         { title }, { name: "description", content: description },

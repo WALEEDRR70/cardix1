@@ -12,8 +12,8 @@ export const Route = createFileRoute("/$lang/blog/")({
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}/blog`;
     const isAr = lang === "ar";
-    const title = tx("Cardixn Blog — Insights on Digital Cards & Modern Networking");
-    const description = tx("Long-form articles, playbooks and case studies on digital business cards, NFC, QR, AI OCR and the death of paper.");
+    const title = tx("Cardixn Blog — Insights on Digital Cards & Modern Networking", lang);
+    const description = tx("Long-form articles, playbooks and case studies on digital business cards, NFC, QR, AI OCR and the death of paper.", lang);
     return {
       meta: [
         { title }, { name: "description", content: description },
