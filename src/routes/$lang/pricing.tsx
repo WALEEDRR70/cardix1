@@ -56,10 +56,10 @@ type PlanRow = {
 };
 
 const FREE = {
-  en: { name: "Free", note: "forever", tag: "For getting started",
-    items: ["1 digital card", "QR code + share link", "Core templates", "Contact vault (25 cards)", "Basic view analytics"] },
-  ar: { name: "مجاني", note: "للأبد", tag: "للبداية",
-    items: ["بطاقة رقمية واحدة", "رمز QR ورابط مشاركة", "القوالب الأساسية", "خزنة جهات اتصال (25 بطاقة)", "تحليلات مشاهدات أساسية"] },
+  en: { name: "Free", note: "for everyone, for now", tag: "All features unlocked",
+    items: ["Unlimited digital cards", "QR code + share link", "All templates & Design Studio", "Company workspace & employee cards", "Contact vault & analytics"] },
+  ar: { name: "مجاني", note: "للجميع حالياً", tag: "كل المزايا مفتوحة",
+    items: ["بطاقات رقمية بلا حدود", "رمز QR ورابط مشاركة", "كل القوالب واستوديو التصميم", "مساحة الشركة وبطاقات الموظفين", "خزنة جهات الاتصال والتحليلات"] },
 };
 
 function priceLabel(cents: number, currency: string) {
