@@ -494,36 +494,18 @@ function TemplatesGallery() {
         )}
       </section>
 
-      {activeWorkspace ? (
-        <UseTemplateWorkspaceDialog
-          tpl={pending}
-          open={!!pending}
-          onOpenChange={(v) => !v && setPending(null)}
-          company={activeWorkspace.company}
-          canManage
-          busy={!!busyId}
-          onCreateCard={onCreateFromTemplate}
-          onSaved={() => {
-            setPending(null);
-            navigate({
-              to: "/co/$slug/templates",
-              params: { slug: activeWorkspace.company.slug },
-            });
-          }}
-        />
-      ) : (
-        <UseTemplateDialog
-          tpl={pending}
-          open={!!pending}
-          onOpenChange={(v) => !v && setPending(null)}
-          ar={ar}
-          userId={uid}
-          companyId={null}
-          busy={!!busyId}
-          onApply={onApplyToCard}
-          onCreate={onCreateFromTemplate}
-        />
-      )}
+      <UseTemplateDialog
+        tpl={pending}
+        open={!!pending}
+        onOpenChange={(v) => !v && setPending(null)}
+        ar={ar}
+        userId={uid}
+        companyId={null}
+        busy={!!busyId}
+        onApply={onApplyToCard}
+        onCreate={onCreateFromTemplate}
+      />
+
 
     </MarketingLayout>
   );
