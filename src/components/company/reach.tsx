@@ -184,44 +184,15 @@ export function QrTab({ company }: { company: Company }) {
   const { t } = useT();
   const companyUrl = `${origin()}/company/${company.slug}`;
 
-  const { data: cards } = useQuery({
-    queryKey: ["company-cards", company.id],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from("cards")
-        .select("id, slug, name, title")
-        .eq("company_id", company.id)
-        .order("created_at", { ascending: true });
-      return data ?? [];
-    },
-  });
-
   return (
-    <div className="space-y-4">
-      <Card className="space-y-3">
-        <p className="text-sm font-semibold">{t.qrTitle}</p>
-        <p className="text-xs text-muted-foreground">{t.qrDesc}</p>
-        <QrBlock value={companyUrl} label={company.name} color={company.brand_primary} />
-      </Card>
-
-      {!!cards?.length && (
-        <Card className="space-y-3">
-          <p className="text-sm font-semibold">{t.employeeQr}</p>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {cards.map((c) => (
-              <QrBlock
-                key={c.id}
-                value={`${origin()}/c/${c.slug}`}
-                label={c.name || c.title || c.slug}
-                color={company.brand_primary}
-              />
-            ))}
-          </div>
-        </Card>
-      )}
-    </div>
+    <Card className="space-y-3">
+      <p className="text-sm font-semibold">{t.qrTitle}</p>
+      <p className="text-xs text-muted-foreground">{t.qrDesc}</p>
+      <QrBlock value={companyUrl} label={company.name} color={company.brand_primary} />
+    </Card>
   );
 }
+
 
 /* ------------------------------ NFC tab ------------------------------ */
 
