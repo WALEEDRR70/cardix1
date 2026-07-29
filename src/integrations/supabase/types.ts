@@ -1039,6 +1039,42 @@ export type Database = {
           },
         ]
       }
+      content_translations: {
+        Row: {
+          created_at: string
+          entity_id: string
+          entity_key: string
+          entity_type: string
+          fields: Json
+          id: string
+          locale: string
+          source_hash: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          entity_id: string
+          entity_key?: string
+          entity_type: string
+          fields?: Json
+          id?: string
+          locale: string
+          source_hash: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          entity_id?: string
+          entity_key?: string
+          entity_type?: string
+          fields?: Json
+          id?: string
+          locale?: string
+          source_hash?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       design_templates: {
         Row: {
           audience: string
