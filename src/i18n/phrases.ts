@@ -679,7 +679,16 @@ export const PHRASES: Record<string, Record<string, string>> = {
     "What's the max download resolution?": "Quelle est la résolution de téléchargement maximale ?",
     "Where do I paste the signature?": "Où coller la signature ?",
     "Yes. Every code you create is entirely yours — no restrictions, no watermarks.": "Oui. Chaque code que vous créez vous appartient entièrement — sans restrictions, sans filigranes.",
-    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Oui. Le HTML est réactif et s'affiche parfaitement dans les applications mobiles Gmail et Outlook."
+    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Oui. Le HTML est réactif et s'affiche parfaitement dans les applications mobiles Gmail et Outlook.",
+    "Failed to generate image": "Échec de la génération de l'image",
+    "Powered by": "Propulsé par",
+    "Add your X, Instagram, LinkedIn, TikTok, YouTube and more.": "Ajoutez votre X, Instagram, LinkedIn, TikTok, YouTube et plus encore.",
+    "Menu": "Menu",
+    "Sitemap": "Plan du site",
+    "Signing you in…": "Connexion en cours…",
+    "Scanned card": "Carte scannée",
+    "Card not found.": "Carte introuvable.",
+    "Unsupported image format — use PNG, JPG or SVG": "Format d'image non pris en charge — utilisez PNG, JPG ou SVG"
   },
   "de": {
     "Personal account": "Privates Konto",
@@ -1358,7 +1367,16 @@ export const PHRASES: Record<string, Record<string, string>> = {
     "What's the max download resolution?": "Was ist die maximale Download-Auflösung?",
     "Where do I paste the signature?": "Wo füge ich die Signatur ein?",
     "Yes. Every code you create is entirely yours — no restrictions, no watermarks.": "Ja. Jeder von Ihnen erstellte Code gehört Ihnen – ohne Einschränkungen, ohne Wasserzeichen.",
-    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Ja. Das HTML ist responsiv und wird in den mobilen Gmail- und Outlook-Apps sauber dargestellt."
+    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Ja. Das HTML ist responsiv und wird in den mobilen Gmail- und Outlook-Apps sauber dargestellt.",
+    "Failed to generate image": "Bild konnte nicht generiert werden",
+    "Powered by": "Unterstützt durch",
+    "Add your X, Instagram, LinkedIn, TikTok, YouTube and more.": "Fügen Sie Ihre X-, Instagram-, LinkedIn-, TikTok-, YouTube- und weitere Links hinzu.",
+    "Menu": "Menü",
+    "Sitemap": "Sitemap",
+    "Signing you in…": "Anmeldung läuft…",
+    "Scanned card": "Gescannte Karte",
+    "Card not found.": "Karte nicht gefunden.",
+    "Unsupported image format — use PNG, JPG or SVG": "Nicht unterstütztes Bildformat – verwenden Sie PNG, JPG oder SVG"
   },
   "es": {
     "Personal account": "Cuenta personal",
@@ -2037,7 +2055,16 @@ export const PHRASES: Record<string, Record<string, string>> = {
     "What's the max download resolution?": "¿Cuál es la resolución máxima de descarga?",
     "Where do I paste the signature?": "¿Dónde pego la firma?",
     "Yes. Every code you create is entirely yours — no restrictions, no watermarks.": "Sí. Cada código que creas es completamente tuyo, sin restricciones ni marcas de agua.",
-    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Sí. El HTML es responsivo y se muestra limpiamente en las aplicaciones móviles de Gmail y Outlook."
+    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Sí. El HTML es responsivo y se muestra limpiamente en las aplicaciones móviles de Gmail y Outlook.",
+    "Failed to generate image": "Error al generar la imagen",
+    "Powered by": "Desarrollado por",
+    "Add your X, Instagram, LinkedIn, TikTok, YouTube and more.": "Añade tu X, Instagram, LinkedIn, TikTok, YouTube y más.",
+    "Menu": "Menú",
+    "Sitemap": "Mapa del sitio",
+    "Signing you in…": "Iniciando sesión…",
+    "Scanned card": "Tarjeta escaneada",
+    "Card not found.": "Tarjeta no encontrada.",
+    "Unsupported image format — use PNG, JPG or SVG": "Formato de imagen no compatible: utiliza PNG, JPG o SVG"
   },
   "it": {
     "Personal account": "Account personale",
@@ -2716,7 +2743,16 @@ export const PHRASES: Record<string, Record<string, string>> = {
     "What's the max download resolution?": "Qual è la risoluzione massima di download?",
     "Where do I paste the signature?": "Dove incollo la firma?",
     "Yes. Every code you create is entirely yours — no restrictions, no watermarks.": "Sì. Ogni codice che crei è interamente tuo — nessuna restrizione, nessuna filigrana.",
-    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Sì. L'HTML è responsive e viene visualizzato correttamente nelle app mobile di Gmail e Outlook."
+    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Sì. L'HTML è responsive e viene visualizzato correttamente nelle app mobile di Gmail e Outlook.",
+    "Failed to generate image": "Impossibile generare l'immagine",
+    "Powered by": "Offerto da",
+    "Add your X, Instagram, LinkedIn, TikTok, YouTube and more.": "Aggiungi il tuo X, Instagram, LinkedIn, TikTok, YouTube e altro ancora.",
+    "Menu": "Menu",
+    "Sitemap": "Mappa del sito",
+    "Signing you in…": "Accesso in corso…",
+    "Scanned card": "Biglietto scansionato",
+    "Card not found.": "Biglietto non trovato.",
+    "Unsupported image format — use PNG, JPG or SVG": "Formato immagine non supportato — usa PNG, JPG o SVG"
   },
   "pt": {
     "Personal account": "Conta pessoal",
@@ -3395,7 +3431,16 @@ export const PHRASES: Record<string, Record<string, string>> = {
     "What's the max download resolution?": "Qual é a resolução máxima de download?",
     "Where do I paste the signature?": "Onde colo a assinatura?",
     "Yes. Every code you create is entirely yours — no restrictions, no watermarks.": "Sim. Cada código que cria é inteiramente seu — sem restrições, sem marcas d'água.",
-    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Sim. O HTML é responsivo e é exibido de forma limpa nas aplicações móveis do Gmail e Outlook."
+    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Sim. O HTML é responsivo e é exibido de forma limpa nas aplicações móveis do Gmail e Outlook.",
+    "Failed to generate image": "Não foi possível gerar a imagem",
+    "Powered by": "Powered by",
+    "Add your X, Instagram, LinkedIn, TikTok, YouTube and more.": "Adicione seu X, Instagram, LinkedIn, TikTok, YouTube e muito mais.",
+    "Menu": "Menu",
+    "Sitemap": "Mapa do site",
+    "Signing you in…": "Autenticando…",
+    "Scanned card": "Cartão escaneado",
+    "Card not found.": "Cartão não encontrado.",
+    "Unsupported image format — use PNG, JPG or SVG": "Formato de imagem não suportado — use PNG, JPG ou SVG"
   },
   "ru": {
     "Personal account": "Личный аккаунт",
@@ -4074,7 +4119,16 @@ export const PHRASES: Record<string, Record<string, string>> = {
     "What's the max download resolution?": "Каково максимальное разрешение загрузки?",
     "Where do I paste the signature?": "Куда мне вставить подпись?",
     "Yes. Every code you create is entirely yours — no restrictions, no watermarks.": "Да. Каждый созданный вами код полностью ваш — без ограничений и водяных знаков.",
-    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Да. HTML является адаптивным и чисто отображается в мобильных приложениях Gmail и Outlook."
+    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Да. HTML является адаптивным и чисто отображается в мобильных приложениях Gmail и Outlook.",
+    "Failed to generate image": "Не удалось сгенерировать изображение",
+    "Powered by": "Работает на платформе",
+    "Add your X, Instagram, LinkedIn, TikTok, YouTube and more.": "Добавьте ваши X, Instagram, LinkedIn, TikTok, YouTube и другие.",
+    "Menu": "Меню",
+    "Sitemap": "Карта сайта",
+    "Signing you in…": "Выполняется вход…",
+    "Scanned card": "Отсканированная карта",
+    "Card not found.": "Карта не найдена.",
+    "Unsupported image format — use PNG, JPG or SVG": "Неподдерживаемый формат изображения — используйте PNG, JPG или SVG"
   },
   "tr": {
     "Personal account": "Kişisel hesap",
@@ -4753,7 +4807,16 @@ export const PHRASES: Record<string, Record<string, string>> = {
     "What's the max download resolution?": "Maksimum indirme çözünürlüğü nedir?",
     "Where do I paste the signature?": "İmzayı nereye yapıştırırım?",
     "Yes. Every code you create is entirely yours — no restrictions, no watermarks.": "Evet. Oluşturduğunuz her kod tamamen size aittir — hiçbir kısıtlama veya filigran yoktur.",
-    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Evet. HTML duyarlıdır ve Gmail ve Outlook mobil uygulamalarında temiz bir şekilde görüntülenir."
+    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Evet. HTML duyarlıdır ve Gmail ve Outlook mobil uygulamalarında temiz bir şekilde görüntülenir.",
+    "Failed to generate image": "Görsel oluşturulamadı",
+    "Powered by": "Destekleyen",
+    "Add your X, Instagram, LinkedIn, TikTok, YouTube and more.": "X, Instagram, LinkedIn, TikTok, YouTube ve daha fazlasını ekleyin.",
+    "Menu": "Menü",
+    "Sitemap": "Site Haritası",
+    "Signing you in…": "Giriş yapılıyor…",
+    "Scanned card": "Taranan kart",
+    "Card not found.": "Kart bulunamadı.",
+    "Unsupported image format — use PNG, JPG or SVG": "Desteklenmeyen görsel biçimi — PNG, JPG veya SVG kullanın"
   },
   "nl": {
     "Personal account": "Persoonlijk account",
@@ -5432,7 +5495,16 @@ export const PHRASES: Record<string, Record<string, string>> = {
     "What's the max download resolution?": "Wat is de maximale downloadresolutie?",
     "Where do I paste the signature?": "Waar plak ik de handtekening?",
     "Yes. Every code you create is entirely yours — no restrictions, no watermarks.": "Ja. Elke code die u maakt is volledig van u — geen beperkingen, geen watermerken.",
-    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Ja. De HTML is responsief en wordt netjes weergegeven in de mobiele apps van Gmail en Outlook."
+    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Ja. De HTML is responsief en wordt netjes weergegeven in de mobiele apps van Gmail en Outlook.",
+    "Failed to generate image": "Afbeelding genereren mislukt",
+    "Powered by": "Aangedreven door",
+    "Add your X, Instagram, LinkedIn, TikTok, YouTube and more.": "Voeg je X, Instagram, LinkedIn, TikTok, YouTube en meer toe.",
+    "Menu": "Menu",
+    "Sitemap": "Sitemap",
+    "Signing you in…": "Bezig met aanmelden…",
+    "Scanned card": "Gescoande kaart",
+    "Card not found.": "Kaart niet gevonden.",
+    "Unsupported image format — use PNG, JPG or SVG": "Niet-ondersteund afbeeldingsformaat — gebruik PNG, JPG of SVG"
   },
   "pl": {
     "Personal account": "Konto osobiste",
@@ -6111,7 +6183,16 @@ export const PHRASES: Record<string, Record<string, string>> = {
     "What's the max download resolution?": "Jaka jest maksymalna rozdzielczość pobierania?",
     "Where do I paste the signature?": "Gdzie wkleić podpis?",
     "Yes. Every code you create is entirely yours — no restrictions, no watermarks.": "Tak. Każdy kod, który tworzysz, jest w całości Twój — bez ograniczeń, bez znaków wodnych.",
-    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Tak. Kod HTML jest responsywny i wyświetla się czysto w aplikacjach mobilnych Gmail i Outlook."
+    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Tak. Kod HTML jest responsywny i wyświetla się czysto w aplikacjach mobilnych Gmail i Outlook.",
+    "Failed to generate image": "Nie udało się wygenerować obrazu",
+    "Powered by": "Oparte na",
+    "Add your X, Instagram, LinkedIn, TikTok, YouTube and more.": "Dodaj swoje konta X, Instagram, LinkedIn, TikTok, YouTube i inne.",
+    "Menu": "Menu",
+    "Sitemap": "Mapa strony",
+    "Signing you in…": "Logowanie…",
+    "Scanned card": "Zeskanowana wizytówka",
+    "Card not found.": "Nie znaleziono wizytówki.",
+    "Unsupported image format — use PNG, JPG or SVG": "Nieobsługiwany format obrazu — użyj plików PNG, JPG lub SVG"
   },
   "zh": {
     "Personal account": "个人帐户",
@@ -6790,7 +6871,16 @@ export const PHRASES: Record<string, Record<string, string>> = {
     "What's the max download resolution?": "最大下载分辨率是多少？",
     "Where do I paste the signature?": "我应该将签名粘贴到哪里？",
     "Yes. Every code you create is entirely yours — no restrictions, no watermarks.": "是的。您创建的每个二维码都完全属于您 — 没有限制，没有水印。",
-    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "是的。HTML 响应灵敏，并在 Gmail 和 Outlook 移动应用中清晰渲染。"
+    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "是的。HTML 响应灵敏，并在 Gmail 和 Outlook 移动应用中清晰渲染。",
+    "Failed to generate image": "生成图片失败",
+    "Powered by": "技术支持",
+    "Add your X, Instagram, LinkedIn, TikTok, YouTube and more.": "添加您的 X、Instagram、领英、抖音、YouTube 等社交媒体。",
+    "Menu": "菜单",
+    "Sitemap": "网站地图",
+    "Signing you in…": "正在登录…",
+    "Scanned card": "已扫描名片",
+    "Card not found.": "未找到名片。",
+    "Unsupported image format — use PNG, JPG or SVG": "不支持的图片格式 — 请使用 PNG、JPG 或 SVG 格式"
   },
   "zh-TW": {
     "Personal account": "個人帳戶",
@@ -7469,7 +7559,16 @@ export const PHRASES: Record<string, Record<string, string>> = {
     "What's the max download resolution?": "最大下載解析度是多少？",
     "Where do I paste the signature?": "我應該在哪裡貼上簽名？",
     "Yes. Every code you create is entirely yours — no restrictions, no watermarks.": "是的。您創建的每個代碼都完全屬於您—沒有限制，沒有浮水印。",
-    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "是的。HTML 具有回應性，並在 Gmail 和 Outlook 行動應用程式中清晰呈現。"
+    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "是的。HTML 具有回應性，並在 Gmail 和 Outlook 行動應用程式中清晰呈現。",
+    "Failed to generate image": "無法生成圖片",
+    "Powered by": "技術提供",
+    "Add your X, Instagram, LinkedIn, TikTok, YouTube and more.": "新增您的 X、Instagram、LinkedIn、TikTok、YouTube 等媒體連結。",
+    "Menu": "選單",
+    "Sitemap": "網站地圖",
+    "Signing you in…": "正在登入…",
+    "Scanned card": "已掃描名片",
+    "Card not found.": "找不到名片。",
+    "Unsupported image format — use PNG, JPG or SVG": "不支援的圖片格式 — 請使用 PNG、JPG 或 SVG 格式"
   },
   "ja": {
     "Personal account": "個人アカウント",
@@ -8148,7 +8247,16 @@ export const PHRASES: Record<string, Record<string, string>> = {
     "What's the max download resolution?": "最大ダウンロード解像度は？",
     "Where do I paste the signature?": "署名をどこに貼り付けますか？",
     "Yes. Every code you create is entirely yours — no restrictions, no watermarks.": "はい。作成されたすべてのコードは完全にあなたのものです — 制限なし、ウォーターマークなし。",
-    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "はい。HTMLは応答性が高く、GmailおよびOutlookモバイルアプリできれいにレンダリングされます。"
+    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "はい。HTMLは応答性が高く、GmailおよびOutlookモバイルアプリできれいにレンダリングされます。",
+    "Failed to generate image": "画像の生成に失敗しました",
+    "Powered by": "提供元",
+    "Add your X, Instagram, LinkedIn, TikTok, YouTube and more.": "X、Instagram、LinkedIn、TikTok、YouTubeなどを追加しましょう。",
+    "Menu": "メニュー",
+    "Sitemap": "サイトマップ",
+    "Signing you in…": "サインインしています…",
+    "Scanned card": "スキャンされたカード",
+    "Card not found.": "カードが見つかりません。",
+    "Unsupported image format — use PNG, JPG or SVG": "サポートされていない画像形式です — PNG、JPG、またはSVGを使用してください"
   },
   "ko": {
     "Personal account": "개인 계정",
@@ -8827,7 +8935,16 @@ export const PHRASES: Record<string, Record<string, string>> = {
     "What's the max download resolution?": "최대 다운로드 해상도는 무엇인가요?",
     "Where do I paste the signature?": "서명을 어디에 붙여넣어야 하나요?",
     "Yes. Every code you create is entirely yours — no restrictions, no watermarks.": "네. 귀하가 생성하는 모든 코드는 전적으로 귀하의 것이며, 제한이나 워터마크가 없습니다.",
-    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "네. HTML은 반응형이며 Gmail 및 Outlook 모바일 앱에서 깔끔하게 렌더링됩니다."
+    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "네. HTML은 반응형이며 Gmail 및 Outlook 모바일 앱에서 깔끔하게 렌더링됩니다.",
+    "Failed to generate image": "이미지 생성 실패",
+    "Powered by": "Powered by",
+    "Add your X, Instagram, LinkedIn, TikTok, YouTube and more.": "X, Instagram, LinkedIn, TikTok, YouTube 등을 추가하십시오.",
+    "Menu": "메뉴",
+    "Sitemap": "사이트맵",
+    "Signing you in…": "로그인 중…",
+    "Scanned card": "스캔된 카드",
+    "Card not found.": "카드를 찾을 수 없습니다.",
+    "Unsupported image format — use PNG, JPG or SVG": "지원되지 않는 이미지 형식입니다. PNG, JPG 또는 SVG를 사용하십시오."
   },
   "hi": {
     "Personal account": "निजी खाता",
@@ -9506,7 +9623,16 @@ export const PHRASES: Record<string, Record<string, string>> = {
     "What's the max download resolution?": "अधिकतम डाउनलोड रिज़ॉल्यूशन क्या है?",
     "Where do I paste the signature?": "मैं सिग्नेचर कहाँ चिपकाऊँ?",
     "Yes. Every code you create is entirely yours — no restrictions, no watermarks.": "हाँ। आपके द्वारा बनाया गया प्रत्येक कोड पूरी तरह से आपका है — कोई प्रतिबंध नहीं, कोई वॉटरमार्क नहीं।",
-    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "हाँ। HTML उत्तरदायी है और Gmail और Outlook मोबाइल ऐप में साफ-साफ प्रस्तुत होता है।"
+    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "हाँ। HTML उत्तरदायी है और Gmail और Outlook मोबाइल ऐप में साफ-साफ प्रस्तुत होता है।",
+    "Failed to generate image": "छवि बनाने में विफल रहा",
+    "Powered by": "द्वारा संचालित",
+    "Add your X, Instagram, LinkedIn, TikTok, YouTube and more.": "अपना X, Instagram, LinkedIn, TikTok, YouTube और अन्य जोड़ें।",
+    "Menu": "मेनू",
+    "Sitemap": "साइटमैप",
+    "Signing you in…": "आपको साइन इन कर रहे हैं…",
+    "Scanned card": "स्कैन किया गया कार्ड",
+    "Card not found.": "कार्ड नहीं मिला।",
+    "Unsupported image format — use PNG, JPG or SVG": "असमर्थित छवि प्रारूप — PNG, JPG या SVG का उपयोग करें"
   },
   "id": {
     "Personal account": "Akun pribadi",
@@ -10185,7 +10311,16 @@ export const PHRASES: Record<string, Record<string, string>> = {
     "What's the max download resolution?": "Berapa resolusi unduhan maksimal?",
     "Where do I paste the signature?": "Di mana saya menempelkan tanda tangan?",
     "Yes. Every code you create is entirely yours — no restrictions, no watermarks.": "Ya. Setiap kode yang Anda buat sepenuhnya milik Anda — tanpa batasan, tanpa tanda air.",
-    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Ya. HTML responsif dan ditampilkan dengan bersih di aplikasi seluler Gmail dan Outlook."
+    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Ya. HTML responsif dan ditampilkan dengan bersih di aplikasi seluler Gmail dan Outlook.",
+    "Failed to generate image": "Gagal membuat gambar",
+    "Powered by": "Ditenagai oleh",
+    "Add your X, Instagram, LinkedIn, TikTok, YouTube and more.": "Tambahkan X, Instagram, LinkedIn, TikTok, YouTube, dan lainnya.",
+    "Menu": "Menu",
+    "Sitemap": "Peta Situs",
+    "Signing you in…": "Anda sedang masuk...",
+    "Scanned card": "Kartu dipindai",
+    "Card not found.": "Kartu tidak ditemukan.",
+    "Unsupported image format — use PNG, JPG or SVG": "Format gambar tidak didukung — gunakan PNG, JPG, atau SVG"
   },
   "ms": {
     "Personal account": "Akaun peribadi",
@@ -10864,7 +10999,16 @@ export const PHRASES: Record<string, Record<string, string>> = {
     "What's the max download resolution?": "Berapakah resolusi muat turun maksimum?",
     "Where do I paste the signature?": "Di manakah saya menampal tandatangan?",
     "Yes. Every code you create is entirely yours — no restrictions, no watermarks.": "Ya. Setiap kod yang anda cipta adalah milik anda sepenuhnya — tanpa sekatan, tanpa tera air.",
-    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Ya. HTML adalah responsif dan dipapar dengan bersih dalam aplikasi mudah alih Gmail dan Outlook."
+    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Ya. HTML adalah responsif dan dipapar dengan bersih dalam aplikasi mudah alih Gmail dan Outlook.",
+    "Failed to generate image": "Gagal menjana imej",
+    "Powered by": "Dikuasakan oleh",
+    "Add your X, Instagram, LinkedIn, TikTok, YouTube and more.": "Tambah X, Instagram, LinkedIn, TikTok, YouTube anda dan banyak lagi.",
+    "Menu": "Menu",
+    "Sitemap": "Peta laman",
+    "Signing you in…": "Mendaftar masuk anda…",
+    "Scanned card": "Kad diimbas",
+    "Card not found.": "Kad tidak ditemui.",
+    "Unsupported image format — use PNG, JPG or SVG": "Format imej tidak disokong — gunakan PNG, JPG atau SVG"
   },
   "th": {
     "Personal account": "บัญชีส่วนตัว",
@@ -11543,7 +11687,16 @@ export const PHRASES: Record<string, Record<string, string>> = {
     "What's the max download resolution?": "ความละเอียดในการดาวน์โหลดสูงสุดคือเท่าไหร่?",
     "Where do I paste the signature?": "ฉันจะวางลายเซ็นได้ที่ไหน?",
     "Yes. Every code you create is entirely yours — no restrictions, no watermarks.": "ใช่ โค้ดทุกโค้ดที่คุณสร้างเป็นของคุณทั้งหมด — ไม่มีข้อจำกัด ไม่มีลายน้ำ",
-    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "ใช่ HTML เป็นแบบตอบสนองและแสดงผลได้สะอาดตาในแอปพลิเคชันมือถือ Gmail และ Outlook"
+    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "ใช่ HTML เป็นแบบตอบสนองและแสดงผลได้สะอาดตาในแอปพลิเคชันมือถือ Gmail และ Outlook",
+    "Failed to generate image": "สร้างภาพไม่สำเร็จ",
+    "Powered by": "ขับเคลื่อนโดย",
+    "Add your X, Instagram, LinkedIn, TikTok, YouTube and more.": "เพิ่ม X, Instagram, LinkedIn, TikTok, YouTube และอื่นๆ ของคุณ",
+    "Menu": "เมนู",
+    "Sitemap": "แผนผังเว็บไซต์",
+    "Signing you in…": "กำลังลงชื่อเข้าใช้…",
+    "Scanned card": "สแกนการ์ดแล้ว",
+    "Card not found.": "ไม่พบการ์ด",
+    "Unsupported image format — use PNG, JPG or SVG": "รูปแบบรูปภาพไม่รองรับ — กรุณาใช้ PNG, JPG หรือ SVG"
   },
   "vi": {
     "Personal account": "Tài khoản cá nhân",
@@ -12222,7 +12375,16 @@ export const PHRASES: Record<string, Record<string, string>> = {
     "What's the max download resolution?": "Độ phân giải tải xuống tối đa là bao nhiêu?",
     "Where do I paste the signature?": "Tôi dán chữ ký ở đâu?",
     "Yes. Every code you create is entirely yours — no restrictions, no watermarks.": "Có. Mọi mã bạn tạo đều thuộc về bạn hoàn toàn — không có hạn chế, không có hình mờ.",
-    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Có. HTML phản hồi nhanh và hiển thị rõ ràng trong các ứng dụng di động Gmail và Outlook."
+    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "Có. HTML phản hồi nhanh và hiển thị rõ ràng trong các ứng dụng di động Gmail và Outlook.",
+    "Failed to generate image": "Không thể tạo hình ảnh",
+    "Powered by": "Được cung cấp bởi",
+    "Add your X, Instagram, LinkedIn, TikTok, YouTube and more.": "Thêm X, Instagram, LinkedIn, TikTok, YouTube của bạn và nhiều hơn nữa.",
+    "Menu": "Menu",
+    "Sitemap": "Sitemap",
+    "Signing you in…": "Đang đăng nhập…",
+    "Scanned card": "Thẻ đã quét",
+    "Card not found.": "Không tìm thấy thẻ.",
+    "Unsupported image format — use PNG, JPG or SVG": "Định dạng hình ảnh không được hỗ trợ — hãy sử dụng PNG, JPG hoặc SVG"
   },
   "ar": {
     "Personal account": "حسابي الشخصي",
@@ -12901,6 +13063,15 @@ export const PHRASES: Record<string, Record<string, string>> = {
     "What's the max download resolution?": "ما هي أقصى دقة للتحميل؟",
     "Where do I paste the signature?": "أين ألصق التوقيع؟",
     "Yes. Every code you create is entirely yours — no restrictions, no watermarks.": "نعم. كل رمز تنشئه هو ملكك بالكامل — بدون قيود، بدون علامات مائية.",
-    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "نعم. HTML متجاوب ويعرض بشكل نظيف في تطبيقات Gmail و Outlook للهاتف."
+    "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps.": "نعم. HTML متجاوب ويعرض بشكل نظيف في تطبيقات Gmail و Outlook للهاتف.",
+    "Failed to generate image": "فشل توليد الصورة",
+    "Powered by": "مدعوم من",
+    "Add your X, Instagram, LinkedIn, TikTok, YouTube and more.": "أضف حساباتك على X و Instagram و LinkedIn و TikTok و YouTube والمزيد.",
+    "Menu": "القائمة",
+    "Sitemap": "خريطة الموقع",
+    "Signing you in…": "يتم تسجيل دخولك…",
+    "Scanned card": "البطاقة الممسوحة ضوئياً",
+    "Card not found.": "البطاقة غير موجودة.",
+    "Unsupported image format — use PNG, JPG or SVG": "صيغة الصورة غير مدعومة — استخدم PNG أو JPG أو SVG"
   },
 };
