@@ -12,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
 import { canManageCompany, useWs } from "@/lib/workspace";
 import { AssignDesignDialog } from "@/components/company/AssignDesignDialog";
+import { txDict } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/_authenticated/co/$slug/studio")({ component: Page });
 
@@ -39,7 +40,7 @@ const T = {
 function Page() {
   const { company, role } = useCompany();
   const { w, lang } = useWs();
-  const t = T[lang === "ar" ? "ar" : "en"];
+  const t = txDict(T.en, T.ar);
   const navigate = useNavigate();
   const [creating, setCreating] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);

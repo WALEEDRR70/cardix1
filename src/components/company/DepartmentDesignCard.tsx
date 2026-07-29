@@ -214,7 +214,7 @@ export function DepartmentDesignCard({
                       : "border-border bg-card text-muted-foreground")
                   }
                 >
-                  <span>{ar ? LABELS[key].ar : LABELS[key].en}</span>
+                  <span>{txPick(LABELS[key].en, LABELS[key].ar)}</span>
                   {on ? <Unlock className="h-3.5 w-3.5 text-primary" /> : <Lock className="h-3.5 w-3.5" />}
                 </button>
               );

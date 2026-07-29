@@ -15,6 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { txDict } from "@/lib/tx";
 
 const T = {
   en: {
@@ -62,7 +63,7 @@ export function AssignDesignDialog({
   lang: string;
   card: { id: string; name: string | null; design: unknown; template: string; accent_color: string } | null;
 }) {
-  const t = T[lang === "ar" ? "ar" : "en"];
+  const t = txDict(T.en, T.ar);
   const [dept, setDept] = useState<string>("");
   const [role, setRole] = useState<string>("");
   const [name, setName] = useState<string>("");

@@ -5,6 +5,7 @@ import { ToolShell } from "@/components/tools/ToolShell";
 import { QrGeneratorTool } from "@/components/tools/QrGeneratorTool";
 import { VCardGeneratorTool } from "@/components/tools/VCardGeneratorTool";
 import { EmailSignatureTool } from "@/components/tools/EmailSignatureTool";
+import { txDict } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/tools/$slug")({
   beforeLoad: ({ params }) => {
@@ -59,22 +60,16 @@ function ToolPage() {
   const isAr = locale === "ar";
 
   const faqs = slug === "qr-generator"
-    ? (isAr
-      ? [{ q: "هل الرموز الناتجة مجانية للاستخدام التجاري؟", a: "نعم. جميع الرموز التي تنشئها ملكك بالكامل، بلا قيود ولا علامة مائية." },
-         { q: "ما أعلى دقة يمكنني تنزيلها؟", a: "حتى 2000×2000 بكسل، مناسب للطباعة على الشارات واللوحات الكبيرة." }]
-      : [{ q: "Are the generated codes free for commercial use?", a: "Yes. Every code you create is entirely yours — no restrictions, no watermarks." },
-         { q: "What's the max download resolution?", a: "Up to 2000×2000 pixels, suitable for print, badges, and large signage." }])
+    ? (txDict([{ q: "Are the generated codes free for commercial use?", a: "Yes. Every code you create is entirely yours — no restrictions, no watermarks." },
+         { q: "What's the max download resolution?", a: "Up to 2000×2000 pixels, suitable for print, badges, and large signage." }], [{ q: "هل الرموز الناتجة مجانية للاستخدام التجاري؟", a: "نعم. جميع الرموز التي تنشئها ملكك بالكامل، بلا قيود ولا علامة مائية." },
+         { q: "ما أعلى دقة يمكنني تنزيلها؟", a: "حتى 2000×2000 بكسل، مناسب للطباعة على الشارات واللوحات الكبيرة." }]))
     : slug === "vcard-generator"
-    ? (isAr
-      ? [{ q: "ما هو ملف vCard؟", a: "معيار عالمي (.vcf) لجهات الاتصال يعمل على iPhone وAndroid وOutlook وGmail وأي دفتر عناوين حديث." },
-         { q: "هل بياناتي محفوظة على خوادمكم؟", a: "لا. الأداة تعمل بالكامل في متصفحك. لا تصل بياناتك إلى خوادمنا أبداً." }]
-      : [{ q: "What is a vCard file?", a: "A universal contact standard (.vcf) supported by iPhone, Android, Outlook, Gmail and every modern address book." },
-         { q: "Is my data stored on your servers?", a: "No. The tool runs entirely in your browser. Your data never touches our servers." }])
-    : (isAr
-      ? [{ q: "أين ألصق التوقيع؟", a: "Gmail: الإعدادات ← عام ← التوقيع. Outlook: الملف ← خيارات ← البريد ← التوقيعات." },
-         { q: "هل يعمل التوقيع على الجوال؟", a: "نعم. HTML متجاوب ويظهر بشكل نظيف على تطبيقات Gmail وOutlook للجوال." }]
-      : [{ q: "Where do I paste the signature?", a: "Gmail: Settings → General → Signature. Outlook: File → Options → Mail → Signatures." },
-         { q: "Does it work on mobile mail?", a: "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps." }]);
+    ? (txDict([{ q: "What is a vCard file?", a: "A universal contact standard (.vcf) supported by iPhone, Android, Outlook, Gmail and every modern address book." },
+         { q: "Is my data stored on your servers?", a: "No. The tool runs entirely in your browser. Your data never touches our servers." }], [{ q: "ما هو ملف vCard؟", a: "معيار عالمي (.vcf) لجهات الاتصال يعمل على iPhone وAndroid وOutlook وGmail وأي دفتر عناوين حديث." },
+         { q: "هل بياناتي محفوظة على خوادمكم؟", a: "لا. الأداة تعمل بالكامل في متصفحك. لا تصل بياناتك إلى خوادمنا أبداً." }]))
+    : (txDict([{ q: "Where do I paste the signature?", a: "Gmail: Settings → General → Signature. Outlook: File → Options → Mail → Signatures." },
+         { q: "Does it work on mobile mail?", a: "Yes. The HTML is responsive and renders cleanly in the Gmail and Outlook mobile apps." }], [{ q: "أين ألصق التوقيع؟", a: "Gmail: الإعدادات ← عام ← التوقيع. Outlook: الملف ← خيارات ← البريد ← التوقيعات." },
+         { q: "هل يعمل التوقيع على الجوال؟", a: "نعم. HTML متجاوب ويظهر بشكل نظيف على تطبيقات Gmail وOutlook للجوال." }]));
 
   return (
     <ToolShell lang={locale} title={c.h1} subtitle={c.subtitle} intro={c.longIntro} faqs={faqs}>
