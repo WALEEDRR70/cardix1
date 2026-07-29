@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
+import { LOCALE_META, SUPPORTED_LOCALES, DEFAULT_LOCALE } from "@/i18n/config";
 
 export const generateBio = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -9,14 +10,15 @@ export const generateBio = createServerFn({ method: "POST" })
       name: z.string().default(""),
       title: z.string().optional().default(""),
       company: z.string().optional().default(""),
-      lang: z.enum(["en", "ar"]).default("en"),
+      lang: z.enum(SUPPORTED_LOCALES).catch(DEFAULT_LOCALE).default(DEFAULT_LOCALE),
     }).parse(input),
   )
   .handler(async ({ data }) => {
     const key = process.env.LOVABLE_API_KEY;
     if (!key) throw new Error("Missing LOVABLE_API_KEY");
 
-    const langInstr = data.lang === "ar" ? "Reply in Arabic." : "Reply in English.";
+    const langName = LOCALE_META[data.lang]?.englishName ?? "English";
+    const langInstr = `Reply strictly in ${langName} (${data.lang}). Do not use any other language.`;
     const prompt = `Write a polished, elegant professional bio in 2 short sentences (max 220 characters). ${langInstr}
 Name: ${data.name || "N/A"}
 Title: ${data.title || "N/A"}
