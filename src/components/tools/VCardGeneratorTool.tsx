@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Download } from "lucide-react";
 import type { Locale } from "@/i18n/config";
+import { txDict } from "@/lib/tx";
 
 function esc(v: string) {
   return v.replace(/[\\;,\n]/g, (c) => ({ "\\": "\\\\", ";": "\\;", ",": "\\,", "\n": "\\n" }[c]!));
 }
 
 export function VCardGeneratorTool({ lang }: { lang: Locale }) {
-  const isAr = lang === "ar";
   const [f, setF] = useState({
     firstName: "", lastName: "", org: "", title: "",
     phone: "", email: "", url: "", street: "", city: "", country: "",
@@ -42,9 +42,11 @@ export function VCardGeneratorTool({ lang }: { lang: Locale }) {
     URL.revokeObjectURL(url);
   };
 
-  const L = isAr
-    ? { first: "الاسم الأول", last: "اسم العائلة", org: "الشركة", title: "المسمى الوظيفي", phone: "الهاتف", email: "البريد", url: "الموقع", street: "الشارع", city: "المدينة", country: "الدولة", dl: "تنزيل .vcf" }
-    : { first: "First name", last: "Last name", org: "Company", title: "Job title", phone: "Phone", email: "Email", url: "Website", street: "Street", city: "City", country: "Country", dl: "Download .vcf" };
+  const L = txDict(
+    { first: "First name", last: "Last name", org: "Company", title: "Job title", phone: "Phone", email: "Email", url: "Website", street: "Street", city: "City", country: "Country", dl: "Download .vcf" },
+    { first: "الاسم الأول", last: "اسم العائلة", org: "الشركة", title: "المسمى الوظيفي", phone: "الهاتف", email: "البريد", url: "الموقع", street: "الشارع", city: "المدينة", country: "الدولة", dl: "تنزيل .vcf" },
+    lang,
+  );
 
   const field = (label: string, k: keyof typeof f, type = "text") => (
     <label className="block">

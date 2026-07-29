@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Copy, Check } from "lucide-react";
 import type { Locale } from "@/i18n/config";
+import { txDict } from "@/lib/tx";
 
 export function EmailSignatureTool({ lang }: { lang: Locale }) {
-  const isAr = lang === "ar";
   const [f, setF] = useState({
     name: "", title: "", company: "", phone: "", email: "", url: "", accent: "#7C34FF",
   });
@@ -49,9 +49,11 @@ export function EmailSignatureTool({ lang }: { lang: Locale }) {
     setTimeout(() => setCopied(null), 1500);
   };
 
-  const L = isAr
-    ? { name: "الاسم", title: "المسمى", company: "الشركة", phone: "الهاتف", email: "البريد", url: "الموقع", accent: "لون التمييز", preview: "معاينة", rich: "نسخ للصق في Gmail/Outlook", raw: "نسخ HTML الخام" }
-    : { name: "Full name", title: "Job title", company: "Company", phone: "Phone", email: "Email", url: "Website", accent: "Accent color", preview: "Preview", rich: "Copy for Gmail/Outlook", raw: "Copy raw HTML" };
+  const L = txDict(
+    { name: "Full name", title: "Job title", company: "Company", phone: "Phone", email: "Email", url: "Website", accent: "Accent color", preview: "Preview", rich: "Copy for Gmail/Outlook", raw: "Copy raw HTML" },
+    { name: "الاسم", title: "المسمى", company: "الشركة", phone: "الهاتف", email: "البريد", url: "الموقع", accent: "لون التمييز", preview: "معاينة", rich: "نسخ للصق في Gmail/Outlook", raw: "نسخ HTML الخام" },
+    lang,
+  );
 
   const field = (label: string, k: keyof typeof f, type = "text") => (
     <label className="block">
