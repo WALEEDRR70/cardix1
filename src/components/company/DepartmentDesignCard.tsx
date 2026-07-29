@@ -15,7 +15,7 @@ import {
   setEditableFields,
   type EditableFieldKey,
 } from "@/lib/company-designs";
-import { tx } from "@/lib/tx";
+import { tx, txPick } from "@/lib/tx";
 
 
 const LABELS: Record<EditableFieldKey, { en: string; ar: string }> = {
