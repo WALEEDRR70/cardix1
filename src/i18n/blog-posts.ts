@@ -1,5 +1,6 @@
 // Blog engine — long-form SEO articles. Bilingual EN/AR authored; other locales fall back to EN.
 import type { Locale } from "@/i18n/config";
+import { BLOG_LOCALES } from "@/i18n/blog-locales";
 
 export interface BlogCopy {
   title: string;
@@ -363,7 +364,7 @@ export function getPost(slug: string) {
   return BLOG_POSTS.find((p) => p.slug === slug);
 }
 export function getPostCopy(post: BlogPost, locale: Locale): BlogCopy {
-  return post.copy[locale] ?? post.copy.en!;
+  return post.copy[locale] ?? BLOG_LOCALES[locale]?.[post.slug] ?? post.copy.en!;
 }
 export function getAllPostSlugs() {
   return BLOG_POSTS.map((p) => p.slug);
