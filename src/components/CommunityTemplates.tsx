@@ -78,7 +78,8 @@ export function CommunityTemplates({
           ? tx("Template added to the workspace")
           : tx("Card created from template"),
       );
-      navigate({ to: "/studio/$id", params: { id: cardId } });
+      // Straight to the card details form so the user fills in their data first.
+      navigate({ to: "/cards/$id", params: { id: cardId } });
     } catch (e) {
       toast.error(txErr(e));
     } finally {
