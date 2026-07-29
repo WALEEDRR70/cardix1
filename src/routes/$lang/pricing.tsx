@@ -133,30 +133,12 @@ function PricingPage() {
             {isAr ? "ابدأ مجاناً بدون بطاقة ائتمان. طوّر عندما تحتاج مزايا أكثر فقط." : "Start free with no credit card. Upgrade only when you need more."}
           </p>
 
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <div className="flex rounded-full border border-border/60 bg-card/50 p-1 text-sm">
-              {(["individual", "company"] as const).map((a) => (
-                <button
-                  key={a}
-                  onClick={() => setAudience(a)}
-                  className={"rounded-full px-4 py-2 font-medium transition " + (audience === a ? "bg-primary text-primary-foreground" : "text-muted-foreground")}
-                >
-                  {a === "individual" ? (isAr ? "أفراد" : "Individuals") : isAr ? "شركات" : "Companies"}
-                </button>
-              ))}
-            </div>
-            <div className="flex rounded-full border border-border/60 bg-card/50 p-1 text-sm">
-              {(["month", "year"] as const).map((i) => (
-                <button
-                  key={i}
-                  onClick={() => setInterval(i)}
-                  className={"rounded-full px-4 py-2 font-medium transition " + (interval === i ? "bg-primary text-primary-foreground" : "text-muted-foreground")}
-                >
-                  {i === "month" ? (isAr ? "شهري" : "Monthly") : isAr ? "سنوي" : "Yearly"}
-                </button>
-              ))}
-            </div>
+          <div className="mt-8 flex justify-center">
+            <p className="rounded-full border border-primary/40 bg-primary/10 px-5 py-2 text-sm font-medium text-primary">
+              {isAr ? "كل الباقات مجانية حتى إشعار آخر 🎉" : "All plans are free until further notice 🎉"}
+            </p>
           </div>
+
         </div>
       </section>
 
