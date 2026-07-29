@@ -5,6 +5,7 @@ import { useI18n } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { accountQueryKey } from "@/lib/account";
+import { txDict } from "@/lib/tx";
 
 
 type Card = {
@@ -49,7 +50,7 @@ export function OnboardingChecklist({ cards, userId }: { cards: Card[]; userId: 
   const { lang } = useI18n();
   const qc = useQueryClient();
   const [hidden, setHidden] = useState(false);
-  const c = lang === "ar" ? COPY.ar : COPY.en;
+  const c = txDict(COPY.en, COPY.ar);
 
   const { data: profile } = useQuery({
     queryKey: ["onboarding-profile", userId],

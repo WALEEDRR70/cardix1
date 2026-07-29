@@ -8,7 +8,7 @@ import { analyzeCardImage, type AiCardAnalysis } from "@/lib/studio/ai.functions
 import { buildVariation, VARIATIONS, type VariationKey } from "@/lib/studio/variations";
 import { FONT_PAIRS, FONT_PAIR_KEYS, type FontPairKey } from "@/lib/studio/fonts";
 import { useStudio } from "@/lib/studio/store";
-import { tx } from "@/lib/tx";
+import { tx, txDict } from "@/lib/tx";
 
 export function AiPanel({ ar }: { ar: boolean }) {
   const { dispatch } = useStudio();
@@ -207,7 +207,7 @@ export function AiPanel({ ar }: { ar: boolean }) {
                       : "border-border/60 text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  {ar ? v.ar : v.en}
+                  {txDict(v.en, v.ar)}
                 </button>
               ))}
             </div>

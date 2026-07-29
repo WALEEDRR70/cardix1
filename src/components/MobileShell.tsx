@@ -8,6 +8,7 @@ import { getReadableText } from "@/lib/contrast";
 import { stripLocalePrefix } from "@/lib/locale-routing";
 import { SiteTopBar } from "@/components/SiteTopBar";
 import { AccountSwitcher } from "@/components/AccountSwitcher";
+import { tx } from "@/lib/tx";
 
 
 export function MobileShell({
@@ -58,8 +59,8 @@ function DesktopSidebar() {
     { to: "/dashboard", icon: Home, label: t.home },
     { to: "/vault", icon: BookmarkCheck, label: t.vault },
     { to: "/scan", icon: ScanLine, label: t.scanCard },
-    { to: "/templates", icon: LayoutTemplate, label: lang === "ar" ? "معرض القوالب" : "Templates" },
-    { to: "/tools", icon: Wrench, label: lang === "ar" ? "الأدوات" : "Tools" },
+    { to: "/templates", icon: LayoutTemplate, label: tx("Templates") },
+    { to: "/tools", icon: Wrench, label: tx("Tools") },
     { to: "/settings", icon: SettingsIcon, label: t.settings },
   ] as const;
 

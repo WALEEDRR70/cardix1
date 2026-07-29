@@ -5,6 +5,7 @@ import { CATEGORY_LABEL, LANDING_PAGES, type LandingCategory } from "@/i18n/land
 import type { Locale } from "@/i18n/config";
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { GetStartedCards } from "@/components/marketing/GetStartedCards";
+import { tx } from "@/lib/tx";
 
 export function LandingPageView({
   copy, lang, category, slug,
@@ -31,7 +32,7 @@ export function LandingPageView({
               {copy.ctaButton} <ArrowRight className="size-4" />
             </Link>
             <Link to="/" className="inline-flex items-center gap-2 rounded-full border border-border/60 px-6 py-3 hover:bg-muted/50 transition-colors">
-              {lang === "ar" ? "استكشف Cardixn" : "Explore Cardixn"}
+              {tx("Explore Cardixn")}
             </Link>
           </div>
         </div>
@@ -51,7 +52,7 @@ export function LandingPageView({
       <section className="border-y border-border/40 bg-muted/20">
         <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-center mb-12">
-            {lang === "ar" ? "لماذا Cardixn" : "Why Cardixn"}
+            {tx("Why Cardixn")}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {copy.features.map((f, i) => (
@@ -72,7 +73,7 @@ export function LandingPageView({
       {/* FAQ */}
       <section className="mx-auto max-w-3xl px-6 py-16 md:py-24">
         <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-center mb-10">
-          {lang === "ar" ? "الأسئلة الشائعة" : "Frequently asked questions"}
+          {tx("Frequently asked questions")}
         </h2>
         <div className="space-y-4">
           {copy.faqs.map((f, i) => (
@@ -91,7 +92,7 @@ export function LandingPageView({
         <section className="border-t border-border/40 bg-muted/10">
           <div className="mx-auto max-w-6xl px-6 py-16">
             <h2 className="text-2xl font-semibold tracking-tight mb-6">
-              {lang === "ar" ? "مواضيع ذات صلة" : "Related topics"}
+              {tx("Related topics")}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {related.map((p) => {
@@ -106,7 +107,7 @@ export function LandingPageView({
             </div>
             <div className="mt-8 text-center">
               <Link to="/l" className="text-primary hover:underline">
-                {lang === "ar" ? "استعرض جميع الأدلة ←" : "Browse all guides →"}
+                {tx("Browse all guides →")}
               </Link>
             </div>
           </div>

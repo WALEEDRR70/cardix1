@@ -12,6 +12,7 @@ import { useWs, type Company, type CompanyRole } from "@/lib/workspace";
 import { Card, TextField, SaveBar, useSaveCompany, LogoUpload } from "@/components/company/sections";
 import { ServicesEditor } from "@/components/company/ServicesEditor";
 import { parseServices, type CompanyService } from "@/lib/company-services";
+import { txDict } from "@/lib/tx";
 
 
 /* ------------------------------ labels ------------------------------ */
@@ -52,7 +53,7 @@ const AR: typeof EN = {
 
 function useT() {
   const { lang, w } = useWs();
-  return { t: lang === "ar" ? AR : EN, w, lang };
+  return { t: txDict(EN, AR), w, lang };
 }
 
 function origin() {

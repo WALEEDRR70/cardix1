@@ -12,7 +12,7 @@ import { isSvgSrc } from "@/lib/studio/svg";
 import { SvgPalette } from "@/components/studio/SvgPalette";
 import { GradientEditor } from "@/components/studio/GradientEditor";
 import { PanelSection, Row, NumInput, ColorInput, Seg, MiniBtn, SwitchRow, fieldCls } from "@/components/studio/inspector";
-import { tx } from "@/lib/tx";
+import { tx, txPick } from "@/lib/tx";
 
 const BG_PRESETS: string[] = [
   "linear-gradient(160deg,#0b0713,#2c125a)",
@@ -54,7 +54,7 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
             >
               {!activeSize && <option value="custom">{tx("Custom")}</option>}
               {CARD_SIZES.map((s) => (
-                <option key={s.key} value={s.key}>{ar ? s.labelAr : s.label}</option>
+                <option key={s.key} value={s.key}>{txPick(s.label, s.labelAr)}</option>
               ))}
             </select>
           </Row>

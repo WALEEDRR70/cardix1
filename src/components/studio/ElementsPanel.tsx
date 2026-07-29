@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import { AiPanel } from "./AiPanel";
 import { SvgBackgrounds } from "./SvgBackgrounds";
 import { SOCIAL_ICONS, SOCIAL_ICON_KEYS } from "@/lib/studio/social-icons";
-import { tx } from "@/lib/tx";
+import { tx, txDict, txPick } from "@/lib/tx";
 
 type Item = {
   key: string; label: string; labelAr: string; icon: React.ElementType;
@@ -130,7 +130,7 @@ export function ElementsPanel({ ar }: { ar: boolean }) {
             )}
           >
             <t.icon className="h-3.5 w-3.5" />
-            {ar ? t.ar : t.en}
+            {txDict(t.en, t.ar)}
           </button>
         ))}
       </div>
@@ -171,7 +171,7 @@ function Library({ ar }: { ar: boolean }) {
           return (
             <Section
               key={g.key}
-              title={ar ? g.ar : g.en}
+              title={txDict(g.en, g.ar)}
               count={items.length}
               defaultOpen={g.key === "content"}
               forceOpen={!!term}
@@ -180,12 +180,12 @@ function Library({ ar }: { ar: boolean }) {
                 {items.map((it) => (
                   <button
                     key={it.key}
-                    title={ar ? it.labelAr : it.label}
+                    title={txPick(it.label, it.labelAr)}
                     onClick={() => { const [type, patch] = it.make(); addNode(type, patch); }}
                     className="group flex aspect-square flex-col items-center justify-center gap-1 rounded-lg border border-border/50 bg-background/40 p-1 text-[9px] leading-tight text-muted-foreground transition hover:-translate-y-0.5 hover:border-accent/60 hover:bg-accent/10 hover:text-foreground"
                   >
                     <it.icon className="h-4 w-4 transition group-hover:text-accent" />
-                    <span className="w-full truncate text-center">{ar ? it.labelAr : it.label}</span>
+                    <span className="w-full truncate text-center">{txPick(it.label, it.labelAr)}</span>
                   </button>
                 ))}
               </div>
