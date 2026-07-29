@@ -28,7 +28,7 @@ import {
   type TemplateAudience,
   type TemplateTarget,
 } from "@/lib/templates";
-import type { StudioDoc } from "@/lib/studio/types";
+import { SAMPLE_VALUES, type StudioDoc } from "@/lib/studio/types";
 import { recolorDesign, docAccent } from "@/lib/studio/recolor";
 import { TemplateColorSwatches } from "@/components/TemplateColorSwatches";
 import { tx, txErr } from "@/lib/tx";
@@ -92,7 +92,7 @@ function TemplatesGallery() {
     supabase.auth.getSession().then(({ data }) => setUid(data.session?.user.id ?? null));
   }, []);
 
-  /** The user's own card — template previews are filled with this data so they see the real result. */
+  /** The user's main card — template previews are filled with this data so they see the real result. */
   const { data: myCard } = useQuery({
     queryKey: ["preview-card", uid],
     queryFn: async () => {
@@ -102,15 +102,33 @@ function TemplatesGallery() {
         .eq("user_id", uid!)
         .order("is_published", { ascending: false })
         .order("updated_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      return data;
+        .limit(20);
+      const rows = data ?? [];
+      // Prefer the personal main card, then any published card, then anything.
+      return (
+        rows.find((c) => !c.company_id && c.is_published) ??
+        rows.find((c) => !c.company_id) ??
+        rows.find((c) => c.is_published) ??
+        rows[0] ??
+        null
+      );
     },
     enabled: !!uid,
     staleTime: 60_000,
   });
 
-  const previewValues = myCard ? cardDesignValues(myCard) : undefined;
+  /**
+   * Preview data: the real card fields, with the studio's default sample text
+   * filling any field the user left empty (and everything when there is no card).
+   */
+  const previewValues = (() => {
+    const base: Record<string, string> = { ...SAMPLE_VALUES };
+    if (!myCard) return base;
+    const real = cardDesignValues(myCard);
+    for (const [k, v] of Object.entries(real)) if (v && v.trim()) base[k] = v;
+    return base;
+  })();
+
 
   const { data: templates = [], isLoading } = useQuery({
     queryKey:
