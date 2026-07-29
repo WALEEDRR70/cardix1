@@ -57,7 +57,13 @@ function AdminBilling() {
   const { data: isAdmin, isLoading: roleLoading } = useQuery({
     queryKey: ["is-admin", user.id],
     queryFn: async () => {
-      const { data } = await db.rpc("has_role", { _user_id: user.id, _role: "admin" });
+      // UI hint only — every privileged action is re-checked server-side.
+      const { data } = await db
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .eq("role", "admin")
+        .maybeSingle();
       return Boolean(data);
     },
   });
