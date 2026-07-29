@@ -5,16 +5,15 @@ import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { getAllPosts, getPostCopy } from "@/i18n/blog-posts";
 import { ArrowRight, Calendar, Clock } from "lucide-react";
 import { GetStartedCards } from "@/components/marketing/GetStartedCards";
+import { tx } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/blog/")({
   head: ({ params }) => {
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}/blog`;
     const isAr = lang === "ar";
-    const title = isAr ? "مدونة Cardixn — رؤى البطاقات الرقمية والشبكات المهنية" : "Cardixn Blog — Insights on Digital Cards & Modern Networking";
-    const description = isAr
-      ? "مقالات طويلة وأدلة عملية ودراسات حالة حول البطاقات الرقمية و NFC و QR و OCR والتحول من الورق."
-      : "Long-form articles, playbooks and case studies on digital business cards, NFC, QR, AI OCR and the death of paper.";
+    const title = tx("Cardixn Blog — Insights on Digital Cards & Modern Networking", lang);
+    const description = tx("Long-form articles, playbooks and case studies on digital business cards, NFC, QR, AI OCR and the death of paper.", lang);
     return {
       meta: [
         { title }, { name: "description", content: description },
@@ -55,14 +54,12 @@ function BlogIndex() {
       <section className="relative overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.18),transparent_60%)]" />
         <div className="relative mx-auto max-w-5xl px-5 py-12 sm:px-6 md:py-28">
-          <Link to="/" className="text-xs uppercase tracking-widest text-primary/80 hover:text-primary">Cardixn · {isAr ? "المدونة" : "Blog"}</Link>
+          <Link to="/" className="text-xs uppercase tracking-widest text-primary/80 hover:text-primary">Cardixn · {tx("Blog")}</Link>
           <h1 className="mt-4 text-4xl md:text-6xl font-bold leading-tight tracking-tight bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-transparent">
-            {isAr ? "رؤى وأدلة عن البطاقات الرقمية" : "Insights & playbooks for the digital-card era"}
+            {tx("Insights & playbooks for the digital-card era")}
           </h1>
           <p className="mt-4 max-w-3xl text-lg md:text-xl text-muted-foreground">
-            {isAr
-              ? "مقالات معمّقة يكتبها فريق Cardixn. تحليل الاتجاهات، حالات عملية، وأدلة لتحويل بطاقتك إلى أصل قوي."
-              : "Deeply-researched writing from the Cardixn team. Trends, real-world case studies, and no-fluff guides to turn your card into a serious business asset."}
+            {tx("Deeply-researched writing from the Cardixn team. Trends, real-world case studies, and no-fluff guides to turn your card into a serious business asset.")}
           </p>
         </div>
       </section>
@@ -90,7 +87,7 @@ function BlogIndex() {
                   ))}
                 </div>
                 <div className="mt-6 inline-flex items-center gap-2 text-sm text-primary">
-                  {isAr ? "اقرأ المقال" : "Read article"} <ArrowRight className="size-4 rtl:rotate-180" />
+                  {tx("Read article")} <ArrowRight className="size-4 rtl:rotate-180" />
                 </div>
               </Link>
             );

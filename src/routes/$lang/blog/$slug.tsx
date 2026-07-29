@@ -4,6 +4,7 @@ import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } fro
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { getPost, getPostCopy, getAllPosts } from "@/i18n/blog-posts";
 import { ArrowRight, Calendar, Clock } from "lucide-react";
+import { tx } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/blog/$slug")({
   beforeLoad: ({ params }) => {
@@ -83,7 +84,7 @@ function BlogPostPage() {
     <MarketingLayout lang={locale}>
       <article className="mx-auto max-w-3xl px-6 py-16 md:py-24">
         <Link to="/blog" className="text-xs uppercase tracking-widest text-primary/80 hover:text-primary">
-          ← Cardixn · {isAr ? "المدونة" : "Blog"}
+          ← Cardixn · {tx("Blog")}
         </Link>
         <h1 className="mt-6 text-3xl md:text-5xl font-bold leading-tight tracking-tight bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-transparent">
           {c.h1}
@@ -111,17 +112,17 @@ function BlogPostPage() {
         </div>
 
         <div className="mt-16 rounded-3xl border border-primary/40 bg-gradient-to-br from-primary/15 to-primary/5 p-8 md:p-10 text-center">
-          <h3 className="text-2xl md:text-3xl font-semibold">{isAr ? "أنشئ بطاقتك الرقمية الآن" : "Create your digital card now"}</h3>
-          <p className="mt-3 text-muted-foreground">{isAr ? "60 ثانية. مجاناً. بلا بطاقة ائتمانية." : "60 seconds. Free. No credit card."}</p>
+          <h3 className="text-2xl md:text-3xl font-semibold">{tx("Create your digital card now")}</h3>
+          <p className="mt-3 text-muted-foreground">{tx("60 seconds. Free. No credit card.")}</p>
           <Link to="/auth" className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-primary-foreground font-medium shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-shadow">
-            {isAr ? "ابدأ الآن" : "Get started"} <ArrowRight className="size-4 rtl:rotate-180" />
+            {tx("Get started")} <ArrowRight className="size-4 rtl:rotate-180" />
           </Link>
         </div>
       </article>
 
       {related.length > 0 && (
         <section className="mx-auto max-w-5xl px-6 pb-24">
-          <h3 className="text-xl md:text-2xl font-semibold mb-6">{isAr ? "مقالات ذات صلة" : "Related reading"}</h3>
+          <h3 className="text-xl md:text-2xl font-semibold mb-6">{tx("Related reading")}</h3>
           <div className="grid gap-4 md:grid-cols-3">
             {related.map((r) => {
               const rc = getPostCopy(r, locale);

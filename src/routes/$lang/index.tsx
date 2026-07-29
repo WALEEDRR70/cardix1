@@ -53,6 +53,7 @@ import {
 import { getLandingSeo } from "@/i18n/landing-seo";
 import { getLandingCopy, type LandingCopy } from "@/i18n/landing";
 import { SeoSections, getSeoFaqItems } from "@/components/landing/SeoSections";
+import { tx } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/")({
   head: ({ params }) => {
@@ -239,8 +240,8 @@ function Nav({
 }) {
   const { lang } = useI18n();
   const ar = lang === "ar";
-  const toolsLabel = ar ? "الأدوات" : "Tools";
-  const blogLabel = ar ? "المدونة" : "Blog";
+  const toolsLabel = tx("Tools");
+  const blogLabel = tx("Blog");
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 8);
@@ -899,37 +900,37 @@ function FinalCta({
 function Footer({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy }) {
   const ar = useI18n().lang === "ar";
   const productLinks = [
-    { to: "/l/digital-business-card", label: ar ? "بطاقة أعمال رقمية" : "Digital Business Card" },
-    { to: "/l/nfc-business-card", label: ar ? "بطاقة NFC" : "NFC Business Card" },
-    { to: "/l/qr-business-card", label: ar ? "بطاقة QR" : "QR Business Card" },
-    { to: "/l/business-card-scanner", label: ar ? "ماسح البطاقات (OCR)" : "Card Scanner (OCR)" },
-    { to: "/l/business-card-templates", label: ar ? "القوالب" : "Templates" },
-    { to: "/l/luxury-business-card", label: ar ? "بطاقات فاخرة" : "Luxury Cards" },
+    { to: "/l/digital-business-card", label: tx("Digital Business Card") },
+    { to: "/l/nfc-business-card", label: tx("NFC Business Card") },
+    { to: "/l/qr-business-card", label: tx("QR Business Card") },
+    { to: "/l/business-card-scanner", label: tx("Card Scanner (OCR)") },
+    { to: "/l/business-card-templates", label: tx("Templates") },
+    { to: "/l/luxury-business-card", label: tx("Luxury Cards") },
   ];
   const toolLinks = [
-    { to: "/tools/qr-generator", label: ar ? "مولّد رمز QR" : "QR Code Generator" },
-    { to: "/tools/vcard-generator", label: ar ? "مولّد vCard (.vcf)" : "vCard (.vcf) Generator" },
-    { to: "/tools/email-signature", label: ar ? "منشئ توقيع البريد" : "Email Signature Builder" },
-    { to: "/tools", label: ar ? "كل الأدوات المجانية" : "All Free Tools" },
+    { to: "/tools/qr-generator", label: tx("QR Code Generator") },
+    { to: "/tools/vcard-generator", label: tx("vCard (.vcf) Generator") },
+    { to: "/tools/email-signature", label: tx("Email Signature Builder") },
+    { to: "/tools", label: tx("All Free Tools") },
   ];
   const professionLinks = [
-    { to: "/l/for-real-estate-agents", label: ar ? "للعقاريين" : "For Real Estate" },
-    { to: "/l/for-doctors", label: ar ? "للأطباء" : "For Doctors" },
-    { to: "/l/for-lawyers", label: ar ? "للمحامين" : "For Lawyers" },
-    { to: "/l/for-sales-teams" as any, label: ar ? "لفرق المبيعات" : "For Sales Teams" },
+    { to: "/l/for-real-estate-agents", label: tx("For Real Estate") },
+    { to: "/l/for-doctors", label: tx("For Doctors") },
+    { to: "/l/for-lawyers", label: tx("For Lawyers") },
+    { to: "/l/for-sales-teams" as any, label: tx("For Sales Teams") },
   ];
   const learnLinks = [
-    { to: "/blog", label: ar ? "المدونة" : "Blog" },
+    { to: "/blog", label: tx("Blog") },
     {
       to: "/blog/digital-business-cards-2026-complete-guide",
-      label: ar ? "دليل 2026 الشامل" : "2026 Complete Guide",
+      label: tx("2026 Complete Guide"),
     },
-    { to: "/blog/nfc-vs-qr-which-is-better", label: ar ? "NFC مقابل QR" : "NFC vs QR" },
+    { to: "/blog/nfc-vs-qr-which-is-better", label: tx("NFC vs QR") },
     {
       to: "/blog/how-to-create-digital-business-card",
-      label: ar ? "كيف تنشئ بطاقتك" : "How to Create One",
+      label: tx("How to Create One"),
     },
-    { to: "/blog/ai-ocr-scan-paper-cards", label: ar ? "شرح المسح الذكي" : "AI OCR Explained" },
+    { to: "/blog/ai-ocr-scan-paper-cards", label: tx("AI OCR Explained") },
   ];
   return (
     <footer className="border-t border-border/60">
@@ -945,10 +946,10 @@ function Footer({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy }
             <LocaleSwitcher compact />
           </div>
         </div>
-        <FooterCol title={ar ? "المنتج" : "Product"} items={productLinks} />
-        <FooterCol title={ar ? "أدوات مجانية" : "Free Tools"} items={toolLinks} />
-        <FooterCol title={ar ? "للمحترفين" : "For Professionals"} items={professionLinks} />
-        <FooterCol title={ar ? "تعلّم" : "Learn"} items={learnLinks} />
+        <FooterCol title={tx("Product")} items={productLinks} />
+        <FooterCol title={tx("Free Tools")} items={toolLinks} />
+        <FooterCol title={tx("For Professionals")} items={professionLinks} />
+        <FooterCol title={tx("Learn")} items={learnLinks} />
       </div>
       <div className="border-t border-border/60">
         <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center justify-between gap-3 px-5 py-5 text-[11px] text-muted-foreground lg:flex-row lg:px-10">

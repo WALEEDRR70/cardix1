@@ -15,6 +15,7 @@ import {
   setEditableFields,
   type EditableFieldKey,
 } from "@/lib/company-designs";
+import { tx } from "@/lib/tx";
 
 
 const LABELS: Record<EditableFieldKey, { en: string; ar: string }> = {
@@ -75,7 +76,7 @@ export function DepartmentDesignCard({
       });
       navigate({ to: "/studio/$id", params: { id: cardId } });
     } catch {
-      toast.error(ar ? "تعذّر فتح المصمم" : "Could not open the designer");
+      toast.error(tx("Could not open the designer"));
       setOpening(false);
     }
   }
@@ -102,9 +103,9 @@ export function DepartmentDesignCard({
       const origin = typeof window !== "undefined" ? window.location.origin : "https://cardixn.com";
       await navigator.clipboard.writeText(`${origin}/join/${token}`);
       qc.invalidateQueries({ queryKey: ["company-invitations", companyId] });
-      toast.success(ar ? "تم نسخ رابط الدعوة" : "Invite link copied");
+      toast.success(tx("Invite link copied"));
     } catch {
-      toast.error(ar ? "تعذّر إنشاء الرابط" : "Could not create the link");
+      toast.error(tx("Could not create the link"));
     } finally {
       setInviting(false);
     }
@@ -122,7 +123,7 @@ export function DepartmentDesignCard({
       qc.invalidateQueries({ queryKey: ["department-designs", companyId] });
       qc.invalidateQueries({ queryKey: ["company-card-designs", companyId] });
     } catch {
-      toast.error(ar ? "تعذّر الحفظ" : "Could not save");
+      toast.error(tx("Could not save"));
     } finally {
       setSaving(false);
     }
@@ -151,7 +152,7 @@ export function DepartmentDesignCard({
                   qc.invalidateQueries({ queryKey: ["department-designs", companyId] });
                 }}
                 className="shrink-0 text-muted-foreground hover:text-destructive"
-                aria-label={ar ? "إزالة" : "Remove"}
+                aria-label={tx("Remove")}
               >
                 <Trash2 className="h-3.5 w-3.5" />
               </button>
@@ -166,7 +167,7 @@ export function DepartmentDesignCard({
               className="inline-flex items-center justify-center gap-1 rounded-full border border-border bg-card px-2.5 py-1.5 text-[11px] hover:border-primary/60 hover:text-primary disabled:opacity-60"
             >
               {opening ? <Loader2 className="h-3 w-3 animate-spin" /> : <Pencil className="h-3 w-3" />}
-              <span className="truncate">{ar ? "تعديل التصميم" : "Edit design"}</span>
+              <span className="truncate">{tx("Edit design")}</span>
             </button>
 
             <button
@@ -176,7 +177,7 @@ export function DepartmentDesignCard({
               className="inline-flex items-center justify-center gap-1 rounded-full border border-border bg-card px-2.5 py-1.5 text-[11px] hover:border-primary/60 hover:text-primary disabled:opacity-60"
             >
               {inviting ? <Loader2 className="h-3 w-3 animate-spin" /> : <Copy className="h-3 w-3" />}
-              <span className="truncate">{ar ? "نسخ رابط دعوة" : "Copy invite link"}</span>
+              <span className="truncate">{tx("Copy invite link")}</span>
             </button>
             <button
               type="button"
@@ -184,7 +185,7 @@ export function DepartmentDesignCard({
               className="col-span-2 inline-flex items-center justify-center gap-1 rounded-full border border-border bg-card px-2.5 py-1.5 text-[11px] hover:border-primary/60 hover:text-primary sm:col-span-1"
             >
               <Lock className="h-3 w-3" />
-              <span className="truncate">{ar ? "العناصر القابلة للتعديل" : "Editable fields"}</span>
+              <span className="truncate">{tx("Editable fields")}</span>
               <span className="text-muted-foreground">({fields.length}/{EDITABLE_FIELD_KEYS.length})</span>
             </button>
           </div>
@@ -195,9 +196,7 @@ export function DepartmentDesignCard({
       {open && (
         <div className="mt-3 border-t border-border/60 pt-3">
           <p className="mb-2 text-[11px] text-muted-foreground">
-            {ar
-              ? "حدّد ما يستطيع الموظف تغييره في بطاقته — الباقي يبقى ثابتًا من الشركة."
-              : "Choose what an employee may change on their card — everything else stays company-locked."}
+            {tx("Choose what an employee may change on their card — everything else stays company-locked.")}
           </p>
           <div className="grid gap-1.5 sm:grid-cols-2">
             {EDITABLE_FIELD_KEYS.map((key) => {

@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Heart } from "lucide-react";
 import { toast } from "sonner";
 import { listFavoriteTemplateIds, toggleFavoriteTemplate } from "@/lib/templates";
+import { tx } from "@/lib/tx";
 
 /** Shared query for the ids the current user saved. */
 export function useFavoriteTemplateIds(userId: string | null) {
@@ -51,8 +52,8 @@ export function FavoriteTemplateButton({
     onSuccess: (now) => {
       toast.success(
         now
-          ? ar ? "تمت الإضافة إلى المفضلة" : "Saved to favourites"
-          : ar ? "تمت الإزالة من المفضلة" : "Removed from favourites",
+          ? tx("Saved to favourites")
+          : tx("Removed from favourites"),
       );
     },
     onSettled: () => {
@@ -75,7 +76,7 @@ export function FavoriteTemplateButton({
       disabled={isPending}
       onClick={() => mutate()}
       aria-pressed={active}
-      title={active ? (ar ? "إزالة من المفضلة" : "Remove from favourites") : ar ? "حفظ في المفضلة" : "Save to favourites"}
+      title={active ? (tx("Remove from favourites")) : tx("Save to favourites")}
       className={
         "inline-flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-2 text-[11px] font-semibold transition disabled:opacity-60 " +
         (active

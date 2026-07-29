@@ -6,6 +6,7 @@ import { Link } from "@/lib/nav";
 import { emptyDoc, type StudioDoc } from "@/lib/studio/types";
 import { StudioWorkspace } from "@/components/studio/StudioWorkspace";
 import { ArrowLeft, Building2, LayoutTemplate, Loader2 } from "lucide-react";
+import { tx } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/_authenticated/studio/$id")({
   head: () => ({
@@ -113,19 +114,19 @@ function Studio({ cardId, title, initial, values, company }: { cardId: string; t
         <>
           <Link to={company?.slug ? `/co/${company.slug}/studio` : `/cards/${cardId}`} className="flex items-center gap-1 whitespace-nowrap text-muted-foreground hover:text-foreground">
             <ArrowLeft className="h-3.5 w-3.5 rtl:rotate-180" />
-            {company?.slug ? (ar ? "رجوع إلى مساحة الشركة" : "Back to workspace") : ar ? "رجوع إلى البطاقة" : "Back to card"}
+            {company?.slug ? (tx("Back to workspace")) : tx("Back to card")}
           </Link>
           <span className="mx-1 h-3 w-px bg-border/60" />
           <Link to="/templates" className="flex items-center gap-1 whitespace-nowrap text-muted-foreground hover:text-foreground">
             <LayoutTemplate className="h-3.5 w-3.5" />
-            {ar ? "معرض القوالب" : "Template gallery"}
+            {tx("Template gallery")}
           </Link>
           {company?.slug && (
             <>
               <span className="mx-1 h-3 w-px bg-border/60" />
               <Link to={`/co/${company.slug}`} className="flex items-center gap-1 whitespace-nowrap text-muted-foreground hover:text-foreground">
                 <Building2 className="h-3.5 w-3.5" />
-                {company.name || (ar ? "مساحة الشركة" : "Company workspace")}
+                {company.name || (tx("Company workspace"))}
               </Link>
             </>
           )}

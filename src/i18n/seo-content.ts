@@ -1,4 +1,5 @@
 import type { Locale } from "./config";
+import { SEO_LOCALES } from "./seo-locales";
 
 /* Data model for the long-form SEO sections. Every locale ships the
    full shape; translations focus on keeping every heading, list item,
@@ -1401,24 +1402,21 @@ export const SEO_CONTENT: Record<Locale, SeoContent> = {
   de,
   es,
   pt,
-  // Locales below inherit English content wholesale via the same
-  // overlay helper. This keeps the page shipping the full JSON-LD
-  // and long-form SEO on every route while translations for these
-  // languages are authored in follow-up passes.
-  it: tr({}),
-  ru: tr({}),
-  tr: tr({}),
-  nl: tr({}),
-  pl: tr({}),
-  zh: tr({}),
-  "zh-TW": tr({}),
-  ja: tr({}),
-  ko: tr({}),
-  hi: tr({}),
-  id: tr({}),
-  ms: tr({}),
-  th: tr({}),
-  vi: tr({}),
+  // Locales below use generated full translations of the English source.
+  it: tr(SEO_LOCALES["it"] as DeepPartial<SeoContent>),
+  ru: tr(SEO_LOCALES["ru"] as DeepPartial<SeoContent>),
+  tr: tr(SEO_LOCALES["tr"] as DeepPartial<SeoContent>),
+  nl: tr(SEO_LOCALES["nl"] as DeepPartial<SeoContent>),
+  pl: tr(SEO_LOCALES["pl"] as DeepPartial<SeoContent>),
+  zh: tr(SEO_LOCALES["zh"] as DeepPartial<SeoContent>),
+  "zh-TW": tr(SEO_LOCALES["zh-TW"] as DeepPartial<SeoContent>),
+  ja: tr(SEO_LOCALES["ja"] as DeepPartial<SeoContent>),
+  ko: tr(SEO_LOCALES["ko"] as DeepPartial<SeoContent>),
+  hi: tr(SEO_LOCALES["hi"] as DeepPartial<SeoContent>),
+  id: tr(SEO_LOCALES["id"] as DeepPartial<SeoContent>),
+  ms: tr(SEO_LOCALES["ms"] as DeepPartial<SeoContent>),
+  th: tr(SEO_LOCALES["th"] as DeepPartial<SeoContent>),
+  vi: tr(SEO_LOCALES["vi"] as DeepPartial<SeoContent>),
 };
 
 export function getSeoContent(lang: Locale): SeoContent {

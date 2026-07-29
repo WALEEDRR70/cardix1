@@ -19,36 +19,33 @@ import {
 } from "@/lib/company-designs";
 import { syncCompanyCardDesigns } from "@/lib/company-designs.functions";
 import type { StudioDoc } from "@/lib/studio/types";
+import { tx } from "@/lib/tx";
 
 const ROLES: CompanyRole[] = ["admin", "manager", "employee", "viewer"];
 
 function txt(ar: boolean) {
   return {
-    title: ar ? "بطاقات الشركة حسب القسم والدور" : "Company cards by department & role",
-    desc: ar
-      ? "صمّم بطاقة لكل فئة: موظفو التسويق، مسؤولو التسويق، مدير التسويق… وعند ترقية الموظف أو نقله يتغير تصميم بطاقته تلقائيًا."
-      : "Design one card per group: marketing employees, marketing leads, the marketing director… When someone is promoted or moved, their card design switches automatically.",
-    name: ar ? "اسم التصميم" : "Design name",
-    department: ar ? "القسم" : "Department",
-    role: ar ? "الدور" : "Role",
-    anyDept: ar ? "كل الأقسام" : "All departments",
-    anyRole: ar ? "كل الأدوار" : "All roles",
-    classic: ar ? "القالب الكلاسيكي" : "Classic template",
-    accent: ar ? "اللون" : "Accent colour",
-    add: ar ? "إضافة تصميم" : "Add design",
-    none: ar ? "لا توجد تصاميم بعد" : "No card designs yet",
-    designSource: ar ? "مصدر التصميم" : "Design source",
-    pickDesign: ar ? "اختر تصميمًا من الاستوديو" : "Pick a Studio design",
-    noSources: ar
-      ? "صمّم بطاقة في الاستوديو داخل هذه المساحة لتستخدمها هنا."
-      : "Create a card in the Studio inside this workspace to use it here.",
-    clearDesign: ar ? "إزالة التصميم" : "Remove design",
-    auto: ar ? "تعيين تلقائي" : "Auto-assign",
-    fallback: ar ? "التصميم الافتراضي" : "Default design",
-    sync: ar ? "تطبيق على الموظفين الآن" : "Apply to employees now",
-    synced: ar ? "تم تحديث بطاقات الموظفين" : "Employee cards updated",
-    saved: ar ? "تم الحفظ" : "Saved",
-    verified: ar ? "شارة التحقق تُضاف تلقائيًا للبطاقات عندما تكون الشركة موثّقة." : "Verified badge is added to employee cards automatically when the company is verified.",
+    title: tx("Company cards by department & role"),
+    desc: tx("Design one card per group: marketing employees, marketing leads, the marketing director… When someone is promoted or moved, their card design switches automatically."),
+    name: tx("Design name"),
+    department: tx("Department"),
+    role: tx("Role"),
+    anyDept: tx("All departments"),
+    anyRole: tx("All roles"),
+    classic: tx("Classic template"),
+    accent: tx("Accent colour"),
+    add: tx("Add design"),
+    none: tx("No card designs yet"),
+    designSource: tx("Design source"),
+    pickDesign: tx("Pick a Studio design"),
+    noSources: tx("Create a card in the Studio inside this workspace to use it here."),
+    clearDesign: tx("Remove design"),
+    auto: tx("Auto-assign"),
+    fallback: tx("Default design"),
+    sync: tx("Apply to employees now"),
+    synced: tx("Employee cards updated"),
+    saved: tx("Saved"),
+    verified: tx("Verified badge is added to employee cards automatically when the company is verified."),
   };
 }
 
@@ -219,7 +216,7 @@ export function CardDesignsTab({ company, canEdit }: { company: Company; canEdit
         <EmptyState
           icon={Wand2}
           title={t.none}
-          hint={ar ? "أضف تصميمًا واربطه بقسم أو دور، وسيُطبَّق على بطاقات موظفيه تلقائيًا." : "Add a design tied to a department or role — it applies to those employees automatically."}
+          hint={tx("Add a design tied to a department or role — it applies to those employees automatically.")}
         />
       )}
 

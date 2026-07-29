@@ -3,6 +3,7 @@ import { useI18n } from "@/lib/i18n";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LangToggle } from "@/components/LangToggle";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
+import { tx } from "@/lib/tx";
 
 /**
  * Slim global site bar so in-app workspaces keep the same header identity
@@ -13,10 +14,10 @@ export function SiteTopBar() {
   const ar = lang === "ar";
 
   const links = [
-    { to: "/templates", label: ar ? "معرض القوالب" : "Templates" },
-    { to: "/tools", label: ar ? "الأدوات" : "Tools" },
-    { to: "/pricing", label: ar ? "الأسعار" : "Pricing" },
-    { to: "/blog", label: ar ? "المدونة" : "Blog" },
+    { to: "/templates", label: tx("Templates") },
+    { to: "/tools", label: tx("Tools") },
+    { to: "/pricing", label: tx("Pricing") },
+    { to: "/blog", label: tx("Blog") },
   ] as const;
 
   return (
@@ -42,7 +43,7 @@ export function SiteTopBar() {
             to="/dashboard"
             className="rounded-full border border-border/60 px-3 py-1 text-[11px] font-medium text-muted-foreground transition hover:text-foreground"
           >
-            {ar ? "لوحتي" : "My dashboard"}
+            {tx("My dashboard")}
           </Link>
         </div>
       </div>

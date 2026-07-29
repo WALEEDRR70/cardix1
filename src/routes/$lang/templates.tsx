@@ -31,18 +31,15 @@ import {
 import type { StudioDoc } from "@/lib/studio/types";
 import { recolorDesign, docAccent } from "@/lib/studio/recolor";
 import { TemplateColorSwatches } from "@/components/TemplateColorSwatches";
+import { tx } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/templates")({
   head: ({ params }) => {
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}/templates`;
     const isAr = lang === "ar";
-    const title = isAr
-      ? "معرض قوالب البطاقات — تصاميم جاهزة من مصممي Cardixn"
-      : "Card Template Gallery — Designs Shared by Cardixn Designers";
-    const description = isAr
-      ? "تصفّح قوالب بطاقات الأعمال الرقمية التي شاركها المصممون، واحفظ أي قالب كنسخة خاصة بك وعدّله في استوديو التصميم."
-      : "Browse digital business card templates shared by designers, save any template as your own copy and edit it freely in the Studio.";
+    const title = tx("Card Template Gallery — Designs Shared by Cardixn Designers", lang);
+    const description = tx("Browse digital business card templates shared by designers, save any template as your own copy and edit it freely in the Studio.", lang);
     return {
       meta: [
         { title },
@@ -176,12 +173,8 @@ function TemplatesGallery() {
       const cardId = await useTemplate(tpl, target);
       toast.success(
         target.kind === "company"
-          ? ar
-            ? "تمت إضافة بطاقة جديدة إلى مساحة العمل"
-            : "New card added to the workspace"
-          : ar
-            ? "تم إنشاء بطاقة جديدة بهذا التصميم"
-            : "New card created with this design",
+          ? tx("New card added to the workspace")
+          : tx("New card created with this design"),
       );
       setPending(null);
       // Personal users land on the simple card editor; workspace designers go to the Studio.
@@ -204,7 +197,7 @@ function TemplatesGallery() {
     try {
       await applyTemplateToCard(tpl, cardId);
       await qc.invalidateQueries({ queryKey: ["template-target-cards"] });
-      toast.success(ar ? "تم تطبيق التصميم على البطاقة" : "Design applied to the card");
+      toast.success(tx("Design applied to the card"));
       setPending(null);
       navigate({ to: activeWorkspace ? "/studio/$id" : "/cards/$id", params: { id: cardId } });
     } catch (e) {
@@ -233,15 +226,13 @@ function TemplatesGallery() {
         <div className="mb-7 text-center sm:mb-10">
           <span className="inline-flex items-center gap-2 rounded-full border border-border/60 px-3 py-1 text-[11px] text-muted-foreground">
             <Sparkles className="h-3.5 w-3.5" />
-            {ar ? "معرض القوالب" : "Template gallery"}
+            {tx("Template gallery")}
           </span>
           <h1 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
-            {ar ? "قوالب صمّمها مصممون مثلك" : "Templates designed by the community"}
+            {tx("Templates designed by the community")}
           </h1>
           <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            {ar
-              ? "احفظ أي قالب كنسخة خاصة بك وعدّل عليه بحرية في الاستوديو — القالب الأصلي يبقى كما صمّمه صاحبه."
-              : "Save any template as your own copy and edit it freely in the Studio — the original stays exactly as its designer made it."}
+            {tx("Save any template as your own copy and edit it freely in the Studio — the original stays exactly as its designer made it.")}
           </p>
         </div>
 
@@ -261,20 +252,12 @@ function TemplatesGallery() {
               }
             >
               {k === "all"
-                ? ar
-                  ? "قوالب المصممين"
-                  : "Designer templates"
+                ? tx("Designer templates")
                 : k === "builtin"
-                  ? ar
-                    ? "قوالب جاهزة"
-                    : "Ready-made styles"
+                  ? tx("Ready-made styles")
                   : k === "saved"
-                    ? ar
-                      ? "المفضلة"
-                      : "Favourites"
-                    : ar
-                      ? "قوالبي"
-                      : "My templates"}
+                    ? tx("Favourites")
+                    : tx("My templates")}
             </button>
           ))}
         </div>
@@ -285,7 +268,7 @@ function TemplatesGallery() {
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder={ar ? "ابحث عن قالب…" : "Search templates…"}
+              placeholder={tx("Search templates…")}
               className="w-full bg-transparent text-sm outline-none"
             />
           </div>
@@ -302,7 +285,7 @@ function TemplatesGallery() {
                     : "text-muted-foreground hover:text-foreground")
                 }
               >
-                {k === "all" ? (ar ? "الكل" : "All") : audienceLabel(k, ar)}
+                {k === "all" ? (tx("All")) : audienceLabel(k, ar)}
               </button>
             ))}
           </div>
@@ -310,14 +293,12 @@ function TemplatesGallery() {
           {uid && (
             <div className="mx-auto mb-8 flex w-fit max-w-full flex-wrap items-center justify-center gap-2 rounded-2xl border border-border/60 px-4 py-2.5 text-[11px]">
               <span className="text-muted-foreground">
-                {ar ? "سيتم الحفظ في:" : "Will be saved into:"}
+                {tx("Will be saved into:")}
               </span>
               <span className="font-semibold">
                 {activeWorkspace
                   ? activeWorkspace.company.name
-                  : ar
-                    ? "ملفي الشخصي"
-                    : "My personal profile"}
+                  : tx("My personal profile")}
               </span>
             </div>
           )}
@@ -325,7 +306,7 @@ function TemplatesGallery() {
 
         {myCard && (
           <p className="mx-auto mb-6 w-fit rounded-full border border-border/60 px-4 py-2 text-[11px] text-muted-foreground">
-            {ar ? "المعاينة ببيانات بطاقتك" : "Previewed with your card"}:{" "}
+            {tx("Previewed with your card")}:{" "}
             <span className="font-semibold text-foreground">{myCard.name}</span>
           </p>
         )}
@@ -366,7 +347,7 @@ function TemplatesGallery() {
                   className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-full bg-accent px-3 py-2 text-xs font-semibold text-accent-foreground"
                 >
                   <Wand2 className="h-3.5 w-3.5" />
-                  {ar ? "أنشئ بطاقة بهذا الشكل" : "Create a card in this style"}
+                  {tx("Create a card in this style")}
                 </button>
               </li>
             ))}
@@ -378,24 +359,18 @@ function TemplatesGallery() {
         ) : templates.length === 0 && !(tab === "saved" && suggestions.length > 0) ? (
           <p className="py-20 text-center text-sm text-muted-foreground">
             {tab === "saved"
-              ? ar
-                ? "لم تحفظ أي قالب بعد — اضغط على القلب في أي قالب لحفظه هنا."
-                : "No saved templates yet — tap the heart on any template to keep it here."
+              ? tx("No saved templates yet — tap the heart on any template to keep it here.")
               : tab === "mine"
                 ? ar
                   ? 'لم تنشر أي قالب بعد — افتح تصميمك في الاستوديو واضغط "نشر كقالب".'
                   : 'You haven\'t published a template yet — open a design in the Studio and hit "Publish as template".'
-                : ar
-                  ? "لا توجد قوالب منشورة بعد."
-                  : "No templates published yet."}
+                : tx("No templates published yet.")}
           </p>
         ) : (
           <>
             {tab === "saved" && templates.length === 0 && (
               <p className="mb-5 text-center text-xs text-muted-foreground">
-                {ar
-                  ? "لم تحفظ أي قالب بعد — هذه أكثر القوالب إعجاباً، اضغط على القلب لحفظها."
-                  : "No favourites yet — here are the most-liked designs, tap the heart to keep one."}
+                {tx("No favourites yet — here are the most-liked designs, tap the heart to keep one.")}
               </p>
             )}
             <ul className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
@@ -424,7 +399,7 @@ function TemplatesGallery() {
                       <span className="truncate">{tpl.title}</span>
                       {!tpl.is_public && (
                         <span className="shrink-0 rounded-full border border-border/60 px-2 py-0.5 text-[9px] font-medium text-muted-foreground">
-                          {ar ? "خاص" : "Private"}
+                          {tx("Private")}
                         </span>
                       )}
                     </h2>
@@ -434,7 +409,7 @@ function TemplatesGallery() {
                           ? `بواسطة ${tpl.author_name}`
                           : `by ${tpl.author_name}`
                         : ""}
-                      {tpl.use_count > 0 ? ` · ${tpl.use_count} ${ar ? "استخدام" : "uses"}` : ""}
+                      {tpl.use_count > 0 ? ` · ${tpl.use_count} ${tx("uses")}` : ""}
                     </p>
                     {tpl.description && (
                       <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
@@ -464,7 +439,7 @@ function TemplatesGallery() {
                         ) : (
                           <Wand2 className="h-3.5 w-3.5" />
                         )}
-                        {ar ? "استخدام القالب" : "Use template"}
+                        {tx("Use template")}
                       </button>
                       <FavoriteTemplateButton
                         templateId={tpl.id}
@@ -475,7 +450,7 @@ function TemplatesGallery() {
                       {(uid === tpl.author_id || isAdmin) && (
                         <button
                           onClick={() => navigate({ to: "/studio/tpl/$id", params: { id: tpl.id } })}
-                          title={ar ? "تعديل تصميم القالب" : "Edit template design"}
+                          title={tx("Edit template design")}
                           className="rounded-full border border-border/60 p-2 text-muted-foreground hover:text-foreground"
                         >
                           <Pencil className="h-3.5 w-3.5" />
@@ -484,7 +459,7 @@ function TemplatesGallery() {
                       {uid === tpl.author_id && (
                         <button
                           onClick={() => onDelete(tpl)}
-                          title={ar ? "حذف القالب" : "Delete template"}
+                          title={tx("Delete template")}
                           className="rounded-full border border-border/60 p-2 text-muted-foreground hover:text-foreground"
                         >
                           <Trash2 className="h-3.5 w-3.5" />

@@ -17,13 +17,14 @@ import {
   type TemplateTarget,
 } from "@/lib/templates";
 import type { StudioDoc } from "@/lib/studio/types";
+import { tx } from "@/lib/tx";
 
 export const audienceLabel = (a: string, ar: boolean) =>
   a === "personal"
-    ? ar ? "للأفراد" : "Personal"
+    ? tx("Personal")
     : a === "employee"
-      ? ar ? "لموظفي الشركات" : "Employees"
-      : ar ? "مشترك" : "Mixed";
+      ? tx("Employees")
+      : tx("Mixed");
 
 export function CommunityTemplates({
   ar,
@@ -74,8 +75,8 @@ export function CommunityTemplates({
       const cardId = await useTemplate(tpl, target);
       toast.success(
         target.kind === "company"
-          ? ar ? "تمت إضافة القالب إلى مساحة العمل" : "Template added to the workspace"
-          : ar ? "تم إنشاء بطاقة من القالب" : "Card created from template",
+          ? tx("Template added to the workspace")
+          : tx("Card created from template"),
       );
       navigate({ to: "/studio/$id", params: { id: cardId } });
     } catch (e) {
@@ -95,7 +96,7 @@ export function CommunityTemplates({
   if (templates.length === 0) {
     return (
       <p className="py-6 text-center text-xs text-muted-foreground">
-        {ar ? "لا توجد قوالب منشورة بعد." : "No templates published yet."}
+        {tx("No templates published yet.")}
       </p>
     );
   }
@@ -106,9 +107,7 @@ export function CommunityTemplates({
     <>
     {usingSuggestions && (
       <p className="mb-3 text-center text-[11px] text-muted-foreground">
-        {ar
-          ? "لم تحفظ أي قالب بعد — هذه أكثر القوالب إعجاباً لدى المصممين."
-          : "No favourites yet — here are the most-liked community designs."}
+        {tx("No favourites yet — here are the most-liked community designs.")}
       </p>
     )}
     <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -122,7 +121,7 @@ export function CommunityTemplates({
               <p className="truncate text-[13px] font-semibold">{tpl.title}</p>
               <p className="truncate text-[11px] text-muted-foreground">
                 {audienceLabel((tpl as { audience?: string }).audience ?? "mixed", ar)}
-                {tpl.author_name ? ` · ${ar ? "بواسطة" : "by"} ${tpl.author_name}` : ""}
+                {tpl.author_name ? ` · ${tx("by")} ${tpl.author_name}` : ""}
               </p>
             </div>
             <FavoriteTemplateButton
@@ -137,7 +136,7 @@ export function CommunityTemplates({
               className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-accent px-3 py-2 text-[11px] font-semibold text-accent-foreground disabled:opacity-60"
             >
               {busyId === tpl.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Wand2 className="h-3.5 w-3.5" />}
-              {target.kind === "company" ? (ar ? "أضف للمساحة" : "Add to workspace") : ar ? "استخدم" : "Use"}
+              {target.kind === "company" ? (tx("Add to workspace")) : tx("Use")}
             </button>
           </div>
         </li>

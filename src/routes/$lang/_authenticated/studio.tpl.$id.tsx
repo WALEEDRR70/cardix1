@@ -9,6 +9,7 @@ import { useI18n } from "@/lib/i18n";
 import { StudioWorkspace } from "@/components/studio/StudioWorkspace";
 import { emptyDoc, type StudioDoc } from "@/lib/studio/types";
 import { getEditableTemplate, saveTemplateDesign } from "@/lib/templates.functions";
+import { tx } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/_authenticated/studio/tpl/$id")({
   head: () => ({
@@ -52,14 +53,10 @@ function TemplateStudioRoute() {
       <div className="grid min-h-[100dvh] place-items-center bg-background px-6 text-center text-sm text-muted-foreground">
         <div>
           {forbidden
-            ? ar
-              ? "لا تملك صلاحية تعديل هذا القالب."
-              : "You are not allowed to edit this template."
-            : ar
-              ? "القالب غير موجود."
-              : "Template not found."}
+            ? tx("You are not allowed to edit this template.")
+            : tx("Template not found.")}
           <Link to="/templates" className="mt-3 block text-xs font-semibold text-primary">
-            ← {ar ? "معرض القوالب" : "Template gallery"}
+            ← {tx("Template gallery")}
           </Link>
         </div>
       </div>
@@ -76,12 +73,12 @@ function TemplateStudioRoute() {
         <>
           <Link to="/templates" className="flex items-center gap-1 whitespace-nowrap text-muted-foreground hover:text-foreground">
             <LayoutTemplate className="h-3.5 w-3.5" />
-            {ar ? "معرض القوالب" : "Template gallery"}
+            {tx("Template gallery")}
           </Link>
           <span className="mx-1 h-3 w-px bg-border/60" />
           <span className="flex items-center gap-1 whitespace-nowrap text-muted-foreground">
             {data.isAdminEdit && <ShieldCheck className="h-3.5 w-3.5 text-accent" />}
-            {ar ? "تعديل القالب المنشور" : "Editing the published template"}
+            {tx("Editing the published template")}
           </span>
         </>
       }

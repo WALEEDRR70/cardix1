@@ -5,6 +5,7 @@ import { CardDesignsTab } from "@/components/company/card-designs";
 import { CommunityTemplates } from "@/components/CommunityTemplates";
 import { useCompany } from "@/lib/company-context";
 import { canManageCompany, useWs } from "@/lib/workspace";
+import { tx } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/_authenticated/co/$slug/templates")({ component: Page });
 
@@ -23,11 +24,9 @@ function Page() {
 
       <Card className="mt-4 space-y-3">
         <div>
-          <p className="text-sm font-semibold">{ar ? "قوالب المجتمع لموظفي الشركات" : "Community templates for employees"}</p>
+          <p className="text-sm font-semibold">{tx("Community templates for employees")}</p>
           <p className="text-xs text-muted-foreground">
-            {ar
-              ? "أضف أي قالب كنسخة داخل مساحة العمل هذه — لن يُضاف إلى ملفك الشخصي."
-              : "Add any template as a copy inside this workspace — it will not go to your personal profile."}
+            {tx("Add any template as a copy inside this workspace — it will not go to your personal profile.")}
           </p>
         </div>
         <CommunityTemplates

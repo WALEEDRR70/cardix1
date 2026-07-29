@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { CheckCircle2, Loader2, XCircle } from "lucide-react";
 import { finalizeCheckout } from "@/lib/billing.functions";
 import { getPreferredLocale } from "@/lib/locale-routing";
+import { tx } from "@/lib/tx";
 
 export const Route = createFileRoute("/billing/return")({
   head: () => ({
@@ -55,10 +56,10 @@ function BillingReturn() {
         {(state === "error" || state === "cancel") && <XCircle className="mx-auto h-10 w-10 text-destructive" />}
 
         <h1 className="text-lg font-semibold">
-          {state === "loading" && (ar ? "جارٍ تأكيد الدفع…" : "Confirming your payment…")}
-          {state === "done" && (ar ? "تم الدفع بنجاح" : "Payment successful")}
-          {state === "cancel" && (ar ? "تم إلغاء العملية" : "Payment cancelled")}
-          {state === "error" && (ar ? "تعذّر تأكيد الدفع" : "Could not confirm payment")}
+          {state === "loading" && (tx("Confirming your payment…"))}
+          {state === "done" && (tx("Payment successful"))}
+          {state === "cancel" && (tx("Payment cancelled"))}
+          {state === "error" && (tx("Could not confirm payment"))}
         </h1>
         {message && state === "error" && <p className="text-xs text-muted-foreground">{message}</p>}
 
@@ -66,7 +67,7 @@ function BillingReturn() {
           onClick={() => nav({ to: "/$lang/dashboard", params: { lang: ar ? "ar" : "en" } })}
           className="w-full rounded-2xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
         >
-          {ar ? "الذهاب للوحة التحكم" : "Go to dashboard"}
+          {tx("Go to dashboard")}
         </button>
       </div>
     </main>

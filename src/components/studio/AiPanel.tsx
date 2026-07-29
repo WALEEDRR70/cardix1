@@ -8,6 +8,7 @@ import { analyzeCardImage, type AiCardAnalysis } from "@/lib/studio/ai.functions
 import { buildVariation, VARIATIONS, type VariationKey } from "@/lib/studio/variations";
 import { FONT_PAIRS, FONT_PAIR_KEYS, type FontPairKey } from "@/lib/studio/fonts";
 import { useStudio } from "@/lib/studio/store";
+import { tx } from "@/lib/tx";
 
 export function AiPanel({ ar }: { ar: boolean }) {
   const { dispatch } = useStudio();
@@ -22,9 +23,9 @@ export function AiPanel({ ar }: { ar: boolean }) {
   function fail(e: unknown) {
     const msg = (e as Error).message;
     toast.error(
-      msg.includes("RATE_LIMIT") ? (ar ? "محاولات كثيرة، حاول لاحقًا" : "Rate limited, try again shortly")
-        : msg.includes("NO_CREDITS") ? (ar ? "نفد رصيد الذكاء الاصطناعي" : "AI credits exhausted")
-          : (ar ? "تعذر إنشاء التصميم" : "Could not generate the design"),
+      msg.includes("RATE_LIMIT") ? (tx("Rate limited, try again shortly"))
+        : msg.includes("NO_CREDITS") ? (tx("AI credits exhausted"))
+          : (tx("Could not generate the design")),
     );
   }
 
@@ -36,7 +37,7 @@ export function AiPanel({ ar }: { ar: boolean }) {
       });
       setResult(analysis);
       apply(analysis, active);
-      toast.success(ar ? "تم إنشاء قالب قابل للتحرير" : "Editable template generated");
+      toast.success(tx("Editable template generated"));
     } catch (e) {
       fail(e);
     } finally {
@@ -46,7 +47,7 @@ export function AiPanel({ ar }: { ar: boolean }) {
 
   async function onFile(file: File) {
     if (file.size > 8 * 1024 * 1024) {
-      toast.error(ar ? "الحد الأقصى 8 ميجابايت" : "Max size is 8MB");
+      toast.error(tx("Max size is 8MB"));
       return;
     }
     const dataUrl = await new Promise<string>((resolve, reject) => {
@@ -88,9 +89,7 @@ export function AiPanel({ ar }: { ar: boolean }) {
   return (
     <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-3 text-xs">
       <p className="text-muted-foreground">
-        {ar
-          ? "ارفع بطاقة أو اكتب وصفًا فقط. مدير فني افتراضي يقرأ الهوية، يعيد بناء الشبكة والطباعة والتشطيبات، ويسلّمك قالبًا قابلًا للتحرير بالكامل."
-          : "Upload a card or just write a brief. A virtual art director reads the identity, rebuilds the grid, typography and print finishes, and hands you a fully editable template."}
+        {tx("Upload a card or just write a brief. A virtual art director reads the identity, rebuilds the grid, typography and print finishes, and hands you a fully editable template.")}
       </p>
 
       <textarea
@@ -98,7 +97,7 @@ export function AiPanel({ ar }: { ar: boolean }) {
         onChange={(e) => setBrief(e.target.value)}
         rows={3}
         maxLength={600}
-        placeholder={ar ? "وصف فني: مثال — استوديو معماري، أسود ورمادي، طباعة صارمة، خط رفيع ذهبي" : "Art direction: e.g. architecture studio, ink black, strict typography, hairline gold rule"}
+        placeholder={tx("Art direction: e.g. architecture studio, ink black, strict typography, hairline gold rule")}
         className="w-full resize-none rounded-xl border border-border/60 bg-background/40 p-2.5 leading-relaxed outline-none transition focus:border-accent/60"
       />
 
@@ -109,15 +108,15 @@ export function AiPanel({ ar }: { ar: boolean }) {
           className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-border/70 bg-background/40 px-3 py-4 font-medium text-muted-foreground transition hover:border-accent/60 hover:text-foreground disabled:opacity-60"
         >
           {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
-          {ar ? "رفع بطاقة" : "Upload card"}
+          {tx("Upload card")}
         </button>
         <button
-          onClick={() => (brief.trim() ? void run({}) : toast.error(ar ? "اكتب وصفًا أولًا" : "Write a brief first"))}
+          onClick={() => (brief.trim() ? void run({}) : toast.error(tx("Write a brief first")))}
           disabled={busy}
           className="flex items-center justify-center gap-2 rounded-xl bg-accent px-3 py-4 font-semibold text-accent-foreground transition disabled:opacity-60"
         >
           {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <PenLine className="h-4 w-4" />}
-          {ar ? "صمّم من الوصف" : "Design from brief"}
+          {tx("Design from brief")}
         </button>
       </div>
       <input
@@ -135,9 +134,9 @@ export function AiPanel({ ar }: { ar: boolean }) {
       {result && (
         <>
           <div className="space-y-2 rounded-xl border border-border/60 bg-background/40 p-3">
-            <Row label={ar ? "النمط" : "Style"} value={result.style} />
-            <Row label={ar ? "المجال" : "Industry"} value={result.industry} />
-            <Row label={ar ? "المزاج" : "Mood"} value={result.mood} />
+            <Row label={tx("Style")} value={result.style} />
+            <Row label={tx("Industry")} value={result.industry} />
+            <Row label={tx("Mood")} value={result.mood} />
             <div className="flex items-center gap-1.5 pt-1">
               {Object.values(result.palette).map((c) => (
                 <span key={c} title={c} className="h-5 flex-1 rounded" style={{ background: c }} />
@@ -151,7 +150,7 @@ export function AiPanel({ ar }: { ar: boolean }) {
             )}
           </div>
 
-          <Section icon={<Type className="h-3 w-3" />} title={ar ? "الطباعة" : "Typography"}>
+          <Section icon={<Type className="h-3 w-3" />} title={tx("Typography")}>
             <div className="grid grid-cols-2 gap-1.5">
               {FONT_PAIR_KEYS.map((k) => (
                 <button
@@ -169,7 +168,7 @@ export function AiPanel({ ar }: { ar: boolean }) {
               ))}
             </div>
             <label className="mt-2 flex items-center justify-between gap-2">
-              <span className="text-muted-foreground">{ar ? "اسم بأحرف كبيرة" : "Uppercase name"}</span>
+              <span className="text-muted-foreground">{tx("Uppercase name")}</span>
               <input
                 type="checkbox"
                 checked={result.typography.uppercaseName}
@@ -181,13 +180,13 @@ export function AiPanel({ ar }: { ar: boolean }) {
             </label>
           </Section>
 
-          <Section icon={<Layers className="h-3 w-3" />} title={ar ? "التشطيب" : "Finish"}>
-            <Slider label={ar ? "حبيبات" : "Grain"} value={result.finish.grain} onChange={(v) => tweakFinish({ grain: v })} />
-            <Slider label={ar ? "لمعة معدنية" : "Foil"} value={result.finish.foil} onChange={(v) => tweakFinish({ foil: v })} />
-            <Slider label={ar ? "توهج" : "Bloom"} value={result.finish.bloom} onChange={(v) => tweakFinish({ bloom: v })} />
-            <Slider label={ar ? "إطار" : "Frame"} value={result.finish.frame / 6} onChange={(v) => tweakFinish({ frame: v * 6 })} />
+          <Section icon={<Layers className="h-3 w-3" />} title={tx("Finish")}>
+            <Slider label={tx("Grain")} value={result.finish.grain} onChange={(v) => tweakFinish({ grain: v })} />
+            <Slider label={tx("Foil")} value={result.finish.foil} onChange={(v) => tweakFinish({ foil: v })} />
+            <Slider label={tx("Bloom")} value={result.finish.bloom} onChange={(v) => tweakFinish({ bloom: v })} />
+            <Slider label={tx("Frame")} value={result.finish.frame / 6} onChange={(v) => tweakFinish({ frame: v * 6 })} />
             <label className="flex items-center justify-between gap-2 pt-1">
-              <span className="text-muted-foreground">{ar ? "خط فاصل" : "Divider rule"}</span>
+              <span className="text-muted-foreground">{tx("Divider rule")}</span>
               <input type="checkbox" checked={result.finish.rule} onChange={(e) => tweakFinish({ rule: e.target.checked })} />
             </label>
           </Section>
@@ -195,7 +194,7 @@ export function AiPanel({ ar }: { ar: boolean }) {
           <div className="space-y-2">
             <p className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-muted-foreground">
               <Sparkles className="h-3 w-3" />
-              {ar ? "١٠ تنويعات" : "10 variations"}
+              {tx("10 variations")}
             </p>
             <div className="grid grid-cols-2 gap-2">
               {VARIATIONS.map((v) => (
@@ -220,7 +219,7 @@ export function AiPanel({ ar }: { ar: boolean }) {
             className="flex items-center justify-center gap-1.5 rounded-lg bg-accent px-3 py-2 font-semibold text-accent-foreground disabled:opacity-60"
           >
             {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Wand2 className="h-3.5 w-3.5" />}
-            {ar ? "توليد اتجاه فني جديد" : "New art direction"}
+            {tx("New art direction")}
           </button>
         </>
       )}

@@ -7,18 +7,15 @@ import {
   ArrowRight, Nfc, QrCode, ScanLine, Sparkles, BarChart3, Palette,
   Globe2, ShieldCheck, Contact, Cloud, Smartphone, Share2,
 } from "lucide-react";
+import { tx } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/features")({
   head: ({ params }) => {
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}/features`;
     const isAr = lang === "ar";
-    const title = isAr
-      ? "مميزات Cardixn — بطاقة أعمال رقمية بـ NFC وQR ومسح ذكي"
-      : "Cardixn Features — NFC, QR & AI Scanning for Digital Business Cards";
-    const description = isAr
-      ? "استكشف مميزات Cardixn: مشاركة بـ NFC وQR ورابط، مسح البطاقات الورقية بالذكاء الاصطناعي، تحليلات، قوالب فاخرة، ومزامنة سحابية."
-      : "Explore every Cardixn feature: NFC, QR and link sharing, AI card scanning, live analytics, luxury templates, contact vault and cloud sync.";
+    const title = tx("Cardixn Features — NFC, QR & AI Scanning for Digital Business Cards", lang);
+    const description = tx("Explore every Cardixn feature: NFC, QR and link sharing, AI card scanning, live analytics, luxury templates, contact vault and cloud sync.", lang);
     return {
       meta: [
         { title }, { name: "description", content: description },
@@ -63,21 +60,19 @@ function FeaturesPage() {
       <section className="relative overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.18),transparent_60%)]" />
         <div className="relative mx-auto max-w-5xl px-5 py-12 sm:px-6 md:py-28">
-          <span className="text-xs uppercase tracking-widest text-primary/80">Cardixn · {isAr ? "المميزات" : "Features"}</span>
+          <span className="text-xs uppercase tracking-widest text-primary/80">Cardixn · {tx("Features")}</span>
           <h1 className="mt-4 text-4xl md:text-6xl font-bold leading-tight tracking-tight bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-transparent">
-            {isAr ? "كل ما تحتاجه بطاقتك الرقمية" : "Everything your digital card should do"}
+            {tx("Everything your digital card should do")}
           </h1>
           <p className="mt-4 max-w-3xl text-lg md:text-xl text-muted-foreground">
-            {isAr
-              ? "شارك بلمسة أو مسح أو رابط، امسح البطاقات الورقية بالذكاء الاصطناعي، واحتفظ بكل جهة اتصال محدّثة تلقائياً."
-              : "Share with a tap, a scan or a link, capture paper cards with AI, and keep every contact automatically up to date."}
+            {tx("Share with a tap, a scan or a link, capture paper cards with AI, and keep every contact automatically up to date.")}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link to="/auth" className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold text-accent-foreground shadow-glow" style={{ background: "var(--gradient-gold)" }}>
-              {isAr ? "ابدأ مجاناً" : "Start free"} <ArrowRight className="size-4 rtl:rotate-180" />
+              {tx("Start free")} <ArrowRight className="size-4 rtl:rotate-180" />
             </Link>
             <Link to="/pricing" className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-semibold hover:bg-card/60 transition">
-              {isAr ? "الأسعار" : "See pricing"}
+              {tx("See pricing")}
             </Link>
           </div>
         </div>
@@ -85,7 +80,7 @@ function FeaturesPage() {
 
       <section className="mx-auto max-w-6xl px-5 py-10 sm:px-6 md:py-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {FEATURES.map((f) => {
-          const [h, p] = isAr ? f.ar : f.en;
+          const [h, p] = f.en.map((v) => tx(v));
           const Icon = f.icon;
           return (
             <article key={h} className="group rounded-3xl border border-border/60 bg-card/40 backdrop-blur p-6 hover:border-primary/50 hover:bg-card/60 transition-all">
@@ -102,13 +97,13 @@ function FeaturesPage() {
       <section className="border-t border-border/40">
         <div className="mx-auto max-w-4xl px-6 py-20 text-center">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            {isAr ? "جاهز لتصميم بطاقتك؟" : "Ready to build your card?"}
+            {tx("Ready to build your card?")}
           </h2>
           <p className="mt-3 text-muted-foreground">
-            {isAr ? "أنشئ بطاقتك الأولى في أقل من دقيقتين — مجاناً." : "Create your first card in under two minutes — free."}
+            {tx("Create your first card in under two minutes — free.")}
           </p>
           <Link to="/auth" className="mt-8 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-accent-foreground shadow-glow" style={{ background: "var(--gradient-gold)" }}>
-            {isAr ? "أنشئ بطاقتي" : "Create my card"} <ArrowRight className="size-4 rtl:rotate-180" />
+            {tx("Create my card")} <ArrowRight className="size-4 rtl:rotate-180" />
           </Link>
         </div>
       </section>

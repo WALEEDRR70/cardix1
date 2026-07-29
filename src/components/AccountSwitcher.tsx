@@ -3,6 +3,7 @@ import { Check, ChevronsUpDown, Building2, User as UserIcon, Plus } from "lucide
 import { Link } from "@/lib/nav";
 import { useI18n } from "@/lib/i18n";
 import { useAccount, type Membership } from "@/lib/account";
+import { tx } from "@/lib/tx";
 
 /**
  * One inline switcher for every context: personal account, the company
@@ -18,7 +19,7 @@ export function AccountSwitcher({ activeCompanySlug }: { activeCompanySlug?: str
   const employed = data?.employed ?? [];
 
   const active = memberships.find((m) => m.company.slug === activeCompanySlug);
-  const label = active ? active.company.name : ar ? "حسابي الشخصي" : "Personal account";
+  const label = active ? active.company.name : tx("Personal account");
 
   return (
     <div className="relative">
@@ -41,7 +42,7 @@ export function AccountSwitcher({ activeCompanySlug }: { activeCompanySlug?: str
             <Row
               to="/dashboard"
               icon={<UserIcon className="h-3.5 w-3.5" />}
-              label={ar ? "حسابي الشخصي" : "Personal account"}
+              label={tx("Personal account")}
               active={!active}
               onClick={() => setOpen(false)}
             />
@@ -52,7 +53,7 @@ export function AccountSwitcher({ activeCompanySlug }: { activeCompanySlug?: str
               <Row
                 to="/me"
                 icon={<Building2 className="h-3.5 w-3.5" />}
-                label={ar ? "بطاقتي في الشركة" : "My company card"}
+                label={tx("My company card")}
                 active={false}
                 onClick={() => setOpen(false)}
               />
@@ -60,7 +61,7 @@ export function AccountSwitcher({ activeCompanySlug }: { activeCompanySlug?: str
             <Row
               to="/co/new"
               icon={<Plus className="h-3.5 w-3.5" />}
-              label={ar ? "إنشاء شركة" : "Create a company"}
+              label={tx("Create a company")}
               active={false}
               onClick={() => setOpen(false)}
             />

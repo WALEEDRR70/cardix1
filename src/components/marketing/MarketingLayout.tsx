@@ -8,6 +8,7 @@ import { LangToggle as LocaleSwitcher } from "@/components/LangToggle";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { MobileNav } from "@/components/marketing/MobileNav";
 import { isRtl, type Locale } from "@/i18n/config";
+import { tx } from "@/lib/tx";
 
 export function MarketingLayout({ children, lang }: { children: ReactNode; lang?: Locale }) {
   const rtl = lang ? isRtl(lang) : false;
@@ -24,12 +25,12 @@ function MarketingNav() {
   const { t, lang } = useI18n();
   const ar = lang === "ar";
   const navLinks = [
-    { to: "/features", label: ar ? "المميزات" : "Features" },
-    { to: "/templates", label: ar ? "القوالب" : "Templates" },
-    { to: "/pricing", label: ar ? "الأسعار" : "Pricing" },
-    { to: "/l", label: ar ? "الأدلة" : "Guides" },
-    { to: "/tools", label: ar ? "الأدوات" : "Tools" },
-    { to: "/blog", label: ar ? "المدونة" : "Blog" },
+    { to: "/features", label: tx("Features") },
+    { to: "/templates", label: tx("Templates") },
+    { to: "/pricing", label: tx("Pricing") },
+    { to: "/l", label: tx("Guides") },
+    { to: "/tools", label: tx("Tools") },
+    { to: "/blog", label: tx("Blog") },
   ] as const;
 
   const [scrolled, setScrolled] = useState(false);
@@ -106,33 +107,33 @@ function MarketingFooter() {
   const { t, lang } = useI18n();
   const ar = lang === "ar";
   const productLinks = [
-    { to: "/features", label: ar ? "المميزات" : "Features" },
-    { to: "/pricing", label: ar ? "الأسعار" : "Pricing" },
-    { to: "/l/digital-business-card", label: ar ? "بطاقة أعمال رقمية" : "Digital Business Card" },
-    { to: "/l/nfc-business-card", label: ar ? "بطاقة NFC" : "NFC Business Card" },
-    { to: "/l/qr-business-card", label: ar ? "بطاقة QR" : "QR Business Card" },
-    { to: "/l/business-card-scanner", label: ar ? "ماسح البطاقات (OCR)" : "Card Scanner (OCR)" },
-    { to: "/l/business-card-templates", label: ar ? "القوالب" : "Templates" },
+    { to: "/features", label: tx("Features") },
+    { to: "/pricing", label: tx("Pricing") },
+    { to: "/l/digital-business-card", label: tx("Digital Business Card") },
+    { to: "/l/nfc-business-card", label: tx("NFC Business Card") },
+    { to: "/l/qr-business-card", label: tx("QR Business Card") },
+    { to: "/l/business-card-scanner", label: tx("Card Scanner (OCR)") },
+    { to: "/l/business-card-templates", label: tx("Templates") },
   ];
 
   const toolLinks = [
-    { to: "/tools/qr-generator", label: ar ? "مولّد رمز QR" : "QR Code Generator" },
-    { to: "/tools/vcard-generator", label: ar ? "مولّد vCard (.vcf)" : "vCard (.vcf) Generator" },
-    { to: "/tools/email-signature", label: ar ? "منشئ توقيع البريد" : "Email Signature Builder" },
-    { to: "/tools", label: ar ? "كل الأدوات المجانية" : "All Free Tools" },
+    { to: "/tools/qr-generator", label: tx("QR Code Generator") },
+    { to: "/tools/vcard-generator", label: tx("vCard (.vcf) Generator") },
+    { to: "/tools/email-signature", label: tx("Email Signature Builder") },
+    { to: "/tools", label: tx("All Free Tools") },
   ];
   const professionLinks = [
-    { to: "/l/for-real-estate-agents", label: ar ? "للعقاريين" : "For Real Estate" },
-    { to: "/l/for-doctors", label: ar ? "للأطباء" : "For Doctors" },
-    { to: "/l/for-lawyers", label: ar ? "للمحامين" : "For Lawyers" },
-    { to: "/l/for-sales-teams", label: ar ? "لفرق المبيعات" : "For Sales Teams" },
+    { to: "/l/for-real-estate-agents", label: tx("For Real Estate") },
+    { to: "/l/for-doctors", label: tx("For Doctors") },
+    { to: "/l/for-lawyers", label: tx("For Lawyers") },
+    { to: "/l/for-sales-teams", label: tx("For Sales Teams") },
   ];
   const learnLinks = [
-    { to: "/blog", label: ar ? "المدونة" : "Blog" },
-    { to: "/l", label: ar ? "كل الأدلة" : "All Guides" },
-    { to: "/about", label: ar ? "عن كارديكس" : "About Cardixn" },
-    { to: "/contact", label: ar ? "تواصل معنا" : "Contact" },
-    { to: "/blog/nfc-vs-qr-which-is-better", label: ar ? "NFC مقابل QR" : "NFC vs QR" },
+    { to: "/blog", label: tx("Blog") },
+    { to: "/l", label: tx("All Guides") },
+    { to: "/about", label: tx("About Cardixn") },
+    { to: "/contact", label: tx("Contact") },
+    { to: "/blog/nfc-vs-qr-which-is-better", label: tx("NFC vs QR") },
   ];
 
   return (
@@ -144,19 +145,17 @@ function MarketingFooter() {
             <span className="text-sm font-semibold">{t.brand}</span>
           </div>
           <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-            {ar
-              ? "بطاقات أعمال رقمية فاخرة. شاركها بلمسة أو مسح أو رابط."
-              : "Premium digital business cards. Share with a tap, a scan, or a link."}
+            {tx("Premium digital business cards. Share with a tap, a scan, or a link.")}
           </p>
           <div className="mt-4 flex items-center gap-2">
             <ThemeToggle compact />
             <LocaleSwitcher compact />
           </div>
         </div>
-        <FooterCol title={ar ? "المنتج" : "Product"} items={productLinks} />
-        <FooterCol title={ar ? "أدوات مجانية" : "Free Tools"} items={toolLinks} />
-        <FooterCol title={ar ? "للمحترفين" : "For Professionals"} items={professionLinks} />
-        <FooterCol title={ar ? "تعلّم" : "Learn"} items={learnLinks} />
+        <FooterCol title={tx("Product")} items={productLinks} />
+        <FooterCol title={tx("Free Tools")} items={toolLinks} />
+        <FooterCol title={tx("For Professionals")} items={professionLinks} />
+        <FooterCol title={tx("Learn")} items={learnLinks} />
       </div>
 
       <div className="border-t border-border/60">

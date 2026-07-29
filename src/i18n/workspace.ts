@@ -1,3 +1,5 @@
+import { WS_LOCALES } from "@/i18n/workspace-locales";
+
 // Company Workspace strings. English is the canonical set; other locales
 // override selectively and fall back to English for missing keys.
 
@@ -604,7 +606,11 @@ const ar: Partial<WsDict> = {
   unverified: "غير موثقة",
 };
 
-const OVERRIDES: Record<string, Partial<WsDict>> = { ar };
+const OVERRIDES: Record<string, Partial<WsDict>> = {
+  ...WS_LOCALES,
+  // hand-curated Arabic wins over the generated set
+  ar: { ...(WS_LOCALES.ar ?? {}), ...ar },
+};
 
 export function wsDict(lang: string): WsDict {
   return { ...en, ...(OVERRIDES[lang] ?? {}) };

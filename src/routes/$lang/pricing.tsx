@@ -10,16 +10,15 @@ import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } fro
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { GetStartedCards } from "@/components/marketing/GetStartedCards";
+import { tx } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/pricing")({
   head: ({ params }) => {
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}/pricing`;
     const isAr = lang === "ar";
-    const title = isAr ? "أسعار Cardixn — ابدأ مجاناً وطوّر متى شئت" : "Cardixn Pricing — Start Free, Upgrade Anytime";
-    const description = isAr
-      ? "خطط Cardixn البسيطة: مجانية للأفراد، Pro للمحترفين، وخطة الفرق. بدون بطاقة ائتمان للبدء."
-      : "Simple Cardixn plans: Free for individuals, Pro for professionals, Teams for companies. No credit card to get started.";
+    const title = tx("Cardixn Pricing — Start Free, Upgrade Anytime", lang);
+    const description = tx("Simple Cardixn plans: Free for individuals, Pro for professionals, Teams for companies. No credit card to get started.", lang);
     return {
       meta: [
         { title }, { name: "description", content: description },
@@ -113,7 +112,7 @@ function PricingPage() {
       }
       const res = await start({ data: { planId: plan.id, origin: window.location.origin } });
       if (res.approveUrl) window.location.href = res.approveUrl;
-      else toast.error(isAr ? "تعذّر بدء الدفع" : "Could not start checkout");
+      else toast.error(tx("Could not start checkout"));
     } catch (e) {
       toast.error((e as Error).message);
     } finally {
@@ -126,17 +125,17 @@ function PricingPage() {
       <section className="relative overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.18),transparent_60%)]" />
         <div className="relative mx-auto max-w-5xl px-5 py-12 sm:px-6 md:py-28 text-center">
-          <span className="text-xs uppercase tracking-widest text-primary/80">Cardixn · {isAr ? "الأسعار" : "Pricing"}</span>
+          <span className="text-xs uppercase tracking-widest text-primary/80">Cardixn · {tx("Pricing")}</span>
           <h1 className="mt-4 text-4xl md:text-6xl font-bold leading-tight tracking-tight bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-transparent">
-            {isAr ? "تسعير بسيط وواضح" : "Simple, honest pricing"}
+            {tx("Simple, honest pricing")}
           </h1>
           <p className="mt-4 mx-auto max-w-2xl text-lg md:text-xl text-muted-foreground">
-            {isAr ? "ابدأ مجاناً بدون بطاقة ائتمان. طوّر عندما تحتاج مزايا أكثر فقط." : "Start free with no credit card. Upgrade only when you need more."}
+            {tx("Start free with no credit card. Upgrade only when you need more.")}
           </p>
 
           <div className="mt-8 flex justify-center">
             <p className="rounded-full border border-primary/40 bg-primary/10 px-5 py-2 text-sm font-medium text-primary">
-              {isAr ? "كل الباقات مجانية حتى إشعار آخر 🎉" : "All plans are free until further notice 🎉"}
+              {tx("All plans are free until further notice 🎉")}
             </p>
           </div>
 
@@ -148,7 +147,7 @@ function PricingPage() {
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary/80">{(isAr ? FREE.ar : FREE.en).tag}</p>
           <h2 className="mt-3 text-2xl font-bold">{(isAr ? FREE.ar : FREE.en).name}</h2>
           <p className="mt-4 flex items-end gap-1.5">
-            <span className="text-4xl font-bold tracking-tight">{isAr ? "0$" : "$0"}</span>
+            <span className="text-4xl font-bold tracking-tight">{tx("$0")}</span>
             <span className="pb-1 text-sm text-muted-foreground">{(isAr ? FREE.ar : FREE.en).note}</span>
           </p>
           <ul className="mt-6 space-y-3 text-sm">
@@ -160,7 +159,7 @@ function PricingPage() {
             ))}
           </ul>
           <Link to="/auth" className="mt-7 flex items-center justify-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-semibold transition hover:bg-card/60">
-            {isAr ? "ابدأ مجاناً" : "Start free"} <ArrowRight className="size-4 rtl:rotate-180" />
+            {tx("Start free")} <ArrowRight className="size-4 rtl:rotate-180" />
           </Link>
         </article>
 
@@ -175,13 +174,13 @@ function PricingPage() {
             }
           >
             <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary/80">
-              {plan.is_featured ? (isAr ? "الأكثر طلباً" : "Most popular") : audience === "company" ? (isAr ? "للشركات" : "For companies") : isAr ? "للأفراد" : "For individuals"}
+              {plan.is_featured ? (tx("Most popular")) : audience === "company" ? (tx("For companies")) : tx("For individuals")}
             </p>
             <h2 className="mt-3 text-2xl font-bold">{isAr ? plan.name_ar : plan.name_en}</h2>
             <p className="mt-4 flex items-end gap-1.5">
               <span className="text-4xl font-bold tracking-tight">{priceLabel(plan.price_cents, plan.currency)}</span>
               <span className="pb-1 text-sm text-muted-foreground">
-                {interval === "month" ? (isAr ? "/ شهرياً" : "/ month") : isAr ? "/ سنوياً" : "/ year"}
+                {interval === "month" ? (tx("/ month")) : tx("/ year")}
               </span>
             </p>
             {(isAr ? plan.description_ar : plan.description_en) && (
@@ -206,8 +205,8 @@ function PricingPage() {
             >
               {busy === plan.id ? <Loader2 className="size-4 animate-spin" /> : null}
               {activePlanId === plan.id
-                ? isAr ? "باقتك الحالية" : "Your current plan"
-                : isAr ? "اشترك عبر PayPal" : "Subscribe with PayPal"}
+                ? tx("Your current plan")
+                : tx("Subscribe with PayPal")}
               {activePlanId === plan.id ? null : <ArrowRight className="size-4 rtl:rotate-180" />}
             </button>
           </article>
@@ -217,7 +216,7 @@ function PricingPage() {
 
       <section className="border-t border-border/40">
         <div className="mx-auto max-w-3xl px-5 py-10 sm:px-6 md:py-16">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{isAr ? "أسئلة شائعة" : "Common questions"}</h2>
+          <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{tx("Common questions")}</h2>
           <div className="mt-8 space-y-6">
             {(isAr
               ? [["هل الخطة المجانية محدودة بوقت؟", "لا، المجانية مجانية للأبد وتشمل بطاقة واحدة برمز QR ورابط مشاركة."],

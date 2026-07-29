@@ -3,6 +3,7 @@ import { useParams } from "@tanstack/react-router";
 import { DEFAULT_LOCALE, isRtl, isSupportedLocale, type Locale } from "@/i18n/config";
 import { DICTIONARIES, type UIDict } from "@/i18n/dictionaries";
 import { getPreferredLocale } from "@/lib/locale-routing";
+import { setTxLocale } from "@/lib/tx";
 
 // Base English dictionary — canonical source of every UI key.
 // All other locales override keys via src/i18n/dictionaries.ts; missing keys fall back here.
@@ -237,6 +238,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const lang: Locale = routeLang ?? fallbackLang;
   const dir: "ltr" | "rtl" = isRtl(lang) ? "rtl" : "ltr";
   const t = useMemo(() => getDict(lang), [lang]);
+  setTxLocale(lang);
 
   useEffect(() => {
     if (routeLang) setFallbackLang(routeLang);

@@ -1,6 +1,7 @@
 // Visual gradient editor: multi-stop, drag positions, color + opacity, no CSS typing needed.
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
+import { tx } from "@/lib/tx";
 
 export type Stop = { id: string; color: string; alpha: number; pos: number };
 export type Grad = { type: "linear" | "radial"; angle: number; stops: Stop[] };
@@ -179,12 +180,12 @@ export function GradientEditor({
   return (
     <div className="space-y-2 rounded-lg border border-border/60 bg-background/40 p-2.5">
       <div className="flex items-center justify-between">
-        <span className="text-[10px] uppercase tracking-widest text-muted-foreground">{ar ? "محرر التدرج" : "Gradient"}</span>
+        <span className="text-[10px] uppercase tracking-widest text-muted-foreground">{tx("Gradient")}</span>
         <div className="flex gap-1">
-          <button type="button" onClick={() => addStop()} title={ar ? "إضافة لون" : "Add stop"} className="rounded border border-border/60 p-1 text-muted-foreground hover:text-foreground">
+          <button type="button" onClick={() => addStop()} title={tx("Add stop")} className="rounded border border-border/60 p-1 text-muted-foreground hover:text-foreground">
             <Plus className="h-3 w-3" />
           </button>
-          <button type="button" onClick={onRemove} title={ar ? "إزالة التدرج" : "Remove gradient"} className="rounded border border-border/60 p-1 text-muted-foreground hover:text-foreground">
+          <button type="button" onClick={onRemove} title={tx("Remove gradient")} className="rounded border border-border/60 p-1 text-muted-foreground hover:text-foreground">
             <Trash2 className="h-3 w-3" />
           </button>
         </div>
@@ -214,7 +215,7 @@ export function GradientEditor({
           ))}
         </div>
         <p className="pt-1 text-[10px] text-muted-foreground">
-          {ar ? "اسحب النقاط لتغيير المسافة، ونقرة مزدوجة لإضافة لون." : "Drag handles to move stops, double-click to add one."}
+          {tx("Drag handles to move stops, double-click to add one.")}
         </p>
       </div>
 
@@ -229,20 +230,20 @@ export function GradientEditor({
             />
             <div className="space-y-1">
               <div className="flex justify-between text-[10px] text-muted-foreground">
-                <span>{ar ? "المسافة" : "Position"}</span><span>{Math.round(active.pos)}%</span>
+                <span>{tx("Position")}</span><span>{Math.round(active.pos)}%</span>
               </div>
               <input type="range" min={0} max={100} step={0.5} value={active.pos} onChange={(e) => patchActive({ pos: Number(e.target.value) })} className="w-full accent-[hsl(var(--accent,270_80%_60%))]" />
             </div>
           </div>
           <div className="space-y-1">
             <div className="flex justify-between text-[10px] text-muted-foreground">
-              <span>{ar ? "الشفافية" : "Opacity"}</span><span>{Math.round(active.alpha * 100)}%</span>
+              <span>{tx("Opacity")}</span><span>{Math.round(active.alpha * 100)}%</span>
             </div>
             <input type="range" min={0} max={100} value={Math.round(active.alpha * 100)} onChange={(e) => patchActive({ alpha: Number(e.target.value) / 100 })} className="w-full" />
           </div>
           {grad.stops.length > 2 && (
             <button type="button" onClick={removeActive} className="w-full rounded border border-border/60 px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground">
-              {ar ? "حذف هذا اللون" : "Delete stop"}
+              {tx("Delete stop")}
             </button>
           )}
         </div>
@@ -250,19 +251,19 @@ export function GradientEditor({
 
       <div className="grid grid-cols-2 gap-2">
         <label className="space-y-1">
-          <span className="text-[10px] text-muted-foreground">{ar ? "النوع" : "Type"}</span>
+          <span className="text-[10px] text-muted-foreground">{tx("Type")}</span>
           <select
             value={grad.type}
             onChange={(e) => commit({ ...grad, type: e.target.value as Grad["type"] })}
             className="w-full rounded-md border border-border/60 bg-background/60 px-2 py-1.5 text-xs outline-none focus:border-accent"
           >
-            <option value="linear">{ar ? "خطي" : "Linear"}</option>
-            <option value="radial">{ar ? "دائري" : "Radial"}</option>
+            <option value="linear">{tx("Linear")}</option>
+            <option value="radial">{tx("Radial")}</option>
           </select>
         </label>
         {grad.type === "linear" && (
           <label className="space-y-1">
-            <span className="text-[10px] text-muted-foreground">{ar ? "الزاوية" : "Angle"} {Math.round(grad.angle)}°</span>
+            <span className="text-[10px] text-muted-foreground">{tx("Angle")} {Math.round(grad.angle)}°</span>
             <input type="range" min={0} max={360} value={grad.angle} onChange={(e) => commit({ ...grad, angle: Number(e.target.value) })} className="w-full" />
           </label>
         )}

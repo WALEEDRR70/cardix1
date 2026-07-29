@@ -44,7 +44,7 @@ const MAX_TEAM_RAIL = 8;
 function CompanyPage() {
   const { slug } = Route.useParams();
   const locale = getPreferredLocale();
-  const d = publicDict(locale === "ar" ? "ar" : "en");
+  const d = publicDict(locale);
   const w = wsDict(locale);
   const [allServices, setAllServices] = useState(false);
   const [fullTeam, setFullTeam] = useState(false);
