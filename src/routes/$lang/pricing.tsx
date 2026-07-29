@@ -56,10 +56,10 @@ type PlanRow = {
 };
 
 const FREE = {
-  en: { name: "Free", note: "forever", tag: "For getting started",
-    items: ["1 digital card", "QR code + share link", "Core templates", "Contact vault (25 cards)", "Basic view analytics"] },
-  ar: { name: "مجاني", note: "للأبد", tag: "للبداية",
-    items: ["بطاقة رقمية واحدة", "رمز QR ورابط مشاركة", "القوالب الأساسية", "خزنة جهات اتصال (25 بطاقة)", "تحليلات مشاهدات أساسية"] },
+  en: { name: "Free", note: "for everyone, for now", tag: "All features unlocked",
+    items: ["Unlimited digital cards", "QR code + share link", "All templates & Design Studio", "Company workspace & employee cards", "Contact vault & analytics"] },
+  ar: { name: "مجاني", note: "للجميع حالياً", tag: "كل المزايا مفتوحة",
+    items: ["بطاقات رقمية بلا حدود", "رمز QR ورابط مشاركة", "كل القوالب واستوديو التصميم", "مساحة الشركة وبطاقات الموظفين", "خزنة جهات الاتصال والتحليلات"] },
 };
 
 function priceLabel(cents: number, currency: string) {
@@ -133,34 +133,16 @@ function PricingPage() {
             {isAr ? "ابدأ مجاناً بدون بطاقة ائتمان. طوّر عندما تحتاج مزايا أكثر فقط." : "Start free with no credit card. Upgrade only when you need more."}
           </p>
 
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <div className="flex rounded-full border border-border/60 bg-card/50 p-1 text-sm">
-              {(["individual", "company"] as const).map((a) => (
-                <button
-                  key={a}
-                  onClick={() => setAudience(a)}
-                  className={"rounded-full px-4 py-2 font-medium transition " + (audience === a ? "bg-primary text-primary-foreground" : "text-muted-foreground")}
-                >
-                  {a === "individual" ? (isAr ? "أفراد" : "Individuals") : isAr ? "شركات" : "Companies"}
-                </button>
-              ))}
-            </div>
-            <div className="flex rounded-full border border-border/60 bg-card/50 p-1 text-sm">
-              {(["month", "year"] as const).map((i) => (
-                <button
-                  key={i}
-                  onClick={() => setInterval(i)}
-                  className={"rounded-full px-4 py-2 font-medium transition " + (interval === i ? "bg-primary text-primary-foreground" : "text-muted-foreground")}
-                >
-                  {i === "month" ? (isAr ? "شهري" : "Monthly") : isAr ? "سنوي" : "Yearly"}
-                </button>
-              ))}
-            </div>
+          <div className="mt-8 flex justify-center">
+            <p className="rounded-full border border-primary/40 bg-primary/10 px-5 py-2 text-sm font-medium text-primary">
+              {isAr ? "كل الباقات مجانية حتى إشعار آخر 🎉" : "All plans are free until further notice 🎉"}
+            </p>
           </div>
+
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-5 py-10 sm:px-6 md:py-16 grid gap-6 lg:grid-cols-3">
+      <section className="mx-auto max-w-xl px-5 py-10 sm:px-6 md:py-16">
         <article className="relative rounded-3xl border border-border/60 bg-card/40 p-7 backdrop-blur transition-all hover:border-primary/40">
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary/80">{(isAr ? FREE.ar : FREE.en).tag}</p>
           <h2 className="mt-3 text-2xl font-bold">{(isAr ? FREE.ar : FREE.en).name}</h2>
