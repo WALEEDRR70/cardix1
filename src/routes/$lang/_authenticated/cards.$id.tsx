@@ -168,21 +168,28 @@ function EditCard() {
           back="/dashboard"
           right={
             <>
-              <Link to="/studio/$id" params={{ id }} className="grid h-9 w-9 place-items-center rounded-full border border-border bg-card text-muted-foreground hover:text-foreground" aria-label="Studio">
-                <Wand2 className="h-4 w-4" />
-              </Link>
-              <Link to="/cards/$id/analytics" params={{ id }} className="grid h-9 w-9 place-items-center rounded-full border border-border bg-card text-muted-foreground hover:text-foreground" aria-label={t.analytics}>
-                <BarChart3 className="h-4 w-4" />
-              </Link>
               <button
                 onClick={() => setShareOpen(true)}
-                className="grid h-9 w-9 place-items-center rounded-full text-accent-foreground"
-                style={{ background: "var(--gradient-gold)" }}
+                className="grid h-9 w-9 place-items-center rounded-full border border-border bg-card text-muted-foreground hover:text-foreground"
                 aria-label={t.share}
               >
                 <Share2 className="h-4 w-4" />
               </button>
+              <Link to="/cards/$id/analytics" params={{ id }} className="grid h-9 w-9 place-items-center rounded-full border border-border bg-card text-muted-foreground hover:text-foreground" aria-label={t.analytics}>
+                <BarChart3 className="h-4 w-4" />
+              </Link>
+              <Link
+                to="/studio/$id"
+                params={{ id }}
+                className="flex h-9 items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold text-accent-foreground"
+                style={{ background: "var(--gradient-gold)" }}
+                aria-label={tx("Edit design")}
+              >
+                <Wand2 className="h-4 w-4" />
+                <span className="hidden sm:inline">{tx("Edit design")}</span>
+              </Link>
             </>
+
           }
         />
       }
