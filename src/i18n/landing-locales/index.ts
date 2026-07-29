@@ -5,28 +5,38 @@ import fr from "./fr.json";
 import de from "./de.json";
 import es from "./es.json";
 import it from "./it.json";
+import pt from "./pt.json";
 import ru from "./ru.json";
 import tr from "./tr.json";
 import nl from "./nl.json";
+import pl from "./pl.json";
 import zh from "./zh.json";
 import zh_TW from "./zh-TW.json";
 import ja from "./ja.json";
+import ko from "./ko.json";
 import hi from "./hi.json";
 import id from "./id.json";
 import ms from "./ms.json";
+import th from "./th.json";
+import vi from "./vi.json";
 
 export const LANDING_LOCALES: Partial<Record<Locale, Record<string, LandingCopy>>> = {
   "fr": fr as Record<string, LandingCopy>,
   "de": de as Record<string, LandingCopy>,
   "es": es as Record<string, LandingCopy>,
   "it": it as Record<string, LandingCopy>,
+  "pt": pt as Record<string, LandingCopy>,
   "ru": ru as Record<string, LandingCopy>,
   "tr": tr as Record<string, LandingCopy>,
   "nl": nl as Record<string, LandingCopy>,
+  "pl": pl as Record<string, LandingCopy>,
   "zh": zh as Record<string, LandingCopy>,
   "zh-TW": zh_TW as Record<string, LandingCopy>,
   "ja": ja as Record<string, LandingCopy>,
+  "ko": ko as Record<string, LandingCopy>,
   "hi": hi as Record<string, LandingCopy>,
   "id": id as Record<string, LandingCopy>,
   "ms": ms as Record<string, LandingCopy>,
+  "th": th as Record<string, LandingCopy>,
+  "vi": vi as Record<string, LandingCopy>,
 };
