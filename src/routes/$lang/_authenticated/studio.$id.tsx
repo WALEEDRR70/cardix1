@@ -48,7 +48,7 @@ function StudioRoute() {
     return (
       <div className="grid min-h-[100dvh] place-items-center bg-[#07050d] text-center text-sm text-muted-foreground">
         <div>
-          Card not found.
+          {tx("Card not found.")}
           <Link to="/dashboard" className="mt-3 block text-xs font-semibold text-primary">← Dashboard</Link>
         </div>
       </div>

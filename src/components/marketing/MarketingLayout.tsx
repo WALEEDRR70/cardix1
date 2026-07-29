@@ -162,7 +162,7 @@ function MarketingFooter() {
         <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center justify-between gap-3 px-5 py-5 text-[11px] text-muted-foreground lg:flex-row lg:px-10">
           <span>© {new Date().getFullYear()} {t.brand}</span>
           <div className="flex items-center gap-4">
-            <a href="/sitemap.xml" className="hover:text-foreground">Sitemap</a>
+            <a href="/sitemap.xml" className="hover:text-foreground">{tx("Sitemap")}</a>
             <Link to="/auth" className="hover:text-foreground">{t.signIn}</Link>
           </div>
         </div>

@@ -16,7 +16,7 @@ import {
 import { TEMPLATE_META, CardPreview } from "@/components/CardPreview";
 import { logCompanyAction } from "@/components/company/audit";
 import { prepareImageFile, canDisplayImage } from "@/lib/image-prep";
-import { tx } from "@/lib/tx";
+import { tx, txPick } from "@/lib/tx";
 
 /* ---------------------------- shared bits ---------------------------- */
 
@@ -270,7 +270,7 @@ export function LogoUpload({ label, value, onChange, disabled, companyId }: {
       if (prepared.converted) toast.info("تم تحسين حجم/صيغة الشعار تلقائيًا");
     } catch {
       setBusy(false);
-      toast.error("صيغة الصورة غير مدعومة — استخدم PNG أو JPG أو SVG");
+      toast.error(txPick("Unsupported image format — use PNG, JPG or SVG", "صيغة الصورة غير مدعومة — استخدم PNG أو JPG أو SVG"));
       return;
     }
     const path = `${companyId}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, "")}`;

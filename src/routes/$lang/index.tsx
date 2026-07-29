@@ -958,7 +958,7 @@ function Footer({ t, c }: { t: ReturnType<typeof useI18n>["t"]; c: LandingCopy }
           </span>
           <div className="flex items-center gap-4">
             <a href="/sitemap.xml" className="hover:text-foreground">
-              Sitemap
+              {tx("Sitemap")}
             </a>
             <Link to="/auth" className="hover:text-foreground">
               {t.signIn}
