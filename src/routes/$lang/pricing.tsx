@@ -142,7 +142,7 @@ function PricingPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-5 py-10 sm:px-6 md:py-16 grid gap-6 lg:grid-cols-3">
+      <section className="mx-auto max-w-xl px-5 py-10 sm:px-6 md:py-16">
         <article className="relative rounded-3xl border border-border/60 bg-card/40 p-7 backdrop-blur transition-all hover:border-primary/40">
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary/80">{(isAr ? FREE.ar : FREE.en).tag}</p>
           <h2 className="mt-3 text-2xl font-bold">{(isAr ? FREE.ar : FREE.en).name}</h2>
