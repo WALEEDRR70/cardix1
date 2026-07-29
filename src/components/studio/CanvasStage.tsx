@@ -44,6 +44,24 @@ function ImageNode({ n, values }: { n: StudioNode; values?: Record<string, strin
 
   const svg = isSvgSrc(src) && s.svgInline !== false ? inline : null;
 
+  // Clip/paint wrapper: corner radius, fill and border apply to the frame,
+  // so they work even when the image itself has transparent corners.
+  const Frame = ({ children }: { children: React.ReactNode }) => (
+    <div
+      className="h-full w-full"
+      style={{
+        borderRadius: s.radius,
+        overflow: "hidden",
+        background: s.gradient ?? (s.fill && s.fill !== "transparent" ? s.fill : undefined),
+        border: s.borderWidth ? `${s.borderWidth}px solid ${s.borderColor ?? "#ffffff"}` : undefined,
+        padding: s.padding,
+      }}
+    >
+      {children}
+    </div>
+  );
+
+
   if (!src) {
     if (n.imageSource === "employee") {
       return (
