@@ -10,7 +10,7 @@ import { useState } from "react";
 import { NoteDialog } from "@/components/NoteDialog";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
 import { CardPreview } from "@/components/CardPreview";
-import { tx } from "@/lib/tx";
+import { tx, txErr } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/_authenticated/vault")({
   head: () => ({
@@ -89,7 +89,7 @@ function Vault() {
     setBusy(true);
     const { error } = await supabase.from("saved_cards").delete().eq("id", deleteId).eq("user_id", user.id);
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) return toast.error(txErr(error));
     qc.invalidateQueries({ queryKey: ["saved_cards"] });
     toast.success(t.deleted);
     setDeleteId(null);
@@ -106,7 +106,7 @@ function Vault() {
     setBusy(true);
     const { error } = await supabase.from("saved_cards").update({ notes: value }).eq("id", noteTarget.id).eq("user_id", user.id);
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) return toast.error(txErr(error));
     qc.invalidateQueries({ queryKey: ["saved_cards"] });
     toast.success(t.saveNote);
     setNoteTarget(null);

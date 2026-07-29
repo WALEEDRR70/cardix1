@@ -16,6 +16,7 @@ import { OnboardingChecklist } from "@/components/OnboardingChecklist";
 
 import { QRCodeSVG } from "qrcode.react";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
+import { txErr } from "@/lib/tx";
 
 
 export const Route = createFileRoute("/$lang/_authenticated/dashboard")({
@@ -85,7 +86,7 @@ function Dashboard() {
     setDeleting(true);
     const { error } = await supabase.from("cards").delete().eq("id", deleteId);
     setDeleting(false);
-    if (error) return toast.error(error.message);
+    if (error) return toast.error(txErr(error));
     qc.invalidateQueries({ queryKey: ["cards"] });
     toast.success(t.deleted);
     setDeleteId(null);

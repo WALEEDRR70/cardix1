@@ -9,6 +9,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { toast } from "sonner";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { localizedPath, safeNextPath } from "@/lib/locale-routing";
+import { txErr } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/auth")({
   head: () => ({
@@ -58,7 +59,7 @@ function AuthPage() {
         nav({ to: nextPath() });
       }
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : t.somethingWrong);
+      toast.error(txErr(e, t.somethingWrong));
     } finally {
       setLoading(false);
     }

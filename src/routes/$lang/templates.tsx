@@ -31,7 +31,7 @@ import {
 import type { StudioDoc } from "@/lib/studio/types";
 import { recolorDesign, docAccent } from "@/lib/studio/recolor";
 import { TemplateColorSwatches } from "@/components/TemplateColorSwatches";
-import { tx } from "@/lib/tx";
+import { tx, txErr } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/templates")({
   head: ({ params }) => {
@@ -183,7 +183,7 @@ function TemplatesGallery() {
         params: { id: cardId },
       });
     } catch (e) {
-      toast.error((e as Error).message);
+      toast.error(txErr(e));
     } finally {
       setBusyId(null);
     }
@@ -201,7 +201,7 @@ function TemplatesGallery() {
       setPending(null);
       navigate({ to: activeWorkspace ? "/studio/$id" : "/cards/$id", params: { id: cardId } });
     } catch (e) {
-      toast.error((e as Error).message);
+      toast.error(txErr(e));
     } finally {
       setBusyId(null);
     }
@@ -214,7 +214,7 @@ function TemplatesGallery() {
       await qc.invalidateQueries({ queryKey: ["public-templates"] });
       await qc.invalidateQueries({ queryKey: ["my-templates"] });
     } catch (e) {
-      toast.error((e as Error).message);
+      toast.error(txErr(e));
     } finally {
       setBusyId(null);
     }

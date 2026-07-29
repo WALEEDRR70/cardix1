@@ -12,6 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
+import { txErr } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/_authenticated/vault/$id")({
   head: () => ({
@@ -82,7 +83,7 @@ function VaultDetail() {
     setSavingNote(true);
     const { error } = await supabase.from("saved_cards").update({ notes: note }).eq("id", id).eq("user_id", user.id);
     setSavingNote(false);
-    if (error) return toast.error(error.message);
+    if (error) return toast.error(txErr(error));
     qc.invalidateQueries({ queryKey: ["saved_card", id] });
     qc.invalidateQueries({ queryKey: ["saved_cards"] });
     toast.success(t.saveNote);
@@ -92,7 +93,7 @@ function VaultDetail() {
     setDeleting(true);
     const { error } = await supabase.from("saved_cards").delete().eq("id", id).eq("user_id", user.id);
     setDeleting(false);
-    if (error) return toast.error(error.message);
+    if (error) return toast.error(txErr(error));
     qc.invalidateQueries({ queryKey: ["saved_cards"] });
     toast.success(t.deleted);
     setConfirmOpen(false);

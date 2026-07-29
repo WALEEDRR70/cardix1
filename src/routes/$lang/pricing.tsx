@@ -10,7 +10,7 @@ import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } fro
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { GetStartedCards } from "@/components/marketing/GetStartedCards";
-import { tx, txDict } from "@/lib/tx";
+import { tx, txDict, txErr } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/pricing")({
   head: ({ params }) => {
@@ -114,7 +114,7 @@ function PricingPage() {
       if (res.approveUrl) window.location.href = res.approveUrl;
       else toast.error(tx("Could not start checkout"));
     } catch (e) {
-      toast.error((e as Error).message);
+      toast.error(txErr(e));
     } finally {
       setBusy(null);
     }

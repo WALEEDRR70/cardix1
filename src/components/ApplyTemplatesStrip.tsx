@@ -15,7 +15,7 @@ import {
   type DesignTemplate,
 } from "@/lib/templates";
 import type { StudioDoc } from "@/lib/studio/types";
-import { tx } from "@/lib/tx";
+import { tx, txErr } from "@/lib/tx";
 
 export function ApplyTemplatesStrip({ cardId }: { cardId: string }) {
   const { lang } = useI18n();
@@ -54,7 +54,7 @@ export function ApplyTemplatesStrip({ cardId }: { cardId: string }) {
       await qc.invalidateQueries({ queryKey: ["card", cardId] });
       toast.success(tx("Design applied to this card"));
     } catch (e) {
-      toast.error((e as Error).message);
+      toast.error(txErr(e));
     } finally {
       setBusyId(null);
     }

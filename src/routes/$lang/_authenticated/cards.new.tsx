@@ -5,6 +5,7 @@ import { CardForm, type CardFormData } from "@/components/CardForm";
 import { useI18n } from "@/lib/i18n";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { toast } from "sonner";
+import { txErr } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/_authenticated/cards/new")({
   head: () => ({ meta: [{ title: "New card — Cardixn" }] }),
@@ -25,7 +26,7 @@ function NewCard() {
 
   async function onSubmit(d: CardFormData): Promise<void> {
     const { data, error } = await supabase.from("cards").insert({ ...d, user_id: user.id }).select().single();
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(txErr(error)); return; }
     toast.success(t.cardCreated);
     nav({ to: "/cards/$id", params: { id: data.id } });
   }

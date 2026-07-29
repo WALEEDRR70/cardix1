@@ -19,7 +19,7 @@ import {
 } from "@/lib/company-designs";
 import { syncCompanyCardDesigns } from "@/lib/company-designs.functions";
 import type { StudioDoc } from "@/lib/studio/types";
-import { tx } from "@/lib/tx";
+import { tx, txErr } from "@/lib/tx";
 
 const ROLES: CompanyRole[] = ["admin", "manager", "employee", "viewer"];
 
@@ -103,7 +103,7 @@ export function CardDesignsTab({ company, canEdit }: { company: Company; canEdit
       await qc.invalidateQueries({ queryKey: ["company-card-designs", company.id] });
       toast.success(t.saved);
     } catch (e) {
-      toast.error((e as Error).message);
+      toast.error(txErr(e));
     } finally {
       setBusy(false);
     }
@@ -114,7 +114,7 @@ export function CardDesignsTab({ company, canEdit }: { company: Company; canEdit
       await updateCardDesign(id, p);
       await qc.invalidateQueries({ queryKey: ["company-card-designs", company.id] });
     } catch (e) {
-      toast.error((e as Error).message);
+      toast.error(txErr(e));
     }
   }
 
@@ -123,7 +123,7 @@ export function CardDesignsTab({ company, canEdit }: { company: Company; canEdit
       await deleteCardDesign(id);
       await qc.invalidateQueries({ queryKey: ["company-card-designs", company.id] });
     } catch (e) {
-      toast.error((e as Error).message);
+      toast.error(txErr(e));
     }
   }
 
@@ -133,7 +133,7 @@ export function CardDesignsTab({ company, canEdit }: { company: Company; canEdit
       await syncCompanyCardDesigns({ data: { companyId: company.id } });
       toast.success(t.synced);
     } catch (e) {
-      toast.error((e as Error).message);
+      toast.error(txErr(e));
     } finally {
       setBusy(false);
     }

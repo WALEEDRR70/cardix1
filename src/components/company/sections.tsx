@@ -16,7 +16,7 @@ import {
 import { TEMPLATE_META, CardPreview } from "@/components/CardPreview";
 import { logCompanyAction } from "@/components/company/audit";
 import { prepareImageFile, canDisplayImage } from "@/lib/image-prep";
-import { tx, txPick } from "@/lib/tx";
+import { tx, txPick, txErr } from "@/lib/tx";
 
 /* ---------------------------- shared bits ---------------------------- */
 
@@ -91,7 +91,7 @@ export function useSaveCompany(id: string) {
     setBusy(true);
     const { error } = await supabase.from("companies").update(patch).eq("id", id);
     setBusy(false);
-    if (error) { toast.error(error.message); return false; }
+    if (error) { toast.error(txErr(error)); return false; }
     qc.invalidateQueries({ queryKey: ["company", id] });
     toast.success(msg);
     return true;
@@ -185,7 +185,7 @@ export function BrandTab({ company, canEdit }: { company: Company; canEdit: bool
       .eq("company_id", company.id)
       .eq("card_type", "employee");
     setApplying(false);
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(txErr(error)); return; }
     toast.success(w.brandApplied);
   }
 
@@ -275,7 +275,7 @@ export function LogoUpload({ label, value, onChange, disabled, companyId }: {
     }
     const path = `${companyId}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, "")}`;
     const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
-    if (error) { setBusy(false); toast.error(error.message); return; }
+    if (error) { setBusy(false); toast.error(txErr(error)); return; }
     const { data } = await supabase.storage.from("avatars").createSignedUrl(path, 60 * 60 * 24 * 365 * 5);
     if (!data?.signedUrl) { setBusy(false); toast.error("تعذر إنشاء رابط الشعار"); return; }
     // Automatic display check — confirm the stored URL really renders.
@@ -441,7 +441,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
       qc.invalidateQueries({ queryKey: ["company-invites", company.id] });
       toast.success(w.invitationCreated);
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Error");
+      toast.error(txErr(err, "Error"));
     } finally {
       setBusy(false);
     }
@@ -467,7 +467,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
 
   async function setStatus(memberId: string, status: MemberStatus) {
     const { error } = await supabase.from("company_members").update({ status }).eq("id", memberId);
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(txErr(error)); return; }
     const member = members?.find((m) => m.id === memberId);
     if (member) {
       await supabase
@@ -497,7 +497,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
       qc.invalidateQueries({ queryKey: ["company-invites", company.id] });
       return created;
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Error");
+      toast.error(txErr(err, "Error"));
       return null;
     } finally {
       setLinkBusy(false);
@@ -519,7 +519,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
 
   async function setRole(memberId: string, role: CompanyRole) {
     const { error } = await supabase.from("company_members").update({ role }).eq("id", memberId);
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(txErr(error)); return; }
     void logCompanyAction(company.id, userId, "member.role", "company_members", { label: role });
     qc.invalidateQueries({ queryKey: ["company-members", company.id] });
   }
@@ -529,7 +529,7 @@ export function EmployeesTab({ company, canEdit, userId }: { company: Company; c
       .from("company_members")
       .update({ department_id: departmentId || null })
       .eq("id", memberId);
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(txErr(error)); return; }
     void logCompanyAction(company.id, userId, "member.department", "company_members", { label: departmentId || "none" });
     qc.invalidateQueries({ queryKey: ["company-members", company.id] });
     qc.invalidateQueries({ queryKey: ["company-member-cards", company.id] });
@@ -768,7 +768,7 @@ export function DepartmentsTab({ company, canEdit }: { company: Company; canEdit
       .from("company_departments")
       .update({ name: next, slug: slugify(next) })
       .eq("id", id);
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(txErr(error)); return; }
     setEditingId(null);
     qc.invalidateQueries({ queryKey: ["company-departments", company.id] });
   }
@@ -799,7 +799,7 @@ export function DepartmentsTab({ company, canEdit }: { company: Company; canEdit
   async function add() {
     if (!name.trim()) return;
     const { error } = await supabase.from("company_departments").insert({ company_id: company.id, name: name.trim(), slug: slugify(name) });
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(txErr(error)); return; }
     setName("");
     qc.invalidateQueries({ queryKey: ["company-departments", company.id] });
   }
@@ -987,7 +987,7 @@ export function FieldsTab({ company, canEdit }: { company: Company; canEdit: boo
       permission: f.permission as "company_locked",
       visibility: f.visibility as "public",
     });
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(txErr(error)); return; }
     setF({ label: "", key: "", permission: "company_locked", visibility: "public", is_required: false });
     qc.invalidateQueries({ queryKey: ["company-fields", company.id] });
   }
@@ -1071,7 +1071,7 @@ export function BranchesTab({ company, canEdit }: { company: Company; canEdit: b
   async function add() {
     if (!f.name.trim()) return;
     const { error } = await supabase.from("company_branches").insert({ company_id: company.id, ...f });
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(txErr(error)); return; }
     setF({ name: "", city: "", country: "", address: "", phone: "" });
     qc.invalidateQueries({ queryKey: ["company-branches", company.id] });
   }
@@ -1236,7 +1236,7 @@ function MemberItem({
       const { data: signed } = await supabase.storage.from("avatars").createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
       if (signed?.signedUrl) setF((p) => ({ ...p, avatar_url: signed.signedUrl }));
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "Upload failed");
+      toast.error(txErr(e, "Upload failed"));
     } finally {
       setUploading(false);
     }
@@ -1261,7 +1261,7 @@ function MemberItem({
       })
       .eq("id", card.id);
     setBusy(false);
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(txErr(error)); return; }
     toast.success(w.saved ?? (tx("Saved")));
     onSaved();
   }

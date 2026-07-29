@@ -29,6 +29,25 @@ export function txPick(en: string, ar: string, locale?: string): string {
 }
 
 /**
+ * Translate an error surfaced to the user. Known backend/client messages are
+ * translated through the phrase table; unknown ones fall back to `fallback`
+ * (translated) or the raw message so nothing is ever swallowed.
+ */
+export function txErr(e: unknown, fallback?: string, locale?: string): string {
+  const l = locale ?? current;
+  const raw =
+    typeof e === "string"
+      ? e
+      : e && typeof e === "object" && typeof (e as { message?: unknown }).message === "string"
+        ? ((e as { message: string }).message)
+        : "";
+  const hit = raw ? PHRASES[l]?.[raw] : undefined;
+  if (hit) return hit;
+  if (raw) return raw;
+  return fallback ? tx(fallback, l) : tx("Something went wrong", l);
+}
+
+/**
  * Localize a whole copy object. Arabic uses the hand-written variant; every
  * other locale gets each English string translated through the phrase table.
  */
