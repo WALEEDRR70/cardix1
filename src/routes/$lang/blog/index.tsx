@@ -4,6 +4,7 @@ import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } fro
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { getAllPosts, getPostCopy } from "@/i18n/blog-posts";
 import { ArrowRight, Calendar, Clock } from "lucide-react";
+import { GetStartedCards } from "@/components/marketing/GetStartedCards";
 
 export const Route = createFileRoute("/$lang/blog/")({
   head: ({ params }) => {
@@ -96,6 +97,7 @@ function BlogIndex() {
           })}
         </div>
       </section>
+      <GetStartedCards lang={locale} />
     </MarketingLayout>
   );
 }
