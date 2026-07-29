@@ -1,7 +1,7 @@
 import { Link } from "@/lib/nav";
 import { useI18n } from "@/lib/i18n";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { LangToggle } from "@/components/LangToggle";
+import { LocaleSwitcher } from "@/components/LangToggle";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { tx } from "@/lib/tx";
 
@@ -38,7 +38,7 @@ export function SiteTopBar() {
 
         <div className="ms-auto flex items-center gap-1.5">
           <ThemeToggle compact />
-          <LangToggle compact />
+          <LocaleSwitcher compact />
           <Link
             to="/dashboard"
             className="rounded-full border border-border/60 px-3 py-1 text-[11px] font-medium text-muted-foreground transition hover:text-foreground"

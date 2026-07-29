@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { LangToggle as LocaleSwitcher } from "@/components/LangToggle";
+import { LocaleSwitcher } from "@/components/LangToggle";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { MobileNav } from "@/components/marketing/MobileNav";
 import { isRtl, type Locale } from "@/i18n/config";
