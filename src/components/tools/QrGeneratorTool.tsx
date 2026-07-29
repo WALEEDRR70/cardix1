@@ -65,8 +65,9 @@ export function QrGeneratorTool({ lang }: { lang: Locale }) {
       </div>
 
       <div className="flex items-center justify-center rounded-2xl border border-border/60 bg-white p-4">
-        <canvas ref={canvasRef} className="max-w-[260px] h-auto" />
+        <canvas ref={canvasRef} className="block aspect-square w-full max-w-[260px] h-auto" />
       </div>
+
     </div>
   );
 }
