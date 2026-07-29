@@ -41,15 +41,16 @@ export function UseTemplateDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[85vh] w-[calc(100vw-2rem)] max-w-2xl overflow-y-auto overflow-x-hidden p-4 sm:p-6">
-        <DialogHeader>
+      <DialogContent className="grid max-h-[85vh] w-[calc(100vw-2rem)] max-w-2xl grid-cols-[minmax(0,1fr)] overflow-y-auto overflow-x-hidden rounded-2xl p-4 sm:p-6">
+        <DialogHeader className="min-w-0 pe-8">
           <DialogTitle>{tx("Use template")}</DialogTitle>
           <DialogDescription>
             {tx("Pick an existing card to restyle, or create a new card with this design.")}
           </DialogDescription>
         </DialogHeader>
 
-        <div>
+        <div className="min-w-0">
+
           <p className="mb-2 text-xs font-semibold text-muted-foreground">
             {tx("My cards")}
           </p>
@@ -62,7 +63,7 @@ export function UseTemplateDialog({
               {tx("No cards yet.")}
             </p>
           ) : (
-            <div ref={dragRef} className="flex gap-3 overflow-x-auto pb-2">
+            <div ref={dragRef} className="-mx-1 flex w-full min-w-0 snap-x gap-3 overflow-x-auto px-1 pb-2">
               {cards.map((c) => {
                 const active = picked === c.id;
                 return (
@@ -71,7 +72,7 @@ export function UseTemplateDialog({
                     type="button"
                     onClick={() => setPicked(c.id)}
                     className={
-                      "relative w-[150px] shrink-0 rounded-2xl border p-2 text-start transition sm:w-[190px] " +
+                      "relative w-[140px] shrink-0 snap-start rounded-2xl border p-2 text-start transition sm:w-[190px] " +
                       (active ? "border-accent bg-accent/10" : "border-border/60 hover:border-accent/50")
                     }
                   >
@@ -111,7 +112,7 @@ export function UseTemplateDialog({
           )}
         </div>
 
-        <div className="mt-2 flex flex-col-reverse gap-2 sm:flex-row sm:items-center">
+        <div className="mt-2 flex min-w-0 flex-col-reverse gap-2 sm:flex-row sm:items-center">
           <button
             type="button"
             disabled={!picked || busy}
