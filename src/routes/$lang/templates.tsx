@@ -28,7 +28,7 @@ import {
   type TemplateAudience,
   type TemplateTarget,
 } from "@/lib/templates";
-import type { StudioDoc } from "@/lib/studio/types";
+import { SAMPLE_VALUES, type StudioDoc } from "@/lib/studio/types";
 import { recolorDesign, docAccent } from "@/lib/studio/recolor";
 import { TemplateColorSwatches } from "@/components/TemplateColorSwatches";
 import { tx, txErr } from "@/lib/tx";
