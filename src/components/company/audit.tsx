@@ -59,7 +59,7 @@ export function AuditTab({ company, userId }: { company: Company; userId: string
     },
   });
 
-  const fmt = new Intl.DateTimeFormat(lang === "ar" ? "ar" : "en", {
+  const fmt = new Intl.DateTimeFormat(lang, {
     dateStyle: "medium",
     timeStyle: "short",
   });

@@ -4,11 +4,11 @@ import { toast } from "sonner";
 import { CreditCard, Loader2, ShieldCheck } from "lucide-react";
 import { cancelMySubscription, getMyBilling } from "@/lib/billing.functions";
 import { Link } from "@/lib/nav";
-import { tx, txErr } from "@/lib/tx";
+import { tx, txErr, txLocale } from "@/lib/tx";
 
-function fmtDate(v: string | null, ar: boolean) {
+function fmtDate(v: string | null, _ar: boolean) {
   if (!v) return "—";
-  return new Date(v).toLocaleDateString(ar ? "ar" : "en", { year: "numeric", month: "short", day: "numeric" });
+  return new Date(v).toLocaleDateString(txLocale(), { year: "numeric", month: "short", day: "numeric" });
 }
 
 export function SubscriptionCard({ ar }: { ar: boolean }) {
