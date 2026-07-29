@@ -5,7 +5,6 @@ import type { Locale } from "@/i18n/config";
 import { tx } from "@/lib/tx";
 
 export function QrGeneratorTool({ lang }: { lang: Locale }) {
-  const isAr = lang === "ar";
   const [text, setText] = useState("https://cardix1.lovable.app");
   const [fg, setFg] = useState("#0f0524");
   const [bg, setBg] = useState("#ffffff");
