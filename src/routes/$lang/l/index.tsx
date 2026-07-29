@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@/lib/nav";
 import { SITE_ORIGIN, DEFAULT_LOCALE, isSupportedLocale, SUPPORTED_LOCALES } from "@/i18n/config";
-import { getLandingPagesByCategory, CATEGORY_LABEL, type LandingCategory } from "@/i18n/landing-pages";
+import { getLandingPagesByCategory, getLandingCopy, CATEGORY_LABEL, type LandingCategory } from "@/i18n/landing-pages";
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { GetStartedCards } from "@/components/marketing/GetStartedCards";
-import { tx } from "@/lib/tx";
+import { tx, txPick } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/l/")({
   head: ({ params }) => {
@@ -57,11 +57,11 @@ function HubPage() {
           return (
             <div key={cat}>
               <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mb-6">
-                {CATEGORY_LABEL[cat][isAr ? "ar" : "en"]}
+                {txPick(CATEGORY_LABEL[cat].en, CATEGORY_LABEL[cat].ar, locale)}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {pages.map((p) => {
-                  const c = p.copy[locale] ?? p.copy.en!;
+                  const c = getLandingCopy(p, locale);
                   return (
                     <Link key={p.slug} to={`/l/${p.slug}`} className="group rounded-xl border border-border/50 bg-card/40 p-6 hover:border-primary/50 hover:bg-card/60 transition-all">
                       <div className="text-xs uppercase tracking-wider text-primary/70 mb-2">{p.keyword}</div>
