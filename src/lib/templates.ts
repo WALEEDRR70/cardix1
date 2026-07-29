@@ -107,6 +107,24 @@ export async function deleteTemplate(id: string): Promise<void> {
  * personal profile or inside a company workspace, depending on `target`.
  * The template row itself is never modified — only its use counter.
  */
+/** The user's main personal card — used to prefill new cards. */
+export async function getMainCard(userId: string) {
+  const { data } = await supabase
+    .from("cards")
+    .select("name,title,company,bio,phone,whatsapp,email,website,address,avatar_url,socials,is_published,company_id,updated_at")
+    .eq("user_id", userId)
+    .order("is_published", { ascending: false })
+    .order("updated_at", { ascending: false })
+    .limit(20);
+  const rows = data ?? [];
+  return (
+    rows.find((c) => !c.company_id && c.is_published) ??
+    rows.find((c) => !c.company_id) ??
+    rows[0] ??
+    null
+  );
+}
+
 export async function useTemplate(
   tpl: DesignTemplate,
   target: TemplateTarget = { kind: "personal" },
