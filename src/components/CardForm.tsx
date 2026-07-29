@@ -10,7 +10,7 @@ import { SOCIALS } from "@/lib/socials";
 import { useDragScroll } from "@/lib/use-drag-scroll";
 import { recolorDesign } from "@/lib/studio/recolor";
 import type { StudioDoc } from "@/lib/studio/types";
-import { tx } from "@/lib/tx";
+import { tx, txErr } from "@/lib/tx";
 
 
 export interface CardFormData {
@@ -98,7 +98,7 @@ export function CardForm({
       const { data: signed } = await supabase.storage.from("avatars").createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
       if (signed?.signedUrl) setData((d) => ({ ...d, avatar_url: signed.signedUrl }));
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : t.uploadFailed);
+      toast.error(txErr(e, t.uploadFailed));
     } finally {
       setUploading(false);
     }
@@ -124,7 +124,7 @@ export function CardForm({
         .createSignedUrls(paths, 60 * 60 * 24 * 365 * 10);
       setLibrary((signed ?? []).map((s) => s.signedUrl).filter(Boolean) as string[]);
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : t.uploadFailed);
+      toast.error(txErr(e, t.uploadFailed));
     } finally {
       setLibLoading(false);
     }
@@ -139,7 +139,7 @@ export function CardForm({
       const out = await genBio({ data: { name: data.name, title: data.title, company: data.company, lang } });
       if (out.bio) setData((d) => ({ ...d, bio: out.bio }));
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : t.aiError);
+      toast.error(txErr(e, t.aiError));
     } finally {
       setGenBusy(false);
     }

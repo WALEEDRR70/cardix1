@@ -11,7 +11,7 @@ import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { QrScanner } from "@/components/QrScanner";
 import { CardPreview, type CardData } from "@/components/CardPreview";
 import { NoteDialog } from "@/components/NoteDialog";
-import { tx } from "@/lib/tx";
+import { tx, txErr } from "@/lib/tx";
 
 
 export const Route = createFileRoute("/$lang/_authenticated/scan")({
@@ -146,7 +146,7 @@ function ScanPage() {
       notes: note.trim() || null,
     });
     setSaving(false);
-    if (insErr) { toast.error(insErr.message); return; }
+    if (insErr) { toast.error(txErr(insErr)); return; }
     supabase.from("card_events").insert({ card_id: scanned.id, event_type: "save" }).then(() => {});
     toast.success(t.savedToVault);
     nav({ to: "/vault" });
@@ -169,7 +169,7 @@ function ScanPage() {
       if (!out.name) toast.error(t.scanFailed);
       else setData(out);
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : t.scanFailed);
+      toast.error(txErr(e, t.scanFailed));
     } finally {
       setBusy(false);
     }
@@ -197,7 +197,7 @@ function ScanPage() {
       socials: {},
     });
     setSaving(false);
-    if (error) return toast.error(error.message);
+    if (error) return toast.error(txErr(error));
     toast.success(t.savedToVault);
     nav({ to: "/vault" });
   }

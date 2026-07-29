@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useStudio } from "@/lib/studio/store";
 import { publishTemplate, type TemplateAudience } from "@/lib/templates";
 import { audienceLabel } from "@/components/CommunityTemplates";
-import { tx } from "@/lib/tx";
+import { tx, txErr } from "@/lib/tx";
 
 export function PublishTemplateDialog({ ar, defaultTitle }: { ar: boolean; defaultTitle?: string }) {
   const { state } = useStudio();
@@ -39,7 +39,7 @@ export function PublishTemplateDialog({ ar, defaultTitle }: { ar: boolean; defau
       );
       setOpen(false);
     } catch (e) {
-      toast.error((e as Error).message);
+      toast.error(txErr(e));
     } finally {
       setBusy(false);
     }

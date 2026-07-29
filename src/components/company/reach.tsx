@@ -12,7 +12,7 @@ import { useWs, type Company, type CompanyRole } from "@/lib/workspace";
 import { Card, TextField, SaveBar, useSaveCompany, LogoUpload } from "@/components/company/sections";
 import { ServicesEditor } from "@/components/company/ServicesEditor";
 import { parseServices, type CompanyService } from "@/lib/company-services";
-import { txDict } from "@/lib/tx";
+import { txDict, txErr } from "@/lib/tx";
 
 
 /* ------------------------------ labels ------------------------------ */
@@ -87,13 +87,13 @@ export function MediaTab({ company, canEdit }: { company: Company; canEdit: bool
     setBusy(true);
     const path = `${company.id}/media/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, "")}`;
     const up = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
-    if (up.error) { setBusy(false); toast.error(up.error.message); return; }
+    if (up.error) { setBusy(false); toast.error(txErr(up.error)); return; }
     const { data } = await supabase.storage.from("avatars").createSignedUrl(path, 60 * 60 * 24 * 365 * 5);
     if (data?.signedUrl) {
       const { error } = await supabase.from("company_brand_assets").insert({
         company_id: company.id, url: data.signedUrl, kind: file.type.startsWith("image/") ? "image" : "file", label: file.name,
       });
-      if (error) toast.error(error.message);
+      if (error) toast.error(txErr(error));
       else qc.invalidateQueries({ queryKey: ["company-assets", company.id] });
     }
     setBusy(false);
@@ -101,7 +101,7 @@ export function MediaTab({ company, canEdit }: { company: Company; canEdit: bool
 
   async function remove(id: string) {
     const { error } = await supabase.from("company_brand_assets").delete().eq("id", id);
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(txErr(error)); return; }
     qc.invalidateQueries({ queryKey: ["company-assets", company.id] });
   }
 
@@ -212,7 +212,7 @@ export function NfcTab({ company }: { company: Company }) {
       await reader.write({ records: [{ recordType: "url", data: url }] });
       toast.success(t.nfcWritten);
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "NFC error");
+      toast.error(txErr(e, "NFC error"));
     } finally {
       setState("idle");
     }
@@ -430,7 +430,7 @@ export function InvitationsTab({ company, canEdit }: { company: Company; canEdit
 
   async function revoke(id: string) {
     const { error } = await supabase.from("company_invitations").update({ status: "revoked" }).eq("id", id);
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(txErr(error)); return; }
     qc.invalidateQueries({ queryKey: ["company-invites-all", company.id] });
     qc.invalidateQueries({ queryKey: ["company-invites", company.id] });
   }

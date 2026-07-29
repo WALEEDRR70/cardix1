@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Heart } from "lucide-react";
 import { toast } from "sonner";
 import { listFavoriteTemplateIds, toggleFavoriteTemplate } from "@/lib/templates";
-import { tx } from "@/lib/tx";
+import { tx, txErr } from "@/lib/tx";
 
 /** Shared query for the ids the current user saved. */
 export function useFavoriteTemplateIds(userId: string | null) {
@@ -47,7 +47,7 @@ export function FavoriteTemplateButton({
     },
     onError: (e, _v, ctx) => {
       if (ctx?.prev) qc.setQueryData(["favorite-template-ids", userId], ctx.prev);
-      toast.error((e as Error).message);
+      toast.error(txErr(e));
     },
     onSuccess: (now) => {
       toast.success(

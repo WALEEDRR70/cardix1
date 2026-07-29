@@ -12,7 +12,7 @@ import { useState } from "react";
 import { useWs } from "@/lib/workspace";
 import { lockedFieldsFromDesign } from "@/lib/company-designs";
 import { ApplyTemplatesStrip } from "@/components/ApplyTemplatesStrip";
-import { tx } from "@/lib/tx";
+import { tx, txErr } from "@/lib/tx";
 
 
 export const Route = createFileRoute("/$lang/_authenticated/cards/$id")({
@@ -113,7 +113,7 @@ function EditCard() {
   async function onSubmit(d: CardFormData, extra?: { design?: unknown }): Promise<void> {
     const patch = extra?.design ? { ...d, design: extra.design as never } : d;
     const { error } = await supabase.from("cards").update(patch).eq("id", id).eq("user_id", user.id);
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(txErr(error)); return; }
     qc.invalidateQueries({ queryKey: ["card", id, user.id] });
     qc.invalidateQueries({ queryKey: ["cards"] });
     toast.success(t.saved);
@@ -121,7 +121,7 @@ function EditCard() {
 
   async function clearDesign(): Promise<void> {
     const { error } = await supabase.from("cards").update({ design: null }).eq("id", id).eq("user_id", user.id);
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(txErr(error)); return; }
     qc.invalidateQueries({ queryKey: ["card", id, user.id] });
     qc.invalidateQueries({ queryKey: ["cards"] });
   }

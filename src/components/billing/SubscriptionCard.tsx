@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { CreditCard, Loader2, ShieldCheck } from "lucide-react";
 import { cancelMySubscription, getMyBilling } from "@/lib/billing.functions";
 import { Link } from "@/lib/nav";
-import { tx } from "@/lib/tx";
+import { tx, txErr } from "@/lib/tx";
 
 function fmtDate(v: string | null, ar: boolean) {
   if (!v) return "—";
@@ -27,7 +27,7 @@ export function SubscriptionCard({ ar }: { ar: boolean }) {
       toast.success(tx("Subscription cancelled"));
       qc.invalidateQueries({ queryKey: ["my-billing"] });
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toast.error(txErr(e)),
   });
 
   const active = (data as any)?.active ?? null;

@@ -17,7 +17,7 @@ import {
   type TemplateTarget,
 } from "@/lib/templates";
 import type { StudioDoc } from "@/lib/studio/types";
-import { tx } from "@/lib/tx";
+import { tx, txErr } from "@/lib/tx";
 
 export const audienceLabel = (a: string, ar: boolean) =>
   a === "personal"
@@ -80,7 +80,7 @@ export function CommunityTemplates({
       );
       navigate({ to: "/studio/$id", params: { id: cardId } });
     } catch (e) {
-      toast.error((e as Error).message);
+      toast.error(txErr(e));
     } finally {
       setBusyId(null);
     }

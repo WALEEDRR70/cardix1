@@ -33,7 +33,7 @@ import QRCode from "qrcode";
 import { localizedPath } from "@/lib/locale-routing";
 import { fetchPublicCardMeta, publicCardHead } from "@/lib/public-card-meta";
 import { avatarPhotoLine } from "@/lib/vcard-photo";
-import { tx } from "@/lib/tx";
+import { tx, txErr } from "@/lib/tx";
 
 
 
@@ -258,7 +258,7 @@ export function PublicCardView({ slug }: { slug: string }) {
     });
     setSavingCard(false);
     if (error) {
-      toast.error(error.message);
+      toast.error(txErr(error));
       return;
     }
     await supabase.from("card_events").insert({ card_id: card!.id, event_type: "save" });

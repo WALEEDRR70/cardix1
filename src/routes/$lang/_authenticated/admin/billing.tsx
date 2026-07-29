@@ -7,6 +7,7 @@ import { Link2, Loader2, Plus, Save, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { syncAllPlansToPaypal, syncPlanToPaypal } from "@/lib/billing.functions";
+import { txErr } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/_authenticated/admin/billing")({
   head: () => ({
@@ -95,7 +96,7 @@ function AdminBilling() {
       toast.success("تم ربط الخطة مع PayPal");
       qc.invalidateQueries({ queryKey: ["admin-plans"] });
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toast.error(txErr(e)),
   });
 
   const syncAllFn = useServerFn(syncAllPlansToPaypal);
@@ -105,7 +106,7 @@ function AdminBilling() {
       toast.success(`تم ربط ${r.linked} باقة مع PayPal`);
       qc.invalidateQueries({ queryKey: ["admin-plans"] });
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toast.error(txErr(e)),
   });
 
   if (roleLoading) {
@@ -241,14 +242,14 @@ function PlanRow({
       })
       .eq("id", plan.id);
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) return toast.error(txErr(error));
     toast.success("تم الحفظ");
     onSaved();
   }
 
   async function remove() {
     const { error } = await db.from("billing_plans").delete().eq("id", plan.id);
-    if (error) return toast.error(error.message);
+    if (error) return toast.error(txErr(error));
     onSaved();
   }
 
@@ -346,14 +347,14 @@ function ProductRow({ product, onSaved }: { product: Product; onSaved: () => voi
         sort_order: Number(draft.sort_order) || 0,
       })
       .eq("id", product.id);
-    if (error) return toast.error(error.message);
+    if (error) return toast.error(txErr(error));
     toast.success("تم الحفظ");
     onSaved();
   }
 
   async function remove() {
     const { error } = await db.from("billing_products").delete().eq("id", product.id);
-    if (error) return toast.error(error.message);
+    if (error) return toast.error(txErr(error));
     onSaved();
   }
 
@@ -393,7 +394,7 @@ function NewPlanButton({ onDone }: { onDone: () => void }) {
     const code = `plan-${Math.random().toString(36).slice(2, 7)}`;
     const { error } = await db.from("billing_plans").insert({ code, name_en: "New plan", name_ar: "باقة جديدة" });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) return toast.error(txErr(error));
     onDone();
   }
   return (
@@ -410,7 +411,7 @@ function NewProductButton({ onDone }: { onDone: () => void }) {
     const code = `tpl-${Math.random().toString(36).slice(2, 7)}`;
     const { error } = await db.from("billing_products").insert({ code, name_en: "New template", name_ar: "قالب جديد" });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) return toast.error(txErr(error));
     onDone();
   }
   return (

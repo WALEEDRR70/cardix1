@@ -10,7 +10,7 @@ import { ElementsPanel } from "@/components/studio/ElementsPanel";
 import { PropertiesPanel } from "@/components/studio/PropertiesPanel";
 import { StudioToolbar } from "@/components/studio/StudioToolbar";
 import { Frame, Shapes, SlidersHorizontal, X } from "lucide-react";
-import { tx } from "@/lib/tx";
+import { tx, txErr } from "@/lib/tx";
 
 export function StudioWorkspace({
   title,
@@ -42,7 +42,7 @@ export function StudioWorkspace({
       lastSaved.current = json;
       if (!silent) toast.success(tx("Design saved"));
     } catch (e) {
-      if (!silent) toast.error((e as Error).message);
+      if (!silent) toast.error(txErr(e));
     } finally {
       setSaving(false);
     }

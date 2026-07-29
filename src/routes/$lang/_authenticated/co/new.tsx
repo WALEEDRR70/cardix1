@@ -10,6 +10,7 @@ import { accountQueryKey } from "@/lib/account";
 import { ArrowLeft, ArrowRight, Building2, Check, Sparkles } from "lucide-react";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { LocaleSwitcher } from "@/components/LangToggle";
+import { txErr } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/_authenticated/co/new")({
   head: () => ({
@@ -222,7 +223,7 @@ function OnboardingWizard() {
       toast.success(w.workspaceReady);
       nav({ to: "/co/$slug", params: { slug: company.slug } });
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Error");
+      toast.error(txErr(err, "Error"));
     } finally {
       setBusy(false);
     }

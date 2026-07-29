@@ -12,7 +12,7 @@ import { isSvgSrc } from "@/lib/studio/svg";
 import { SvgPalette } from "@/components/studio/SvgPalette";
 import { GradientEditor } from "@/components/studio/GradientEditor";
 import { PanelSection, Row, NumInput, ColorInput, Seg, MiniBtn, SwitchRow, fieldCls } from "@/components/studio/inspector";
-import { tx, txPick } from "@/lib/tx";
+import { tx, txPick, txErr } from "@/lib/tx";
 
 const BG_PRESETS: string[] = [
   "linear-gradient(160deg,#0b0713,#2c125a)",
@@ -440,7 +440,7 @@ function UploadButton({ ar, onDone }: { ar: boolean; onDone: (url: string) => vo
             onDone(await uploadStudioImage(file));
             toast.success(tx("Image uploaded"));
           } catch (err) {
-            toast.error(err instanceof Error ? err.message : tx("Upload failed"));
+            toast.error(txErr(err, tx("Upload failed")));
           } finally {
             setBusy(false);
           }
