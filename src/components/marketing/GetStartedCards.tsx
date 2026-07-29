@@ -1,6 +1,7 @@
 import { ArrowRight, LayoutTemplate, ScanLine, Sparkles, QrCode, Building2, BarChart3 } from "lucide-react";
 import { Link } from "@/lib/nav";
 import type { Locale } from "@/i18n/config";
+import { txDict } from "@/lib/tx";
 
 type Step = {
   icon: typeof Sparkles;
@@ -50,7 +51,7 @@ const COPY = {
 
 /** Encouragement block: 3 numbered "get started" cards + 3 capability cards + CTA. */
 export function GetStartedCards({ lang, className = "" }: { lang: Locale; className?: string }) {
-  const t = lang === "ar" ? COPY.ar : COPY.en;
+  const t = txDict(COPY.en, COPY.ar);
 
   return (
     <section className={"border-t border-border/40 bg-muted/10 " + className}>

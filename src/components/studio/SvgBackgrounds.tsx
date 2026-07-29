@@ -6,7 +6,7 @@ import { useStudio } from "@/lib/studio/store";
 import { SVG_BACKGROUNDS } from "@/lib/studio/svg-backgrounds";
 import { artworkToNodes, parseSvgArtwork, type SvgArtwork } from "@/lib/studio/svg-import";
 import { cn } from "@/lib/utils";
-import { tx } from "@/lib/tx";
+import { tx, txDict } from "@/lib/tx";
 
 function Thumb({ art, className }: { art: SvgArtwork; className?: string }) {
   return (
@@ -62,14 +62,14 @@ export function SvgBackgrounds({ ar }: { ar: boolean }) {
           <button
             key={p.key}
             type="button"
-            onClick={() => insert(p.art, ar ? p.ar : p.en)}
+            onClick={() => insert(p.art, txDict(p.en, p.ar))}
             className="group overflow-hidden rounded-md border border-border/50 bg-background/40 text-start transition hover:border-accent"
           >
             <div className="h-16 w-full overflow-hidden">
               <Thumb art={p.art!} />
             </div>
             <span className="block truncate px-1.5 py-1 text-[10px] text-muted-foreground group-hover:text-foreground">
-              {ar ? p.ar : p.en}
+              {txDict(p.en, p.ar)}
             </span>
           </button>
         ))}

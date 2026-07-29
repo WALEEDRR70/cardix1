@@ -385,8 +385,8 @@ function Hero({
             {[
               { icon: QrCode, label: "QR" },
               { icon: Radio, label: "NFC" },
-              { icon: ScanLine, label: heroAr ? "مسح ذكي" : "AI scan" },
-              { icon: BarChart3, label: heroAr ? "تحليلات" : "Analytics" },
+              { icon: ScanLine, label: tx("AI scan") },
+              { icon: BarChart3, label: tx("Analytics") },
             ].map((f) => (
               <div
                 key={f.label}

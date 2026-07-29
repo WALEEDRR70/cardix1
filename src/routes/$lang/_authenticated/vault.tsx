@@ -10,6 +10,7 @@ import { useState } from "react";
 import { NoteDialog } from "@/components/NoteDialog";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
 import { CardPreview } from "@/components/CardPreview";
+import { tx } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/_authenticated/vault")({
   head: () => ({
@@ -130,8 +131,8 @@ function Vault() {
               value={q}
               onChange={(e) => setQ(e.target.value)}
               dir="auto"
-              placeholder={lang === "ar" ? "ابحث بالاسم أو الشركة…" : "Search name, company…"}
-              aria-label={lang === "ar" ? "بحث في المحفظة" : "Search vault"}
+              placeholder={tx("Search name, company…")}
+              aria-label={tx("Search vault")}
               className="h-11 w-full rounded-2xl border border-border/60 bg-card/50 ps-10 pe-4 text-sm text-foreground outline-none backdrop-blur transition placeholder:text-muted-foreground focus:border-accent/60"
             />
           </div>
@@ -143,7 +144,7 @@ function Vault() {
         ) : filtered.length === 0 ? (
           <div className="glass mt-4 rounded-3xl p-10 text-center lg:p-16">
             <p className="text-sm text-muted-foreground">
-              {lang === "ar" ? "لا توجد نتائج مطابقة" : "No matching cards"}
+              {tx("No matching cards")}
             </p>
           </div>
         ) : (

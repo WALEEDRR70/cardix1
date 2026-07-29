@@ -10,7 +10,7 @@ import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } fro
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { GetStartedCards } from "@/components/marketing/GetStartedCards";
-import { tx } from "@/lib/tx";
+import { tx, txDict } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/pricing")({
   head: ({ params }) => {
@@ -144,14 +144,14 @@ function PricingPage() {
 
       <section className="mx-auto max-w-xl px-5 py-10 sm:px-6 md:py-16">
         <article className="relative rounded-3xl border border-border/60 bg-card/40 p-7 backdrop-blur transition-all hover:border-primary/40">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary/80">{(isAr ? FREE.ar : FREE.en).tag}</p>
-          <h2 className="mt-3 text-2xl font-bold">{(isAr ? FREE.ar : FREE.en).name}</h2>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary/80">{(txDict(FREE.en, FREE.ar)).tag}</p>
+          <h2 className="mt-3 text-2xl font-bold">{(txDict(FREE.en, FREE.ar)).name}</h2>
           <p className="mt-4 flex items-end gap-1.5">
             <span className="text-4xl font-bold tracking-tight">{tx("$0")}</span>
-            <span className="pb-1 text-sm text-muted-foreground">{(isAr ? FREE.ar : FREE.en).note}</span>
+            <span className="pb-1 text-sm text-muted-foreground">{(txDict(FREE.en, FREE.ar)).note}</span>
           </p>
           <ul className="mt-6 space-y-3 text-sm">
-            {(isAr ? FREE.ar : FREE.en).items.map((i) => (
+            {(txDict(FREE.en, FREE.ar)).items.map((i) => (
               <li key={i} className="flex items-start gap-2.5">
                 <Check className="mt-0.5 size-4 shrink-0 text-primary" />
                 <span className="text-muted-foreground">{i}</span>

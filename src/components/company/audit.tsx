@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useWs, type Company } from "@/lib/workspace";
 import { Card } from "@/components/company/sections";
 import { ScrollText } from "lucide-react";
+import { txDict } from "@/lib/tx";
 
 type AuditRow = {
   id: string;
@@ -90,7 +91,7 @@ export function AuditTab({ company, userId }: { company: Company; userId: string
                 />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm">
-                    {label ? (lang === "ar" ? label.ar : label.en) : row.action}
+                    {label ? (txDict(label.en, label.ar)) : row.action}
                     {target && <span className="text-muted-foreground"> — {target}</span>}
                   </p>
                   <p className="mt-0.5 text-[11px] text-muted-foreground">

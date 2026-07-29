@@ -4,7 +4,7 @@ import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } fro
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { ArrowRight, Leaf, Sparkles, ShieldCheck, Globe2 } from "lucide-react";
 import { GetStartedCards } from "@/components/marketing/GetStartedCards";
-import { tx } from "@/lib/tx";
+import { tx, txDict } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/about")({
   head: ({ params }) => {
@@ -74,7 +74,7 @@ function AboutPage() {
       <section className="border-t border-border/40">
         <div className="mx-auto max-w-6xl px-5 py-10 sm:px-6 md:py-16 grid gap-6 md:grid-cols-2">
           {VALUES.map((v) => {
-            const [h, p] = isAr ? v.ar : v.en;
+            const [h, p] = txDict(v.en, v.ar);
             const Icon = v.icon;
             return (
               <article key={h} className="rounded-3xl border border-border/60 bg-card/40 backdrop-blur p-6">

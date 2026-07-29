@@ -4,6 +4,7 @@ import { ChevronDown, ExternalLink, GripVertical, Plus, Trash2, X } from "lucide
 import { Link } from "@tanstack/react-router";
 import { Card, TextField, LogoUpload } from "@/components/company/sections";
 import { parseServices, newService, slugifyService, type CompanyService } from "@/lib/company-services";
+import { txDict } from "@/lib/tx";
 
 const EN = {
   title: "Services",
@@ -70,7 +71,7 @@ export function ServicesEditor({
   companySlug: string;
   companyId: string;
 }) {
-  const t = lang === "ar" ? AR : EN;
+  const t = txDict(EN, AR);
   const services = parseServices(value);
   const [openId, setOpenId] = useState<string | null>(null);
 

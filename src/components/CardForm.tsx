@@ -10,6 +10,7 @@ import { SOCIALS } from "@/lib/socials";
 import { useDragScroll } from "@/lib/use-drag-scroll";
 import { recolorDesign } from "@/lib/studio/recolor";
 import type { StudioDoc } from "@/lib/studio/types";
+import { tx } from "@/lib/tx";
 
 
 export interface CardFormData {
@@ -283,15 +284,13 @@ export function CardForm({
               className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-[11px] font-medium text-muted-foreground hover:text-foreground"
             >
               <RotateCcw className="h-3 w-3" />
-              {lang === "ar" ? "إعادة الألوان الأصلية" : "Reset original colors"}
+              {tx("Reset original colors")}
             </button>
           )}
         </div>
         {!!design && (
           <p className="mt-2 px-1 text-[11px] text-muted-foreground">
-            {lang === "ar"
-              ? "تغيير اللون المميز يعيد تلوين تصميم البطاقة بالكامل."
-              : "Changing the accent recolors the whole card design."}
+            {tx("Changing the accent recolors the whole card design.")}
           </p>
         )}
       </section>
@@ -326,7 +325,7 @@ export function CardForm({
                   onClick={openLibrary}
                   className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-2 text-xs hover:bg-muted"
                 >
-                  <Images className="h-3.5 w-3.5" /> {lang === "ar" ? "صوري السابقة" : "My photos"}
+                  <Images className="h-3.5 w-3.5" /> {tx("My photos")}
                 </button>
                 {data.avatar_url && (
                   <button
@@ -345,10 +344,10 @@ export function CardForm({
           {libOpen && (
             <div className="mt-3 rounded-2xl border border-border/70 bg-secondary/40 p-3">
               {libLoading ? (
-                <p className="text-xs text-muted-foreground">{lang === "ar" ? "جارٍ التحميل…" : "Loading…"}</p>
+                <p className="text-xs text-muted-foreground">{tx("Loading…")}</p>
               ) : library.length === 0 ? (
                 <p className="text-xs text-muted-foreground">
-                  {lang === "ar" ? "لا توجد صور محمّلة سابقًا." : "No previously uploaded photos."}
+                  {tx("No previously uploaded photos.")}
                 </p>
               ) : (
                 <div className="grid grid-cols-6 gap-2 sm:grid-cols-8">
@@ -397,7 +396,7 @@ export function CardForm({
           onClick={() => setMore((m) => !m)}
           className="flex w-full items-center justify-between rounded-2xl border border-border/60 px-4 py-3 text-sm text-muted-foreground transition hover:text-foreground"
         >
-          <span>{lang === "ar" ? "تفاصيل إضافية" : "More details"}</span>
+          <span>{tx("More details")}</span>
           <ChevronDown className={"h-4 w-4 transition-transform " + (more ? "rotate-180" : "")} />
         </button>
 

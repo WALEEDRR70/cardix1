@@ -33,6 +33,7 @@ import QRCode from "qrcode";
 import { localizedPath } from "@/lib/locale-routing";
 import { fetchPublicCardMeta, publicCardHead } from "@/lib/public-card-meta";
 import { avatarPhotoLine } from "@/lib/vcard-photo";
+import { tx } from "@/lib/tx";
 
 
 
@@ -896,10 +897,10 @@ function CardPoster({
         </div>
         <div style={{ flex: 1, textAlign: isRtl ? "right" : "left" }}>
           <div style={{ fontSize: 34, fontWeight: 800, color: accent, letterSpacing: "-0.02em", marginBottom: 10 }}>
-            {isRtl ? "امسح رمز QR" : "Scan QR Code"}
+            {tx("Scan QR Code")}
           </div>
           <div style={{ fontSize: 19, opacity: 0.75, lineHeight: 1.5, marginBottom: 18 }}>
-            {isRtl ? "لحفظ بطاقتي بسهولة أو لمشاركتها مباشرة" : "Save my card instantly or share it directly"}
+            {tx("Save my card instantly or share it directly")}
           </div>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "10px 18px", borderRadius: 999, background: `${accent}22`, border: `1px solid ${accent}66` }}>
             <span style={{ width: 22, height: 22, borderRadius: 6, background: accent, display: "grid", placeItems: "center", color: accentText, fontSize: 12, fontWeight: 900 }}>))</span>
