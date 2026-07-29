@@ -5,6 +5,8 @@ import { ArrowLeft, Building2, Check, Globe, Mail, MessageCircle, Phone } from "
 import { getPreferredLocale } from "@/lib/locale-routing";
 import { findService } from "@/lib/company-services";
 import { tx } from "@/lib/tx";
+import { useContentTranslation } from "@/lib/use-content-translation";
+import { applyTranslation } from "@/lib/content-translation";
 
 export const Route = createFileRoute("/company/$slug/services/$service")({
   head: ({ params }) => ({
@@ -22,7 +24,8 @@ export const Route = createFileRoute("/company/$slug/services/$service")({
 
 function ServicePage() {
   const { slug, service } = Route.useParams();
-  const ar = getPreferredLocale() === "ar";
+  const locale = getPreferredLocale();
+  const ar = locale === "ar";
 
   const { data, isLoading } = useQuery({
     queryKey: ["public-company-service", slug, service],
@@ -38,6 +41,9 @@ function ServicePage() {
     },
   });
 
+  // AI-translated service copy for the visitor's language.
+  const translated = useContentTranslation("service", data?.company.id, locale, service);
+
   if (isLoading) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">{tx("Loading…")}</div>;
   if (!data?.service) {
     return (
@@ -50,11 +56,13 @@ function ServicePage() {
     );
   }
 
-  const { company, service: s } = data;
+  const { company } = data;
+  const s = applyTranslation(data.service as unknown as Record<string, unknown>, translated) as unknown as typeof data.service;
   const accent = company.brand_primary;
   const phone = s.phone || company.phone;
   const email = s.email || company.email;
   const wa = (s.whatsapp || "").replace(/[^\d+]/g, "");
+
 
   return (
     <main className="mx-auto min-h-[100dvh] w-full max-w-3xl px-5 pb-24">

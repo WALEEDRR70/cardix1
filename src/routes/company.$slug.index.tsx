@@ -173,6 +173,8 @@ function CompanyPage() {
                   key={s.id}
                   service={s}
                   slug={company.slug}
+                  companyId={company.id}
+                  locale={locale}
                   accent={accent}
                   d={d}
                   fallbackPhone={company.phone}
