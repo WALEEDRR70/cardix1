@@ -298,7 +298,26 @@ export function PropertiesPanel({ ar }: { ar: boolean }) {
         </PanelSection>
       )}
 
+      {n.type === "icon" && (
+        <PanelSection title={ar ? "الأيقونة" : "Icon"}>
+          <Row label={ar ? "لون الشعار" : "Glyph color"}>
+            <ColorInput
+              value={s.color ?? "#ffffff"}
+              fallback="#ffffff"
+              onChange={(v) => st({ color: v })}
+              extra={<MiniBtn className="h-5 border-0 px-1" onClick={() => st({ color: null })}>{ar ? "أصلي" : "Orig"}</MiniBtn>}
+            />
+          </Row>
+          <p className="text-[10px] leading-relaxed text-muted-foreground">
+            {ar
+              ? "لون الشعار داخل الأيقونة. لون الخلفية يُضبط من قسم التعبئة."
+              : "Color of the glyph inside the icon. Background is set in the Fill section."}
+          </p>
+        </PanelSection>
+      )}
+
       {n.type === "path" && (
+
         <PanelSection title={ar ? "المسار المتجهي" : "Vector path"}>
           <textarea
             value={n.path ?? ""}
