@@ -120,7 +120,7 @@ export function MobileBottomNav({ accent }: { accent?: string } = {}) {
   const items = [
     { to: "/dashboard", icon: Home, label: t.home },
     { to: "/vault", icon: BookmarkCheck, label: t.vault },
-    { to: "/templates", icon: LayoutTemplate, label: t.templates },
+    { to: "/templates", icon: LayoutTemplate, label: tx("Templates") },
     { to: "/settings", icon: SettingsIcon, label: t.settingsShort },
   ] as const;
 
