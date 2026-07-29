@@ -49,6 +49,7 @@ import { Route as LangAuthenticatedCardsIdRouteImport } from './routes/$lang/_au
 import { Route as LangAuthenticatedAdminBillingRouteImport } from './routes/$lang/_authenticated/admin/billing'
 import { Route as LangAuthenticatedCoSlugRouteRouteImport } from './routes/$lang/_authenticated/co/$slug/route'
 import { Route as LangAuthenticatedCoSlugIndexRouteImport } from './routes/$lang/_authenticated/co/$slug/index'
+import { Route as LangAuthenticatedStudioTplIdRouteImport } from './routes/$lang/_authenticated/studio.tpl.$id'
 import { Route as LangAuthenticatedCoSlugTemplatesRouteImport } from './routes/$lang/_authenticated/co/$slug/templates'
 import { Route as LangAuthenticatedCoSlugStudioRouteImport } from './routes/$lang/_authenticated/co/$slug/studio'
 import { Route as LangAuthenticatedCoSlugSettingsRouteImport } from './routes/$lang/_authenticated/co/$slug/settings'
@@ -270,6 +271,12 @@ const LangAuthenticatedCoSlugIndexRoute =
     path: '/',
     getParentRoute: () => LangAuthenticatedCoSlugRouteRoute,
   } as any)
+const LangAuthenticatedStudioTplIdRoute =
+  LangAuthenticatedStudioTplIdRouteImport.update({
+    id: '/studio/tpl/$id',
+    path: '/studio/tpl/$id',
+    getParentRoute: () => LangAuthenticatedRouteRoute,
+  } as any)
 const LangAuthenticatedCoSlugTemplatesRoute =
   LangAuthenticatedCoSlugTemplatesRouteImport.update({
     id: '/templates',
@@ -380,6 +387,7 @@ export interface FileRoutesByFullPath {
   '/$lang/co/$slug/settings': typeof LangAuthenticatedCoSlugSettingsRoute
   '/$lang/co/$slug/studio': typeof LangAuthenticatedCoSlugStudioRoute
   '/$lang/co/$slug/templates': typeof LangAuthenticatedCoSlugTemplatesRoute
+  '/$lang/studio/tpl/$id': typeof LangAuthenticatedStudioTplIdRoute
   '/$lang/co/$slug/': typeof LangAuthenticatedCoSlugIndexRoute
 }
 export interface FileRoutesByTo {
@@ -429,6 +437,7 @@ export interface FileRoutesByTo {
   '/$lang/co/$slug/settings': typeof LangAuthenticatedCoSlugSettingsRoute
   '/$lang/co/$slug/studio': typeof LangAuthenticatedCoSlugStudioRoute
   '/$lang/co/$slug/templates': typeof LangAuthenticatedCoSlugTemplatesRoute
+  '/$lang/studio/tpl/$id': typeof LangAuthenticatedStudioTplIdRoute
   '/$lang/co/$slug': typeof LangAuthenticatedCoSlugIndexRoute
 }
 export interface FileRoutesById {
@@ -482,6 +491,7 @@ export interface FileRoutesById {
   '/$lang/_authenticated/co/$slug/settings': typeof LangAuthenticatedCoSlugSettingsRoute
   '/$lang/_authenticated/co/$slug/studio': typeof LangAuthenticatedCoSlugStudioRoute
   '/$lang/_authenticated/co/$slug/templates': typeof LangAuthenticatedCoSlugTemplatesRoute
+  '/$lang/_authenticated/studio/tpl/$id': typeof LangAuthenticatedStudioTplIdRoute
   '/$lang/_authenticated/co/$slug/': typeof LangAuthenticatedCoSlugIndexRoute
 }
 export interface FileRouteTypes {
@@ -535,6 +545,7 @@ export interface FileRouteTypes {
     | '/$lang/co/$slug/settings'
     | '/$lang/co/$slug/studio'
     | '/$lang/co/$slug/templates'
+    | '/$lang/studio/tpl/$id'
     | '/$lang/co/$slug/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -584,6 +595,7 @@ export interface FileRouteTypes {
     | '/$lang/co/$slug/settings'
     | '/$lang/co/$slug/studio'
     | '/$lang/co/$slug/templates'
+    | '/$lang/studio/tpl/$id'
     | '/$lang/co/$slug'
   id:
     | '__root__'
@@ -636,6 +648,7 @@ export interface FileRouteTypes {
     | '/$lang/_authenticated/co/$slug/settings'
     | '/$lang/_authenticated/co/$slug/studio'
     | '/$lang/_authenticated/co/$slug/templates'
+    | '/$lang/_authenticated/studio/tpl/$id'
     | '/$lang/_authenticated/co/$slug/'
   fileRoutesById: FileRoutesById
 }
@@ -936,6 +949,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangAuthenticatedCoSlugIndexRouteImport
       parentRoute: typeof LangAuthenticatedCoSlugRouteRoute
     }
+    '/$lang/_authenticated/studio/tpl/$id': {
+      id: '/$lang/_authenticated/studio/tpl/$id'
+      path: '/studio/tpl/$id'
+      fullPath: '/$lang/studio/tpl/$id'
+      preLoaderRoute: typeof LangAuthenticatedStudioTplIdRouteImport
+      parentRoute: typeof LangAuthenticatedRouteRoute
+    }
     '/$lang/_authenticated/co/$slug/templates': {
       id: '/$lang/_authenticated/co/$slug/templates'
       path: '/templates'
@@ -1086,6 +1106,7 @@ interface LangAuthenticatedRouteRouteChildren {
   LangAuthenticatedCardsNewRoute: typeof LangAuthenticatedCardsNewRoute
   LangAuthenticatedCoNewRoute: typeof LangAuthenticatedCoNewRoute
   LangAuthenticatedStudioIdRoute: typeof LangAuthenticatedStudioIdRoute
+  LangAuthenticatedStudioTplIdRoute: typeof LangAuthenticatedStudioTplIdRoute
 }
 
 const LangAuthenticatedRouteRouteChildren: LangAuthenticatedRouteRouteChildren =
@@ -1103,6 +1124,7 @@ const LangAuthenticatedRouteRouteChildren: LangAuthenticatedRouteRouteChildren =
     LangAuthenticatedCardsNewRoute: LangAuthenticatedCardsNewRoute,
     LangAuthenticatedCoNewRoute: LangAuthenticatedCoNewRoute,
     LangAuthenticatedStudioIdRoute: LangAuthenticatedStudioIdRoute,
+    LangAuthenticatedStudioTplIdRoute: LangAuthenticatedStudioTplIdRoute,
   }
 
 const LangAuthenticatedRouteRouteWithChildren =

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Sparkles, Trash2, Wand2, Search } from "lucide-react";
+import { Loader2, Pencil, Sparkles, Trash2, Wand2, Search } from "lucide-react";
 import { toast } from "sonner";
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { StaticCardPreview } from "@/components/studio/StaticCardPreview";
@@ -12,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "@/lib/nav";
 import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } from "@/i18n/config";
 import { useAccount } from "@/lib/account";
+import { useIsAdmin } from "@/lib/admin";
 import { audienceLabel } from "@/components/CommunityTemplates";
 import { UseTemplateDialog } from "@/components/UseTemplateDialog";
 import { FavoriteTemplateButton } from "@/components/FavoriteTemplateButton";
@@ -76,6 +77,8 @@ function TemplatesGallery() {
   const [audience, setAudience] = useState<TemplateAudience | "all">("all");
   const [pending, setPending] = useState<DesignTemplate | null>(null);
   const { data: account } = useAccount();
+  /** Platform owner/admin may fix any published template in place. */
+  const isAdmin = useIsAdmin(uid);
   /** Active context decides the destination: inside a workspace → workspace, otherwise personal. */
   const activeWorkspace =
     account?.accountType === "company"
@@ -450,6 +453,15 @@ function TemplatesGallery() {
                         ar={ar}
                         likeCount={(tpl as { like_count?: number }).like_count ?? 0}
                       />
+                      {(uid === tpl.author_id || isAdmin) && (
+                        <button
+                          onClick={() => navigate({ to: "/studio/tpl/$id", params: { id: tpl.id } })}
+                          title={ar ? "تعديل تصميم القالب" : "Edit template design"}
+                          className="rounded-full border border-border/60 p-2 text-muted-foreground hover:text-foreground"
+                        >
+                          <Pencil className="h-3.5 w-3.5" />
+                        </button>
+                      )}
                       {uid === tpl.author_id && (
                         <button
                           onClick={() => onDelete(tpl)}
