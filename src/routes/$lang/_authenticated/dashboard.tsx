@@ -165,14 +165,13 @@ function Dashboard() {
               </section>
             </div>
             <FavoriteTemplatesStrip />
-            <TemplatesStrip />
           </>
         ) : (
           <>
             <EmptyHome t={t} />
-            <TemplatesStrip />
           </>
         )}
+
 
       </div>
 
