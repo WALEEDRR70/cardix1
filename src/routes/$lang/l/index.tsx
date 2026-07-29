@@ -4,16 +4,15 @@ import { SITE_ORIGIN, DEFAULT_LOCALE, isSupportedLocale, SUPPORTED_LOCALES } fro
 import { getLandingPagesByCategory, CATEGORY_LABEL, type LandingCategory } from "@/i18n/landing-pages";
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { GetStartedCards } from "@/components/marketing/GetStartedCards";
+import { tx } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/l/")({
   head: ({ params }) => {
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}/l`;
     const isAr = lang === "ar";
-    const title = isAr ? "دليل البطاقات الرقمية — Cardixn" : "The Digital Business Card Guide — Cardixn";
-    const description = isAr
-      ? "دليل شامل يغطي كل ما تحتاج معرفته عن البطاقات الرقمية و QR و NFC و OCR. عشرات الأدلة المتخصصة."
-      : "The complete guide to digital business cards, QR, NFC, OCR and modern networking. Dozens of expert articles.";
+    const title = tx("The Digital Business Card Guide — Cardixn");
+    const description = tx("The complete guide to digital business cards, QR, NFC, OCR and modern networking. Dozens of expert articles.");
     return {
       meta: [
         { title }, { name: "description", content: description },
@@ -44,10 +43,10 @@ function HubPage() {
         <div className="mx-auto max-w-3xl px-6">
           <p className="text-xs uppercase tracking-widest text-primary/80 mb-3">Cardixn</p>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
-            {isAr ? "الدليل الشامل للبطاقات الرقمية" : "The Complete Digital Card Guide"}
+            {tx("The Complete Digital Card Guide")}
           </h1>
           <p className="text-lg text-muted-foreground">
-            {isAr ? "عشرات الأدلة المتخصصة لتصدر عالم التشبيك الرقمي." : "Dozens of expert guides to master modern digital networking."}
+            {tx("Dozens of expert guides to master modern digital networking.")}
           </p>
         </div>
       </section>
@@ -58,7 +57,7 @@ function HubPage() {
           return (
             <div key={cat}>
               <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mb-6">
-                {CATEGORY_LABEL[cat][isAr ? "ar" : "en"]}
+                {CATEGORY_LABEL[cat][tx("en")]}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {pages.map((p) => {

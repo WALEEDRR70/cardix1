@@ -4,16 +4,15 @@ import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } fro
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { ArrowRight, Leaf, Sparkles, ShieldCheck, Globe2 } from "lucide-react";
 import { GetStartedCards } from "@/components/marketing/GetStartedCards";
+import { tx } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/about")({
   head: ({ params }) => {
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}/about`;
     const isAr = lang === "ar";
-    const title = isAr ? "عن Cardixn — قصة بطاقة الأعمال الرقمية الفاخرة" : "About Cardixn — The Story Behind the Luxury Digital Card";
-    const description = isAr
-      ? "تعرّف على Cardixn: منصة بطاقات الأعمال الرقمية التي تستبدل الورق بمشاركة فورية بـ NFC وQR، بتصميم فاخر ودعم 20 لغة."
-      : "Meet Cardixn: the digital business card platform replacing paper with instant NFC and QR sharing, luxury design and 20-language support.";
+    const title = tx("About Cardixn — The Story Behind the Luxury Digital Card");
+    const description = tx("Meet Cardixn: the digital business card platform replacing paper with instant NFC and QR sharing, luxury design and 20-language support.");
     return {
       meta: [
         { title }, { name: "description", content: description },
@@ -50,33 +49,25 @@ function AboutPage() {
       <section className="relative overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.18),transparent_60%)]" />
         <div className="relative mx-auto max-w-4xl px-5 py-12 sm:px-6 md:py-28">
-          <span className="text-xs uppercase tracking-widest text-primary/80">Cardixn · {isAr ? "من نحن" : "About"}</span>
+          <span className="text-xs uppercase tracking-widest text-primary/80">Cardixn · {tx("About")}</span>
           <h1 className="mt-4 text-4xl md:text-6xl font-bold leading-tight tracking-tight bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-transparent">
-            {isAr ? "نبني بديلاً فاخراً للبطاقة الورقية" : "We're building the luxury end of paper cards"}
+            {tx("We're building the luxury end of paper cards")}
           </h1>
           <p className="mt-4 text-lg md:text-xl text-muted-foreground">
-            {isAr
-              ? "Cardixn منصة بطاقات أعمال رقمية فقط — لا شبكة اجتماعية ولا CRM. هدف واحد: أن تُقدَّم بأفضل صورة في ثوانٍ."
-              : "Cardixn does one thing: digital business cards. No social network, no CRM — just the fastest, most elegant way to introduce yourself."}
+            {tx("Cardixn does one thing: digital business cards. No social network, no CRM — just the fastest, most elegant way to introduce yourself.")}
           </p>
         </div>
       </section>
 
       <section className="mx-auto max-w-3xl px-5 py-10 sm:px-6 md:py-16 space-y-6 text-[15px] leading-relaxed text-muted-foreground">
         <p>
-          {isAr
-            ? "بدأت الفكرة من موقف بسيط ومتكرر: تنتهي بطاقاتك المطبوعة في أسوأ لحظة، أو تتغير وظيفتك ورقمك فتصبح كل النسخ التي وزّعتها خاطئة. البطاقة الورقية جميلة لكنها ثابتة، بينما هويتك المهنية تتغير باستمرار."
-            : "Cardixn started from a familiar moment: you run out of printed cards at exactly the wrong time, or you change roles and every card you ever handed out becomes wrong. Paper is beautiful but frozen; your professional identity is not."}
+          {tx("Cardixn started from a familiar moment: you run out of printed cards at exactly the wrong time, or you change roles and every card you ever handed out becomes wrong. Paper is beautiful but frozen; your professional identity is not.")}
         </p>
         <p>
-          {isAr
-            ? "لذلك بنينا بطاقة تعيش على الإنترنت وتُشارك بلمسة NFC أو مسح QR أو رابط بسيط، وتُحدَّث لحظياً لدى كل من حفظها. أضفنا ماسحاً ذكياً يقرأ البطاقات الورقية التي تستلمها ويحوّلها إلى جهات اتصال منظمة، وتحليلات تخبرك بما ينجح فعلاً."
-            : "So we built a card that lives online, shares by NFC tap, QR scan or a plain link, and updates instantly for everyone who saved it. Then we added an AI scanner that turns the paper cards you receive into clean contacts, and analytics that show what actually works."}
+          {tx("So we built a card that lives online, shares by NFC tap, QR scan or a plain link, and updates instantly for everyone who saved it. Then we added an AI scanner that turns the paper cards you receive into clean contacts, and analytics that show what actually works.")}
         </p>
         <p>
-          {isAr
-            ? "التصميم ليس تفصيلاً ثانوياً عندنا. البطاقة هي أول انطباع، لذا كل قالب وكل تدرج لوني وكل حركة صُممت لتبدو كمنتج فاخر على الجوال قبل أي شيء آخر."
-            : "Design isn't a detail here. Your card is a first impression, so every template, gradient and micro-interaction is tuned to feel like a premium product — on mobile first."}
+          {tx("Design isn't a detail here. Your card is a first impression, so every template, gradient and micro-interaction is tuned to feel like a premium product — on mobile first.")}
         </p>
       </section>
 
@@ -100,16 +91,16 @@ function AboutPage() {
 
       <section className="border-t border-border/40">
         <div className="mx-auto max-w-4xl px-6 py-20 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">{isAr ? "انضم إلينا" : "Come build with us"}</h2>
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">{tx("Come build with us")}</h2>
           <p className="mt-3 text-muted-foreground">
-            {isAr ? "أنشئ بطاقتك الرقمية اليوم، أو راسلنا برأيك — نقرأ كل رسالة." : "Create your digital card today, or tell us what to build next — we read everything."}
+            {tx("Create your digital card today, or tell us what to build next — we read everything.")}
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link to="/auth" className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-accent-foreground shadow-glow" style={{ background: "var(--gradient-gold)" }}>
-              {isAr ? "ابدأ مجاناً" : "Start free"} <ArrowRight className="size-4 rtl:rotate-180" />
+              {tx("Start free")} <ArrowRight className="size-4 rtl:rotate-180" />
             </Link>
             <Link to="/contact" className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-semibold hover:bg-card/60 transition">
-              {isAr ? "تواصل معنا" : "Contact us"}
+              {tx("Contact us")}
             </Link>
           </div>
         </div>

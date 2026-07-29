@@ -5,6 +5,7 @@ import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { TOOLS, getToolCopy } from "@/i18n/tools";
 import { ArrowRight, QrCode, Contact, Mail } from "lucide-react";
 import { GetStartedCards } from "@/components/marketing/GetStartedCards";
+import { tx } from "@/lib/tx";
 
 const ICON = { QrCode, Contact, Mail } as const;
 
@@ -13,10 +14,8 @@ export const Route = createFileRoute("/$lang/tools/")({
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}/tools`;
     const isAr = lang === "ar";
-    const title = isAr ? "أدوات مجانية للمحترفين — QR وvCard وتوقيع البريد | Cardixn" : "Free Professional Tools — QR, vCard & Email Signature | Cardixn";
-    const description = isAr
-      ? "مجموعة أدوات مجانية للمحترفين: منشئ QR، منشئ vCard، منشئ توقيع البريد الإلكتروني. بدون تسجيل، بدون علامات مائية."
-      : "Free professional toolkit: QR generator, vCard downloader, email signature builder. No signup, no watermarks, unlimited use.";
+    const title = tx("Free Professional Tools — QR, vCard & Email Signature | Cardixn");
+    const description = tx("Free professional toolkit: QR generator, vCard downloader, email signature builder. No signup, no watermarks, unlimited use.");
     return {
       meta: [
         { title }, { name: "description", content: description },
@@ -45,12 +44,12 @@ function ToolsHub() {
       <section className="relative overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.18),transparent_60%)]" />
         <div className="relative mx-auto max-w-5xl px-5 py-12 sm:px-6 md:py-28">
-          <span className="text-xs uppercase tracking-widest text-primary/80">Cardixn · {isAr ? "أدوات" : "Tools"}</span>
+          <span className="text-xs uppercase tracking-widest text-primary/80">Cardixn · {tx("Tools")}</span>
           <h1 className="mt-4 text-4xl md:text-6xl font-bold leading-tight tracking-tight bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-transparent">
-            {isAr ? "أدوات مجانية للمحترفين" : "Free tools for professionals"}
+            {tx("Free tools for professionals")}
           </h1>
           <p className="mt-4 max-w-3xl text-lg md:text-xl text-muted-foreground">
-            {isAr ? "أدوات شغّالة بلا حدود، بلا تسجيل، بلا علامة مائية." : "Working tools. Unlimited use. No signup. No watermarks."}
+            {tx("Working tools. Unlimited use. No signup. No watermarks.")}
           </p>
         </div>
       </section>
@@ -72,7 +71,7 @@ function ToolsHub() {
               <h2 className="mt-4 text-lg font-semibold group-hover:text-primary transition-colors">{c.h1}</h2>
               <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{c.subtitle}</p>
               <div className="mt-4 inline-flex items-center gap-2 text-sm text-primary">
-                {isAr ? "افتح الأداة" : "Open tool"} <ArrowRight className="size-4 rtl:rotate-180" />
+                {tx("Open tool")} <ArrowRight className="size-4 rtl:rotate-180" />
               </div>
             </Link>
           );

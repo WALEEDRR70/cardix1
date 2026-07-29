@@ -38,12 +38,8 @@ export const Route = createFileRoute("/$lang/templates")({
     const lang = isSupportedLocale(params.lang) ? params.lang : DEFAULT_LOCALE;
     const url = `${SITE_ORIGIN}/${lang}/templates`;
     const isAr = lang === "ar";
-    const title = isAr
-      ? "معرض قوالب البطاقات — تصاميم جاهزة من مصممي Cardixn"
-      : "Card Template Gallery — Designs Shared by Cardixn Designers";
-    const description = isAr
-      ? "تصفّح قوالب بطاقات الأعمال الرقمية التي شاركها المصممون، واحفظ أي قالب كنسخة خاصة بك وعدّله في استوديو التصميم."
-      : "Browse digital business card templates shared by designers, save any template as your own copy and edit it freely in the Studio.";
+    const title = tx("Card Template Gallery — Designs Shared by Cardixn Designers");
+    const description = tx("Browse digital business card templates shared by designers, save any template as your own copy and edit it freely in the Studio.");
     return {
       meta: [
         { title },
