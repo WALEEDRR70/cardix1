@@ -92,52 +92,35 @@ function StudioRoute() {
 function Studio({ cardId, title, initial, values, company }: { cardId: string; title: string; initial: StudioDoc; values?: Record<string, string>; company?: { slug: string | null; name: string | null } | null }) {
   const { lang } = useI18n();
   const ar = lang === "ar";
-  const api = useStudioState(initial);
-  const stageRef = useRef<HTMLDivElement>(null);
-  const [saving, setSaving] = useState(false);
-  const [panel, setPanel] = useState<"elements" | "props" | null>(null);
-  const lastSaved = useRef(JSON.stringify(initial));
 
-  async function save(silent = false) {
-    const json = JSON.stringify(api.state.doc);
-    if (json === lastSaved.current) return;
-    setSaving(true);
-    const { error } = await supabase.from("cards").update({ design: api.state.doc as never }).eq("id", cardId);
-    if (!error) {
-      lastSaved.current = json;
-      // Keep any department design backed by this card in sync.
-      await supabase
-        .from("company_templates")
-        .update({ design: api.state.doc as never })
-        .filter("design->>sourceCardId", "eq", cardId);
-      await supabase.from("card_design_versions").insert({
-        card_id: cardId,
-        user_id: (await supabase.auth.getSession()).data.session?.user.id ?? "",
-        design: api.state.doc as never,
-        label: silent ? "autosave" : "manual",
-      } as never);
-      if (!silent) toast.success(ar ? "تم حفظ التصميم" : "Design saved");
-    } else if (!silent) {
-      toast.error(error.message);
-    }
-    setSaving(false);
+  async function save(doc: StudioDoc, silent: boolean) {
+    const { error } = await supabase.from("cards").update({ design: doc as never }).eq("id", cardId);
+    if (error) throw new Error(error.message);
+    // Keep any department design backed by this card in sync.
+    await supabase
+      .from("company_templates")
+      .update({ design: doc as never })
+      .filter("design->>sourceCardId", "eq", cardId);
+    await supabase.from("card_design_versions").insert({
+      card_id: cardId,
+      user_id: (await supabase.auth.getSession()).data.session?.user.id ?? "",
+      design: doc as never,
+      label: silent ? "autosave" : "manual",
+    } as never);
   }
 
-  // auto save every 45s when the document changed
-  useEffect(() => {
-    const t = setInterval(() => { void save(true); }, 45000);
-    return () => clearInterval(t);
-  });
-
   return (
-    <StudioProvider api={api}>
-      <div className="flex h-[100dvh] flex-col bg-background" dir={ar ? "rtl" : "ltr"}>
-        <div className="no-scrollbar flex items-center gap-2 overflow-x-auto border-b border-border/60 bg-card/60 px-3 py-1.5 text-xs [&>*]:shrink-0">
+    <StudioWorkspace
+      title={title}
+      initial={initial}
+      values={values}
+      onSave={save}
+      breadcrumbs={
+        <>
           <Link to={company?.slug ? `/co/${company.slug}/studio` : `/cards/${cardId}`} className="flex items-center gap-1 whitespace-nowrap text-muted-foreground hover:text-foreground">
             <ArrowLeft className="h-3.5 w-3.5 rtl:rotate-180" />
             {company?.slug ? (ar ? "رجوع إلى مساحة الشركة" : "Back to workspace") : ar ? "رجوع إلى البطاقة" : "Back to card"}
           </Link>
-
           <span className="mx-1 h-3 w-px bg-border/60" />
           <Link to="/templates" className="flex items-center gap-1 whitespace-nowrap text-muted-foreground hover:text-foreground">
             <LayoutTemplate className="h-3.5 w-3.5" />
@@ -152,73 +135,9 @@ function Studio({ cardId, title, initial, values, company }: { cardId: string; t
               </Link>
             </>
           )}
-          <button
-            onClick={() => void save(false)}
-            disabled={saving}
-            className="ms-auto rounded-full bg-primary px-3 py-1 text-[11px] font-semibold text-primary-foreground disabled:opacity-60 lg:hidden"
-          >
-            {saving ? (ar ? "جارٍ الحفظ…" : "Saving…") : ar ? "حفظ" : "Save"}
-          </button>
-        </div>
-        <StudioToolbar ar={ar} title={title} saving={saving} onSave={() => void save(false)} />
-
-        {/* Desktop: three columns. Mobile: canvas only + panels as sheets. */}
-        <div className="relative flex min-h-0 flex-1">
-          <div className="hidden lg:flex">
-            <ElementsPanel ar={ar} />
-          </div>
-          <CanvasStage stageRef={stageRef} values={values} />
-          <div className="hidden lg:flex">
-            <PropertiesPanel ar={ar} />
-          </div>
-
-          {panel && (
-            <div className="absolute inset-0 z-40 flex lg:hidden">
-              <button
-                aria-label="close"
-                className="absolute inset-0 bg-background/70 backdrop-blur-sm"
-                onClick={() => setPanel(null)}
-              />
-              <div className="relative ms-auto flex h-full w-[86%] max-w-[340px] flex-col bg-card shadow-2xl [&>aside]:h-full [&>aside]:w-full [&>aside]:min-w-0 [&>aside]:overflow-y-auto">
-                <button
-                  onClick={() => setPanel(null)}
-                  className="absolute end-2 top-2 z-10 grid h-8 w-8 place-items-center rounded-full border border-border/60 bg-background/80 text-muted-foreground"
-                  aria-label={ar ? "إغلاق" : "Close"}
-                >
-                  <X className="h-4 w-4" />
-                </button>
-                {panel === "elements" ? <ElementsPanel ar={ar} /> : <PropertiesPanel ar={ar} />}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Mobile panel switcher */}
-        <nav className="flex items-center gap-2 border-t border-border/60 bg-card/70 px-3 py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] lg:hidden">
-          <button
-            onClick={() => setPanel(panel === "elements" ? null : "elements")}
-            className={"flex flex-1 items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium transition " + (panel === "elements" ? "border-accent bg-accent/15 text-foreground" : "border-border/60 text-muted-foreground")}
-          >
-            <Shapes className="h-4 w-4" />
-            {ar ? "العناصر" : "Elements"}
-          </button>
-          <button
-            onClick={() => setPanel(null)}
-            className={"flex flex-1 items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium transition " + (!panel ? "border-accent bg-accent/15 text-foreground" : "border-border/60 text-muted-foreground")}
-          >
-            <Frame className="h-4 w-4" />
-            {ar ? "اللوحة" : "Canvas"}
-          </button>
-          <button
-            onClick={() => setPanel(panel === "props" ? null : "props")}
-            className={"flex flex-1 items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium transition " + (panel === "props" ? "border-accent bg-accent/15 text-foreground" : "border-border/60 text-muted-foreground")}
-          >
-            <SlidersHorizontal className="h-4 w-4" />
-            {ar ? "الخصائص" : "Properties"}
-          </button>
-        </nav>
-      </div>
-    </StudioProvider>
+        </>
+      }
+    />
   );
 }
 
