@@ -74,7 +74,17 @@ export function getTool(slug: string) {
   return TOOLS.find((t) => t.slug === slug);
 }
 export function getToolCopy(t: ToolMeta, locale: Locale) {
-  return t.copy[locale] ?? t.copy.en!;
+  const authored = t.copy[locale];
+  if (authored) return authored;
+  // No hand-authored copy for this locale — translate the English source.
+  const en = t.copy.en!;
+  return {
+    title: tx(en.title, locale),
+    description: tx(en.description, locale),
+    h1: tx(en.h1, locale),
+    subtitle: tx(en.subtitle, locale),
+    longIntro: tx(en.longIntro, locale),
+  };
 }
 export function getAllToolSlugs() {
   return TOOLS.map((t) => t.slug);
