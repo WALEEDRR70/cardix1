@@ -34,6 +34,7 @@ import { localizedPath } from "@/lib/locale-routing";
 import { fetchPublicCardMeta, publicCardHead } from "@/lib/public-card-meta";
 import { avatarPhotoLine } from "@/lib/vcard-photo";
 import { tx, txErr } from "@/lib/tx";
+import { useTranslatedRow } from "@/lib/use-content-translation";
 
 
 
@@ -102,7 +103,7 @@ export function PublicCardView({ slug }: { slug: string }) {
   const [posterQr, setPosterQr] = useState<string>("");
   const [downloadingPoster, setDownloadingPoster] = useState(false);
 
-  const { data: card } = useQuery({
+  const { data: rawCard } = useQuery({
     queryKey: ["public-card", slug],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -122,6 +123,9 @@ export function PublicCardView({ slug }: { slug: string }) {
       return { ...row, logo_url: co?.logo_url ?? null } as CardRow;
     },
   });
+
+  // AI-translated user content (bio, title, address…) for the visitor's language.
+  const card = useTranslatedRow<CardRow>("card", rawCard, lang);
 
   useEffect(() => {
     if (!card) return;

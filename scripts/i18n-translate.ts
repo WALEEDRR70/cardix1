@@ -15,8 +15,14 @@ const NAMES: Record<string, string> = {
   ko: "Korean", hi: "Hindi", id: "Indonesian", ms: "Malay", th: "Thai", vi: "Vietnamese",
 };
 
-const key = process.env.LOVABLE_API_KEY;
-if (!key) throw new Error("Missing LOVABLE_API_KEY");
+// Prefer the project's own OpenAI key when configured, else the built-in gateway.
+const openaiKey = process.env.OPENAI_API_KEY;
+const key = openaiKey ?? process.env.LOVABLE_API_KEY;
+if (!key) throw new Error("Missing OPENAI_API_KEY / LOVABLE_API_KEY");
+const ENDPOINT = openaiKey
+  ? "https://api.openai.com/v1/chat/completions"
+  : "https://ai.gateway.lovable.dev/v1/chat/completions";
+const MODEL = openaiKey ? "gpt-4o-mini" : "google/gemini-3.6-flash";
 
 const [inputPath, outDir] = process.argv.slice(2);
 if (!inputPath || !outDir) throw new Error("usage: bun scripts/i18n-translate.ts <input.json> <outDir>");
@@ -26,11 +32,11 @@ const entries = Object.entries(source);
 
 async function translateChunk(locale: string, chunk: [string, string][], attempt = 0): Promise<Record<string, string>> {
   const payload = Object.fromEntries(chunk);
-  const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+  const res = await fetch(ENDPOINT, {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: "google/gemini-2.5-flash",
+      model: MODEL,
       messages: [
         {
           role: "system",

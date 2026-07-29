@@ -9,6 +9,7 @@ import { publishedServices } from "@/lib/company-services";
 import { publicDict } from "@/components/company/public/strings";
 import { wsDict } from "@/i18n/workspace";
 import { downloadCompanyVCard, mailHref, siteHref, telHref, waHref } from "@/components/company/public/contact";
+import { useTranslatedRow } from "@/lib/use-content-translation";
 import {
   ActionButton,
   BranchCard,
@@ -70,11 +71,14 @@ function CompanyPage() {
   });
 
   const services = useMemo(() => publishedServices(data?.company.services), [data]);
+  // AI-translated company copy (tagline, description…) for the visitor's language.
+  const translatedCompany = useTranslatedRow("company", data?.company, locale);
 
   if (isLoading) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">{w.loading}</div>;
   if (!data) return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted-foreground">{w.companyNotFound}</div>;
 
-  const { company, branches, departments, cards } = data;
+  const { branches, departments, cards } = data;
+  const company = (translatedCompany ?? data.company) as typeof data.company;
   const accent = company.brand_primary;
   const publicUrl = typeof window !== "undefined" ? window.location.href : `https://cardixn.com/company/${slug}`;
   const socials = (company.socials as Record<string, string> | null) ?? {};
@@ -169,6 +173,8 @@ function CompanyPage() {
                   key={s.id}
                   service={s}
                   slug={company.slug}
+                  companyId={company.id}
+                  locale={locale}
                   accent={accent}
                   d={d}
                   fallbackPhone={company.phone}

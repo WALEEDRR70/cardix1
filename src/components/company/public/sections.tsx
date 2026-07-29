@@ -16,6 +16,8 @@ import {
   Users,
 } from "lucide-react";
 import { getReadableText } from "@/lib/contrast";
+import { useContentTranslation } from "@/lib/use-content-translation";
+import { applyTranslation } from "@/lib/content-translation";
 import { useDragScroll } from "@/lib/use-drag-scroll";
 import { SOCIALS_BY_ID, type SocialId } from "@/lib/socials";
 import type { CompanyService } from "@/lib/company-services";
@@ -170,10 +172,12 @@ export function TrustBar({ items }: { items: { icon: React.ElementType; label: s
 /* ---------------------------------------------- services */
 
 export function ServiceCard({
-  service,
+  service: rawService,
   slug,
   accent,
   d,
+  companyId,
+  locale,
   fallbackPhone,
   fallbackWhatsapp,
   fallbackEmail,
@@ -183,15 +187,22 @@ export function ServiceCard({
   slug: string;
   accent: string;
   d: D;
+  companyId?: string | null;
+  locale?: string;
   fallbackPhone?: string | null;
   fallbackWhatsapp?: string | null;
   fallbackEmail?: string | null;
   onRequest?: () => void;
 }) {
+  // AI-translated service copy for the visitor's language.
+  const translated = useContentTranslation("service", companyId, locale ?? "en", rawService.slug);
+  const service = applyTranslation(rawService as unknown as Record<string, unknown>, translated) as unknown as CompanyService;
+
   const request =
     waHref(service.whatsapp || fallbackWhatsapp) ||
     telHref(service.phone || fallbackPhone) ||
     mailHref(service.email || fallbackEmail);
+
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-card/40 transition hover:border-foreground/20">
