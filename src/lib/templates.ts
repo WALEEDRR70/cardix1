@@ -107,6 +107,24 @@ export async function deleteTemplate(id: string): Promise<void> {
  * personal profile or inside a company workspace, depending on `target`.
  * The template row itself is never modified — only its use counter.
  */
+/** The user's main personal card — used to prefill new cards. */
+export async function getMainCard(userId: string) {
+  const { data } = await supabase
+    .from("cards")
+    .select("name,title,company,bio,phone,whatsapp,email,website,address,avatar_url,socials,is_published,company_id,updated_at")
+    .eq("user_id", userId)
+    .order("is_published", { ascending: false })
+    .order("updated_at", { ascending: false })
+    .limit(20);
+  const rows = data ?? [];
+  return (
+    rows.find((c) => !c.company_id && c.is_published) ??
+    rows.find((c) => !c.company_id) ??
+    rows[0] ??
+    null
+  );
+}
+
 export async function useTemplate(
   tpl: DesignTemplate,
   target: TemplateTarget = { kind: "personal" },
@@ -121,20 +139,34 @@ export async function useTemplate(
   const isCompany = target.kind === "company";
   const slug = isCompany ? `${target.companySlug}-${base}-${rand}` : `tpl-${base}-${rand}`;
 
+  // Prefill the new card with the user's main card so the details form is not empty.
+  const main = await getMainCard(uid);
+
   const { data, error } = await supabase
     .from("cards")
     .insert({
       user_id: uid,
       company_id: isCompany ? target.companyId : null,
-      name: isCompany ? target.companyName : tpl.title,
+      name: (isCompany ? target.companyName : main?.name) || tpl.title,
       slug,
       card_type: isCompany ? "company" : "personal",
       accent_color: (isCompany ? target.accent : null) || design.background?.color || "#7c34ff",
       design: design as never,
+      title: main?.title ?? null,
+      company: main?.company ?? null,
+      bio: main?.bio ?? null,
+      phone: main?.phone ?? null,
+      whatsapp: main?.whatsapp ?? null,
+      email: main?.email ?? null,
+      website: main?.website ?? null,
+      address: main?.address ?? null,
+      avatar_url: main?.avatar_url ?? null,
+      socials: (main?.socials ?? {}) as never,
     })
     .select("id")
     .single();
   if (error) throw error;
+
 
   try {
     const { bumpTemplateUse } = await import("@/lib/templates.functions");
