@@ -80,7 +80,7 @@ function FeaturesPage() {
 
       <section className="mx-auto max-w-6xl px-5 py-10 sm:px-6 md:py-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {FEATURES.map((f) => {
-          const [h, p] = isAr ? f.ar : f.en;
+          const [h, p] = f.en.map((v) => tx(v));
           const Icon = f.icon;
           return (
             <article key={h} className="group rounded-3xl border border-border/60 bg-card/40 backdrop-blur p-6 hover:border-primary/50 hover:bg-card/60 transition-all">
