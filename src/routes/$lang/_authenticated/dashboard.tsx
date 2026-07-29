@@ -10,7 +10,7 @@ import { Eye, Sparkles, Trash2, Pencil, QrCode, X, Copy, Share2, ChevronLeft, Ch
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
-import { FavoriteTemplatesStrip, TemplatesStrip } from "@/components/TemplatesStrip";
+import { FavoriteTemplatesStrip } from "@/components/TemplatesStrip";
 import { OnboardingChecklist } from "@/components/OnboardingChecklist";
 
 
@@ -165,14 +165,13 @@ function Dashboard() {
               </section>
             </div>
             <FavoriteTemplatesStrip />
-            <TemplatesStrip />
           </>
         ) : (
           <>
             <EmptyHome t={t} />
-            <TemplatesStrip />
           </>
         )}
+
 
       </div>
 
