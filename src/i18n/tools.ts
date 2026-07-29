@@ -1,5 +1,6 @@
 // Free tools registry — SEO magnets. Each is a working utility with unique metadata.
 import type { Locale } from "@/i18n/config";
+import { tx } from "@/lib/tx";
 
 export interface ToolMeta {
   slug: string;
