@@ -32,11 +32,11 @@ const entries = Object.entries(source);
 
 async function translateChunk(locale: string, chunk: [string, string][], attempt = 0): Promise<Record<string, string>> {
   const payload = Object.fromEntries(chunk);
-  const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+  const res = await fetch(ENDPOINT, {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: "google/gemini-2.5-flash",
+      model: MODEL,
       messages: [
         {
           role: "system",
