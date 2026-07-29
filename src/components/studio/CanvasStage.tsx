@@ -1,4 +1,5 @@
 // The visual canvas: renders the document and handles pan / zoom / marquee / drag / resize / rotate / snap.
+import type { ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { useStudio } from "@/lib/studio/store";
@@ -46,7 +47,7 @@ function ImageNode({ n, values }: { n: StudioNode; values?: Record<string, strin
 
   // Clip/paint wrapper: corner radius, fill and border apply to the frame,
   // so they work even when the image itself has transparent corners.
-  const Frame = ({ children }: { children: React.ReactNode }) => (
+  const Frame = ({ children }: { children: ReactNode }) => (
     <div
       className="h-full w-full"
       style={{
