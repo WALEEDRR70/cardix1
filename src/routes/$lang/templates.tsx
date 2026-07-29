@@ -15,7 +15,6 @@ import { useAccount } from "@/lib/account";
 import { useIsAdmin } from "@/lib/admin";
 import { audienceLabel } from "@/components/CommunityTemplates";
 import { UseTemplateDialog } from "@/components/UseTemplateDialog";
-import { UseTemplateWorkspaceDialog } from "@/components/UseTemplateWorkspaceDialog";
 
 import { FavoriteTemplateButton } from "@/components/FavoriteTemplateButton";
 import {
