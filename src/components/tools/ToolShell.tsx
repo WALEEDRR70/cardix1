@@ -14,7 +14,6 @@ export function ToolShell({
   children: React.ReactNode;
   faqs?: { q: string; a: string }[];
 }) {
-  const isAr = lang === "ar";
   return (
     <MarketingLayout lang={lang}>
       <section className="relative overflow-hidden border-b border-border/40">
