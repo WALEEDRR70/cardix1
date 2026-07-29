@@ -3,7 +3,7 @@ import { Link } from "@/lib/nav";
 import { Menu, X } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { LangToggle } from "@/components/LangToggle";
+import { LocaleSwitcher } from "@/components/LangToggle";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { tx } from "@/lib/tx";
 
@@ -86,7 +86,7 @@ export function MobileNav({ links, authed }: { links: readonly MobileNavLink[]; 
             <div className="mt-5 flex items-center justify-between border-t border-border/50 pt-4">
               <div className="flex items-center gap-2">
                 <ThemeToggle compact />
-                <LangToggle compact />
+                <LocaleSwitcher compact />
               </div>
               <Link
                 to={authed === false ? "/auth" : "/dashboard"}
