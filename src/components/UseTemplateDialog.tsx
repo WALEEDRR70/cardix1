@@ -63,7 +63,7 @@ export function UseTemplateDialog({
               {tx("No cards yet.")}
             </p>
           ) : (
-            <div ref={dragRef} className="flex gap-3 overflow-x-auto pb-2">
+            <div ref={dragRef} className="-mx-1 flex w-full min-w-0 snap-x gap-3 overflow-x-auto px-1 pb-2">
               {cards.map((c) => {
                 const active = picked === c.id;
                 return (
