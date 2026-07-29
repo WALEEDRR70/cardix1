@@ -2,8 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@/lib/nav";
 import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } from "@/i18n/config";
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
-import {
 import { GetStartedCards } from "@/components/marketing/GetStartedCards";
+import {
   ArrowRight, Nfc, QrCode, ScanLine, Sparkles, BarChart3, Palette,
   Globe2, ShieldCheck, Contact, Cloud, Smartphone, Share2,
 } from "lucide-react";
