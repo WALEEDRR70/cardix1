@@ -4,6 +4,7 @@ import { SITE_ORIGIN, SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale } fro
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 import { TOOLS, getToolCopy } from "@/i18n/tools";
 import { ArrowRight, QrCode, Contact, Mail } from "lucide-react";
+import { GetStartedCards } from "@/components/marketing/GetStartedCards";
 
 const ICON = { QrCode, Contact, Mail } as const;
 
@@ -77,6 +78,7 @@ function ToolsHub() {
           );
         })}
       </section>
+      <GetStartedCards lang={locale} />
     </MarketingLayout>
   );
 }

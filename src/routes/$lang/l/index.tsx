@@ -3,6 +3,7 @@ import { Link } from "@/lib/nav";
 import { SITE_ORIGIN, DEFAULT_LOCALE, isSupportedLocale, SUPPORTED_LOCALES } from "@/i18n/config";
 import { getLandingPagesByCategory, CATEGORY_LABEL, type LandingCategory } from "@/i18n/landing-pages";
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
+import { GetStartedCards } from "@/components/marketing/GetStartedCards";
 
 export const Route = createFileRoute("/$lang/l/")({
   head: ({ params }) => {
@@ -75,6 +76,7 @@ function HubPage() {
           );
         })}
       </section>
+      <GetStartedCards lang={locale} />
     </MarketingLayout>
   );
 }

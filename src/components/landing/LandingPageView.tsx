@@ -4,6 +4,7 @@ import type { LandingCopy } from "@/i18n/landing-pages";
 import { CATEGORY_LABEL, LANDING_PAGES, type LandingCategory } from "@/i18n/landing-pages";
 import type { Locale } from "@/i18n/config";
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
+import { GetStartedCards } from "@/components/marketing/GetStartedCards";
 
 export function LandingPageView({
   copy, lang, category, slug,
@@ -111,6 +112,8 @@ export function LandingPageView({
           </div>
         </section>
       )}
+
+      <GetStartedCards lang={lang} />
 
       {/* CTA */}
       <section className="mx-auto max-w-4xl px-6 py-20 md:py-28 text-center">
