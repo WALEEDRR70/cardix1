@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import QRCode from "qrcode";
 import { Download } from "lucide-react";
 import type { Locale } from "@/i18n/config";
@@ -10,6 +10,7 @@ export function QrGeneratorTool({ lang }: { lang: Locale }) {
   const [bg, setBg] = useState("#ffffff");
   const [size, setSize] = useState(512);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const previewSize = Math.min(size, 420);
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -18,7 +19,14 @@ export function QrGeneratorTool({ lang }: { lang: Locale }) {
       margin: 2,
       errorCorrectionLevel: "H",
       color: { dark: fg, light: bg },
-    }).catch(() => {});
+    })
+      .then(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        canvas.style.removeProperty("width");
+        canvas.style.removeProperty("height");
+      })
+      .catch(() => {});
   }, [text, fg, bg, size]);
 
   const download = () => {
@@ -65,7 +73,12 @@ export function QrGeneratorTool({ lang }: { lang: Locale }) {
       </div>
 
       <div className="flex items-center justify-center rounded-2xl border border-border/60 bg-white p-4">
-        <canvas ref={canvasRef} className="block aspect-square w-full max-w-[260px] h-auto" />
+        <div
+          className="w-[min(var(--qr-preview-size),100%)]"
+          style={{ "--qr-preview-size": `${previewSize}px` } as CSSProperties}
+        >
+          <canvas ref={canvasRef} className="block aspect-square h-auto w-full" />
+        </div>
       </div>
 
     </div>
