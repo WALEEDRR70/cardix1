@@ -77,6 +77,8 @@ function TemplatesGallery() {
   const [audience, setAudience] = useState<TemplateAudience | "all">("all");
   const [pending, setPending] = useState<DesignTemplate | null>(null);
   const { data: account } = useAccount();
+  /** Platform owner/admin may fix any published template in place. */
+  const isAdmin = useIsAdmin(uid);
   /** Active context decides the destination: inside a workspace → workspace, otherwise personal. */
   const activeWorkspace =
     account?.accountType === "company"
