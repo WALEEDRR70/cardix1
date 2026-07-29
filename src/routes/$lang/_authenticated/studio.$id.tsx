@@ -1,17 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { Link } from "@/lib/nav";
-import { StudioProvider, useStudioState } from "@/lib/studio/store";
 import { emptyDoc, type StudioDoc } from "@/lib/studio/types";
-import { CanvasStage } from "@/components/studio/CanvasStage";
-import { ElementsPanel } from "@/components/studio/ElementsPanel";
-import { PropertiesPanel } from "@/components/studio/PropertiesPanel";
-import { StudioToolbar } from "@/components/studio/StudioToolbar";
-import { ArrowLeft, Building2, LayoutTemplate, Loader2, Shapes, Frame, SlidersHorizontal, X } from "lucide-react";
+import { StudioWorkspace } from "@/components/studio/StudioWorkspace";
+import { ArrowLeft, Building2, LayoutTemplate, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/$lang/_authenticated/studio/$id")({
   head: () => ({
