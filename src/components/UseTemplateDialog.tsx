@@ -112,7 +112,7 @@ export function UseTemplateDialog({
           )}
         </div>
 
-        <div className="mt-2 flex flex-col-reverse gap-2 sm:flex-row sm:items-center">
+        <div className="mt-2 flex min-w-0 flex-col-reverse gap-2 sm:flex-row sm:items-center">
           <button
             type="button"
             disabled={!picked || busy}
