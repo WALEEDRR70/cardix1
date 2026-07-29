@@ -11,6 +11,7 @@ import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { QrScanner } from "@/components/QrScanner";
 import { CardPreview, type CardData } from "@/components/CardPreview";
 import { NoteDialog } from "@/components/NoteDialog";
+import { tx } from "@/lib/tx";
 
 
 export const Route = createFileRoute("/$lang/_authenticated/scan")({
@@ -252,7 +253,7 @@ function ScanPage() {
         ) : (
           <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-8">
             <div className="relative overflow-hidden rounded-3xl border border-border bg-black">
-              <img src={imgUrl} alt="Scanned" className="max-h-[420px] w-full object-contain lg:max-h-[520px]" />
+              <img src={imgUrl} alt={tx("Scanned card")} className="max-h-[420px] w-full object-contain lg:max-h-[520px]" />
               {busy && (
                 <div className="absolute inset-0 grid place-items-center bg-black/60 backdrop-blur-sm">
                   <div className="flex flex-col items-center gap-3 text-white">

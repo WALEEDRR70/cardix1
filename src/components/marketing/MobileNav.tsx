@@ -5,6 +5,7 @@ import { useI18n } from "@/lib/i18n";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LangToggle } from "@/components/LangToggle";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
+import { tx } from "@/lib/tx";
 
 export type MobileNavLink = { to?: string; href?: string; label: string };
 
@@ -30,7 +31,7 @@ export function MobileNav({ links, authed }: { links: readonly MobileNavLink[]; 
       <button
         type="button"
         onClick={() => setOpen(true)}
-        aria-label="Menu"
+        aria-label={tx("Menu")}
         className="grid h-10 w-10 place-items-center rounded-full border border-border/60 bg-card/60 text-foreground backdrop-blur"
       >
         <Menu className="h-4.5 w-4.5" />
@@ -51,7 +52,7 @@ export function MobileNav({ links, authed }: { links: readonly MobileNavLink[]; 
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                aria-label={t.close ?? "Close"}
+                aria-label={t.close ?? tx("Close")}
                 className="grid h-9 w-9 place-items-center rounded-full border border-border/60 text-muted-foreground"
               >
                 <X className="h-4 w-4" />

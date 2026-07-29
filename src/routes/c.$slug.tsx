@@ -174,7 +174,7 @@ export function PublicCardView({ slug }: { slug: string }) {
   if (!card) {
     return (
       <div className="grid min-h-[100dvh] place-items-center bg-background text-sm text-muted-foreground">
-        Loading…
+        {tx("Loading…")}
       </div>
     );
   }
@@ -342,7 +342,7 @@ export function PublicCardView({ slug }: { slug: string }) {
       supabase.from("card_events").insert({ card_id: card.id, event_type: "save" });
     } catch (e) {
       console.error(e);
-      toast.error("Failed to generate image");
+      toast.error(tx("Failed to generate image"));
     } finally {
       setDownloadingPoster(false);
     }
@@ -673,7 +673,7 @@ export function PublicCardView({ slug }: { slug: string }) {
               to="/"
               className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground hover:text-foreground"
             >
-              Powered by Cardixn
+              {tx("Powered by")} Cardixn
             </Link>
           </div>
         </footer>
@@ -803,7 +803,7 @@ function CardPoster({
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 20px", borderRadius: 999, background: `linear-gradient(135deg, ${accent}33, ${accent}0d)`, border: `1px solid ${accent}66`, boxShadow: `0 0 24px ${accent}44` }}>
           <span style={{ width: 22, height: 22, borderRadius: 999, background: accent, display: "grid", placeItems: "center", color: accentText, fontSize: 14, fontWeight: 900 }}>✓</span>
-          <span style={{ fontSize: 16, fontWeight: 700, letterSpacing: "0.05em" }}>Verified</span>
+          <span style={{ fontSize: 16, fontWeight: 700, letterSpacing: "0.05em" }}>{tx("Verified")}</span>
         </div>
       </div>
 

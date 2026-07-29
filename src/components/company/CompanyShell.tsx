@@ -9,6 +9,7 @@ import { useWs, type Company, type CompanyRole, roleLabel } from "@/lib/workspac
 import { stripLocalePrefix } from "@/lib/locale-routing";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { SiteTopBar } from "@/components/SiteTopBar";
+import { tx } from "@/lib/tx";
 
 /**
  * Enterprise shell for the Company workspace: five sidebar sections, with the
@@ -140,7 +141,7 @@ export function CompanyShell({
             <button
               onClick={() => setOpen(false)}
               className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full border border-border/60 text-muted-foreground rtl:left-3 rtl:right-auto"
-              aria-label="Close"
+              aria-label={tx("Close")}
             >
               <X className="h-4 w-4" />
             </button>
@@ -157,7 +158,7 @@ export function CompanyShell({
               <button
                 onClick={() => setOpen(true)}
                 className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-border/60 bg-card/60 lg:hidden"
-                aria-label="Menu"
+                aria-label={tx("Menu")}
               >
                 <Menu className="h-4 w-4" />
               </button>

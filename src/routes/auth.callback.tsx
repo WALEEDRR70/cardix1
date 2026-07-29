@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { DEFAULT_LOCALE, isSupportedLocale, type Locale } from "@/i18n/config";
 import { localizedPath, readLocaleFromUrl, safeNextPath } from "@/lib/locale-routing";
+import { tx } from "@/lib/tx";
 
 export const Route = createFileRoute("/auth/callback")({
   ssr: false,
@@ -57,7 +58,7 @@ function AuthCallback() {
     <div className="grid min-h-[100dvh] place-items-center bg-background">
       <div className="text-center">
         <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-muted border-t-primary" />
-        <p className="mt-4 text-sm text-muted-foreground">Signing you in…</p>
+        <p className="mt-4 text-sm text-muted-foreground">{tx("Signing you in…")}</p>
       </div>
     </div>
   );

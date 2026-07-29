@@ -518,7 +518,7 @@ function SocialsEditor({
     <section>
       <div className="mb-2 flex items-center justify-between px-1">
         <label className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-          Social accounts
+          {tx("Social accounts")}
         </label>
         <button
           type="button"
@@ -586,7 +586,7 @@ function SocialsEditor({
 
       {active.length === 0 && !picker && (
         <p className="rounded-2xl border border-dashed border-border/70 px-4 py-3 text-center text-xs text-muted-foreground">
-          Add your X, Instagram, LinkedIn, TikTok, YouTube and more.
+          {tx("Add your X, Instagram, LinkedIn, TikTok, YouTube and more.")}
         </p>
       )}
     </section>
