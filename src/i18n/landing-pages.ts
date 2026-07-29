@@ -3,6 +3,7 @@
 // AR + EN authored; other locales fall back to EN with translated title.
 
 import type { Locale } from "@/i18n/config";
+import { LANDING_LOCALES } from "@/i18n/landing-locales/index";
 
 export type LandingCategory = "app" | "qr" | "nfc" | "ocr" | "share" | "templates" | "compare" | "profession" | "vs" | "region" | "keyword" | "tool" | "industry";
 
@@ -3465,7 +3466,7 @@ export function getLandingPage(slug: string): LandingPage | undefined {
 }
 
 export function getLandingCopy(page: LandingPage, lang: Locale): LandingCopy {
-  return page.copy[lang] ?? page.copy.en!;
+  return page.copy[lang] ?? LANDING_LOCALES[lang]?.[page.slug] ?? page.copy.en!;
 }
 
 export function getAllLandingSlugs(): string[] {
