@@ -112,6 +112,8 @@ export function LandingPageView({
         </section>
       )}
 
+      <GetStartedCards lang={lang} />
+
       {/* CTA */}
       <section className="mx-auto max-w-4xl px-6 py-20 md:py-28 text-center">
         <div className="rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/10 via-transparent to-transparent p-10 md:p-16">
