@@ -56,7 +56,7 @@ export function StudioWorkspace({
 
   return (
     <StudioProvider api={api}>
-      <div className="flex h-[100dvh] flex-col bg-background" dir={tx("ltr")}>
+      <div className="flex h-[100dvh] flex-col bg-background" dir={ar ? "rtl" : "ltr"}>
         <div className="no-scrollbar flex items-center gap-2 overflow-x-auto border-b border-border/60 bg-card/60 px-3 py-1.5 text-xs [&>*]:shrink-0">
           {breadcrumbs}
           <button

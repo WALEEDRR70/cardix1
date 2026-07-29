@@ -64,7 +64,7 @@ function BillingReturn() {
         {message && state === "error" && <p className="text-xs text-muted-foreground">{message}</p>}
 
         <button
-          onClick={() => nav({ to: "/$lang/dashboard", params: { lang: tx("en") } })}
+          onClick={() => nav({ to: "/$lang/dashboard", params: { lang: ar ? "ar" : "en" } })}
           className="w-full rounded-2xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
         >
           {tx("Go to dashboard")}

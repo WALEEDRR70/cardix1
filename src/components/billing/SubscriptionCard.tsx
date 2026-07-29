@@ -8,7 +8,7 @@ import { tx } from "@/lib/tx";
 
 function fmtDate(v: string | null, ar: boolean) {
   if (!v) return "—";
-  return new Date(v).toLocaleDateString(tx("en"), { year: "numeric", month: "short", day: "numeric" });
+  return new Date(v).toLocaleDateString(ar ? "ar" : "en", { year: "numeric", month: "short", day: "numeric" });
 }
 
 export function SubscriptionCard({ ar }: { ar: boolean }) {

@@ -60,7 +60,7 @@ export function PublishTemplateDialog({ ar, defaultTitle }: { ar: boolean; defau
           <div
             className="w-full max-w-md rounded-2xl border border-border/60 bg-card p-5 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
-            dir={tx("ltr")}
+            dir={ar ? "rtl" : "ltr"}
           >
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-sm font-semibold">{tx("Publish design as template")}</h2>
