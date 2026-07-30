@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Link, useNavigate } from "@/lib/nav";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { CardPreview } from "@/components/CardPreview";
+import { CardPreview, type CardData } from "@/components/CardPreview";
 import { useI18n } from "@/lib/i18n";
 import { MobileShell } from "@/components/MobileShell";
 import { SOCIALS_BY_ID } from "@/lib/socials";
@@ -29,6 +29,36 @@ export const Route = createFileRoute("/$lang/_authenticated/vault/$id")({
   component: VaultDetail,
 });
 
+type VaultSourceCard = Partial<CardData> & {
+  id?: string | null;
+  user_id?: string | null;
+  slug?: string | null;
+  cover_url?: string | null;
+  is_published?: boolean | null;
+  is_active?: boolean | null;
+};
+
+type VaultCard = CardData & {
+  id: string;
+  notes?: string | null;
+  source_card?: VaultSourceCard | null;
+};
+
+const PREVIEW_KEYS = [
+  "name", "title", "company", "bio", "phone", "whatsapp", "email", "website", "address",
+  "avatar_url", "accent_color", "template", "design", "socials",
+] as const;
+
+function toVaultCard(row: unknown): VaultCard {
+  const card = row as Partial<VaultCard>;
+  return {
+    ...card,
+    id: typeof card.id === "string" ? card.id : "",
+    name: typeof card.name === "string" ? card.name : "",
+    accent_color: typeof card.accent_color === "string" ? card.accent_color : "#7c34ff",
+  } as VaultCard;
+}
+
 function VaultDetail() {
   const { id } = Route.useParams();
   const { t, lang } = useI18n();
@@ -51,12 +81,12 @@ function VaultDetail() {
         .maybeSingle();
       if (error) throw error;
       if (!data) return data;
-      const [resolved] = await resolveSavedCardPreviews([data as { source_card?: Record<string, unknown> | null; [key: string]: unknown }]);
+      const [resolved] = await resolveSavedCardPreviews([toVaultCard(data)]);
       const s = resolved?.source_card;
       if (s && s.is_published) {
         // Overlay latest source-card values so owner edits sync automatically.
-        const overlay: Record<string, unknown> = {};
-        for (const k of ["name","title","company","bio","phone","whatsapp","email","website","address","avatar_url","accent_color","template","design","socials"]) {
+        const overlay: Partial<CardData> = {};
+        for (const k of PREVIEW_KEYS) {
           if (s[k] !== null && s[k] !== undefined) overlay[k] = s[k];
         }
         return { ...resolved, ...overlay };
@@ -109,20 +139,20 @@ function VaultDetail() {
     });
     const vcf = [
       "BEGIN:VCARD", "VERSION:3.0",
-      `FN:${card!.name}`,
-      card!.title && `TITLE:${card!.title}`,
-      card!.company && `ORG:${card!.company}`,
-      card!.phone && `TEL;TYPE=CELL:${card!.phone}`,
-      card!.email && `EMAIL:${card!.email}`,
-      card!.website && `URL:${card!.website}`,
-      card!.address && `ADR:;;${card!.address};;;;`,
+      `FN:${card.name}`,
+      card.title && `TITLE:${card.title}`,
+      card.company && `ORG:${card.company}`,
+      card.phone && `TEL;TYPE=CELL:${card.phone}`,
+      card.email && `EMAIL:${card.email}`,
+      card.website && `URL:${card.website}`,
+      card.address && `ADR:;;${card.address};;;;`,
       ...socialLines,
       "END:VCARD",
     ].filter(Boolean).join("\n");
     const blob = new Blob([vcf], { type: "text/vcard" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    a.href = url; a.download = `${card!.name}.vcf`; a.click();
+    a.href = url; a.download = `${card.name}.vcf`; a.click();
     URL.revokeObjectURL(url);
   }
 
