@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { employeeHref, serviceHref } from "./paths";
 import { QRCodeSVG } from "qrcode.react";
 import {
   BadgeCheck,
@@ -174,6 +175,7 @@ export function TrustBar({ items }: { items: { icon: React.ElementType; label: s
 export function ServiceCard({
   service: rawService,
   slug,
+  lang,
   accent,
   d,
   companyId,
@@ -185,6 +187,7 @@ export function ServiceCard({
 }: {
   service: CompanyService;
   slug: string;
+  lang?: string;
   accent: string;
   d: D;
   companyId?: string | null;
@@ -206,22 +209,18 @@ export function ServiceCard({
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-card/40 transition hover:border-foreground/20">
-      <Link
-        to="/company/$slug/services/$service"
-        params={{ slug, service: service.slug }}
-        className="block"
-      >
+      <a href={serviceHref(lang, slug, service.slug)} className="block">
         {service.image_url ? (
           <img src={service.image_url} alt="" loading="lazy" className="aspect-[16/9] w-full object-cover" />
         ) : (
           <div className="aspect-[16/9] w-full" style={{ background: `linear-gradient(135deg, ${accent}33, transparent)` }} />
         )}
-      </Link>
+      </a>
       <div className="flex flex-1 flex-col p-4">
-        <Link to="/company/$slug/services/$service" params={{ slug, service: service.slug }} className="min-w-0">
+        <a href={serviceHref(lang, slug, service.slug)} className="min-w-0">
           <h3 className="truncate text-sm font-semibold">{service.name}</h3>
           {service.summary && <p className="mt-1 line-clamp-2 text-[12px] leading-relaxed text-muted-foreground">{service.summary}</p>}
-        </Link>
+        </a>
         {(service.price || service.duration) && (
           <div className="mt-3 flex flex-wrap gap-1.5">
             {service.price && (
@@ -247,14 +246,13 @@ export function ServiceCard({
               {d.requestService}
             </a>
           )}
-          <Link
-            to="/company/$slug/services/$service"
-            params={{ slug, service: service.slug }}
+          <a
+            href={serviceHref(lang, slug, service.slug)}
             className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-border/60 text-muted-foreground transition hover:text-foreground"
             aria-label={service.name}
           >
             <ChevronRight className="h-4 w-4 rtl:rotate-180" />
-          </Link>
+          </a>
         </div>
       </div>
     </article>
@@ -265,15 +263,14 @@ export function ServiceCard({
 
 type TeamCard = { id: string; slug: string; name: string; title: string | null; avatar_url: string | null };
 
-export function TeamRail({ slug, cards, accent, onOpen }: { slug: string; cards: TeamCard[]; accent: string; onOpen?: () => void }) {
+export function TeamRail({ slug, lang, cards, accent, onOpen }: { slug: string; lang?: string; cards: TeamCard[]; accent: string; onOpen?: () => void }) {
   const ref = useDragScroll<HTMLDivElement>();
   return (
     <div ref={ref} className="-mx-5 flex snap-x gap-3 overflow-x-auto px-5 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       {cards.map((c) => (
-        <Link
+        <a
           key={c.id}
-          to="/company/$slug/$employee"
-          params={{ slug, employee: c.slug }}
+          href={employeeHref(lang, slug, c.slug)}
           onClick={onOpen}
           className="w-[150px] shrink-0 snap-start rounded-2xl border border-border/60 bg-card/40 p-4 text-center transition hover:border-foreground/20"
         >
@@ -282,7 +279,7 @@ export function TeamRail({ slug, cards, accent, onOpen }: { slug: string; cards:
           </span>
           <span className="mt-3 block truncate text-[13px] font-medium">{c.name}</span>
           <span className="mt-0.5 block truncate text-[11px] text-muted-foreground">{c.title}</span>
-        </Link>
+        </a>
       ))}
     </div>
   );
@@ -290,11 +287,13 @@ export function TeamRail({ slug, cards, accent, onOpen }: { slug: string; cards:
 
 export function TeamGrouped({
   slug,
+  lang,
   departments,
   cards,
   accent,
 }: {
   slug: string;
+  lang?: string;
   departments: { id: string | null; name: string }[];
   cards: (TeamCard & { department_id: string | null })[];
   accent: string;
@@ -311,10 +310,9 @@ export function TeamGrouped({
             )}
             <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {list.map((c) => (
-                <Link
+                <a
                   key={c.id}
-                  to="/company/$slug/$employee"
-                  params={{ slug, employee: c.slug }}
+                  href={employeeHref(lang, slug, c.slug)}
                   className="flex items-center gap-3 rounded-2xl border border-border/60 bg-card/40 p-3 transition hover:border-foreground/20"
                 >
                   <span className="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-full bg-secondary text-xs font-semibold" style={{ color: accent }}>
@@ -325,7 +323,7 @@ export function TeamGrouped({
                     <span className="block truncate text-[11px] text-muted-foreground">{c.title}</span>
                   </span>
                   <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground rtl:rotate-180" />
-                </Link>
+                </a>
               ))}
             </div>
           </div>

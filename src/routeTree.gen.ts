@@ -39,8 +39,10 @@ import { Route as LangAuthenticatedSettingsRouteImport } from './routes/$lang/_a
 import { Route as LangAuthenticatedScanRouteImport } from './routes/$lang/_authenticated/scan'
 import { Route as LangAuthenticatedMeRouteImport } from './routes/$lang/_authenticated/me'
 import { Route as LangAuthenticatedDashboardRouteImport } from './routes/$lang/_authenticated/dashboard'
+import { Route as LangCompanySlugIndexRouteImport } from './routes/$lang/company/$slug/index'
 import { Route as CompanySlugServicesServiceRouteImport } from './routes/company.$slug.services.$service'
 import { Route as ApiPublicWebhooksPaypalRouteImport } from './routes/api/public/webhooks/paypal'
+import { Route as LangCompanySlugEmployeeRouteImport } from './routes/$lang/company/$slug/$employee'
 import { Route as LangAuthenticatedVaultIdRouteImport } from './routes/$lang/_authenticated/vault.$id'
 import { Route as LangAuthenticatedStudioIdRouteImport } from './routes/$lang/_authenticated/studio.$id'
 import { Route as LangAuthenticatedCoNewRouteImport } from './routes/$lang/_authenticated/co/new'
@@ -50,6 +52,7 @@ import { Route as LangAuthenticatedAdminUsersRouteImport } from './routes/$lang/
 import { Route as LangAuthenticatedAdminBillingRouteImport } from './routes/$lang/_authenticated/admin/billing'
 import { Route as LangAuthenticatedCoSlugRouteRouteImport } from './routes/$lang/_authenticated/co/$slug/route'
 import { Route as LangAuthenticatedCoSlugIndexRouteImport } from './routes/$lang/_authenticated/co/$slug/index'
+import { Route as LangCompanySlugServicesServiceRouteImport } from './routes/$lang/company/$slug/services/$service'
 import { Route as LangAuthenticatedStudioTplIdRouteImport } from './routes/$lang/_authenticated/studio.tpl.$id'
 import { Route as LangAuthenticatedCoSlugTemplatesRouteImport } from './routes/$lang/_authenticated/co/$slug/templates'
 import { Route as LangAuthenticatedCoSlugStudioRouteImport } from './routes/$lang/_authenticated/co/$slug/studio'
@@ -214,6 +217,11 @@ const LangAuthenticatedDashboardRoute =
     path: '/dashboard',
     getParentRoute: () => LangAuthenticatedRouteRoute,
   } as any)
+const LangCompanySlugIndexRoute = LangCompanySlugIndexRouteImport.update({
+  id: '/company/$slug/',
+  path: '/company/$slug/',
+  getParentRoute: () => LangRouteRoute,
+} as any)
 const CompanySlugServicesServiceRoute =
   CompanySlugServicesServiceRouteImport.update({
     id: '/company/$slug/services/$service',
@@ -224,6 +232,11 @@ const ApiPublicWebhooksPaypalRoute = ApiPublicWebhooksPaypalRouteImport.update({
   id: '/api/public/webhooks/paypal',
   path: '/api/public/webhooks/paypal',
   getParentRoute: () => rootRouteImport,
+} as any)
+const LangCompanySlugEmployeeRoute = LangCompanySlugEmployeeRouteImport.update({
+  id: '/company/$slug/$employee',
+  path: '/company/$slug/$employee',
+  getParentRoute: () => LangRouteRoute,
 } as any)
 const LangAuthenticatedVaultIdRoute =
   LangAuthenticatedVaultIdRouteImport.update({
@@ -277,6 +290,12 @@ const LangAuthenticatedCoSlugIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => LangAuthenticatedCoSlugRouteRoute,
+  } as any)
+const LangCompanySlugServicesServiceRoute =
+  LangCompanySlugServicesServiceRouteImport.update({
+    id: '/company/$slug/services/$service',
+    path: '/company/$slug/services/$service',
+    getParentRoute: () => LangRouteRoute,
   } as any)
 const LangAuthenticatedStudioTplIdRoute =
   LangAuthenticatedStudioTplIdRouteImport.update({
@@ -383,8 +402,10 @@ export interface FileRoutesByFullPath {
   '/$lang/co/new': typeof LangAuthenticatedCoNewRoute
   '/$lang/studio/$id': typeof LangAuthenticatedStudioIdRoute
   '/$lang/vault/$id': typeof LangAuthenticatedVaultIdRoute
+  '/$lang/company/$slug/$employee': typeof LangCompanySlugEmployeeRoute
   '/api/public/webhooks/paypal': typeof ApiPublicWebhooksPaypalRoute
   '/company/$slug/services/$service': typeof CompanySlugServicesServiceRoute
+  '/$lang/company/$slug/': typeof LangCompanySlugIndexRoute
   '/$lang/cards/$id/analytics': typeof LangAuthenticatedCardsIdAnalyticsRoute
   '/$lang/co/$slug/activity': typeof LangAuthenticatedCoSlugActivityRoute
   '/$lang/co/$slug/analytics': typeof LangAuthenticatedCoSlugAnalyticsRoute
@@ -396,6 +417,7 @@ export interface FileRoutesByFullPath {
   '/$lang/co/$slug/studio': typeof LangAuthenticatedCoSlugStudioRoute
   '/$lang/co/$slug/templates': typeof LangAuthenticatedCoSlugTemplatesRoute
   '/$lang/studio/tpl/$id': typeof LangAuthenticatedStudioTplIdRoute
+  '/$lang/company/$slug/services/$service': typeof LangCompanySlugServicesServiceRoute
   '/$lang/co/$slug/': typeof LangAuthenticatedCoSlugIndexRoute
 }
 export interface FileRoutesByTo {
@@ -434,8 +456,10 @@ export interface FileRoutesByTo {
   '/$lang/co/new': typeof LangAuthenticatedCoNewRoute
   '/$lang/studio/$id': typeof LangAuthenticatedStudioIdRoute
   '/$lang/vault/$id': typeof LangAuthenticatedVaultIdRoute
+  '/$lang/company/$slug/$employee': typeof LangCompanySlugEmployeeRoute
   '/api/public/webhooks/paypal': typeof ApiPublicWebhooksPaypalRoute
   '/company/$slug/services/$service': typeof CompanySlugServicesServiceRoute
+  '/$lang/company/$slug': typeof LangCompanySlugIndexRoute
   '/$lang/cards/$id/analytics': typeof LangAuthenticatedCardsIdAnalyticsRoute
   '/$lang/co/$slug/activity': typeof LangAuthenticatedCoSlugActivityRoute
   '/$lang/co/$slug/analytics': typeof LangAuthenticatedCoSlugAnalyticsRoute
@@ -447,6 +471,7 @@ export interface FileRoutesByTo {
   '/$lang/co/$slug/studio': typeof LangAuthenticatedCoSlugStudioRoute
   '/$lang/co/$slug/templates': typeof LangAuthenticatedCoSlugTemplatesRoute
   '/$lang/studio/tpl/$id': typeof LangAuthenticatedStudioTplIdRoute
+  '/$lang/company/$slug/services/$service': typeof LangCompanySlugServicesServiceRoute
   '/$lang/co/$slug': typeof LangAuthenticatedCoSlugIndexRoute
 }
 export interface FileRoutesById {
@@ -489,8 +514,10 @@ export interface FileRoutesById {
   '/$lang/_authenticated/co/new': typeof LangAuthenticatedCoNewRoute
   '/$lang/_authenticated/studio/$id': typeof LangAuthenticatedStudioIdRoute
   '/$lang/_authenticated/vault/$id': typeof LangAuthenticatedVaultIdRoute
+  '/$lang/company/$slug/$employee': typeof LangCompanySlugEmployeeRoute
   '/api/public/webhooks/paypal': typeof ApiPublicWebhooksPaypalRoute
   '/company/$slug/services/$service': typeof CompanySlugServicesServiceRoute
+  '/$lang/company/$slug/': typeof LangCompanySlugIndexRoute
   '/$lang/_authenticated/cards/$id/analytics': typeof LangAuthenticatedCardsIdAnalyticsRoute
   '/$lang/_authenticated/co/$slug/activity': typeof LangAuthenticatedCoSlugActivityRoute
   '/$lang/_authenticated/co/$slug/analytics': typeof LangAuthenticatedCoSlugAnalyticsRoute
@@ -502,6 +529,7 @@ export interface FileRoutesById {
   '/$lang/_authenticated/co/$slug/studio': typeof LangAuthenticatedCoSlugStudioRoute
   '/$lang/_authenticated/co/$slug/templates': typeof LangAuthenticatedCoSlugTemplatesRoute
   '/$lang/_authenticated/studio/tpl/$id': typeof LangAuthenticatedStudioTplIdRoute
+  '/$lang/company/$slug/services/$service': typeof LangCompanySlugServicesServiceRoute
   '/$lang/_authenticated/co/$slug/': typeof LangAuthenticatedCoSlugIndexRoute
 }
 export interface FileRouteTypes {
@@ -544,8 +572,10 @@ export interface FileRouteTypes {
     | '/$lang/co/new'
     | '/$lang/studio/$id'
     | '/$lang/vault/$id'
+    | '/$lang/company/$slug/$employee'
     | '/api/public/webhooks/paypal'
     | '/company/$slug/services/$service'
+    | '/$lang/company/$slug/'
     | '/$lang/cards/$id/analytics'
     | '/$lang/co/$slug/activity'
     | '/$lang/co/$slug/analytics'
@@ -557,6 +587,7 @@ export interface FileRouteTypes {
     | '/$lang/co/$slug/studio'
     | '/$lang/co/$slug/templates'
     | '/$lang/studio/tpl/$id'
+    | '/$lang/company/$slug/services/$service'
     | '/$lang/co/$slug/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -595,8 +626,10 @@ export interface FileRouteTypes {
     | '/$lang/co/new'
     | '/$lang/studio/$id'
     | '/$lang/vault/$id'
+    | '/$lang/company/$slug/$employee'
     | '/api/public/webhooks/paypal'
     | '/company/$slug/services/$service'
+    | '/$lang/company/$slug'
     | '/$lang/cards/$id/analytics'
     | '/$lang/co/$slug/activity'
     | '/$lang/co/$slug/analytics'
@@ -608,6 +641,7 @@ export interface FileRouteTypes {
     | '/$lang/co/$slug/studio'
     | '/$lang/co/$slug/templates'
     | '/$lang/studio/tpl/$id'
+    | '/$lang/company/$slug/services/$service'
     | '/$lang/co/$slug'
   id:
     | '__root__'
@@ -649,8 +683,10 @@ export interface FileRouteTypes {
     | '/$lang/_authenticated/co/new'
     | '/$lang/_authenticated/studio/$id'
     | '/$lang/_authenticated/vault/$id'
+    | '/$lang/company/$slug/$employee'
     | '/api/public/webhooks/paypal'
     | '/company/$slug/services/$service'
+    | '/$lang/company/$slug/'
     | '/$lang/_authenticated/cards/$id/analytics'
     | '/$lang/_authenticated/co/$slug/activity'
     | '/$lang/_authenticated/co/$slug/analytics'
@@ -662,6 +698,7 @@ export interface FileRouteTypes {
     | '/$lang/_authenticated/co/$slug/studio'
     | '/$lang/_authenticated/co/$slug/templates'
     | '/$lang/_authenticated/studio/tpl/$id'
+    | '/$lang/company/$slug/services/$service'
     | '/$lang/_authenticated/co/$slug/'
   fileRoutesById: FileRoutesById
 }
@@ -892,6 +929,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangAuthenticatedDashboardRouteImport
       parentRoute: typeof LangAuthenticatedRouteRoute
     }
+    '/$lang/company/$slug/': {
+      id: '/$lang/company/$slug/'
+      path: '/company/$slug'
+      fullPath: '/$lang/company/$slug/'
+      preLoaderRoute: typeof LangCompanySlugIndexRouteImport
+      parentRoute: typeof LangRouteRoute
+    }
     '/company/$slug/services/$service': {
       id: '/company/$slug/services/$service'
       path: '/company/$slug/services/$service'
@@ -905,6 +949,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/public/webhooks/paypal'
       preLoaderRoute: typeof ApiPublicWebhooksPaypalRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/$lang/company/$slug/$employee': {
+      id: '/$lang/company/$slug/$employee'
+      path: '/company/$slug/$employee'
+      fullPath: '/$lang/company/$slug/$employee'
+      preLoaderRoute: typeof LangCompanySlugEmployeeRouteImport
+      parentRoute: typeof LangRouteRoute
     }
     '/$lang/_authenticated/vault/$id': {
       id: '/$lang/_authenticated/vault/$id'
@@ -968,6 +1019,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/$lang/co/$slug/'
       preLoaderRoute: typeof LangAuthenticatedCoSlugIndexRouteImport
       parentRoute: typeof LangAuthenticatedCoSlugRouteRoute
+    }
+    '/$lang/company/$slug/services/$service': {
+      id: '/$lang/company/$slug/services/$service'
+      path: '/company/$slug/services/$service'
+      fullPath: '/$lang/company/$slug/services/$service'
+      preLoaderRoute: typeof LangCompanySlugServicesServiceRouteImport
+      parentRoute: typeof LangRouteRoute
     }
     '/$lang/_authenticated/studio/tpl/$id': {
       id: '/$lang/_authenticated/studio/tpl/$id'
@@ -1169,6 +1227,9 @@ interface LangRouteRouteChildren {
   LangBlogIndexRoute: typeof LangBlogIndexRoute
   LangLIndexRoute: typeof LangLIndexRoute
   LangToolsIndexRoute: typeof LangToolsIndexRoute
+  LangCompanySlugEmployeeRoute: typeof LangCompanySlugEmployeeRoute
+  LangCompanySlugIndexRoute: typeof LangCompanySlugIndexRoute
+  LangCompanySlugServicesServiceRoute: typeof LangCompanySlugServicesServiceRoute
 }
 
 const LangRouteRouteChildren: LangRouteRouteChildren = {
@@ -1186,6 +1247,9 @@ const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangBlogIndexRoute: LangBlogIndexRoute,
   LangLIndexRoute: LangLIndexRoute,
   LangToolsIndexRoute: LangToolsIndexRoute,
+  LangCompanySlugEmployeeRoute: LangCompanySlugEmployeeRoute,
+  LangCompanySlugIndexRoute: LangCompanySlugIndexRoute,
+  LangCompanySlugServicesServiceRoute: LangCompanySlugServicesServiceRoute,
 }
 
 const LangRouteRouteWithChildren = LangRouteRoute._addFileChildren(
