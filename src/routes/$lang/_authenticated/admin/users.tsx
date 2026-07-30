@@ -5,6 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { CreditCard, Eye, Search, ShieldCheck, Users } from "lucide-react";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { listPlatformUsers, type AdminUserRow } from "@/lib/admin.functions";
+import { CardPreview } from "@/components/CardPreview";
 
 export const Route = createFileRoute("/$lang/_authenticated/admin/users")({
   head: () => ({
@@ -132,36 +133,61 @@ function UserRow({ user }: { user: AdminUserRow }) {
             {user.account_type ? ` · ${user.account_type === "company" ? "حساب شركة" : "حساب شخصي"}` : ""}
           </p>
           {user.cards.length === 0 && <p className="text-xs text-muted-foreground">لا توجد بطاقات.</p>}
-          {user.cards.map((c) => (
-            <div key={c.id} className="flex items-center gap-2 rounded-xl border border-border/60 px-3 py-2">
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium">{c.name}</p>
-                <p className="truncate text-[11px] text-muted-foreground">
-                  {[c.title, c.company].filter(Boolean).join(" · ") || "—"}
-                </p>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            {user.cards.map((c) => (
+              <div key={c.id} className="rounded-2xl border border-border/60 p-3">
+                <CardPreview
+                  card={{
+                    name: c.name,
+                    slug: c.slug,
+                    title: c.title,
+                    company: c.company,
+                    bio: c.bio,
+                    phone: c.phone,
+                    whatsapp: c.whatsapp,
+                    email: c.email,
+                    website: c.website,
+                    address: c.address,
+                    avatar_url: c.avatar_url,
+                    accent_color: c.accent_color || "#C9A227",
+                    template: c.template,
+                    design: c.design,
+                    socials: c.socials,
+                  }}
+                  size="sm"
+                />
+                <div className="mt-3 flex items-center gap-2">
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium">{c.name}</p>
+                    <p className="truncate text-[11px] text-muted-foreground">
+                      {[c.title, c.company].filter(Boolean).join(" · ") || "—"}
+                    </p>
+                  </div>
+                  <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                    <Eye className="h-3 w-3" /> {c.view_count}
+                  </span>
+                  <span
+                    className={
+                      "rounded-full px-2 py-0.5 text-[10px] " +
+                      (c.is_published ? "bg-secondary text-foreground" : "bg-secondary/50 text-muted-foreground")
+                    }
+                  >
+                    {c.is_published ? "منشورة" : "مسودّة"}
+                  </span>
+                  <a
+                    href={`/c/${c.slug}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-secondary"
+                    aria-label="فتح البطاقة"
+                  >
+                    <ShieldCheck className="h-3.5 w-3.5" />
+                  </a>
+                </div>
               </div>
-              <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                <Eye className="h-3 w-3" /> {c.view_count}
-              </span>
-              <span
-                className={
-                  "rounded-full px-2 py-0.5 text-[10px] " +
-                  (c.is_published ? "bg-secondary text-foreground" : "bg-secondary/50 text-muted-foreground")
-                }
-              >
-                {c.is_published ? "منشورة" : "مسودّة"}
-              </span>
-              <a
-                href={`/c/${c.slug}`}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-lg p-1.5 text-muted-foreground hover:bg-secondary"
-                aria-label="فتح البطاقة"
-              >
-                <ShieldCheck className="h-3.5 w-3.5" />
-              </a>
-            </div>
-          ))}
+            ))}
+          </div>
+
         </div>
       )}
     </div>
