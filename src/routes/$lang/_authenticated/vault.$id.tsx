@@ -70,7 +70,7 @@ function VaultDetail() {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  const { data: card } = useQuery({
+  const { data: card } = useQuery<VaultCard | null>({
     queryKey: ["saved_card", id, user.id],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -82,14 +82,15 @@ function VaultDetail() {
       if (error) throw error;
       if (!data) return data;
       const [resolved] = await resolveSavedCardPreviews([toVaultCard(data)]);
+      if (!resolved) return null;
       const s = resolved?.source_card;
       if (s && s.is_published) {
         // Overlay latest source-card values so owner edits sync automatically.
-        const overlay: Partial<CardData> = {};
+        const overlay: Record<string, unknown> = {};
         for (const k of PREVIEW_KEYS) {
           if (s[k] !== null && s[k] !== undefined) overlay[k] = s[k];
         }
-        return { ...resolved, ...overlay };
+        return toVaultCard({ ...resolved, ...overlay });
       }
       return resolved;
     },

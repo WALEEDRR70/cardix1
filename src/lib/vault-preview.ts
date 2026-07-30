@@ -22,10 +22,9 @@ type SourceCardPreview = {
   is_active?: boolean | null;
 };
 
-type SavedCardPreviewRow = {
+type SavedCardPreviewRow = object & {
   source_card?: SourceCardPreview | null;
   cards?: SourceCardPreview | null;
-  [key: string]: unknown;
 };
 
 const PREVIEW_FIELDS = [
@@ -52,7 +51,7 @@ function mergeSource<T extends SavedCardPreviewRow>(row: T, source: SourceCardPr
     const value = source[key];
     if (value !== null && value !== undefined) overlay[key] = value;
   }
-  const next: SavedCardPreviewRow = { ...row, ...overlay };
+  const next = { ...row, ...overlay } as SavedCardPreviewRow;
   if ("source_card" in row) next.source_card = source;
   if ("cards" in row) next.cards = source;
   return next as T;
@@ -94,7 +93,7 @@ export async function resolveSavedCardPreviews<T extends SavedCardPreviewRow>(ro
       ? source
       : replacements.find((candidate) =>
           candidate.user_id === source.user_id &&
-          normalized(candidate.name) === normalized(source.name ?? (row.name as string | null | undefined)) &&
+          normalized(candidate.name) === normalized(source.name ?? ((row as SourceCardPreview).name as string | null | undefined)) &&
           (!normalized(source.company) || normalized(candidate.company) === normalized(source.company)),
         );
 
