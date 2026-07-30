@@ -1,6 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
+export type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
+
 export type AdminUserRow = {
   id: string;
   email: string | null;
@@ -26,8 +28,8 @@ export type AdminUserRow = {
     avatar_url: string | null;
     accent_color: string;
     template: string | null;
-    design: Record<string, unknown> | null;
-    socials: Record<string, unknown> | null;
+    design: JsonValue;
+    socials: JsonValue;
     is_published: boolean;
     view_count: number;
     created_at: string;
@@ -92,8 +94,8 @@ export const listPlatformUsers = createServerFn({ method: "GET" })
         avatar_url: c.avatar_url,
         accent_color: c.accent_color,
         template: c.template,
-        design: (c.design as Record<string, unknown> | null) ?? null,
-        socials: (c.socials as Record<string, unknown> | null) ?? null,
+        design: (c.design as JsonValue) ?? null,
+        socials: (c.socials as JsonValue) ?? null,
         is_published: c.is_published,
         view_count: c.view_count,
         created_at: c.created_at,
