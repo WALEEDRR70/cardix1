@@ -10,6 +10,7 @@ import { StaticCardPreview } from "@/components/studio/StaticCardPreview";
 import { supabase } from "@/integrations/supabase/client";
 import {
   applyTemplateToCard,
+  cloneDesign,
   listFavoriteTemplates,
   listPublicTemplates,
   type DesignTemplate,
@@ -17,7 +18,15 @@ import {
 import type { StudioDoc } from "@/lib/studio/types";
 import { tx, txErr } from "@/lib/tx";
 
-export function ApplyTemplatesStrip({ cardId }: { cardId: string }) {
+export function ApplyTemplatesStrip({
+  cardId,
+  onPick,
+}: {
+  /** Existing card to repaint. Omit on the "new card" screen and use onPick instead. */
+  cardId?: string;
+  /** Called with a fresh copy of the picked design (used before the card exists). */
+  onPick?: (design: StudioDoc, tpl: DesignTemplate) => void;
+}) {
   const { lang } = useI18n();
   const ar = lang === "ar";
   const qc = useQueryClient();
@@ -49,9 +58,13 @@ export function ApplyTemplatesStrip({ cardId }: { cardId: string }) {
   async function apply(tpl: DesignTemplate) {
     setBusyId(tpl.id);
     try {
-      await applyTemplateToCard(tpl, cardId);
+      if (cardId) {
+        await applyTemplateToCard(tpl, cardId);
+        await qc.invalidateQueries({ queryKey: ["card", cardId] });
+      } else {
+        onPick?.(cloneDesign(tpl.design as unknown as StudioDoc), tpl);
+      }
       setAppliedId(tpl.id);
-      await qc.invalidateQueries({ queryKey: ["card", cardId] });
       toast.success(tx("Design applied to this card"));
     } catch (e) {
       toast.error(txErr(e));
