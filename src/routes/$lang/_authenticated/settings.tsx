@@ -73,7 +73,23 @@ function Settings() {
           <Row icon={<Sparkles className="h-4 w-4" />} label={t.brand} sub="v1.0" />
         </Section>
 
+        {isAdmin && (
+          <Section title="إدارة المنصّة">
+            <Link to="/admin/users" className="flex items-center gap-3 px-4 py-3.5 hover:bg-secondary/60">
+              <span className="grid h-8 w-8 place-items-center rounded-lg bg-secondary"><Users className="h-4 w-4" /></span>
+              <span className="min-w-0 flex-1 text-sm font-medium">المستخدمون والبطاقات</span>
+              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            </Link>
+            <Link to="/admin/billing" className="flex items-center gap-3 border-t border-border/60 px-4 py-3.5 hover:bg-secondary/60">
+              <span className="grid h-8 w-8 place-items-center rounded-lg bg-secondary"><ShieldCheck className="h-4 w-4" /></span>
+              <span className="min-w-0 flex-1 text-sm font-medium">لوحة الأسعار</span>
+              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            </Link>
+          </Section>
+        )}
+
         <InstallAppButton />
+
 
 
         <button
