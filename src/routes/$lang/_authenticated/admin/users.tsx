@@ -193,14 +193,13 @@ function UserRow({ user }: { user: AdminUserRow }) {
                   >
                     <Pencil className="h-3.5 w-3.5" />
                   </button>
-                  <Link
-                    to="/studio/$id"
-                    params={{ id: c.id }}
+                  <a
+                    href={`/${lang}/studio/${c.id}`}
                     className="rounded-lg p-1.5 text-muted-foreground hover:bg-secondary"
                     aria-label="تعديل التصميم"
                   >
                     <Palette className="h-3.5 w-3.5" />
-                  </Link>
+                  </a>
                   <a
                     href={`/c/${c.slug}`}
                     target="_blank"
