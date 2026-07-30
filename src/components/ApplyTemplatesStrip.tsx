@@ -57,9 +57,13 @@ export function ApplyTemplatesStrip({
   async function apply(tpl: DesignTemplate) {
     setBusyId(tpl.id);
     try {
-      await applyTemplateToCard(tpl, cardId);
+      if (cardId) {
+        await applyTemplateToCard(tpl, cardId);
+        await qc.invalidateQueries({ queryKey: ["card", cardId] });
+      } else {
+        onPick?.(cloneDesign(tpl.design as unknown as StudioDoc), tpl);
+      }
       setAppliedId(tpl.id);
-      await qc.invalidateQueries({ queryKey: ["card", cardId] });
       toast.success(tx("Design applied to this card"));
     } catch (e) {
       toast.error(txErr(e));
