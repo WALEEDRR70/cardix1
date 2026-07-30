@@ -51,6 +51,7 @@ import { Route as LangAuthenticatedAdminUsersRouteImport } from './routes/$lang/
 import { Route as LangAuthenticatedAdminBillingRouteImport } from './routes/$lang/_authenticated/admin/billing'
 import { Route as LangAuthenticatedCoSlugRouteRouteImport } from './routes/$lang/_authenticated/co/$slug/route'
 import { Route as LangAuthenticatedCoSlugIndexRouteImport } from './routes/$lang/_authenticated/co/$slug/index'
+import { Route as LangCompanySlugServicesServiceRouteImport } from './routes/$lang/company/$slug/services/$service'
 import { Route as LangAuthenticatedStudioTplIdRouteImport } from './routes/$lang/_authenticated/studio.tpl.$id'
 import { Route as LangAuthenticatedCoSlugTemplatesRouteImport } from './routes/$lang/_authenticated/co/$slug/templates'
 import { Route as LangAuthenticatedCoSlugStudioRouteImport } from './routes/$lang/_authenticated/co/$slug/studio'
@@ -284,6 +285,12 @@ const LangAuthenticatedCoSlugIndexRoute =
     path: '/',
     getParentRoute: () => LangAuthenticatedCoSlugRouteRoute,
   } as any)
+const LangCompanySlugServicesServiceRoute =
+  LangCompanySlugServicesServiceRouteImport.update({
+    id: '/company/$slug/services/$service',
+    path: '/company/$slug/services/$service',
+    getParentRoute: () => LangRouteRoute,
+  } as any)
 const LangAuthenticatedStudioTplIdRoute =
   LangAuthenticatedStudioTplIdRouteImport.update({
     id: '/studio/tpl/$id',
@@ -403,6 +410,7 @@ export interface FileRoutesByFullPath {
   '/$lang/co/$slug/studio': typeof LangAuthenticatedCoSlugStudioRoute
   '/$lang/co/$slug/templates': typeof LangAuthenticatedCoSlugTemplatesRoute
   '/$lang/studio/tpl/$id': typeof LangAuthenticatedStudioTplIdRoute
+  '/$lang/company/$slug/services/$service': typeof LangCompanySlugServicesServiceRoute
   '/$lang/co/$slug/': typeof LangAuthenticatedCoSlugIndexRoute
 }
 export interface FileRoutesByTo {
@@ -455,6 +463,7 @@ export interface FileRoutesByTo {
   '/$lang/co/$slug/studio': typeof LangAuthenticatedCoSlugStudioRoute
   '/$lang/co/$slug/templates': typeof LangAuthenticatedCoSlugTemplatesRoute
   '/$lang/studio/tpl/$id': typeof LangAuthenticatedStudioTplIdRoute
+  '/$lang/company/$slug/services/$service': typeof LangCompanySlugServicesServiceRoute
   '/$lang/co/$slug': typeof LangAuthenticatedCoSlugIndexRoute
 }
 export interface FileRoutesById {
@@ -511,6 +520,7 @@ export interface FileRoutesById {
   '/$lang/_authenticated/co/$slug/studio': typeof LangAuthenticatedCoSlugStudioRoute
   '/$lang/_authenticated/co/$slug/templates': typeof LangAuthenticatedCoSlugTemplatesRoute
   '/$lang/_authenticated/studio/tpl/$id': typeof LangAuthenticatedStudioTplIdRoute
+  '/$lang/company/$slug/services/$service': typeof LangCompanySlugServicesServiceRoute
   '/$lang/_authenticated/co/$slug/': typeof LangAuthenticatedCoSlugIndexRoute
 }
 export interface FileRouteTypes {
@@ -567,6 +577,7 @@ export interface FileRouteTypes {
     | '/$lang/co/$slug/studio'
     | '/$lang/co/$slug/templates'
     | '/$lang/studio/tpl/$id'
+    | '/$lang/company/$slug/services/$service'
     | '/$lang/co/$slug/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -619,6 +630,7 @@ export interface FileRouteTypes {
     | '/$lang/co/$slug/studio'
     | '/$lang/co/$slug/templates'
     | '/$lang/studio/tpl/$id'
+    | '/$lang/company/$slug/services/$service'
     | '/$lang/co/$slug'
   id:
     | '__root__'
@@ -674,6 +686,7 @@ export interface FileRouteTypes {
     | '/$lang/_authenticated/co/$slug/studio'
     | '/$lang/_authenticated/co/$slug/templates'
     | '/$lang/_authenticated/studio/tpl/$id'
+    | '/$lang/company/$slug/services/$service'
     | '/$lang/_authenticated/co/$slug/'
   fileRoutesById: FileRoutesById
 }
@@ -988,6 +1001,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangAuthenticatedCoSlugIndexRouteImport
       parentRoute: typeof LangAuthenticatedCoSlugRouteRoute
     }
+    '/$lang/company/$slug/services/$service': {
+      id: '/$lang/company/$slug/services/$service'
+      path: '/company/$slug/services/$service'
+      fullPath: '/$lang/company/$slug/services/$service'
+      preLoaderRoute: typeof LangCompanySlugServicesServiceRouteImport
+      parentRoute: typeof LangRouteRoute
+    }
     '/$lang/_authenticated/studio/tpl/$id': {
       id: '/$lang/_authenticated/studio/tpl/$id'
       path: '/studio/tpl/$id'
@@ -1189,6 +1209,7 @@ interface LangRouteRouteChildren {
   LangLIndexRoute: typeof LangLIndexRoute
   LangToolsIndexRoute: typeof LangToolsIndexRoute
   LangCompanySlugIndexRoute: typeof LangCompanySlugIndexRoute
+  LangCompanySlugServicesServiceRoute: typeof LangCompanySlugServicesServiceRoute
 }
 
 const LangRouteRouteChildren: LangRouteRouteChildren = {
@@ -1207,6 +1228,7 @@ const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangLIndexRoute: LangLIndexRoute,
   LangToolsIndexRoute: LangToolsIndexRoute,
   LangCompanySlugIndexRoute: LangCompanySlugIndexRoute,
+  LangCompanySlugServicesServiceRoute: LangCompanySlugServicesServiceRoute,
 }
 
 const LangRouteRouteWithChildren = LangRouteRoute._addFileChildren(
