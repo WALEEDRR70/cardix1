@@ -28,6 +28,8 @@ function Settings() {
   const { theme, setTheme } = useTheme();
   const { user } = Route.useRouteContext();
   const nav = useNavigate();
+  const isAdmin = useIsAdmin(user.id);
+
   const qc = useQueryClient();
 
   async function signOut() {
