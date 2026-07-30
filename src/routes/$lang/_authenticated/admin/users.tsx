@@ -111,6 +111,7 @@ function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; va
 }
 
 function UserRow({ user }: { user: AdminUserRow }) {
+  const { lang } = Route.useParams();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<AdminCard | null>(null);
   return (
