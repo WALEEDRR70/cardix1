@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Link, useNavigate } from "@/lib/nav";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { CardPreview } from "@/components/CardPreview";
+import { CardPreview, type CardData } from "@/components/CardPreview";
 import { useI18n } from "@/lib/i18n";
 import { MobileShell } from "@/components/MobileShell";
 import { SOCIALS_BY_ID } from "@/lib/socials";
@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
 import { txErr } from "@/lib/tx";
+import { resolveSavedCardPreviews } from "@/lib/vault-preview";
 
 export const Route = createFileRoute("/$lang/_authenticated/vault/$id")({
   head: () => ({
@@ -28,6 +29,36 @@ export const Route = createFileRoute("/$lang/_authenticated/vault/$id")({
   component: VaultDetail,
 });
 
+type VaultSourceCard = Partial<CardData> & {
+  id?: string | null;
+  user_id?: string | null;
+  slug?: string | null;
+  cover_url?: string | null;
+  is_published?: boolean | null;
+  is_active?: boolean | null;
+};
+
+type VaultCard = CardData & {
+  id: string;
+  notes?: string | null;
+  source_card?: VaultSourceCard | null;
+};
+
+const PREVIEW_KEYS = [
+  "name", "title", "company", "bio", "phone", "whatsapp", "email", "website", "address",
+  "avatar_url", "accent_color", "template", "design", "socials",
+] as const;
+
+function toVaultCard(row: unknown): VaultCard {
+  const card = row as Partial<VaultCard>;
+  return {
+    ...card,
+    id: typeof card.id === "string" ? card.id : "",
+    name: typeof card.name === "string" ? card.name : "",
+    accent_color: typeof card.accent_color === "string" ? card.accent_color : "#7c34ff",
+  } as VaultCard;
+}
+
 function VaultDetail() {
   const { id } = Route.useParams();
   const { t, lang } = useI18n();
@@ -39,27 +70,29 @@ function VaultDetail() {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  const { data: card } = useQuery({
+  const { data: card } = useQuery<VaultCard | null>({
     queryKey: ["saved_card", id, user.id],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("saved_cards")
-        .select("*, source_card:cards!saved_cards_source_card_id_fkey(slug,name,title,company,bio,phone,whatsapp,email,website,address,avatar_url,cover_url,accent_color,template,design,socials,is_published)")
+        .select("*, source_card:cards!saved_cards_source_card_id_fkey(id,user_id,slug,name,title,company,bio,phone,whatsapp,email,website,address,avatar_url,cover_url,accent_color,template,design,socials,is_published,is_active)")
         .eq("id", id)
         .eq("user_id", user.id)
         .maybeSingle();
       if (error) throw error;
       if (!data) return data;
-      const s = (data as { source_card?: Record<string, unknown> | null }).source_card;
+      const [resolved] = await resolveSavedCardPreviews([toVaultCard(data)]);
+      if (!resolved) return null;
+      const s = resolved?.source_card;
       if (s && s.is_published) {
         // Overlay latest source-card values so owner edits sync automatically.
         const overlay: Record<string, unknown> = {};
-        for (const k of ["name","title","company","bio","phone","whatsapp","email","website","address","avatar_url","accent_color","template","design","socials"]) {
+        for (const k of PREVIEW_KEYS) {
           if (s[k] !== null && s[k] !== undefined) overlay[k] = s[k];
         }
-        return { ...data, ...overlay };
+        return toVaultCard({ ...resolved, ...overlay });
       }
-      return data;
+      return resolved;
     },
   });
 
@@ -75,8 +108,9 @@ function VaultDetail() {
     );
   }
 
-  const accent = card.accent_color || "#7c34ff";
-  const socials = (card.socials as Record<string, string> | null) ?? {};
+  const currentCard = card;
+  const accent = currentCard.accent_color || "#7c34ff";
+  const socials = (currentCard.socials as Record<string, string> | null) ?? {};
   const socialEntries = Object.entries(socials).filter(([id, v]) => v && SOCIALS_BY_ID[id]);
 
   async function saveNote() {
@@ -107,29 +141,29 @@ function VaultDetail() {
     });
     const vcf = [
       "BEGIN:VCARD", "VERSION:3.0",
-      `FN:${card!.name}`,
-      card!.title && `TITLE:${card!.title}`,
-      card!.company && `ORG:${card!.company}`,
-      card!.phone && `TEL;TYPE=CELL:${card!.phone}`,
-      card!.email && `EMAIL:${card!.email}`,
-      card!.website && `URL:${card!.website}`,
-      card!.address && `ADR:;;${card!.address};;;;`,
+      `FN:${currentCard.name}`,
+      currentCard.title && `TITLE:${currentCard.title}`,
+      currentCard.company && `ORG:${currentCard.company}`,
+      currentCard.phone && `TEL;TYPE=CELL:${currentCard.phone}`,
+      currentCard.email && `EMAIL:${currentCard.email}`,
+      currentCard.website && `URL:${currentCard.website}`,
+      currentCard.address && `ADR:;;${currentCard.address};;;;`,
       ...socialLines,
       "END:VCARD",
     ].filter(Boolean).join("\n");
     const blob = new Blob([vcf], { type: "text/vcard" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    a.href = url; a.download = `${card!.name}.vcf`; a.click();
+    a.href = url; a.download = `${currentCard.name}.vcf`; a.click();
     URL.revokeObjectURL(url);
   }
 
   const actions = [
-    card.email && { id: "email", label: "Email", icon: Mail, href: `mailto:${card.email}` },
-    card.whatsapp && { id: "wa", label: "WhatsApp", icon: MessageCircle, href: `https://wa.me/${card.whatsapp.replace(/\D/g, "")}` },
-    card.phone && { id: "call", label: t.call, icon: Phone, href: `tel:${card.phone}` },
-    card.address && { id: "map", label: t.location, icon: MapPin, href: `https://maps.google.com/?q=${encodeURIComponent(card.address)}` },
-    card.website && { id: "web", label: t.website, icon: Globe, href: card.website.startsWith("http") ? card.website : `https://${card.website}` },
+    currentCard.email && { id: "email", label: "Email", icon: Mail, href: `mailto:${currentCard.email}` },
+    currentCard.whatsapp && { id: "wa", label: "WhatsApp", icon: MessageCircle, href: `https://wa.me/${currentCard.whatsapp.replace(/\D/g, "")}` },
+    currentCard.phone && { id: "call", label: t.call, icon: Phone, href: `tel:${currentCard.phone}` },
+    currentCard.address && { id: "map", label: t.location, icon: MapPin, href: `https://maps.google.com/?q=${encodeURIComponent(currentCard.address)}` },
+    currentCard.website && { id: "web", label: t.website, icon: Globe, href: currentCard.website.startsWith("http") ? currentCard.website : `https://${currentCard.website}` },
     { id: "save", label: t.saveContact, icon: UserPlus, onClick: vcard },
   ].filter(Boolean) as { id: string; label: string; icon: typeof Phone; href?: string; onClick?: () => void }[];
 
@@ -167,7 +201,7 @@ function VaultDetail() {
                 style={{ background: `radial-gradient(circle, ${accent}55, transparent 70%)` }}
               />
               <div className="relative">
-                <CardPreview card={card} size="xl" />
+                <CardPreview card={currentCard} size="xl" />
               </div>
             </div>
           </section>
@@ -176,15 +210,15 @@ function VaultDetail() {
             <div className="w-full max-w-md text-center lg:text-start">
               <div className="flex items-center justify-center gap-2 lg:justify-start">
                 <BadgeCheck className="h-5 w-5 shrink-0" style={{ color: accent }} />
-                <h1 className="text-[28px] font-semibold leading-tight tracking-tight sm:text-4xl">{card.name}</h1>
+                <h1 className="text-[28px] font-semibold leading-tight tracking-tight sm:text-4xl">{currentCard.name}</h1>
               </div>
-              {(card.title || card.company) && (
+              {(currentCard.title || currentCard.company) && (
                 <p className="mt-1.5 text-sm text-muted-foreground">
-                  {[card.title, card.company].filter(Boolean).join(" · ")}
+                  {[currentCard.title, currentCard.company].filter(Boolean).join(" · ")}
                 </p>
               )}
-              {card.bio && (
-                <p className="mt-4 text-sm leading-relaxed text-foreground/85">{card.bio}</p>
+              {currentCard.bio && (
+                <p className="mt-4 text-sm leading-relaxed text-foreground/85">{currentCard.bio}</p>
               )}
             </div>
 
@@ -254,7 +288,7 @@ function VaultDetail() {
               />
               <button
                 onClick={saveNote}
-                disabled={savingNote || note === (card.notes ?? "")}
+                disabled={savingNote || note === (currentCard.notes ?? "")}
                 className="mt-2 w-full rounded-full py-3 text-sm font-semibold text-white transition disabled:opacity-50"
                 style={{ background: `linear-gradient(140deg, ${accent}, ${accent}cc)` }}
               >

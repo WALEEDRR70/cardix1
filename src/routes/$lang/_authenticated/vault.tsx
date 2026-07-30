@@ -11,6 +11,7 @@ import { NoteDialog } from "@/components/NoteDialog";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
 import { CardPreview } from "@/components/CardPreview";
 import { tx, txErr } from "@/lib/tx";
+import { resolveSavedCardPreviews } from "@/lib/vault-preview";
 
 export const Route = createFileRoute("/$lang/_authenticated/vault")({
   head: () => ({
@@ -41,7 +42,7 @@ function Vault() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("saved_cards")
-        .select("*, source_card:cards!saved_cards_source_card_id_fkey(slug,name,title,company,phone,whatsapp,email,website,address,avatar_url,accent_color,template,design,is_published)")
+        .select("*, source_card:cards!saved_cards_source_card_id_fkey(id,user_id,slug,name,title,company,bio,phone,whatsapp,email,website,address,avatar_url,accent_color,template,design,socials,is_published,is_active)")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
       if (error) throw error;
@@ -50,15 +51,17 @@ function Vault() {
         avatar_url: string | null; notes: string | null; phone: string | null;
         email: string | null; website: string | null; source: string;
         source_card: {
-          slug: string; name: string; title: string | null; company: string | null;
+          id: string; user_id: string; slug: string; name: string; title: string | null; company: string | null;
+          bio: string | null;
           phone: string | null; whatsapp: string | null; email: string | null;
           website: string | null; address: string | null; avatar_url: string | null;
           accent_color?: string | null; template?: string | null; design?: unknown;
-          is_published: boolean;
+          socials?: unknown; is_published: boolean; is_active: boolean;
         } | null;
       };
+      const resolved = await resolveSavedCardPreviews((data ?? []) as unknown as Row[]);
       // Overlay live source-card fields so owner edits appear automatically.
-      return ((data ?? []) as unknown as Row[]).map((c) => {
+      return resolved.map((c) => {
         const s = c.source_card;
         if (!s || !s.is_published) return c;
         return {
@@ -73,6 +76,8 @@ function Vault() {
           accent_color: s.accent_color ?? (c as any).accent_color,
           template: s.template ?? (c as any).template,
           design: s.design ?? (c as any).design,
+          socials: s.socials ?? (c as any).socials,
+          source_card: s,
         };
       });
     },

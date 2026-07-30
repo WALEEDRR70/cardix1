@@ -17,6 +17,7 @@ import { OnboardingChecklist } from "@/components/OnboardingChecklist";
 import { QRCodeSVG } from "qrcode.react";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { txErr } from "@/lib/tx";
+import { resolveSavedCardPreviews } from "@/lib/vault-preview";
 
 
 export const Route = createFileRoute("/$lang/_authenticated/dashboard")({
@@ -73,11 +74,11 @@ function Dashboard() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("saved_cards")
-        .select("id, name, title, company, avatar_url, accent_color, template, source_card_id, notes, cards:source_card_id(slug, design, template, accent_color, avatar_url, name, title, company, phone, email, website, address, department, bio, socials)")
+        .select("id, name, title, company, avatar_url, accent_color, template, source_card_id, notes, cards:source_card_id(id, user_id, slug, design, template, accent_color, avatar_url, name, title, company, phone, whatsapp, email, website, address, department, bio, socials, is_published, is_active)")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
       if (error) throw error;
-      return data;
+      return resolveSavedCardPreviews((data ?? []) as any);
     },
   });
 
