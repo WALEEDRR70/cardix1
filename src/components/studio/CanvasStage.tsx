@@ -130,36 +130,61 @@ function ImageNode({ n, values }: { n: StudioNode; values?: Record<string, strin
 
 
 
+/** Text that shrinks its font size automatically so long content never overflows its box. */
+function AutoFitText({ n, values }: { n: StudioNode; values?: Record<string, string> }) {
+  const s = n.style;
+  const ref = useRef<HTMLDivElement>(null);
+  const base = s.fontSize ?? 16;
+  const text = resolvePlaceholders(n.text ?? "", values);
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let size = base;
+    el.style.fontSize = `${size}px`;
+    // Shrink progressively until the content fits the node box (min 5px).
+    for (let i = 0; i < 60; i++) {
+      const fits = el.scrollHeight <= el.clientHeight + 1 && el.scrollWidth <= el.clientWidth + 1;
+      if (fits || size <= 5) break;
+      size = Math.max(5, size * 0.94);
+      el.style.fontSize = `${size}px`;
+    }
+  }, [text, base, n.w, n.h, s.fontFamily, s.fontWeight, s.lineHeight, s.letterSpacing, s.padding, s.maxLines]);
+
+  return (
+    <div
+      ref={ref}
+      className="h-full w-full overflow-hidden whitespace-pre-wrap break-words"
+      style={{
+        color: s.color,
+        fontFamily: s.fontFamily,
+        fontSize: base,
+        fontWeight: s.fontWeight,
+        letterSpacing: s.letterSpacing,
+        lineHeight: s.lineHeight,
+        textAlign: s.align,
+        textTransform: s.textTransform,
+        padding: s.padding,
+        ...(s.maxLines
+          ? {
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical" as const,
+              WebkitLineClamp: s.maxLines,
+            }
+          : null),
+      }}
+    >
+      {text}
+    </div>
+  );
+}
+
 export function NodeContent({ n, values }: { n: StudioNode; values?: Record<string, string> }) {
   const s = n.style;
   switch (n.type) {
     case "text":
-      return (
-        <div
-          className="h-full w-full whitespace-pre-wrap break-words"
-          style={{
-            color: s.color,
-            fontFamily: s.fontFamily,
-            fontSize: s.fontSize,
-            fontWeight: s.fontWeight,
-            letterSpacing: s.letterSpacing,
-            lineHeight: s.lineHeight,
-            textAlign: s.align,
-            textTransform: s.textTransform,
-            padding: s.padding,
-            ...(s.maxLines
-              ? {
-                  display: "-webkit-box",
-                  WebkitBoxOrient: "vertical" as const,
-                  WebkitLineClamp: s.maxLines,
-                  overflow: "hidden",
-                }
-              : null),
-          }}
-        >
-          {resolvePlaceholders(n.text ?? "", values)}
-        </div>
-      );
+      return <AutoFitText n={n} values={values} />;
+
     case "button":
       return (
         <div
