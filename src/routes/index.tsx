@@ -26,7 +26,7 @@ export const Route = createFileRoute("/")({
       }
 
     }
-    throw redirect({ to: "/$lang/", params: { lang: locale }, replace: true });
+    throw redirect({ to: "/$lang", params: { lang: locale } as never, replace: true });
   },
 
   component: () => null,

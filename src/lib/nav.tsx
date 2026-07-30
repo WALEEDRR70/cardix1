@@ -40,7 +40,9 @@ export const Link = forwardRef<HTMLAnchorElement, any>(function Link(props, ref)
   const lang = currentLocale(routeParams?.lang);
   if (typeof to === "string") {
     const { to: nextTo, injectLang, lang: nextLang } = transform(to, lang);
-    const nextParams = injectLang ? { ...(params ?? {}), lang: nextLang } : params;
+    const nextParams = injectLang
+      ? { ...((params ?? {}) as Record<string, unknown>), lang: nextLang }
+      : params;
     return <TSLink ref={ref} to={nextTo as any} params={nextParams as any} {...(rest as any)} />;
   }
   return <TSLink ref={ref} to={to as any} params={params as any} {...(rest as any)} />;
