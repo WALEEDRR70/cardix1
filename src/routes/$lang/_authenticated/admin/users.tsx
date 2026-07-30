@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { CreditCard, Eye, Palette, Pencil, Search, ShieldCheck, Users } from "lucide-react";
-import { Link } from "@/lib/nav";
+
 import { toast } from "sonner";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { adminUpdateCard, listPlatformUsers, type AdminUserRow } from "@/lib/admin.functions";
@@ -111,6 +111,7 @@ function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; va
 }
 
 function UserRow({ user }: { user: AdminUserRow }) {
+  const { lang } = Route.useParams();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<AdminCard | null>(null);
   return (
@@ -193,14 +194,13 @@ function UserRow({ user }: { user: AdminUserRow }) {
                   >
                     <Pencil className="h-3.5 w-3.5" />
                   </button>
-                  <Link
-                    to="/studio/$id"
-                    params={{ id: c.id }}
+                  <a
+                    href={`/${lang}/studio/${c.id}`}
                     className="rounded-lg p-1.5 text-muted-foreground hover:bg-secondary"
                     aria-label="تعديل التصميم"
                   >
                     <Palette className="h-3.5 w-3.5" />
-                  </Link>
+                  </a>
                   <a
                     href={`/c/${c.slug}`}
                     target="_blank"
