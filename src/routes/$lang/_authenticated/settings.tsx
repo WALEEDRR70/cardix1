@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useNavigate } from "@/lib/nav";
+import { Link, useNavigate } from "@/lib/nav";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { useTheme } from "@/lib/theme";
@@ -7,9 +7,11 @@ import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { LocaleSwitcher } from "@/components/LangToggle";
 import { InstallAppButton } from "@/components/InstallAppButton";
 import { SubscriptionCard } from "@/components/billing/SubscriptionCard";
+import { useIsAdmin } from "@/lib/admin";
 
-import { LogOut, Moon, Sun, User, Sparkles, ChevronRight } from "lucide-react";
+import { LogOut, Moon, Sun, User, Sparkles, ChevronRight, Users, ShieldCheck } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+
 
 export const Route = createFileRoute("/$lang/_authenticated/settings")({
   head: () => ({
