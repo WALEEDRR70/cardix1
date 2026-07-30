@@ -1,11 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { CreditCard, Eye, Search, ShieldCheck, Users } from "lucide-react";
+import { CreditCard, Eye, Pencil, Search, ShieldCheck, Users } from "lucide-react";
+import { toast } from "sonner";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
-import { listPlatformUsers, type AdminUserRow } from "@/lib/admin.functions";
+import { adminUpdateCard, listPlatformUsers, type AdminUserRow } from "@/lib/admin.functions";
 import { CardPreview } from "@/components/CardPreview";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+
+type AdminCard = AdminUserRow["cards"][number];
 
 export const Route = createFileRoute("/$lang/_authenticated/admin/users")({
   head: () => ({
