@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useNavigate } from "@/lib/nav";
+import { Link, useNavigate } from "@/lib/nav";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { useTheme } from "@/lib/theme";
@@ -7,9 +7,11 @@ import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { LocaleSwitcher } from "@/components/LangToggle";
 import { InstallAppButton } from "@/components/InstallAppButton";
 import { SubscriptionCard } from "@/components/billing/SubscriptionCard";
+import { useIsAdmin } from "@/lib/admin";
 
-import { LogOut, Moon, Sun, User, Sparkles, ChevronRight } from "lucide-react";
+import { LogOut, Moon, Sun, User, Sparkles, ChevronRight, Users, ShieldCheck } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+
 
 export const Route = createFileRoute("/$lang/_authenticated/settings")({
   head: () => ({
@@ -26,6 +28,8 @@ function Settings() {
   const { theme, setTheme } = useTheme();
   const { user } = Route.useRouteContext();
   const nav = useNavigate();
+  const isAdmin = useIsAdmin(user.id);
+
   const qc = useQueryClient();
 
   async function signOut() {
@@ -73,7 +77,23 @@ function Settings() {
           <Row icon={<Sparkles className="h-4 w-4" />} label={t.brand} sub="v1.0" />
         </Section>
 
+        {isAdmin && (
+          <Section title="إدارة المنصّة">
+            <Link to="/admin/users" className="flex items-center gap-3 px-4 py-3.5 hover:bg-secondary/60">
+              <span className="grid h-8 w-8 place-items-center rounded-lg bg-secondary"><Users className="h-4 w-4" /></span>
+              <span className="min-w-0 flex-1 text-sm font-medium">المستخدمون والبطاقات</span>
+              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            </Link>
+            <Link to="/admin/billing" className="flex items-center gap-3 border-t border-border/60 px-4 py-3.5 hover:bg-secondary/60">
+              <span className="grid h-8 w-8 place-items-center rounded-lg bg-secondary"><ShieldCheck className="h-4 w-4" /></span>
+              <span className="min-w-0 flex-1 text-sm font-medium">لوحة الأسعار</span>
+              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            </Link>
+          </Section>
+        )}
+
         <InstallAppButton />
+
 
 
         <button

@@ -46,6 +46,7 @@ import { Route as LangAuthenticatedStudioIdRouteImport } from './routes/$lang/_a
 import { Route as LangAuthenticatedCoNewRouteImport } from './routes/$lang/_authenticated/co/new'
 import { Route as LangAuthenticatedCardsNewRouteImport } from './routes/$lang/_authenticated/cards.new'
 import { Route as LangAuthenticatedCardsIdRouteImport } from './routes/$lang/_authenticated/cards.$id'
+import { Route as LangAuthenticatedAdminUsersRouteImport } from './routes/$lang/_authenticated/admin/users'
 import { Route as LangAuthenticatedAdminBillingRouteImport } from './routes/$lang/_authenticated/admin/billing'
 import { Route as LangAuthenticatedCoSlugRouteRouteImport } from './routes/$lang/_authenticated/co/$slug/route'
 import { Route as LangAuthenticatedCoSlugIndexRouteImport } from './routes/$lang/_authenticated/co/$slug/index'
@@ -253,6 +254,12 @@ const LangAuthenticatedCardsIdRoute =
     path: '/cards/$id',
     getParentRoute: () => LangAuthenticatedRouteRoute,
   } as any)
+const LangAuthenticatedAdminUsersRoute =
+  LangAuthenticatedAdminUsersRouteImport.update({
+    id: '/admin/users',
+    path: '/admin/users',
+    getParentRoute: () => LangAuthenticatedRouteRoute,
+  } as any)
 const LangAuthenticatedAdminBillingRoute =
   LangAuthenticatedAdminBillingRouteImport.update({
     id: '/admin/billing',
@@ -370,6 +377,7 @@ export interface FileRoutesByFullPath {
   '/company/$slug/': typeof CompanySlugIndexRoute
   '/$lang/co/$slug': typeof LangAuthenticatedCoSlugRouteRouteWithChildren
   '/$lang/admin/billing': typeof LangAuthenticatedAdminBillingRoute
+  '/$lang/admin/users': typeof LangAuthenticatedAdminUsersRoute
   '/$lang/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/cards/new': typeof LangAuthenticatedCardsNewRoute
   '/$lang/co/new': typeof LangAuthenticatedCoNewRoute
@@ -420,6 +428,7 @@ export interface FileRoutesByTo {
   '/$lang/tools': typeof LangToolsIndexRoute
   '/company/$slug': typeof CompanySlugIndexRoute
   '/$lang/admin/billing': typeof LangAuthenticatedAdminBillingRoute
+  '/$lang/admin/users': typeof LangAuthenticatedAdminUsersRoute
   '/$lang/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/cards/new': typeof LangAuthenticatedCardsNewRoute
   '/$lang/co/new': typeof LangAuthenticatedCoNewRoute
@@ -474,6 +483,7 @@ export interface FileRoutesById {
   '/company/$slug/': typeof CompanySlugIndexRoute
   '/$lang/_authenticated/co/$slug': typeof LangAuthenticatedCoSlugRouteRouteWithChildren
   '/$lang/_authenticated/admin/billing': typeof LangAuthenticatedAdminBillingRoute
+  '/$lang/_authenticated/admin/users': typeof LangAuthenticatedAdminUsersRoute
   '/$lang/_authenticated/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/_authenticated/cards/new': typeof LangAuthenticatedCardsNewRoute
   '/$lang/_authenticated/co/new': typeof LangAuthenticatedCoNewRoute
@@ -528,6 +538,7 @@ export interface FileRouteTypes {
     | '/company/$slug/'
     | '/$lang/co/$slug'
     | '/$lang/admin/billing'
+    | '/$lang/admin/users'
     | '/$lang/cards/$id'
     | '/$lang/cards/new'
     | '/$lang/co/new'
@@ -578,6 +589,7 @@ export interface FileRouteTypes {
     | '/$lang/tools'
     | '/company/$slug'
     | '/$lang/admin/billing'
+    | '/$lang/admin/users'
     | '/$lang/cards/$id'
     | '/$lang/cards/new'
     | '/$lang/co/new'
@@ -631,6 +643,7 @@ export interface FileRouteTypes {
     | '/company/$slug/'
     | '/$lang/_authenticated/co/$slug'
     | '/$lang/_authenticated/admin/billing'
+    | '/$lang/_authenticated/admin/users'
     | '/$lang/_authenticated/cards/$id'
     | '/$lang/_authenticated/cards/new'
     | '/$lang/_authenticated/co/new'
@@ -928,6 +941,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangAuthenticatedCardsIdRouteImport
       parentRoute: typeof LangAuthenticatedRouteRoute
     }
+    '/$lang/_authenticated/admin/users': {
+      id: '/$lang/_authenticated/admin/users'
+      path: '/admin/users'
+      fullPath: '/$lang/admin/users'
+      preLoaderRoute: typeof LangAuthenticatedAdminUsersRouteImport
+      parentRoute: typeof LangAuthenticatedRouteRoute
+    }
     '/$lang/_authenticated/admin/billing': {
       id: '/$lang/_authenticated/admin/billing'
       path: '/admin/billing'
@@ -1102,6 +1122,7 @@ interface LangAuthenticatedRouteRouteChildren {
   LangAuthenticatedVaultRoute: typeof LangAuthenticatedVaultRouteWithChildren
   LangAuthenticatedCoSlugRouteRoute: typeof LangAuthenticatedCoSlugRouteRouteWithChildren
   LangAuthenticatedAdminBillingRoute: typeof LangAuthenticatedAdminBillingRoute
+  LangAuthenticatedAdminUsersRoute: typeof LangAuthenticatedAdminUsersRoute
   LangAuthenticatedCardsIdRoute: typeof LangAuthenticatedCardsIdRouteWithChildren
   LangAuthenticatedCardsNewRoute: typeof LangAuthenticatedCardsNewRoute
   LangAuthenticatedCoNewRoute: typeof LangAuthenticatedCoNewRoute
@@ -1120,6 +1141,7 @@ const LangAuthenticatedRouteRouteChildren: LangAuthenticatedRouteRouteChildren =
     LangAuthenticatedCoSlugRouteRoute:
       LangAuthenticatedCoSlugRouteRouteWithChildren,
     LangAuthenticatedAdminBillingRoute: LangAuthenticatedAdminBillingRoute,
+    LangAuthenticatedAdminUsersRoute: LangAuthenticatedAdminUsersRoute,
     LangAuthenticatedCardsIdRoute: LangAuthenticatedCardsIdRouteWithChildren,
     LangAuthenticatedCardsNewRoute: LangAuthenticatedCardsNewRoute,
     LangAuthenticatedCoNewRoute: LangAuthenticatedCoNewRoute,
