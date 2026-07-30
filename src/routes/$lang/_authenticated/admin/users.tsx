@@ -5,6 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { CreditCard, Eye, Search, ShieldCheck, Users } from "lucide-react";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { listPlatformUsers, type AdminUserRow } from "@/lib/admin.functions";
+import { CardPreview } from "@/components/CardPreview";
 
 export const Route = createFileRoute("/$lang/_authenticated/admin/users")({
   head: () => ({

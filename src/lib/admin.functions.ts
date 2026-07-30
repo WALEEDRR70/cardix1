@@ -26,8 +26,8 @@ export type AdminUserRow = {
     avatar_url: string | null;
     accent_color: string;
     template: string | null;
-    design: unknown;
-    socials: unknown;
+    design: Record<string, unknown> | null;
+    socials: Record<string, unknown> | null;
     is_published: boolean;
     view_count: number;
     created_at: string;
@@ -92,8 +92,8 @@ export const listPlatformUsers = createServerFn({ method: "GET" })
         avatar_url: c.avatar_url,
         accent_color: c.accent_color,
         template: c.template,
-        design: c.design,
-        socials: c.socials,
+        design: (c.design as Record<string, unknown> | null) ?? null,
+        socials: (c.socials as Record<string, unknown> | null) ?? null,
         is_published: c.is_published,
         view_count: c.view_count,
         created_at: c.created_at,
