@@ -10,6 +10,7 @@ import { StaticCardPreview } from "@/components/studio/StaticCardPreview";
 import { supabase } from "@/integrations/supabase/client";
 import {
   applyTemplateToCard,
+  cloneDesign,
   listFavoriteTemplates,
   listPublicTemplates,
   type DesignTemplate,
