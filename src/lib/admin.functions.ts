@@ -17,6 +17,17 @@ export type AdminUserRow = {
     title: string | null;
     company: string | null;
     card_type: string;
+    bio: string | null;
+    phone: string | null;
+    whatsapp: string | null;
+    email: string | null;
+    website: string | null;
+    address: string | null;
+    avatar_url: string | null;
+    accent_color: string;
+    template: string | null;
+    design: unknown;
+    socials: unknown;
     is_published: boolean;
     view_count: number;
     created_at: string;
@@ -57,7 +68,7 @@ export const listPlatformUsers = createServerFn({ method: "GET" })
       supabaseAdmin.from("profiles").select("id, username, display_name, avatar_url, account_type"),
       supabaseAdmin
         .from("cards")
-        .select("id, user_id, slug, name, title, company, card_type, is_published, view_count, created_at")
+        .select("id, user_id, slug, name, title, company, card_type, bio, phone, whatsapp, email, website, address, avatar_url, accent_color, template, design, socials, is_published, view_count, created_at")
         .order("created_at", { ascending: false }),
     ]);
 
@@ -72,6 +83,17 @@ export const listPlatformUsers = createServerFn({ method: "GET" })
         title: c.title,
         company: c.company,
         card_type: c.card_type,
+        bio: c.bio,
+        phone: c.phone,
+        whatsapp: c.whatsapp,
+        email: c.email,
+        website: c.website,
+        address: c.address,
+        avatar_url: c.avatar_url,
+        accent_color: c.accent_color,
+        template: c.template,
+        design: c.design,
+        socials: c.socials,
         is_published: c.is_published,
         view_count: c.view_count,
         created_at: c.created_at,
