@@ -119,3 +119,62 @@ export const listPlatformUsers = createServerFn({ method: "GET" })
 
     return { users, totalCards: cards?.length ?? 0 };
   });
+
+export type AdminCardPatch = {
+  id: string;
+  name: string;
+  title: string | null;
+  company: string | null;
+  bio: string | null;
+  phone: string | null;
+  whatsapp: string | null;
+  email: string | null;
+  website: string | null;
+  address: string | null;
+  slug: string;
+  is_published: boolean;
+};
+
+/** Platform-admin only: edit any card's data fields. */
+export const adminUpdateCard = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: AdminCardPatch) => {
+    if (!input?.id) throw new Error("MISSING_ID");
+    if (!input.name?.trim()) throw new Error("MISSING_NAME");
+    if (!/^[a-z0-9-]{2,60}$/i.test(input.slug?.trim() ?? "")) throw new Error("BAD_SLUG");
+    return input;
+  })
+  .handler(async ({ data, context }): Promise<{ ok: true }> => {
+    const { data: roleRow } = await context.supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", context.userId)
+      .eq("role", "admin")
+      .maybeSingle();
+    if (!roleRow) throw new Error("FORBIDDEN");
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const clean = (v: string | null) => {
+      const s = (v ?? "").trim();
+      return s.length ? s.slice(0, 2000) : null;
+    };
+    const { error } = await supabaseAdmin
+      .from("cards")
+      .update({
+        name: data.name.trim().slice(0, 120),
+        title: clean(data.title),
+        company: clean(data.company),
+        bio: clean(data.bio),
+        phone: clean(data.phone),
+        whatsapp: clean(data.whatsapp),
+        email: clean(data.email),
+        website: clean(data.website),
+        address: clean(data.address),
+        slug: data.slug.trim().toLowerCase(),
+        is_published: data.is_published,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", data.id);
+    if (error) throw error;
+    return { ok: true };
+  });

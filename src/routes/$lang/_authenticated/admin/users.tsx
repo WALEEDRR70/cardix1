@@ -1,11 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { CreditCard, Eye, Search, ShieldCheck, Users } from "lucide-react";
+import { CreditCard, Eye, Pencil, Search, ShieldCheck, Users } from "lucide-react";
+import { toast } from "sonner";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
-import { listPlatformUsers, type AdminUserRow } from "@/lib/admin.functions";
+import { adminUpdateCard, listPlatformUsers, type AdminUserRow } from "@/lib/admin.functions";
 import { CardPreview } from "@/components/CardPreview";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+
+type AdminCard = AdminUserRow["cards"][number];
 
 export const Route = createFileRoute("/$lang/_authenticated/admin/users")({
   head: () => ({
@@ -102,6 +111,7 @@ function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; va
 
 function UserRow({ user }: { user: AdminUserRow }) {
   const [open, setOpen] = useState(false);
+  const [editing, setEditing] = useState<AdminCard | null>(null);
   return (
     <div className="glass overflow-hidden rounded-2xl">
       <button
@@ -174,6 +184,14 @@ function UserRow({ user }: { user: AdminUserRow }) {
                   >
                     {c.is_published ? "منشورة" : "مسودّة"}
                   </span>
+                  <button
+                    type="button"
+                    onClick={() => setEditing(c)}
+                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-secondary"
+                    aria-label="تعديل بيانات البطاقة"
+                  >
+                    <Pencil className="h-3.5 w-3.5" />
+                  </button>
                   <a
                     href={`/c/${c.slug}`}
                     target="_blank"
@@ -190,6 +208,106 @@ function UserRow({ user }: { user: AdminUserRow }) {
 
         </div>
       )}
+
+      <EditCardDialog card={editing} onClose={() => setEditing(null)} />
     </div>
+  );
+}
+
+function EditCardDialog({ card, onClose }: { card: AdminCard | null; onClose: () => void }) {
+  const save = useServerFn(adminUpdateCard);
+  const qc = useQueryClient();
+  const [form, setForm] = useState<AdminCard | null>(card);
+  const [saving, setSaving] = useState(false);
+
+  // Sync when a different card is opened.
+  const [lastId, setLastId] = useState<string | null>(card?.id ?? null);
+  if ((card?.id ?? null) !== lastId) {
+    setLastId(card?.id ?? null);
+    setForm(card);
+  }
+
+  const set = (k: keyof AdminCard, v: string | boolean) =>
+    setForm((f) => (f ? { ...f, [k]: v } : f));
+
+  async function submit() {
+    if (!form) return;
+    setSaving(true);
+    try {
+      await save({
+        data: {
+          id: form.id,
+          name: form.name,
+          title: form.title,
+          company: form.company,
+          bio: form.bio,
+          phone: form.phone,
+          whatsapp: form.whatsapp,
+          email: form.email,
+          website: form.website,
+          address: form.address,
+          slug: form.slug,
+          is_published: form.is_published,
+        },
+      });
+      toast.success("تم حفظ بيانات البطاقة");
+      await qc.invalidateQueries({ queryKey: ["admin-users"] });
+      onClose();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "تعذّر الحفظ");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  const fields: { key: keyof AdminCard; label: string }[] = [
+    { key: "name", label: "الاسم" },
+    { key: "title", label: "المسمّى الوظيفي" },
+    { key: "company", label: "الشركة" },
+    { key: "phone", label: "الهاتف" },
+    { key: "whatsapp", label: "واتساب" },
+    { key: "email", label: "البريد" },
+    { key: "website", label: "الموقع" },
+    { key: "address", label: "العنوان" },
+    { key: "slug", label: "الرابط (slug)" },
+  ];
+
+  return (
+    <Dialog open={!!card} onOpenChange={(o) => !o && onClose()}>
+      <DialogContent className="max-h-[85vh] min-w-0 overflow-y-auto overflow-x-hidden rounded-2xl sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle className="text-start">تعديل بيانات البطاقة</DialogTitle>
+        </DialogHeader>
+        {form && (
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {fields.map((f) => (
+              <div key={String(f.key)} className="space-y-1.5">
+                <Label className="text-[11px]">{f.label}</Label>
+                <Input
+                  value={(form[f.key] as string | null) ?? ""}
+                  onChange={(e) => set(f.key, e.target.value)}
+                />
+              </div>
+            ))}
+            <div className="space-y-1.5 sm:col-span-2">
+              <Label className="text-[11px]">النبذة</Label>
+              <Textarea rows={3} value={form.bio ?? ""} onChange={(e) => set("bio", e.target.value)} />
+            </div>
+            <div className="flex items-center justify-between rounded-xl border border-border/60 px-3 py-2 sm:col-span-2">
+              <Label className="text-xs">منشورة</Label>
+              <Switch checked={form.is_published} onCheckedChange={(v) => set("is_published", v)} />
+            </div>
+          </div>
+        )}
+        <DialogFooter className="flex-wrap gap-2">
+          <Button variant="ghost" onClick={onClose} disabled={saving}>
+            إلغاء
+          </Button>
+          <Button onClick={submit} disabled={saving}>
+            {saving ? "جارٍ الحفظ…" : "حفظ"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
