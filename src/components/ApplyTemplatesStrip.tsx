@@ -17,7 +17,15 @@ import {
 import type { StudioDoc } from "@/lib/studio/types";
 import { tx, txErr } from "@/lib/tx";
 
-export function ApplyTemplatesStrip({ cardId }: { cardId: string }) {
+export function ApplyTemplatesStrip({
+  cardId,
+  onPick,
+}: {
+  /** Existing card to repaint. Omit on the "new card" screen and use onPick instead. */
+  cardId?: string;
+  /** Called with a fresh copy of the picked design (used before the card exists). */
+  onPick?: (design: StudioDoc, tpl: DesignTemplate) => void;
+}) {
   const { lang } = useI18n();
   const ar = lang === "ar";
   const qc = useQueryClient();
