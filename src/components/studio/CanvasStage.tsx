@@ -1,6 +1,6 @@
 // The visual canvas: renders the document and handles pan / zoom / marquee / drag / resize / rotate / snap.
 import type { ReactNode } from "react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { useStudio } from "@/lib/studio/store";
 import { resolveImageSrc, resolvePlaceholders, type StudioNode } from "@/lib/studio/types";
