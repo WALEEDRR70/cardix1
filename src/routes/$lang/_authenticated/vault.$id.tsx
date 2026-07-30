@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
 import { txErr } from "@/lib/tx";
+import { resolveSavedCardPreviews } from "@/lib/vault-preview";
 
 export const Route = createFileRoute("/$lang/_authenticated/vault/$id")({
   head: () => ({
@@ -44,22 +45,23 @@ function VaultDetail() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("saved_cards")
-        .select("*, source_card:cards!saved_cards_source_card_id_fkey(slug,name,title,company,bio,phone,whatsapp,email,website,address,avatar_url,cover_url,accent_color,template,design,socials,is_published)")
+        .select("*, source_card:cards!saved_cards_source_card_id_fkey(id,user_id,slug,name,title,company,bio,phone,whatsapp,email,website,address,avatar_url,cover_url,accent_color,template,design,socials,is_published,is_active)")
         .eq("id", id)
         .eq("user_id", user.id)
         .maybeSingle();
       if (error) throw error;
       if (!data) return data;
-      const s = (data as { source_card?: Record<string, unknown> | null }).source_card;
+      const [resolved] = await resolveSavedCardPreviews([data as { source_card?: Record<string, unknown> | null; [key: string]: unknown }]);
+      const s = resolved?.source_card;
       if (s && s.is_published) {
         // Overlay latest source-card values so owner edits sync automatically.
         const overlay: Record<string, unknown> = {};
         for (const k of ["name","title","company","bio","phone","whatsapp","email","website","address","avatar_url","accent_color","template","design","socials"]) {
           if (s[k] !== null && s[k] !== undefined) overlay[k] = s[k];
         }
-        return { ...data, ...overlay };
+        return { ...resolved, ...overlay };
       }
-      return data;
+      return resolved;
     },
   });
 

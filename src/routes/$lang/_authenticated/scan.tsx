@@ -83,7 +83,7 @@ function ScanPage() {
       }
       const { data: card, error } = await supabase
         .from("cards")
-        .select("id,user_id,slug,name,title,company,phone,whatsapp,email,website,address,bio,avatar_url,accent_color,template,socials")
+        .select("id,user_id,slug,name,title,company,phone,whatsapp,email,website,address,bio,avatar_url,accent_color,template,design,socials")
         .eq("slug", slug)
         .eq("is_published", true)
         .maybeSingle();

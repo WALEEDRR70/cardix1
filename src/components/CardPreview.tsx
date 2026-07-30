@@ -57,14 +57,14 @@ export function CardPreview({ card, size = "md" }: { card: CardData; size?: "xs"
 
   if (doc) {
     return (
-      <div className={`card-lift shadow-luxe w-full overflow-hidden rounded-[6%] ${maxW}`}>
+      <div className={`card-lift shadow-luxe w-full overflow-hidden ${maxW}`} data-card-preview="studio">
         <DesignPreview doc={doc} values={cardDesignValues(card)} />
       </div>
     );
   }
 
   return (
-    <div className={cls + " card-lift shadow-luxe rounded-3xl overflow-hidden"}>
+    <div className={cls + " card-lift shadow-luxe rounded-3xl overflow-hidden"} data-card-preview="classic">
       <TemplateSwitch tpl={tpl} card={card} />
     </div>
   );
