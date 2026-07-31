@@ -139,6 +139,14 @@ function AuthPage() {
           {`${lang === "ar" ? "←" : "→"} ${mode === "signin" ? t.signUp : t.signIn}`}
         </button>
 
+        <Link
+          to="/co/auth"
+          className="mt-4 text-center text-xs text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+        >
+          {tx("Company account? Sign in to the business workspace")}
+        </Link>
+
+
       </main>
     </div>
   );
