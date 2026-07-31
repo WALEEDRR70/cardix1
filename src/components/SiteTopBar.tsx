@@ -59,8 +59,3 @@ export function SiteTopBar() {
     </div>
   );
 }
-
-      </div>
-    </div>
-  );
-}
