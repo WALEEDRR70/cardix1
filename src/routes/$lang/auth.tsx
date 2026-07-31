@@ -9,7 +9,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { toast } from "sonner";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { localizedPath, safeNextPath } from "@/lib/locale-routing";
-import { txErr } from "@/lib/tx";
+import { tx, txErr } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/auth")({
   head: () => ({
@@ -138,6 +138,14 @@ function AuthPage() {
         <button onClick={() => setMode(mode === "signin" ? "signup" : "signin")} className="mt-6 text-center text-sm text-muted-foreground hover:text-foreground">
           {`${lang === "ar" ? "←" : "→"} ${mode === "signin" ? t.signUp : t.signIn}`}
         </button>
+
+        <Link
+          to="/co/auth"
+          className="mt-4 text-center text-xs text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+        >
+          {tx("Company account? Sign in to the business workspace")}
+        </Link>
+
 
       </main>
     </div>
