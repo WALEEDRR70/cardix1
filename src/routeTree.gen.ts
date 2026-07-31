@@ -32,6 +32,7 @@ import { Route as LangBlogIndexRouteImport } from './routes/$lang/blog/index'
 import { Route as CompanySlugEmployeeRouteImport } from './routes/company.$slug.$employee'
 import { Route as LangToolsSlugRouteImport } from './routes/$lang/tools/$slug'
 import { Route as LangLSlugRouteImport } from './routes/$lang/l/$slug'
+import { Route as LangCoAuthRouteImport } from './routes/$lang/co/auth'
 import { Route as LangBlogSlugRouteImport } from './routes/$lang/blog/$slug'
 import { Route as LangAuthenticatedVaultRouteImport } from './routes/$lang/_authenticated/vault'
 import { Route as LangAuthenticatedSwitchRouteImport } from './routes/$lang/_authenticated/switch'
@@ -178,6 +179,11 @@ const LangToolsSlugRoute = LangToolsSlugRouteImport.update({
 const LangLSlugRoute = LangLSlugRouteImport.update({
   id: '/l/$slug',
   path: '/l/$slug',
+  getParentRoute: () => LangRouteRoute,
+} as any)
+const LangCoAuthRoute = LangCoAuthRouteImport.update({
+  id: '/co/auth',
+  path: '/co/auth',
   getParentRoute: () => LangRouteRoute,
 } as any)
 const LangBlogSlugRoute = LangBlogSlugRouteImport.update({
@@ -387,6 +393,7 @@ export interface FileRoutesByFullPath {
   '/$lang/switch': typeof LangAuthenticatedSwitchRoute
   '/$lang/vault': typeof LangAuthenticatedVaultRouteWithChildren
   '/$lang/blog/$slug': typeof LangBlogSlugRoute
+  '/$lang/co/auth': typeof LangCoAuthRoute
   '/$lang/l/$slug': typeof LangLSlugRoute
   '/$lang/tools/$slug': typeof LangToolsSlugRoute
   '/company/$slug/$employee': typeof CompanySlugEmployeeRoute
@@ -442,6 +449,7 @@ export interface FileRoutesByTo {
   '/$lang/switch': typeof LangAuthenticatedSwitchRoute
   '/$lang/vault': typeof LangAuthenticatedVaultRouteWithChildren
   '/$lang/blog/$slug': typeof LangBlogSlugRoute
+  '/$lang/co/auth': typeof LangCoAuthRoute
   '/$lang/l/$slug': typeof LangLSlugRoute
   '/$lang/tools/$slug': typeof LangToolsSlugRoute
   '/company/$slug/$employee': typeof CompanySlugEmployeeRoute
@@ -499,6 +507,7 @@ export interface FileRoutesById {
   '/$lang/_authenticated/switch': typeof LangAuthenticatedSwitchRoute
   '/$lang/_authenticated/vault': typeof LangAuthenticatedVaultRouteWithChildren
   '/$lang/blog/$slug': typeof LangBlogSlugRoute
+  '/$lang/co/auth': typeof LangCoAuthRoute
   '/$lang/l/$slug': typeof LangLSlugRoute
   '/$lang/tools/$slug': typeof LangToolsSlugRoute
   '/company/$slug/$employee': typeof CompanySlugEmployeeRoute
@@ -557,6 +566,7 @@ export interface FileRouteTypes {
     | '/$lang/switch'
     | '/$lang/vault'
     | '/$lang/blog/$slug'
+    | '/$lang/co/auth'
     | '/$lang/l/$slug'
     | '/$lang/tools/$slug'
     | '/company/$slug/$employee'
@@ -612,6 +622,7 @@ export interface FileRouteTypes {
     | '/$lang/switch'
     | '/$lang/vault'
     | '/$lang/blog/$slug'
+    | '/$lang/co/auth'
     | '/$lang/l/$slug'
     | '/$lang/tools/$slug'
     | '/company/$slug/$employee'
@@ -668,6 +679,7 @@ export interface FileRouteTypes {
     | '/$lang/_authenticated/switch'
     | '/$lang/_authenticated/vault'
     | '/$lang/blog/$slug'
+    | '/$lang/co/auth'
     | '/$lang/l/$slug'
     | '/$lang/tools/$slug'
     | '/company/$slug/$employee'
@@ -878,6 +890,13 @@ declare module '@tanstack/react-router' {
       path: '/l/$slug'
       fullPath: '/$lang/l/$slug'
       preLoaderRoute: typeof LangLSlugRouteImport
+      parentRoute: typeof LangRouteRoute
+    }
+    '/$lang/co/auth': {
+      id: '/$lang/co/auth'
+      path: '/co/auth'
+      fullPath: '/$lang/co/auth'
+      preLoaderRoute: typeof LangCoAuthRouteImport
       parentRoute: typeof LangRouteRoute
     }
     '/$lang/blog/$slug': {
@@ -1222,6 +1241,7 @@ interface LangRouteRouteChildren {
   LangTemplatesRoute: typeof LangTemplatesRoute
   LangIndexRoute: typeof LangIndexRoute
   LangBlogSlugRoute: typeof LangBlogSlugRoute
+  LangCoAuthRoute: typeof LangCoAuthRoute
   LangLSlugRoute: typeof LangLSlugRoute
   LangToolsSlugRoute: typeof LangToolsSlugRoute
   LangBlogIndexRoute: typeof LangBlogIndexRoute
@@ -1242,6 +1262,7 @@ const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangTemplatesRoute: LangTemplatesRoute,
   LangIndexRoute: LangIndexRoute,
   LangBlogSlugRoute: LangBlogSlugRoute,
+  LangCoAuthRoute: LangCoAuthRoute,
   LangLSlugRoute: LangLSlugRoute,
   LangToolsSlugRoute: LangToolsSlugRoute,
   LangBlogIndexRoute: LangBlogIndexRoute,
