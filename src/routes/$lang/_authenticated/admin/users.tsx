@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { CreditCard, Eye, Palette, Pencil, Search, ShieldCheck, Users } from "lucide-react";
+import { Building2, CreditCard, Eye, Palette, Pencil, Search, ShieldCheck, Users } from "lucide-react";
 
 import { toast } from "sonner";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
@@ -31,6 +31,10 @@ export const Route = createFileRoute("/$lang/_authenticated/admin/users")({
   }),
   component: AdminUsers,
 });
+
+function useLangPrefix() {
+  return Route.useParams().lang;
+}
 
 function AdminUsers() {
   const load = useServerFn(listPlatformUsers);
@@ -68,8 +72,16 @@ function AdminUsers() {
       <div className="space-y-5 px-5 pb-24 lg:px-8">
         <div className="grid grid-cols-2 gap-3">
           <Stat icon={<Users className="h-4 w-4" />} label="المستخدمون" value={users.length} />
-          <Stat icon={<CreditCard className="h-4 w-4" />} label="البطاقات" value={data?.totalCards ?? 0} />
+          <Stat icon={<CreditCard className="h-4 w-4" />} label="البطاقات الشخصية" value={data?.totalCards ?? 0} />
         </div>
+
+        <a
+          href={`/${useLangPrefix()}/admin/companies`}
+          className="glass flex items-center gap-3 rounded-2xl px-4 py-3 text-sm hover:bg-secondary/60"
+        >
+          <Building2 className="h-4 w-4 text-muted-foreground" />
+          <span className="flex-1">الشركات وبطاقاتها</span>
+        </a>
 
         <label className="glass flex items-center gap-2 rounded-2xl px-4 py-3">
           <Search className="h-4 w-4 text-muted-foreground" />
