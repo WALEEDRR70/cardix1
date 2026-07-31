@@ -9,7 +9,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { toast } from "sonner";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { localizedPath, safeNextPath } from "@/lib/locale-routing";
-import { txErr } from "@/lib/tx";
+import { tx, txErr } from "@/lib/tx";
 
 export const Route = createFileRoute("/$lang/auth")({
   head: () => ({
