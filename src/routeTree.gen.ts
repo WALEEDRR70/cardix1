@@ -51,6 +51,7 @@ import { Route as LangAuthenticatedCoNewRouteImport } from './routes/$lang/_auth
 import { Route as LangAuthenticatedCardsNewRouteImport } from './routes/$lang/_authenticated/cards.new'
 import { Route as LangAuthenticatedCardsIdRouteImport } from './routes/$lang/_authenticated/cards.$id'
 import { Route as LangAuthenticatedAdminUsersRouteImport } from './routes/$lang/_authenticated/admin/users'
+import { Route as LangAuthenticatedAdminCompaniesRouteImport } from './routes/$lang/_authenticated/admin/companies'
 import { Route as LangAuthenticatedAdminBillingRouteImport } from './routes/$lang/_authenticated/admin/billing'
 import { Route as LangAuthenticatedCoSlugRouteRouteImport } from './routes/$lang/_authenticated/co/$slug/route'
 import { Route as LangAuthenticatedCoSlugIndexRouteImport } from './routes/$lang/_authenticated/co/$slug/index'
@@ -286,6 +287,12 @@ const LangAuthenticatedAdminUsersRoute =
     path: '/admin/users',
     getParentRoute: () => LangAuthenticatedRouteRoute,
   } as any)
+const LangAuthenticatedAdminCompaniesRoute =
+  LangAuthenticatedAdminCompaniesRouteImport.update({
+    id: '/admin/companies',
+    path: '/admin/companies',
+    getParentRoute: () => LangAuthenticatedRouteRoute,
+  } as any)
 const LangAuthenticatedAdminBillingRoute =
   LangAuthenticatedAdminBillingRouteImport.update({
     id: '/admin/billing',
@@ -410,6 +417,7 @@ export interface FileRoutesByFullPath {
   '/company/$slug/': typeof CompanySlugIndexRoute
   '/$lang/co/$slug': typeof LangAuthenticatedCoSlugRouteRouteWithChildren
   '/$lang/admin/billing': typeof LangAuthenticatedAdminBillingRoute
+  '/$lang/admin/companies': typeof LangAuthenticatedAdminCompaniesRoute
   '/$lang/admin/users': typeof LangAuthenticatedAdminUsersRoute
   '/$lang/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/cards/new': typeof LangAuthenticatedCardsNewRoute
@@ -466,6 +474,7 @@ export interface FileRoutesByTo {
   '/$lang/tools': typeof LangToolsIndexRoute
   '/company/$slug': typeof CompanySlugIndexRoute
   '/$lang/admin/billing': typeof LangAuthenticatedAdminBillingRoute
+  '/$lang/admin/companies': typeof LangAuthenticatedAdminCompaniesRoute
   '/$lang/admin/users': typeof LangAuthenticatedAdminUsersRoute
   '/$lang/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/cards/new': typeof LangAuthenticatedCardsNewRoute
@@ -526,6 +535,7 @@ export interface FileRoutesById {
   '/company/$slug/': typeof CompanySlugIndexRoute
   '/$lang/_authenticated/co/$slug': typeof LangAuthenticatedCoSlugRouteRouteWithChildren
   '/$lang/_authenticated/admin/billing': typeof LangAuthenticatedAdminBillingRoute
+  '/$lang/_authenticated/admin/companies': typeof LangAuthenticatedAdminCompaniesRoute
   '/$lang/_authenticated/admin/users': typeof LangAuthenticatedAdminUsersRoute
   '/$lang/_authenticated/cards/$id': typeof LangAuthenticatedCardsIdRouteWithChildren
   '/$lang/_authenticated/cards/new': typeof LangAuthenticatedCardsNewRoute
@@ -586,6 +596,7 @@ export interface FileRouteTypes {
     | '/company/$slug/'
     | '/$lang/co/$slug'
     | '/$lang/admin/billing'
+    | '/$lang/admin/companies'
     | '/$lang/admin/users'
     | '/$lang/cards/$id'
     | '/$lang/cards/new'
@@ -642,6 +653,7 @@ export interface FileRouteTypes {
     | '/$lang/tools'
     | '/company/$slug'
     | '/$lang/admin/billing'
+    | '/$lang/admin/companies'
     | '/$lang/admin/users'
     | '/$lang/cards/$id'
     | '/$lang/cards/new'
@@ -701,6 +713,7 @@ export interface FileRouteTypes {
     | '/company/$slug/'
     | '/$lang/_authenticated/co/$slug'
     | '/$lang/_authenticated/admin/billing'
+    | '/$lang/_authenticated/admin/companies'
     | '/$lang/_authenticated/admin/users'
     | '/$lang/_authenticated/cards/$id'
     | '/$lang/_authenticated/cards/new'
@@ -1038,6 +1051,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangAuthenticatedAdminUsersRouteImport
       parentRoute: typeof LangAuthenticatedRouteRoute
     }
+    '/$lang/_authenticated/admin/companies': {
+      id: '/$lang/_authenticated/admin/companies'
+      path: '/admin/companies'
+      fullPath: '/$lang/admin/companies'
+      preLoaderRoute: typeof LangAuthenticatedAdminCompaniesRouteImport
+      parentRoute: typeof LangAuthenticatedRouteRoute
+    }
     '/$lang/_authenticated/admin/billing': {
       id: '/$lang/_authenticated/admin/billing'
       path: '/admin/billing'
@@ -1219,6 +1239,7 @@ interface LangAuthenticatedRouteRouteChildren {
   LangAuthenticatedVaultRoute: typeof LangAuthenticatedVaultRouteWithChildren
   LangAuthenticatedCoSlugRouteRoute: typeof LangAuthenticatedCoSlugRouteRouteWithChildren
   LangAuthenticatedAdminBillingRoute: typeof LangAuthenticatedAdminBillingRoute
+  LangAuthenticatedAdminCompaniesRoute: typeof LangAuthenticatedAdminCompaniesRoute
   LangAuthenticatedAdminUsersRoute: typeof LangAuthenticatedAdminUsersRoute
   LangAuthenticatedCardsIdRoute: typeof LangAuthenticatedCardsIdRouteWithChildren
   LangAuthenticatedCardsNewRoute: typeof LangAuthenticatedCardsNewRoute
@@ -1239,6 +1260,7 @@ const LangAuthenticatedRouteRouteChildren: LangAuthenticatedRouteRouteChildren =
     LangAuthenticatedCoSlugRouteRoute:
       LangAuthenticatedCoSlugRouteRouteWithChildren,
     LangAuthenticatedAdminBillingRoute: LangAuthenticatedAdminBillingRoute,
+    LangAuthenticatedAdminCompaniesRoute: LangAuthenticatedAdminCompaniesRoute,
     LangAuthenticatedAdminUsersRoute: LangAuthenticatedAdminUsersRoute,
     LangAuthenticatedCardsIdRoute: LangAuthenticatedCardsIdRouteWithChildren,
     LangAuthenticatedCardsNewRoute: LangAuthenticatedCardsNewRoute,
@@ -1316,13 +1338,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

@@ -81,7 +81,12 @@ function Settings() {
           <Section title="إدارة المنصّة">
             <Link to="/admin/users" className="flex items-center gap-3 px-4 py-3.5 hover:bg-secondary/60">
               <span className="grid h-8 w-8 place-items-center rounded-lg bg-secondary"><Users className="h-4 w-4" /></span>
-              <span className="min-w-0 flex-1 text-sm font-medium">المستخدمون والبطاقات</span>
+              <span className="min-w-0 flex-1 text-sm font-medium">المستخدمون والبطاقات الشخصية</span>
+              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            </Link>
+            <Link to="/admin/companies" className="flex items-center gap-3 border-t border-border/60 px-4 py-3.5 hover:bg-secondary/60">
+              <span className="grid h-8 w-8 place-items-center rounded-lg bg-secondary"><Users className="h-4 w-4" /></span>
+              <span className="min-w-0 flex-1 text-sm font-medium">الشركات وبطاقاتها</span>
               <ChevronRight className="h-4 w-4 text-muted-foreground" />
             </Link>
             <Link to="/admin/billing" className="flex items-center gap-3 border-t border-border/60 px-4 py-3.5 hover:bg-secondary/60">
