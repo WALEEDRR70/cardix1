@@ -1,9 +1,12 @@
+import { useRouterState } from "@tanstack/react-router";
 import { Link } from "@/lib/nav";
 import { useI18n } from "@/lib/i18n";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LocaleSwitcher } from "@/components/LangToggle";
+import { stripLocalePrefix } from "@/lib/locale-routing";
 import logoAsset from "@/assets/cardix-logo.svg.asset.json";
 import { tx } from "@/lib/tx";
+
 
 /**
  * Slim global site bar so in-app workspaces keep the same header identity
