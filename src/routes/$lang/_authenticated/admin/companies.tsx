@@ -23,6 +23,10 @@ export const Route = createFileRoute("/$lang/_authenticated/admin/companies")({
   component: AdminCompanies,
 });
 
+function useLangPrefix() {
+  return Route.useParams().lang;
+}
+
 function AdminCompanies() {
   const load = useServerFn(listPlatformCompanies);
   const [q, setQ] = useState("");
@@ -71,6 +75,14 @@ function AdminCompanies() {
             className="w-full bg-transparent text-sm outline-none"
           />
         </label>
+
+        <a
+          href={`/${useLangPrefix()}/admin/users`}
+          className="glass flex items-center gap-3 rounded-2xl px-4 py-3 text-sm hover:bg-secondary/60"
+        >
+          <Users className="h-4 w-4 text-muted-foreground" />
+          <span className="flex-1">المستخدمون وبطاقاتهم الشخصية</span>
+        </a>
 
         {isLoading && <p className="py-16 text-center text-sm text-muted-foreground">…</p>}
 
