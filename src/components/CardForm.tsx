@@ -166,17 +166,8 @@ export function CardForm({
 
   /** Studio design re-tinted live with the picked accent color. */
   const accentChanged = !!effectiveDesign && data.accent_color !== initial.accent_color;
-  const savedAccentChanged = !!effectiveDesign && saved.accent_color !== initial.accent_color;
+  // Colors preview live (before saving); other fields still show the saved snapshot.
   const previewDesign = useMemo(() => {
-    if (!effectiveDesign || !savedAccentChanged) return effectiveDesign;
-    try {
-      return recolorDesign(effectiveDesign as StudioDoc, initial.accent_color, saved.accent_color);
-    } catch {
-      return effectiveDesign;
-    }
-  }, [effectiveDesign, savedAccentChanged, initial.accent_color, saved.accent_color]);
-
-  const savedAccent = useMemo(() => {
     if (!effectiveDesign || !accentChanged) return effectiveDesign;
     try {
       return recolorDesign(effectiveDesign as StudioDoc, initial.accent_color, data.accent_color);
@@ -184,6 +175,9 @@ export function CardForm({
       return effectiveDesign;
     }
   }, [effectiveDesign, accentChanged, initial.accent_color, data.accent_color]);
+
+  const savedAccent = previewDesign;
+
 
 
   async function handleSubmit(e: React.FormEvent) {
